@@ -1,62 +1,61 @@
 {
   "slug": "argo-test-docs",
   "repo": "argo-test-docs",
-  "title": "Argo Workflows 입문 정리 노트",
-  "summary": "hello-world YAML 한 줄부터 Workflow CRD 개념, 흔한 함정, 클러스터 사전 조건까지 정리한 학습 문서",
-  "description": "Kubernetes 위에서 컨테이너 기반 워크플로를 실행하는 Argo Workflows 를 처음 학습하며 정리한 관찰자 시점 노트다. hello-world 예제 YAML을 한 줄씩 분해해 apiVersion, generateName, entrypoint, templates 의 역할을 설명하고, Workflow CR 생성부터 controller reconcile, Pod 실행, status 업데이트로 이어지는 라이프사이클을 다이어그램으로 정리했다. Workflow / CronWorkflow / WorkflowTemplate 의 차이, steps 와 dag template 의 차이 등 개념적 분류도 함께 다룬다. 입문 단계에서 흔히 겪는 namespace 불일치, Pod 지연 생성, TTL 미설정으로 인한 CR 누적 등의 함정과 해결 방향을 별도 문서로 기록했고, 클러스터 사전 조건과 Argo Workflows 를 Airflow, Tekton, GitHub Actions 와 비교한 표도 포함한다.",
+  "title": "Argo Workflows 입문 학습 노트",
+  "summary": "Argo Workflows hello-world 예제를 뜯어보며 CRD 동작 원리와 입문 함정을 정리한 관찰자 시점 학습 문서",
+  "description": "Kubernetes 위에서 컨테이너 기반 워크플로를 실행하는 Argo Workflows 를 hello-world YAML 한 줄부터 뜯어보며 정리한 학습 노트다. Workflow CRD 의 라이프사이클(controller reconcile 루프 → Pod 생성 → status 업데이트), template 종류(container/steps/dag/resource/suspend), Workflow·CronWorkflow·WorkflowTemplate 의 차이를 아키텍처 문서로 정리했다. 입문 단계에서 흔히 겪는 함정 — namespace 불일치, kubectl apply 대신 argo submit 권장, Pod 생성 지연, TTL 미설정으로 인한 CR 누적, private 이미지 pull secret 필요 — 을 별도로 정리했고, 클러스터 사전 조건과 Airflow/Tekton/GitHub Actions 와의 대안 비교도 함께 다룬다. 실제 코드가 아닌 순수 문서(docs-only) 레포로, 처음 Argo Workflows 를 접하는 사람이 개념을 빠르게 잡을 수 있도록 구성했다.",
   "category": "학습",
-  "role": "Argo Workflows 를 처음 학습하며 공식 예제와 개념을 관찰자 시점으로 분석하고, 아키텍처/함정/스택 문서로 구조화하여 정리했다.",
+  "role": "Argo Workflows 를 처음 학습하며 공식 hello-world 예제를 직접 분석하고, CRD 구조·라이프사이클·흔한 함정을 관찰자 시점으로 문서화했다.",
   "techStack": [
     {
       "name": "Argo Workflows",
-      "category": "devops",
-      "usage": "Kubernetes CRD 기반 워크플로 실행 엔진, 학습 대상 그 자체"
+      "category": "infra",
+      "usage": "Kubernetes 네이티브 워크플로 엔진, CRD 기반 학습 대상"
     },
     {
       "name": "Kubernetes",
       "category": "infra",
-      "usage": "Workflow CRD 가 동작하는 기반 클러스터 환경"
+      "usage": "Workflow CRD 와 controller 가 동작하는 클러스터 환경"
     },
     {
       "name": "YAML",
       "category": "tool",
-      "usage": "Workflow 스펙 및 template 정의 작성"
-    },
-    {
-      "name": "Docker",
-      "category": "devops",
-      "usage": "hello-world 예제에서 whalesay 컨테이너 이미지 실행"
+      "usage": "Workflow 매니페스트 정의"
     }
   ],
   "highlights": [
-    "hello-world YAML 을 필드 단위로 분해해 apiVersion/generateName/entrypoint/templates 의 역할을 설명",
-    "Workflow CR 생성부터 controller reconcile, Pod 실행, status 갱신까지 라이프사이클을 다이어그램화",
-    "Workflow/CronWorkflow/WorkflowTemplate 의 단발성-반복성 구분을 명확히 정리",
-    "namespace 불일치, Pod 생성 지연, TTL 미설정 등 입문 단계 함정을 근거와 함께 기록",
-    "Argo Workflows 를 Airflow, Tekton, GitHub Actions 와 비교한 대안 분석 표 포함"
+    "hello-world YAML 을 줄 단위로 분석해 CRD 필드의 역할을 구체적으로 설명",
+    "Workflow 생성부터 status 업데이트까지 controller reconcile 흐름을 다이어그램으로 정리",
+    "Workflow / CronWorkflow / WorkflowTemplate 의 실행 방식 차이를 명확히 구분",
+    "namespace 불일치, TTL 미설정 등 입문자가 실제로 겪는 함정을 근거와 함께 정리",
+    "Airflow, Tekton, GitHub Actions 와의 강약점을 표로 비교"
   ],
   "challenges": [
     {
-      "problem": "controller 가 기본적으로 argo 네임스페이스만 watch 하도록 구성되어, 다른 네임스페이스의 Workflow 가 reconcile 되지 않는 것처럼 보임",
-      "solution": "cluster-wide controller 로 재구성하거나 Workflow 를 argo 네임스페이스에 통일해서 생성"
+      "problem": "Workflow 를 생성해도 Pod 이 즉시 안 만들어져 실패한 것처럼 보이는 현상",
+      "solution": "controller 가 reconcile 루프에서 CR 을 처리한 뒤에야 Pod 이 생성되는 비동기 모델임을 이해하고, 수 초의 지연을 정상 동작으로 문서화"
     },
     {
-      "problem": "완료된 Workflow CR 이 자동 삭제되지 않아 장기 운영 시 수천 개가 누적됨",
-      "solution": "spec.ttlStrategy 또는 controller 의 workflowDefaults 로 TTL 정책을 초기부터 설정"
+      "problem": "완료된 Workflow CR 이 자동 삭제되지 않아 namespace 에 누적되는 문제",
+      "solution": "spec.ttlStrategy 또는 controller 의 workflowDefaults 로 TTL 을 설정해야 함을 정리"
+    },
+    {
+      "problem": "controller 가 argo 네임스페이스만 watch 하도록 구성돼 다른 네임스페이스의 Workflow 가 reconcile 되지 않는 문제",
+      "solution": "cluster-wide controller 로 재구성하거나 Workflow 를 argo 네임스페이스에 통일해서 생성하는 방식으로 정리"
     }
   ],
   "diagrams": [
     {
       "title": "Workflow 라이프사이클",
-      "description": "kubectl apply 로 생성된 Workflow CR 이 controller의 reconcile 루프를 거쳐 Pod 로 실행되고 status 가 갱신되는 흐름을 보여준다.",
+      "description": "kubectl apply 로 생성된 Workflow CR 이 controller 의 reconcile 루프를 거쳐 Pod 실행과 status 업데이트로 이어지는 흐름",
       "type": "architecture",
-      "mermaid": "flowchart TD\n  U[\"사용자 kubectl apply\"] --> CR[\"Workflow CRD 생성\"]\n  CR --> CTRL[\"Argo controller reconcile\"]\n  CTRL --> POD[\"entrypoint Pod 실행\"]\n  POD --> LOG[\"종료 코드 및 로그\"]\n  LOG --> STATUS[\"Workflow status 업데이트\"]\n  STATUS --> CTRL"
+      "mermaid": "flowchart TD\n  U[\"사용자 kubectl apply\"] --> CR[\"Workflow CRD 생성\"]\n  CR --> CTRL[\"Argo controller reconcile\"]\n  CTRL --> POD[\"entrypoint Pod 생성\"]\n  POD --> RESULT[\"종료 코드 및 log\"]\n  RESULT --> STATUS[\"Workflow status 업데이트\"]"
     },
     {
-      "title": "Workflow 종류와 template 유형",
-      "description": "Workflow, CronWorkflow, WorkflowTemplate 의 관계와 container, steps, dag 등 template 유형의 개념적 분류를 정리한다.",
+      "title": "Workflow 종류와 재사용 관계",
+      "description": "단발성 Workflow 와 반복 실행되는 CronWorkflow, 재사용 가능한 WorkflowTemplate 의 관계를 정리",
       "type": "flow",
-      "mermaid": "flowchart LR\n  subgraph K[\"실행 방식\"]\n    W[\"Workflow 단발 실행\"]\n    CW[\"CronWorkflow 스케줄 실행\"]\n    WT[\"WorkflowTemplate 재사용 정의\"]\n  end\n  CW --> W\n  WT --> W\n  subgraph T[\"Template 유형\"]\n    C[\"container 단일 실행\"]\n    S[\"steps 순차 실행\"]\n    D[\"dag 의존성 그래프\"]\n    R[\"resource k8s 리소스 관리\"]\n  end\n  W --> T"
+      "mermaid": "flowchart LR\n  WT[\"WorkflowTemplate 재사용 정의\"] --> W[\"Workflow 단발 실행\"]\n  CRON[\"CronWorkflow 스케줄\"] --> W\n  W --> STATUS[\"Succeeded 또는 Failed\"]"
     }
   ],
   "keywords": [
@@ -65,10 +64,9 @@
     "crd",
     "workflow-engine",
     "devops",
+    "study-notes",
     "controller",
-    "cronworkflow",
-    "dag",
-    "학습노트"
+    "dag"
   ],
   "links": {
     "repo": "https://github.com/jiyong-jeong/argo-test-docs",
@@ -89,7 +87,7 @@
     "createdAt": "2026-05-13T13:46:41Z",
     "updatedAt": "2026-05-13T14:09:31Z",
     "pushedAt": "2026-05-13T13:46:45Z",
-    "analyzedAt": "2026-07-26T05:04:53.484Z"
+    "analyzedAt": "2026-07-26T05:15:17.306Z"
   },
   "featured": false
 }
