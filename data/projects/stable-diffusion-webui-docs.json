@@ -1,0 +1,118 @@
+{
+  "slug": "stable-diffusion-webui-docs",
+  "repo": "stable-diffusion-webui-docs",
+  "title": "SD WebUI 로컬 구동 환경 셋업 노트",
+  "summary": "AUTOMATIC1111 Stable Diffusion web UI를 로컬에서 운영하며 겪은 셋업 함정과 대처법을 정리한 관찰자 시점 기술 노트",
+  "description": "AUTOMATIC1111의 Stable Diffusion web UI를 로컬에 클론해 확장(ControlNet)과 모델 weights를 얹은 환경을 관찰하고, 부팅 흐름·모델 로딩·GPU별 옵션 매트릭스를 문서화한 프로젝트다. 코드 자체는 OSS 본체를 그대로 사용하고, 본 repo는 셋업/운영 과정에서 얻은 지식만 별도로 정리한다. Python 버전 고정, GPU 타입별(NVIDIA/AMD/Apple Silicon) VRAM 옵션, 확장과 본체 간 버전 비동기 문제 등 실제로 막히기 쉬운 지점을 짚는다. 13GB 용량의 대부분이 모델 weights임을 밝히고, git에 weights가 섞이지 않도록 관리하는 원칙도 함께 기록했다.",
+  "category": "인프라",
+  "role": "AUTOMATIC1111 stable-diffusion-webui를 로컬에 설치/운영하면서 부팅 구조와 모델 로딩 흐름을 분석하고, GPU 환경별 트러블슈팅과 확장 운영 함정을 문서화했다.",
+  "techStack": [
+    {
+      "name": "Python",
+      "category": "language",
+      "usage": "webui 본체 실행을 위한 3.10 고정 런타임"
+    },
+    {
+      "name": "PyTorch",
+      "category": "framework",
+      "usage": "GPU 기반 이미지 생성 추론 백엔드"
+    },
+    {
+      "name": "Gradio",
+      "category": "framework",
+      "usage": "웹 UI 프레임워크, 7860 포트로 로컬 서빙"
+    },
+    {
+      "name": "xformers",
+      "category": "tool",
+      "usage": "NVIDIA GPU에서 attention 연산 최적화"
+    },
+    {
+      "name": "Hugging Face Transformers",
+      "category": "framework",
+      "usage": "모델 로딩/추론에 사용되는 HF 생태계 라이브러리"
+    },
+    {
+      "name": "diffusers",
+      "category": "framework",
+      "usage": "diffusion 모델 파이프라인 관련 의존성"
+    },
+    {
+      "name": "ControlNet",
+      "category": "tool",
+      "usage": "pose/depth/canny 등 conditioning 기반 image-to-image 확장"
+    },
+    {
+      "name": "Git",
+      "category": "devops",
+      "usage": "본체 및 확장 repo 관리, 커밋 해시 기반 환경 재현"
+    }
+  ],
+  "highlights": [
+    "코드는 OSS 본체를 그대로 두고 셋업/운영 지식만 별도 문서로 분리 정리",
+    "NVIDIA/AMD/Apple Silicon별 VRAM 옵션 매트릭스(xformers, medvram 등)를 정리",
+    "ControlNet 등 확장이 본체와 별도 생명주기로 움직여 생기는 호환성 문제를 기록",
+    "13GB 용량 대부분이 모델 weights임을 짚고 .gitignore/용량 관리 원칙을 명시"
+  ],
+  "challenges": [
+    {
+      "problem": "Python 3.11/3.12 등 버전이 다르면 torch·xformers 조합 빌드/호환이 깨진다",
+      "solution": "pyenv나 conda로 Python 3.10 환경을 별도 분리하고 webui가 만드는 venv 위에서 실행"
+    },
+    {
+      "problem": "sd-webui-controlnet 같은 확장이 본체와 비동기로 발전해 본체 업데이트 후 webui가 뜨지 않는 경우가 생긴다",
+      "solution": "본체와 모든 확장의 commit hash를 기록해 두고, 문제가 생기면 그 시점으로 롤백"
+    },
+    {
+      "problem": "모델 weights와 outputs 이미지가 관리 없이 무한 누적되어 디스크 용량이 빠르게 커진다",
+      "solution": ".gitignore로 weights/outputs를 git 밖에서 관리하고 수동/주기적 정리를 병행"
+    }
+  ],
+  "diagrams": [
+    {
+      "title": "webui 구성 아키텍처",
+      "description": "Gradio 브라우저 UI부터 GPU 추론, 확장, 모델 디렉토리까지 이어지는 전체 구성을 보여준다.",
+      "type": "architecture",
+      "mermaid": "flowchart TD\n  A[\"Browser Gradio UI\"] --> B[\"webui.py / launch.py\"]\n  B --> C[\"PyTorch xformers GPU 추론\"]\n  B --> D[\"extensions ControlNet 등\"]\n  C --> E[\"models Stable-diffusion VAE Lora\"]\n  D --> F[\"extensions 자체 모델 디렉토리\"]\n  E --> G[\"생성 이미지 outputs\"]"
+    },
+    {
+      "title": "부팅 및 의존성 설치 흐름",
+      "description": "webui-user 스크립트 실행부터 venv 생성, 의존성 설치, Gradio 앱 기동까지의 순서를 정리했다.",
+      "type": "flow",
+      "mermaid": "flowchart LR\n  A[\"webui-user.sh 환경변수 설정\"] --> B[\"webui.sh venv 생성 활성화\"]\n  B --> C[\"launch.py 실행\"]\n  C --> D[\"repositories clone k-diffusion 등\"]\n  C --> E[\"requirements_versions.txt 설치\"]\n  D --> F[\"webui.py 실행\"]\n  E --> F\n  F --> G[\"Gradio 7860 포트 서빙\"]"
+    }
+  ],
+  "keywords": [
+    "stable-diffusion",
+    "automatic1111",
+    "gradio",
+    "pytorch",
+    "controlnet",
+    "xformers",
+    "local-setup",
+    "ml-infra",
+    "gpu"
+  ],
+  "links": {
+    "repo": "https://github.com/jiyong-jeong/stable-diffusion-webui-docs",
+    "homepage": null
+  },
+  "metrics": {
+    "stars": 0,
+    "forks": 0,
+    "watchers": 0,
+    "sizeKb": 5,
+    "openIssues": 0,
+    "languages": {},
+    "topics": [],
+    "primaryLanguage": null,
+    "license": null
+  },
+  "dates": {
+    "createdAt": "2026-05-13T13:51:12Z",
+    "updatedAt": "2026-05-13T14:11:52Z",
+    "pushedAt": "2026-05-13T13:51:16Z",
+    "analyzedAt": "2026-07-26T04:59:45.083Z"
+  },
+  "featured": false
+}

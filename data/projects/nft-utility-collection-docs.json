@@ -1,0 +1,120 @@
+{
+  "slug": "nft-utility-collection-docs",
+  "repo": "nft-utility-collection-docs",
+  "title": "게이미피케이션 NFT 컬렉션 구조 분석 문서",
+  "summary": "이름·레벨·토큰 커런시 모듈을 가진 게이미피케이션 NFT 컬렉션의 컨트랙트 패턴과 함정을 정리한 관찰자 시점 기술 문서",
+  "description": "단순 수집형 NFT가 아니라 이름 부여, 레벨/경험치, 토큰 내장 커런시, 아이템 메타데이터 같은 유틸리티 레이어를 함께 가지는 ERC-721 컬렉션의 일반적인 컨트랙트 구조를 분해해 정리한 문서 레포지토리다. 단일 컨트랙트가 모든 책임을 지지 않고 Naming, Level, Currency, Item 모듈로 분리되는 합성 구조와 각 모듈의 핵심 패턴(이름 정규화 예약, 경험치 증가 권한 제어, internal balance vs 별도 ERC-20)을 아키텍처 문서로 정리했다. 이름 대소문자 우회, 경험치 증가 권한 폭주, private key inline 노출, operator-filter-registry의 세 가지 transferFrom 변종 누락 등 실제로 마주치기 쉬운 함정을 별도로 기록했다. Polygon(mainnet/Mumbai) 배포를 전제로 Hardhat, OpenZeppelin, operator-filter-registry 스택 구성과 .env 기반 키 관리 원칙도 함께 다룬다. 코드 자체보다는 이 카테고리 컬렉션에서 반복되는 설계 결정과 실수를 일반화한 노트에 가깝다.",
+  "category": "Web3",
+  "role": "게이미피케이션 요소가 있는 NFT 유틸리티 컬렉션의 컨트랙트 구조를 관찰자 시점에서 분해하고, 모듈 아키텍처·설계 결정·배포 함정을 한국어 기술 문서 세 편(ARCHITECTURE, LESSONS, STACK)으로 정리했다.",
+  "techStack": [
+    {
+      "name": "Solidity",
+      "category": "language",
+      "usage": "ERC-721 기반 컬렉션 및 Naming/Level/Currency 모듈 구현 언어"
+    },
+    {
+      "name": "Hardhat",
+      "category": "framework",
+      "usage": "컨트랙트 컴파일, 테스트, Polygon 배포 파이프라인"
+    },
+    {
+      "name": "OpenZeppelin Contracts",
+      "category": "framework",
+      "usage": "ERC721, Ownable, AccessControl 등 표준 컨트랙트 상속"
+    },
+    {
+      "name": "operator-filter-registry",
+      "category": "blockchain",
+      "usage": "OpenSea royalty 강제 정책 대응을 위한 transferFrom 필터링 통합"
+    },
+    {
+      "name": "Polygon",
+      "category": "blockchain",
+      "usage": "mainnet 및 Mumbai 테스트넷에 컬렉션 배포"
+    },
+    {
+      "name": "hardhat-toolbox",
+      "category": "testing",
+      "usage": "chai matcher, ethers 등을 묶은 테스트 도구 세트"
+    },
+    {
+      "name": "truffle-assertions",
+      "category": "testing",
+      "usage": "Hardhat 환경에서 병행 사용하는 테스트 assert 헬퍼"
+    },
+    {
+      "name": "dotenv",
+      "category": "devops",
+      "usage": "private key 등 민감정보를 .env로 분리 로드"
+    }
+  ],
+  "highlights": [
+    "단일 ERC-721이 아닌 Naming/Level/Currency/Item 모듈 합성 구조로 책임을 분리",
+    "이름 예약을 정규화(toLower) 후 비교해 대소문자 우회 중복 이름을 방지하는 패턴 정리",
+    "경험치 증가 권한을 onlyMinter 등으로 좁혀야 하는 access control 설계 포인트 문서화",
+    "operator-filter-registry 도입 시 transferFrom 세 변종 모두 override해야 하는 함정 기록",
+    "internal balance vs 별도 ERC-20 커런시 방식의 트레이드오프를 비교 정리"
+  ],
+  "challenges": [
+    {
+      "problem": "이름 예약을 정규화 없이 비교하면 'Alice'와 'alice'처럼 대소문자만 바꿔 동일 이름을 중복 생성할 수 있다",
+      "solution": "비교 직전 toLower 정규화를 강제하고 이모지/유니코드 허용 여부를 사전에 화이트리스트로 정책화한다"
+    },
+    {
+      "problem": "경험치 증가 함수를 아무나 호출 가능하게 두면 봇을 통한 무한 레벨업이 가능해진다",
+      "solution": "onlyMinter 또는 trusted forwarder 롤로 addExp 호출 권한을 게임/이벤트 컨트랙트로 제한한다"
+    },
+    {
+      "problem": "private key를 hardhat.config.js에 inline으로 적으면 한 번의 commit으로 영구 노출된다",
+      "solution": ".env + dotenv + .gitignore 조합으로 키를 분리 로드하도록 강제한다"
+    }
+  ],
+  "diagrams": [
+    {
+      "title": "모듈 합성 아키텍처",
+      "description": "Collection 메인 컨트랙트가 Naming, Level, Currency, Item 모듈을 상속/합성하고 operator-filter-registry를 통합하는 구조를 보여준다.",
+      "type": "architecture",
+      "mermaid": "flowchart TD\n  A[\"Collection ERC721\"] --> B[\"Naming 이름부여 예약\"]\n  A --> C[\"Level 경험치 레벨업\"]\n  A --> D[\"Currency 토큰내장 커런시\"]\n  A --> E[\"Item 아이템 메타데이터\"]\n  A --> F[\"operator-filter-registry\"]"
+    },
+    {
+      "title": "mint부터 레벨업까지 데이터 흐름",
+      "description": "사용자의 mint, 이름 변경, 게임 컨트랙트의 경험치 증가 요청이 각 모듈로 어떻게 전달되는지 보여준다.",
+      "type": "dataflow",
+      "mermaid": "flowchart LR\n  U[\"사용자\"] -->|mint| M[\"Collection mint\"]\n  M --> T[\"tokenId 생성\"]\n  T --> L[\"Level 초기화\"]\n  U -->|changeName| N[\"Collection changeName\"]\n  N --> NM[\"Naming 정규화 및 예약검사\"]\n  G[\"게임 컨트랙트\"] -->|addExp| AE[\"Collection addExp\"]\n  AE --> LV[\"Level exp증가 레벨업\"]"
+    }
+  ],
+  "keywords": [
+    "nft",
+    "solidity",
+    "hardhat",
+    "openzeppelin",
+    "polygon",
+    "erc721",
+    "gamification",
+    "smart-contract",
+    "web3",
+    "operator-filter-registry"
+  ],
+  "links": {
+    "repo": "https://github.com/jiyong-jeong/nft-utility-collection-docs",
+    "homepage": null
+  },
+  "metrics": {
+    "stars": 0,
+    "forks": 0,
+    "watchers": 0,
+    "sizeKb": 6,
+    "openIssues": 0,
+    "languages": {},
+    "topics": [],
+    "primaryLanguage": null,
+    "license": null
+  },
+  "dates": {
+    "createdAt": "2026-05-13T20:50:12Z",
+    "updatedAt": "2026-05-13T20:50:19Z",
+    "pushedAt": "2026-05-13T20:50:15Z",
+    "analyzedAt": "2026-07-26T04:58:13.476Z"
+  },
+  "featured": false
+}

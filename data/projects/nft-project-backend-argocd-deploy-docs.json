@@ -1,0 +1,123 @@
+{
+  "slug": "nft-project-backend-argocd-deploy-docs",
+  "repo": "nft-project-backend-argocd-deploy-docs",
+  "title": "NFT 백엔드 API GitOps 배포 노트: ArgoCD + Kustomize",
+  "summary": "NFT 프로젝트 백엔드 API를 ArgoCD와 Kustomize로 dev/qa/prod 배포하는 패턴을 정리한 관찰 문서",
+  "description": "NFT 컬렉션 프로젝트의 백엔드 REST API 서버를 Kubernetes 위에서 ArgoCD + Kustomize overlay 구조로 운영하기 위한 배포 노트입니다. 하나의 ingress overlay에 strategic merge patch와 JSON 6902 patch가 공존하는 사례를 통해 두 패치 방식의 적용 순서와 함정을 분석합니다. RPC 호출 rate limit, IPFS gateway latency, 컨트랙트 주소의 환경별 분리 등 NFT 도메인 특화 운영 이슈도 함께 다룹니다. stateless API 서버 특성상 RollingUpdate 기반 무중단 배포가 자연스럽게 적용되는 구조를 관찰자 시점에서 정리했습니다.",
+  "category": "인프라",
+  "role": "레포 자체가 관찰/정리 문서로, 실제 운영 사례를 바탕으로 GitOps 배포 패턴과 함정을 분석·문서화함",
+  "techStack": [
+    {
+      "name": "Kubernetes",
+      "category": "infra",
+      "usage": "NFT 백엔드 API 서버를 dev/qa/prod 환경으로 오케스트레이션"
+    },
+    {
+      "name": "ArgoCD",
+      "category": "devops",
+      "usage": "GitOps 기반 배포 reconcile"
+    },
+    {
+      "name": "Kustomize",
+      "category": "devops",
+      "usage": "환경별 overlay 및 strategic merge/JSON 6902 patch 관리"
+    },
+    {
+      "name": "Jenkins",
+      "category": "devops",
+      "usage": "image tag 변경 후 git push하는 CI 파이프라인"
+    },
+    {
+      "name": "AWS ALB",
+      "category": "infra",
+      "usage": "ingress controller로 외부 트래픽 노출"
+    },
+    {
+      "name": "nginx ingress",
+      "category": "infra",
+      "usage": "대안 ingress controller"
+    },
+    {
+      "name": "PostgreSQL",
+      "category": "database",
+      "usage": "분석 데이터 및 holder 정보 캐시"
+    },
+    {
+      "name": "Redis",
+      "category": "database",
+      "usage": "메타데이터 캐시 및 rate limit 처리"
+    },
+    {
+      "name": "IPFS",
+      "category": "blockchain",
+      "usage": "NFT 메타데이터 저장/조회 gateway"
+    }
+  ],
+  "highlights": [
+    "strategic merge patch와 JSON 6902 patch가 한 ingress overlay에 공존하는 드문 구조를 분석",
+    "6902 patch의 array index 의존성으로 인한 silent fail 위험을 문서화",
+    "listener와 달리 multi-replica + RollingUpdate로 무중단 배포되는 stateless API 특성 정리",
+    "RPC rate limit, IPFS latency 등 NFT 도메인 특화 백엔드 운영 함정을 정리"
+  ],
+  "challenges": [
+    {
+      "problem": "strategic merge patch와 JSON 6902 patch를 같은 필드에 동시 적용하면 6902가 우선 적용되어 의도치 않은 결과 발생",
+      "solution": "필드별로 패치 방식을 하나로 고정하고 주석으로 담당 방식을 명시"
+    },
+    {
+      "problem": "JSON 6902 patch가 array index에 의존해 base의 rules 순서가 바뀌면 다른 host를 잘못 패치",
+      "solution": "6902 사용 시 base를 동결하거나 host별로 별도 ingress로 분리"
+    },
+    {
+      "problem": "무료 RPC 노드 호출이 사용자 요청마다 발생하면 rate limit(429)으로 timeout 폭주",
+      "solution": "메타데이터/holder 정보를 캐시하고 배치 동기화로 직접 RPC 호출 최소화"
+    }
+  ],
+  "diagrams": [
+    {
+      "title": "NFT 백엔드 배포 아키텍처",
+      "description": "사용자 요청이 ingress를 거쳐 백엔드 Pod에 도달하고 외부 블록체인/IPFS 의존성과 연결되는 구조를 보여줍니다.",
+      "type": "architecture",
+      "mermaid": "flowchart TD\n  User[\"사용자 프론트엔드\"] -->|HTTPS| Ingress[\"ingress ALB nginx\"]\n  Ingress --> Service[\"Service ClusterIP\"]\n  Service --> Deploy[\"Deployment 다중 레플리카\"]\n  Deploy --> DB[\"PostgreSQL\"]\n  Deploy --> Cache[\"Redis\"]\n  Deploy --> RPC[\"블록체인 RPC 노드\"]\n  Deploy --> IPFS[\"IPFS gateway\"]"
+    },
+    {
+      "title": "두 종류 ingress patch 적용 흐름",
+      "description": "Kustomize가 strategic merge patch와 JSON 6902 patch를 순서대로 적용하는 흐름과 주의점을 보여줍니다.",
+      "type": "flow",
+      "mermaid": "flowchart LR\n  Base[\"base ingress manifest\"] --> Merge[\"strategic merge patch 적용\"]\n  Merge --> Patch6902[\"JSON 6902 patch 적용\"]\n  Patch6902 --> Final[\"최종 ingress 리소스\"]\n  Patch6902 -.->|같은 필드면 우선| Merge"
+    }
+  ],
+  "keywords": [
+    "kubernetes",
+    "argocd",
+    "kustomize",
+    "gitops",
+    "ingress",
+    "json-patch",
+    "nft",
+    "jenkins",
+    "backend-api"
+  ],
+  "links": {
+    "repo": "https://github.com/jiyong-jeong/nft-project-backend-argocd-deploy-docs",
+    "homepage": null
+  },
+  "metrics": {
+    "stars": 0,
+    "forks": 0,
+    "watchers": 0,
+    "sizeKb": 5,
+    "openIssues": 0,
+    "languages": {},
+    "topics": [],
+    "primaryLanguage": null,
+    "license": null
+  },
+  "dates": {
+    "createdAt": "2026-05-13T20:56:48Z",
+    "updatedAt": "2026-05-13T20:56:57Z",
+    "pushedAt": "2026-05-13T20:56:51Z",
+    "analyzedAt": "2026-07-26T04:56:33.106Z"
+  },
+  "featured": false
+}

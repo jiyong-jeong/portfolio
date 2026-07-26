@@ -1,0 +1,88 @@
+{
+  "slug": "nft-marketplace-analytics-queries-docs",
+  "repo": "nft-marketplace-analytics-queries-docs",
+  "title": "NFT 마켓플레이스 운영 분석 SQL 패턴집",
+  "summary": "materialized view 갱신, wei 단위 거래량 집계, soft hide 등 NFT 마켓 운영 SQL 패턴과 함정을 정리한 문서",
+  "description": "NFT 마켓플레이스 백엔드의 분석/리포팅 단계에서 반복적으로 쓰이는 PostgreSQL 쿼리 패턴을 정리한 문서 레포지토리입니다. materialized view 갱신(CONCURRENTLY), 월별/누적 거래량 집계, wei 단위 금액 환산, 토큰 soft hide 등 실제 운영 쿼리에서 도출된 데이터 모델과 설계 결정을 관찰자 시점으로 기록했습니다. project/sub_project 두 단계 materialized view의 갱신 순서 의존성, v2/v3 동시 운영에 따른 일관성 문제, 정수 나눗셈으로 인한 wei 환산 오류 등 실무에서 흔히 겪는 함정을 별도 문서로 정리했습니다. 코드 자체보다는 쿼리에서 역추론한 아키텍처와 운영 노하우를 공유하는 데 초점을 맞춘 문서 전용 레포입니다.",
+  "category": "데이터",
+  "role": "NFT 마켓플레이스 운영 쿼리를 관찰하고, 쿼리에서 데이터 모델과 갱신 흐름을 역추론하여 아키텍처/함정/스택 문서로 정리했습니다.",
+  "techStack": [
+    {
+      "name": "PostgreSQL",
+      "category": "database",
+      "usage": "거래 이력, materialized view 등 분석 쿼리의 대상 DB"
+    },
+    {
+      "name": "Materialized View",
+      "category": "database",
+      "usage": "project/sub_project 레벨 집계 데이터를 CONCURRENTLY 옵션으로 갱신"
+    }
+  ],
+  "highlights": [
+    "거래 금액을 wei(1e18) 정수로 저장하고 쿼리 시점에 numeric 캐스팅 후 환산하는 패턴 정리",
+    "project/sub_project, v2/v3 materialized view의 갱신 순서 의존성과 일관성 문제 분석",
+    "CONCURRENTLY refresh의 UNIQUE index 필수 조건과 실제 I/O·메모리 비용을 문서화",
+    "token.valid 플래그를 이용한 soft hide 패턴과 audit trail 부재의 리스크 정리",
+    "PostgreSQL materialized view의 한계와 ClickHouse 등 OLAP 대안으로의 진화 경로 제시"
+  ],
+  "challenges": [
+    {
+      "problem": "정수 나눗셈으로 wei를 그대로 나누면 1 ETH 미만 거래가 0으로 집계됨",
+      "solution": "result::numeric / 10^18 처럼 명시적 캐스팅을 거쳐 부동소수 환산을 강제"
+    },
+    {
+      "problem": "v2/v3 materialized view를 동시 운영하면서 갱신 시점 사이에 두 view의 상태가 달라 외부 cross-check 시 race condition 발생",
+      "solution": "동일 transaction 또는 lock으로 갱신을 묶거나 외부 cross-check 자체를 제거하도록 권장"
+    },
+    {
+      "problem": "soft hide된 토큰이 read 쿼리에서 valid=TRUE 조건 누락 시 그대로 노출될 위험",
+      "solution": "모든 read를 강제하는 view 또는 RLS(Row Level Security) 도입을 권장 패턴으로 제시"
+    }
+  ],
+  "diagrams": [
+    {
+      "title": "운영 쿼리 흐름",
+      "description": "스케줄러에 의한 materialized view 갱신과 운영자의 on-demand 분석 쿼리 실행 흐름을 보여줍니다.",
+      "type": "architecture",
+      "mermaid": "flowchart TD\n  Scheduler[\"스케줄러 (cron / pg_cron)\"] --> Refresh[\"materialized-view-refresh.sql\"]\n  Refresh --> SubProject[\"sub_project 갱신\"]\n  SubProject --> ProjectV3[\"project v3 갱신\"]\n  ProjectV3 --> ProjectV2[\"project v2 갱신\"]\n  Operator[\"운영자\"] --> Analytics[\"analytics 쿼리 실행\"]\n  Analytics --> MonthQuery[\"month-request-query.sql\"]\n  Analytics --> Volume[\"project-traded-volume.sql\"]\n  Analytics --> History[\"traded-history.sql\"]\n  Operator --> Hide[\"specific project hidden.sql\"]\n  Hide --> Token[\"token.valid = FALSE\"]"
+    },
+    {
+      "title": "데이터 모델 추정",
+      "description": "쿼리에서 역추론한 project, token, trade 간의 관계를 나타냅니다.",
+      "type": "erd",
+      "mermaid": "flowchart TD\n  Project[\"project (v2/v3 view)\"] --> SubProject[\"sub_project\"]\n  Project --> Token[\"token (valid 플래그)\"]\n  Token --> Trade[\"trade / order (wei 단위 price)\"]\n  Trade --> Report[\"분석 리포트 (ETH 환산 후 집계)\"]"
+    }
+  ],
+  "keywords": [
+    "postgresql",
+    "materialized-view",
+    "nft",
+    "wei",
+    "soft-hide",
+    "analytics-sql",
+    "concurrently",
+    "operations"
+  ],
+  "links": {
+    "repo": "https://github.com/jiyong-jeong/nft-marketplace-analytics-queries-docs",
+    "homepage": null
+  },
+  "metrics": {
+    "stars": 0,
+    "forks": 0,
+    "watchers": 0,
+    "sizeKb": 5,
+    "openIssues": 0,
+    "languages": {},
+    "topics": [],
+    "primaryLanguage": null,
+    "license": null
+  },
+  "dates": {
+    "createdAt": "2026-05-13T14:05:48Z",
+    "updatedAt": "2026-05-13T14:55:14Z",
+    "pushedAt": "2026-05-13T14:05:52Z",
+    "analyzedAt": "2026-07-26T04:58:37.237Z"
+  },
+  "featured": false
+}

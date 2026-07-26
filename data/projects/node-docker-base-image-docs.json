@@ -1,0 +1,109 @@
+{
+  "slug": "node-docker-base-image-docs",
+  "repo": "node-docker-base-image-docs",
+  "title": "Node+Docker CLI 통합 베이스 이미지 정리 노트",
+  "summary": "CI에서 Node 런타임과 Docker CLI를 한 이미지에 합치는 DooD 패턴과 함정을 정리한 기술 문서",
+  "description": "CI 파이프라인의 한 단계에서 Node 애플리케이션 빌드와 Docker 이미지 빌드/push 를 동시에 수행해야 할 때 쓰이는 컴팩트한 베이스 이미지(node:alpine + docker CLI + compose)를 관찰자 시점에서 분석한 노트입니다. 세 줄짜리 Dockerfile 이 어떤 결정을 내포하는지, Docker daemon 없이 host 소켓을 공유하는 Docker-out-of-Docker(DooD) 구조가 왜 필요한지를 아키텍처 다이어그램과 함께 설명합니다. musl libc 호환성 문제, apk 캐시/레이어 관리, docker socket 권한 및 path mismatch, 보안 함의 등 실제로 이 패턴을 CI에 적용할 때 마주치는 함정과 대처법을 정리했습니다. 마지막으로 node:bullseye-slim, docker:cli+node, kaniko/buildah 같은 대안 구성과의 트레이드오프도 비교합니다.",
+  "category": "인프라",
+  "role": "CI/CD 베이스 이미지 패턴을 관찰·분석하여 아키텍처, 함정, 스택 비교를 한국어 기술 문서로 정리",
+  "techStack": [
+    {
+      "name": "Docker",
+      "category": "devops",
+      "usage": "Node 빌드 산출물을 이미지로 패키징하기 위한 CLI 실행 환경"
+    },
+    {
+      "name": "Alpine Linux",
+      "category": "infra",
+      "usage": "musl libc 기반의 경량 베이스 OS로 이미지 크기 최소화"
+    },
+    {
+      "name": "Node.js",
+      "category": "language",
+      "usage": "CI 빌드 단계에서 애플리케이션 빌드를 수행하는 런타임"
+    },
+    {
+      "name": "Docker Compose",
+      "category": "devops",
+      "usage": "docker compose 명령으로 다중 컨테이너 빌드/실행 처리"
+    },
+    {
+      "name": "Jenkins",
+      "category": "devops",
+      "usage": "Jenkinsfile의 docker agent 이미지로 이 베이스 이미지를 지정하는 CI 통합 대상"
+    },
+    {
+      "name": "GitHub Actions",
+      "category": "devops",
+      "usage": "container 키워드로 베이스 이미지를 지정하는 CI 통합 대상"
+    }
+  ],
+  "highlights": [
+    "3줄짜리 Dockerfile을 분해해 FROM/apk add/CMD 각각의 의도와 트레이드오프를 상세 분석",
+    "Docker daemon 없이 host 소켓을 bind mount 하는 DooD 패턴을 다이어그램으로 설명",
+    "musl libc 비호환으로 bcrypt·sharp·prisma 등 native 모듈이 깨지는 원인과 대처법을 정리",
+    "host docker.sock 노출이 사실상 host root 권한과 동등하다는 보안 함의를 명시",
+    "node:alpine, bullseye-slim, docker:cli, kaniko/buildah 등 대안 구성을 비교표로 정리"
+  ],
+  "challenges": [
+    {
+      "problem": "node:alpine 은 musl libc 기반이라 bcrypt, sharp, prisma 같은 glibc 전제 native 모듈 빌드가 깨질 수 있음",
+      "solution": "python3/make/g++ 를 추가 설치해 native build 환경을 제공하거나 alpine 전용 패키지 변종을 사용"
+    },
+    {
+      "problem": "컨테이너 내부 경로(예: $(pwd))로 volume 마운트를 시도해도 docker daemon 은 host 소켓을 통해 동작해 host 경로로 잘못 해석됨(path mismatch)",
+      "solution": "마운트 경로를 컨테이너 시작 시 host 경로와 동일하게 맞추거나 빌드 산출물을 named volume 으로 이동"
+    },
+    {
+      "problem": "host docker.sock 을 컨테이너에 노출하면 malicious 빌드 스크립트가 host 를 점유할 수 있는 보안 위험이 있음",
+      "solution": "신뢰 가능한 내부 코드 빌드에만 사용하고, 외부 PR 빌드는 별도 isolated runner 또는 kaniko/buildah 같은 daemon-less 빌더로 대체"
+    }
+  ],
+  "diagrams": [
+    {
+      "title": "Docker-out-of-Docker 구조",
+      "description": "CI 러너 host 의 Docker daemon 소켓을 컨테이너에 bind mount 하여, 컨테이너 안의 Node 앱과 Docker CLI 가 host daemon 을 호출하는 구조를 보여줍니다.",
+      "type": "architecture",
+      "mermaid": "flowchart TD\n  subgraph host[\"CI 러너 host\"]\n    daemon[\"Docker daemon socket\"]\n  end\n  subgraph container[\"베이스 이미지 컨테이너\"]\n    app[\"Node 앱 빌드\"]\n    cli[\"Docker CLI\"]\n    compose[\"Docker Compose\"]\n  end\n  daemon -.->|\"bind mount\"| cli\n  app --> cli\n  cli --> compose\n  cli -->|\"docker build / push\"| daemon"
+    },
+    {
+      "title": "CI 빌드-패키징 흐름",
+      "description": "하나의 컨테이너 실행 안에서 Node 빌드부터 Docker 이미지 생성까지 이어지는 단일 CI 스텝 흐름입니다.",
+      "type": "flow",
+      "mermaid": "flowchart LR\n  A[\"소스 체크아웃\"] --> B[\"npm ci\"]\n  B --> C[\"npm run build\"]\n  C --> D[\"docker build\"]\n  D --> E[\"docker push\"]"
+    }
+  ],
+  "keywords": [
+    "docker",
+    "node",
+    "ci-cd",
+    "alpine",
+    "docker-out-of-docker",
+    "docker-compose",
+    "musl",
+    "base-image",
+    "devops"
+  ],
+  "links": {
+    "repo": "https://github.com/jiyong-jeong/node-docker-base-image-docs",
+    "homepage": null
+  },
+  "metrics": {
+    "stars": 0,
+    "forks": 0,
+    "watchers": 0,
+    "sizeKb": 5,
+    "openIssues": 0,
+    "languages": {},
+    "topics": [],
+    "primaryLanguage": null,
+    "license": null
+  },
+  "dates": {
+    "createdAt": "2026-05-13T14:00:35Z",
+    "updatedAt": "2026-05-13T14:52:50Z",
+    "pushedAt": "2026-05-13T14:00:39Z",
+    "analyzedAt": "2026-07-26T04:59:04.055Z"
+  },
+  "featured": false
+}

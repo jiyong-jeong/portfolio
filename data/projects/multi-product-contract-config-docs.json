@@ -1,0 +1,114 @@
+{
+  "slug": "multi-product-contract-config-docs",
+  "repo": "multi-product-contract-config-docs",
+  "title": "멀티-프로덕트 web3 컨트랙트 설정 중앙화 패턴 노트",
+  "summary": "여러 web3 프로덕트가 공유하는 컨트랙트 ABI·네트워크·계정 설정을 한 저장소로 관리하는 패턴 정리 문서",
+  "description": "레이싱 게임, NFT 마켓플레이스, DEX 등 여러 web3 프로덕트를 운영하는 회사가 프론트엔드·백엔드·인덱서가 공통으로 참조하는 컨트랙트 ABI와 네트워크/계정 설정을 한 저장소에 모아 관리하는 패턴을 관찰자 시점에서 정리한 문서다. abi/ 디렉토리에 공통 ABI를, common/ 디렉토리에 cross-product 설정을, 프로덕트별 디렉토리에 개별 설정을 두는 구조를 제안하고, git submodule·npm package·git clone 등 클라이언트 배포 방식별 장단점을 비교한다. 또한 버전 불일치, submodule pin 문제, deprecated ABI 삭제 위험, private key 유출 등 중앙 저장소 운영 시 흔히 겪는 함정과 권장 대응을 정리했다. prettier 포맷 강제와 CI 검증(JSON/YAML 유효성 체크) 흐름도 함께 다룬다.",
+  "category": "Web3",
+  "role": "여러 web3 프로덕트 운영 경험을 바탕으로 컨트랙트 설정 중앙화 패턴, 배포 방식별 트레이드오프, 운영 함정을 조사하고 정리했다.",
+  "techStack": [
+    {
+      "name": "JSON",
+      "category": "data",
+      "usage": "컨트랙트 ABI 저장 포맷"
+    },
+    {
+      "name": "YAML",
+      "category": "data",
+      "usage": "네트워크/계정 등 cross-product 설정 저장 포맷"
+    },
+    {
+      "name": "Prettier",
+      "category": "tool",
+      "usage": "JSON/YAML/Markdown 포맷 일관성 강제"
+    },
+    {
+      "name": "Git",
+      "category": "tool",
+      "usage": "버전 관리, 태그, submodule을 통한 설정 배포"
+    },
+    {
+      "name": "npm",
+      "category": "tool",
+      "usage": "설정 저장소를 패키지로 배포해 JS/TS 클라이언트가 설치하도록 지원"
+    },
+    {
+      "name": "GitHub Actions",
+      "category": "devops",
+      "usage": "prettier --check 및 ABI/YAML 유효성 검증 CI 파이프라인"
+    },
+    {
+      "name": "Solidity ABI",
+      "category": "blockchain",
+      "usage": "컨트랙트 인터페이스 정의, 각 클라이언트가 디코딩에 사용"
+    }
+  ],
+  "highlights": [
+    "프로덕트별 디렉토리와 abi/, common/ 공통 디렉토리를 분리해 중복 없이 설정 공유",
+    "submodule, npm package, git clone+cron 등 배포 방식별 장단점을 비교 정리",
+    "ABI 삭제 대신 deprecated/ 디렉토리로 격리해 하위 호환성을 시간 축으로 분리하는 전략 제시",
+    "prettier --check와 jq/yq 유효성 검증을 CI에 강제해 포맷·구문 오류를 사전 차단",
+    "account.yaml에 주소만 두고 private key는 절대 포함하지 않는 보안 원칙 명시"
+  ],
+  "challenges": [
+    {
+      "problem": "프론트엔드, 백엔드, 인덱서가 각자 다른 시점에 새 ABI를 동기화하면서 옛 ABI 호출로 인한 디코딩 실패가 발생",
+      "solution": "semver와 CHANGELOG.md로 breaking change를 명시하고 메이저 버전 점프로 호환성 경계를 관리"
+    },
+    {
+      "problem": "클라이언트마다 submodule pin 커밋이 달라 서로 다른 ABI를 사용하는 운영 사고 발생",
+      "solution": "클라이언트 CI가 submodule 커밋 해시를 출력하고 운영 환경 간 일치 여부를 검증하도록 권장"
+    },
+    {
+      "problem": "common/ 설정과 프로덕트별 설정의 경계가 모호해지면 공통 계정 설정이 비대해지거나 중복됨",
+      "solution": "common은 진짜 cross-product인 것만 두고 나머지는 각 프로덕트 디렉토리에 두도록 원칙 수립"
+    }
+  ],
+  "diagrams": [
+    {
+      "title": "중앙 설정 저장소 디렉토리 구조",
+      "description": "abi/, common/, 프로덕트별 디렉토리로 구성된 설정 저장소의 전체 구조를 보여준다.",
+      "type": "architecture",
+      "mermaid": "flowchart TD\n  Repo[\"config-repo\"] --> Abi[\"abi/ 공통 ABI\"]\n  Repo --> Common[\"common/ networks, account\"]\n  Repo --> ProductA[\"product-A/ 게임 설정\"]\n  Repo --> ProductB[\"product-B/ 마켓플레이스 설정\"]\n  Repo --> ProductC[\"product-C/ DEX 설정\"]\n  Abi --> Frontend[\"프론트엔드\"]\n  Abi --> Backend[\"백엔드 API\"]\n  Abi --> Indexer[\"인덱서\"]\n  Common --> Frontend\n  Common --> Backend\n  Common --> Indexer"
+    },
+    {
+      "title": "ABI 변경 및 배포 흐름",
+      "description": "새 컨트랙트 배포 후 ABI가 설정 저장소에 반영되어 클라이언트에 전파되는 과정을 보여준다.",
+      "type": "flow",
+      "mermaid": "flowchart LR\n  Deploy[\"컨트랙트 배포\"] --> NewAbi[\"새 ABI 파일 생성\"]\n  NewAbi --> PR[\"config-repo PR\"]\n  PR --> Check[\"prettier check 및 리뷰\"]\n  Check --> Merge[\"merge 및 태그 발행\"]\n  Merge --> Client[\"클라이언트 submodule update 또는 버전 bump\"]"
+    }
+  ],
+  "keywords": [
+    "web3",
+    "smart-contract",
+    "abi",
+    "config-repository",
+    "submodule",
+    "npm-package",
+    "prettier",
+    "multi-product",
+    "devops"
+  ],
+  "links": {
+    "repo": "https://github.com/jiyong-jeong/multi-product-contract-config-docs",
+    "homepage": null
+  },
+  "metrics": {
+    "stars": 0,
+    "forks": 0,
+    "watchers": 0,
+    "sizeKb": 5,
+    "openIssues": 0,
+    "languages": {},
+    "topics": [],
+    "primaryLanguage": null,
+    "license": null
+  },
+  "dates": {
+    "createdAt": "2026-05-13T21:07:01Z",
+    "updatedAt": "2026-05-13T21:07:09Z",
+    "pushedAt": "2026-05-13T21:07:05Z",
+    "analyzedAt": "2026-07-26T04:54:49.184Z"
+  },
+  "featured": false
+}

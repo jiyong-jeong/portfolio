@@ -1,0 +1,28 @@
+{
+  "owner": "jiyong-jeong",
+  "selfRepo": "portfolio",
+  "siteUrl": "https://jiyong-jeong.github.io/portfolio",
+  "basePath": "/portfolio",
+  "exclude": [],
+  "includeForks": false,
+  "includeArchived": true,
+  "analysis": {
+    "model": "sonnet",
+    "maxReadmeChars": 24000,
+    "maxDocChars": 6000,
+    "maxDocFiles": 6,
+    "maxManifestChars": 4000,
+    "maxTreeEntries": 250,
+    "timeoutMs": 300000,
+    "maxAttempts": 2
+  },
+  "profile": {
+    "name": "정지용",
+    "role": "Backend / Infra Engineer",
+    "tagline": "백엔드 API, GitOps 기반 쿠버네티스 운영, Web3 컨트랙트까지 — 서비스가 돌아가게 만드는 일을 합니다.",
+    "bio": "온라인 레이싱 플랫폼과 NFT 프로젝트의 백엔드·워커·배포 파이프라인을 만들고 운영해 왔습니다. ArgoCD·Kustomize·Jenkins 기반 GitOps 배포, PostgreSQL Listen/Notify 이벤트 처리, 스마트 컨트랙트 연동 등 서비스의 뒷단을 주로 담당합니다.",
+    "email": "jjy900521@gmail.com",
+    "github": "https://github.com/jiyong-jeong",
+    "location": "Seoul, Korea"
+  }
+}

@@ -1,0 +1,125 @@
+{
+  "slug": "examples-docs",
+  "repo": "examples-docs",
+  "title": "Refine 해커톤 + Node web3 학습 노트 모음",
+  "summary": "Refine.dev 해커톤 데모 5종과 Node 암호/web3 실험을 한 디렉토리에 모아 구조와 함정을 정리한 학습 컬렉션",
+  "description": "Refine.dev 프레임워크의 해커톤/데모 예제 5종(hackathonize, job-posting-app, real-time-cursors, refeedback, refineflix)과 Node.js 환경에서 crypto·web3.js를 다루는 실험 코드를 한 저장소에 병렬로 모아둔 학습용 컬렉션이다. 각 서브프로젝트는 workspace 없이 독립된 package.json을 갖는 단순 병렬 구조이며, 코드 자체는 node_modules를 포함해 1.7GB에 달해 원본 보관 대상에서 제외하고 디렉토리 구조와 메타데이터에서 도출한 관찰만 문서로 남겼다. 문서는 Refine의 dataProvider/authProvider/liveProvider 공통 패턴, Node 버전에 따른 crypto API 변화, web3.js 메이저 버전 간 호환성 문제 등을 관찰자 시점으로 정리한다. 결과적으로 코드보다는 여러 학습 자료를 관리할 때 마주치는 구조적 함정과 교훈에 초점을 맞춘 메타 문서 성격의 저장소다.",
+  "category": "학습",
+  "role": "여러 학습 데모를 하나의 컬렉션으로 정리하고, 코드 대신 구조·의존성·함정을 관찰해 문서화하는 역할을 맡았다.",
+  "techStack": [
+    {
+      "name": "Node.js",
+      "category": "language",
+      "usage": "crypto/web3 실험과 각 Refine 데모의 실행 런타임"
+    },
+    {
+      "name": "web3.js",
+      "category": "blockchain",
+      "usage": "이더리움 RPC 호출, 트랜잭션 서명, ABI 인코딩 실습"
+    },
+    {
+      "name": "Refine.dev",
+      "category": "framework",
+      "usage": "해커톤용 admin/CRUD 데모 5종의 기반 프레임워크"
+    },
+    {
+      "name": "React",
+      "category": "frontend",
+      "usage": "Refine 데모들의 UI 렌더링 계층"
+    },
+    {
+      "name": "TypeScript",
+      "category": "language",
+      "usage": "대부분의 Refine 템플릿 기본 언어"
+    },
+    {
+      "name": "Vite",
+      "category": "tool",
+      "usage": "일부 Refine 데모의 개발 서버/빌드 도구"
+    },
+    {
+      "name": "Next.js",
+      "category": "framework",
+      "usage": "일부 Refine 데모에서 사용하는 대체 빌드 프레임워크"
+    },
+    {
+      "name": "Supabase",
+      "category": "backend",
+      "usage": "일부 데모의 dataProvider 및 실시간(liveProvider) 백엔드"
+    },
+    {
+      "name": "Ant Design",
+      "category": "frontend",
+      "usage": "일부 데모에서 선택한 UI 컴포넌트 라이브러리"
+    }
+  ],
+  "highlights": [
+    "Node 암호/web3 실험과 Refine 해커톤 데모 5종을 하나의 디렉토리에 병렬로 정리",
+    "workspace 없이 각 서브프로젝트가 독립 package.json 을 갖는 단순 병렬 구조",
+    "Refine 공통 아키텍처(dataProvider/authProvider/liveProvider)를 관찰 기반으로 문서화",
+    "node_modules 만 1GB+ 를 차지하는 의존성 폭주 구조를 교훈으로 정리",
+    "코드는 용량 제약으로 제외하고 구조·메타데이터 관찰만 남긴 메타 문서 저장소"
+  ],
+  "challenges": [
+    {
+      "problem": "각 데모의 node_modules 총합이 1.7GB에 달해 저장소 용량 제약을 초과함",
+      "solution": "코드 원본은 보관 대상에서 제외하고 디렉토리 구조와 메타데이터에서 도출 가능한 관찰만 문서로 남김"
+    },
+    {
+      "problem": "Refine dataProvider 인터페이스가 REST/GraphQL/Supabase/Strapi 등 어댑터마다 형식이 미세하게 달라 데모 간 코드 이식이 잘 깨짐",
+      "solution": "provider 계층만 교체하면 백엔드가 바뀌어도 동작하는 추상화 패턴을 정리해 재사용 시 참고하도록 문서화"
+    },
+    {
+      "problem": "Node 18+ 에서 crypto API 변경과 web3.js v1/v4 간 시그니처 차이로 학습 자료가 쉽게 깨짐",
+      "solution": "가급적 Node built-in crypto 사용을 권장하고 Node/web3 버전 매트릭스를 LESSONS.md에 기록해 참고하게 함"
+    }
+  ],
+  "diagrams": [
+    {
+      "title": "컬렉션 전체 구조",
+      "description": "node_lab 과 refine 두 갈래 아래 각 실험/데모가 어떻게 병렬로 배치되어 있는지 보여준다.",
+      "type": "architecture",
+      "mermaid": "flowchart TD\n  A[\"examples-docs 컬렉션\"] --> B[\"node_lab\"]\n  A --> C[\"refine\"]\n  B --> B1[\"crypto openssl web3 실험\"]\n  C --> C1[\"hackathonize\"]\n  C --> C2[\"job-posting-app\"]\n  C --> C3[\"real-time-cursors\"]\n  C --> C4[\"refeedback\"]\n  C --> C5[\"refineflix\"]"
+    },
+    {
+      "title": "Refine 공통 provider 구조",
+      "description": "Refine 데모들이 공통으로 갖는 provider 계층과 각 provider 가 연결되는 외부 백엔드/서비스를 보여준다.",
+      "type": "flow",
+      "mermaid": "flowchart TD\n  R[\"Refine 컴포넌트\"] --> D[\"dataProvider\"]\n  R --> AU[\"authProvider\"]\n  R --> L[\"liveProvider\"]\n  R --> N[\"notificationProvider\"]\n  R --> RT[\"routerProvider\"]\n  D --> BE[\"REST GraphQL Supabase Strapi 백엔드\"]\n  L --> WS[\"WebSocket 실시간 서비스\"]"
+    }
+  ],
+  "keywords": [
+    "refine",
+    "refine.dev",
+    "hackathon",
+    "nodejs",
+    "web3",
+    "crypto",
+    "react",
+    "typescript",
+    "dataprovider",
+    "learning-notes"
+  ],
+  "links": {
+    "repo": "https://github.com/jiyong-jeong/examples-docs",
+    "homepage": null
+  },
+  "metrics": {
+    "stars": 0,
+    "forks": 0,
+    "watchers": 0,
+    "sizeKb": 5,
+    "openIssues": 0,
+    "languages": {},
+    "topics": [],
+    "primaryLanguage": null,
+    "license": null
+  },
+  "dates": {
+    "createdAt": "2026-05-13T13:49:01Z",
+    "updatedAt": "2026-05-13T14:12:31Z",
+    "pushedAt": "2026-05-13T13:49:05Z",
+    "analyzedAt": "2026-07-26T05:00:23.866Z"
+  },
+  "featured": false
+}

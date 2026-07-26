@@ -1,0 +1,114 @@
+{
+  "version": 1,
+  "lastRunAt": "2026-07-26T05:02:26.405Z",
+  "repos": {
+    "jira_auto_pilot": {
+      "pushedAt": "2026-07-22T01:52:57Z",
+      "analyzedAt": "2026-07-26T04:53:57.541Z",
+      "status": "ok",
+      "failures": 0
+    },
+    "racing-platform-backend-api-argocd-deploy-docs": {
+      "pushedAt": "2026-05-13T21:07:56Z",
+      "analyzedAt": "2026-07-26T04:54:22.372Z",
+      "status": "ok",
+      "failures": 0
+    },
+    "multi-product-contract-config-docs": {
+      "pushedAt": "2026-05-13T21:07:05Z",
+      "analyzedAt": "2026-07-26T04:54:49.184Z",
+      "status": "ok",
+      "failures": 0
+    },
+    "upbit-altcoin-trading-bot-docs": {
+      "pushedAt": "2026-05-13T21:04:39Z",
+      "analyzedAt": "2026-07-26T04:55:17.661Z",
+      "status": "ok",
+      "failures": 0
+    },
+    "racing-platform-backend-worker-argocd-deploy-docs": {
+      "pushedAt": "2026-05-13T21:01:17Z",
+      "analyzedAt": "2026-07-26T04:55:42.116Z",
+      "status": "ok",
+      "failures": 0
+    },
+    "nft-launchpad-admin-frontend-argocd-deploy-docs": {
+      "pushedAt": "2026-05-13T20:59:20Z",
+      "analyzedAt": "2026-07-26T04:56:10.435Z",
+      "status": "ok",
+      "failures": 0
+    },
+    "nft-project-backend-argocd-deploy-docs": {
+      "pushedAt": "2026-05-13T20:56:51Z",
+      "analyzedAt": "2026-07-26T04:56:33.106Z",
+      "status": "ok",
+      "failures": 0
+    },
+    "event-listener-argocd-deploy-docs": {
+      "pushedAt": "2026-05-13T20:54:48Z",
+      "analyzedAt": "2026-07-26T04:56:57.587Z",
+      "status": "ok",
+      "failures": 0
+    },
+    "postgres-listen-notify-argocd-deploy-docs": {
+      "pushedAt": "2026-05-13T20:52:49Z",
+      "analyzedAt": "2026-07-26T04:57:24.540Z",
+      "status": "ok",
+      "failures": 0
+    },
+    "nft-utility-collection-docs": {
+      "pushedAt": "2026-05-13T20:50:15Z",
+      "analyzedAt": "2026-07-26T04:58:13.476Z",
+      "status": "ok",
+      "failures": 0
+    },
+    "nft-marketplace-analytics-queries-docs": {
+      "pushedAt": "2026-05-13T14:05:52Z",
+      "analyzedAt": "2026-07-26T04:58:37.237Z",
+      "status": "ok",
+      "failures": 0
+    },
+    "node-docker-base-image-docs": {
+      "pushedAt": "2026-05-13T14:00:39Z",
+      "analyzedAt": "2026-07-26T04:59:04.055Z",
+      "status": "ok",
+      "failures": 0
+    },
+    "stable-diffusion-webui-docs": {
+      "pushedAt": "2026-05-13T13:51:16Z",
+      "analyzedAt": "2026-07-26T04:59:45.083Z",
+      "status": "ok",
+      "failures": 0
+    },
+    "examples-docs": {
+      "pushedAt": "2026-05-13T13:49:05Z",
+      "analyzedAt": "2026-07-26T05:00:23.866Z",
+      "status": "ok",
+      "failures": 0
+    },
+    "argo-test-docs": {
+      "pushedAt": "2026-05-13T13:46:45Z",
+      "analyzedAt": "2026-07-26T05:00:45.494Z",
+      "status": "ok",
+      "failures": 0
+    },
+    "study-docs": {
+      "pushedAt": "2026-05-13T13:44:37Z",
+      "analyzedAt": "2026-07-26T05:01:20.645Z",
+      "status": "ok",
+      "failures": 0
+    },
+    "0xmonaco-docs": {
+      "pushedAt": "2026-05-13T13:29:41Z",
+      "analyzedAt": "2026-07-26T05:01:52.838Z",
+      "status": "ok",
+      "failures": 0
+    },
+    "damagochi-docs": {
+      "pushedAt": "2026-05-09T10:44:21Z",
+      "analyzedAt": "2026-07-26T05:02:26.404Z",
+      "status": "ok",
+      "failures": 0
+    }
+  }
+}

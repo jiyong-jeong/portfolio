@@ -1,0 +1,109 @@
+{
+  "slug": "study-docs",
+  "repo": "study-docs",
+  "title": "Hardhat 학습 환경 정리 노트",
+  "summary": "CryptoZombies/Hardhat 샘플을 관찰자 시점으로 분석해 표준 셋업과 흔한 함정을 정리한 학습 문서",
+  "description": "Solidity/Hardhat 입문 단계에서 흔히 쓰이는 CryptoZombies + Hardhat 샘플 프로젝트를 관찰자 시점으로 분석한 학습 노트 레포지토리입니다. 코드 자체보다는 TypeScript 기반 hardhat.config.ts 설정, contracts/scripts/test 표준 디렉토리 구조, .gitignore 관리 패턴 등 해당 도메인에서 반복적으로 나타나는 셋업 방식에 초점을 맞췄습니다. 컴파일부터 배포, 콘솔 호출, 테스트까지 이어지는 Hardhat 워크플로우를 아키텍처 문서로 정리했고, .env 관리 실수·node_modules 폭주·typechain 산출물 커밋·Solidity 버전 불일치 같은 자주 발생하는 함정을 별도로 기록했습니다. 실제 프로덕션 코드가 아니라 학습 자료를 대상으로 한 문서화이며, README/ARCHITECTURE/LESSONS/STACK 4개 문서로 구성되어 있습니다.",
+  "category": "학습",
+  "role": "CryptoZombies/Hardhat 학습 샘플을 관찰자 시점으로 분석해 아키텍처와 흔한 함정을 한국어 문서로 정리했습니다.",
+  "techStack": [
+    {
+      "name": "Hardhat",
+      "category": "framework",
+      "usage": "Solidity 컴파일, 로컬 체인 실행, 테스트, 배포를 통합 관리"
+    },
+    {
+      "name": "Solidity",
+      "category": "language",
+      "usage": "스마트 컨트랙트 소스 작성 언어"
+    },
+    {
+      "name": "TypeScript",
+      "category": "language",
+      "usage": "hardhat.config.ts 및 배포/테스트 스크립트 작성"
+    },
+    {
+      "name": "ethers.js",
+      "category": "blockchain",
+      "usage": "RPC 호출 및 트랜잭션 서명, 컨트랙트와의 상호작용"
+    },
+    {
+      "name": "typechain",
+      "category": "tool",
+      "usage": "Solidity ABI를 TypeScript 타입으로 변환"
+    },
+    {
+      "name": "OpenZeppelin",
+      "category": "blockchain",
+      "usage": "ERC20/ERC721/Ownable 등 표준 컨트랙트 구현체 참조"
+    }
+  ],
+  "highlights": [
+    "hardhat.config.ts 기반 TypeScript 설정과 표준 contracts/scripts/test 트리를 정리",
+    "compile → artifacts/cache/typechain → test/scripts로 이어지는 빌드 흐름을 문서화",
+    ".env, node_modules, 컴파일 산출물 등 커밋 시 자주 누락되는 .gitignore 패턴을 점검",
+    "환경변수 단언(!) 사용 시 발생하는 NaN/invalid hex 에러 등 학습 단계 흔한 함정을 기록",
+    "Hardhat 대비 Foundry, Truffle 등 대안 도구와의 비교 관점을 정리"
+  ],
+  "challenges": [
+    {
+      "problem": "hardhat.config.ts에서 process.env.PRIVATE_KEY! 처럼 단언을 사용하면 .env 누락 시 undefined가 그대로 전달되어 ethers가 NaN/invalid hex 에러를 던짐",
+      "solution": "단언 대신 명시적 fallback을 두거나 dotenv의 config({ path }) 명시를 권장하는 방식으로 정리"
+    },
+    {
+      "problem": "hardhat.config.ts의 solidity.version과 컨트랙트 상단 pragma 버전이 어긋나면 컴파일이 실패함",
+      "solution": "학습 자료를 따라할 때 config와 pragma 버전을 맞춰야 한다는 점을 문서로 명시"
+    },
+    {
+      "problem": "artifacts, cache, typechain-types 같은 컴파일 산출물이 .gitignore에서 빠지면 repo가 빠르게 거대해지고 ABI 변경마다 큰 diff가 발생",
+      "solution": "컴파일 산출물은 절대 커밋하지 않고 .gitignore에 포함하는 것을 원칙으로 정리"
+    }
+  ],
+  "diagrams": [
+    {
+      "title": "Hardhat 빌드 흐름",
+      "description": "contracts 소스가 compile을 거쳐 artifacts/cache/typechain으로 산출되고, 이를 test와 scripts가 사용하는 전체 흐름을 보여줍니다.",
+      "type": "architecture",
+      "mermaid": "flowchart TD\n  A[\"contracts/*.sol\"] --> B[\"hardhat compile\"]\n  B --> C[\"artifacts (ABI+bytecode)\"]\n  B --> D[\"cache\"]\n  B --> E[\"typechain-types\"]\n  C --> F[\"test/*.ts\"]\n  E --> F\n  F --> G[\"hardhat test\"]\n  A --> H[\"scripts/*.ts\"]\n  H --> I[\"hardhat run --network\"]"
+    },
+    {
+      "title": "학습 진행 시 일반적 흐름",
+      "description": "로컬 체인 기동부터 배포, 콘솔 호출, 테스트까지 개발자가 Hardhat을 다루는 순서를 나타냅니다.",
+      "type": "sequence",
+      "mermaid": "sequenceDiagram\n  participant Dev\n  participant Hardhat\n  participant Chain as \"Local Chain\"\n  Dev->>Hardhat: hardhat node\n  Hardhat->>Chain: 로컬 체인 기동\n  Dev->>Hardhat: hardhat run scripts deploy.ts\n  Hardhat->>Chain: 컨트랙트 배포\n  Dev->>Hardhat: hardhat console\n  Hardhat->>Chain: ethers 호출\n  Dev->>Hardhat: hardhat test\n  Hardhat->>Chain: 회귀 테스트 실행"
+    }
+  ],
+  "keywords": [
+    "hardhat",
+    "solidity",
+    "ethers",
+    "typechain",
+    "openzeppelin",
+    "web3",
+    "smart-contract",
+    "typescript",
+    "cryptozombies"
+  ],
+  "links": {
+    "repo": "https://github.com/jiyong-jeong/study-docs",
+    "homepage": null
+  },
+  "metrics": {
+    "stars": 0,
+    "forks": 0,
+    "watchers": 0,
+    "sizeKb": 4,
+    "openIssues": 0,
+    "languages": {},
+    "topics": [],
+    "primaryLanguage": null,
+    "license": null
+  },
+  "dates": {
+    "createdAt": "2026-05-13T13:44:33Z",
+    "updatedAt": "2026-05-13T14:03:46Z",
+    "pushedAt": "2026-05-13T13:44:37Z",
+    "analyzedAt": "2026-07-26T05:01:20.645Z"
+  },
+  "featured": false
+}

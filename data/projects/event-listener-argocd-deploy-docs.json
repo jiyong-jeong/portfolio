@@ -1,0 +1,110 @@
+{
+  "slug": "event-listener-argocd-deploy-docs",
+  "repo": "event-listener-argocd-deploy-docs",
+  "title": "이벤트 리스너 워커 GitOps 배포 노트",
+  "summary": "블록체인/webhook 이벤트 리스너 워커를 ArgoCD+Kustomize로 배포할 때의 패턴과 함정을 정리한 기술 문서",
+  "description": "블록체인 이벤트나 외부 webhook을 수신·처리하는 listener 백엔드 워커를 Kubernetes에 GitOps 방식으로 배포하는 패턴을 정리한 문서 레포지토리다. dev/qa/prod 세 환경을 Kustomize overlay로 분리하고, Jenkins가 이미지 태그를 갱신하면 ArgoCD가 reconcile 하는 파이프라인을 관찰자 시점에서 기록했다. stateless처럼 보이지만 실제로는 처리한 이벤트의 offset/cursor 관리가 핵심이라는 점, 중복 처리를 막기 위한 replicas 및 배포 전략, graceful shutdown과 offset commit 타이밍의 관계 등 listener 워크로드 특유의 이슈를 다룬다. 공통 GitOps/Kustomize 패턴은 sibling 레포인 postgres-listen-notify-argocd-deploy-docs를 참조하도록 구성해, 이 문서는 listener 워크로드에 특화된 내용에 집중한다.",
+  "category": "인프라",
+  "role": "listener 워크로드의 GitOps k8s 배포 운영을 관찰하고, 아키텍처/함정/스택을 문서로 정리",
+  "techStack": [
+    {
+      "name": "Kubernetes",
+      "category": "infra",
+      "usage": "listener 워커 Pod 배포 및 오케스트레이션"
+    },
+    {
+      "name": "ArgoCD",
+      "category": "devops",
+      "usage": "GitOps 방식으로 이미지 태그 변경을 reconcile하여 배포"
+    },
+    {
+      "name": "Kustomize",
+      "category": "devops",
+      "usage": "dev/qa/prod 환경별 base/overlay 구성 분리"
+    },
+    {
+      "name": "Jenkins",
+      "category": "devops",
+      "usage": "이미지 빌드 후 태그를 갱신해 git push하는 CI 역할"
+    },
+    {
+      "name": "PostgreSQL",
+      "category": "database",
+      "usage": "이벤트 처리 offset/cursor 영속 저장소 옵션"
+    },
+    {
+      "name": "Redis",
+      "category": "database",
+      "usage": "빠른 offset 저장 및 Redlock 기반 leader election 옵션"
+    },
+    {
+      "name": "Prometheus",
+      "category": "devops",
+      "usage": "event_lag_seconds 등 listener 운영 지표 모니터링"
+    }
+  ],
+  "highlights": [
+    "listener는 stateless처럼 보이지만 offset/cursor lifecycle 관리가 신뢰성의 핵심임을 정리",
+    "RollingUpdate가 중복 이벤트 처리를 유발할 수 있어 Recreate 또는 leader election을 권장",
+    "at-least-once 처리 전제 하에 idempotency key 기반 중복 방지 패턴을 문서화",
+    "ingress 유무를 webhook 수신 여부에 따라 환경별로 분기하는 패턴 정리",
+    "event_lag_seconds를 핵심 지표로 삼는 모니터링 및 alert 설계 가이드 제공"
+  ],
+  "challenges": [
+    {
+      "problem": "ArgoCD sync 시 SIGTERM으로 인해 offset 커밋 전에 pod가 종료되면 다음 pod에서 이벤트가 재처리됨",
+      "solution": "terminationGracePeriodSeconds를 120초 수준으로 늘려 graceful shutdown 시간을 확보"
+    },
+    {
+      "problem": "RollingUpdate 전략에서 신규 pod와 기존 pod가 동시에 같은 이벤트를 처리해 중복 부작용 발생",
+      "solution": "strategy.type을 Recreate로 설정하거나 k8s Lease 기반 leader election 도입"
+    }
+  ],
+  "diagrams": [
+    {
+      "title": "Listener 워커 GitOps 배포 아키텍처",
+      "description": "외부 이벤트 소스부터 listener Pod, offset 저장소, 그리고 Jenkins-ArgoCD GitOps 파이프라인까지의 전체 흐름을 보여준다.",
+      "type": "architecture",
+      "mermaid": "flowchart TD\n  SRC[\"이벤트 소스 (RPC/Kafka/SQS/webhook)\"] --> POD[\"Listener Pod\"]\n  POD --> STORE[\"Offset 저장소 (PostgreSQL/Redis)\"]\n  STORE --> POD\n  JENKINS[\"Jenkins CI\"] -->|이미지 태그 갱신 git push| GIT[\"Git 레포\"]\n  GIT --> ARGOCD[\"ArgoCD\"]\n  ARGOCD -->|reconcile| POD\n  subgraph ENV[\"환경 overlay\"]\n    DEV[\"dev\"]\n    QA[\"qa\"]\n    PROD[\"prod\"]\n  end\n  ARGOCD --> ENV"
+    },
+    {
+      "title": "이벤트 처리 및 offset commit 타이밍",
+      "description": "이벤트 처리와 offset commit 순서에 따라 at-least-once/at-most-once가 갈리는 흐름을 나타낸다.",
+      "type": "flow",
+      "mermaid": "flowchart LR\n  POLL[\"이벤트 polling\"] --> PROCESS[\"이벤트 처리\"]\n  PROCESS --> COMMIT[\"offset commit\"]\n  COMMIT --> POLL\n  PROCESS -.->|처리 중 crash| RETRY[\"재처리 가능 idempotent 필요\"]\n  COMMIT -.->|commit 중 crash| RETRY"
+    }
+  ],
+  "keywords": [
+    "kubernetes",
+    "argocd",
+    "kustomize",
+    "gitops",
+    "event-listener",
+    "jenkins",
+    "offset-management",
+    "idempotency",
+    "leader-election"
+  ],
+  "links": {
+    "repo": "https://github.com/jiyong-jeong/event-listener-argocd-deploy-docs",
+    "homepage": null
+  },
+  "metrics": {
+    "stars": 0,
+    "forks": 0,
+    "watchers": 0,
+    "sizeKb": 5,
+    "openIssues": 0,
+    "languages": {},
+    "topics": [],
+    "primaryLanguage": null,
+    "license": null
+  },
+  "dates": {
+    "createdAt": "2026-05-13T20:54:45Z",
+    "updatedAt": "2026-05-13T20:54:53Z",
+    "pushedAt": "2026-05-13T20:54:48Z",
+    "analyzedAt": "2026-07-26T04:56:57.587Z"
+  },
+  "featured": false
+}

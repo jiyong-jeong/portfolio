@@ -1,0 +1,125 @@
+{
+  "slug": "racing-platform-backend-worker-argocd-deploy-docs",
+  "repo": "racing-platform-backend-worker-argocd-deploy-docs",
+  "title": "온라인 레이싱 게임 비동기 워커 GitOps 배포 노트",
+  "summary": "레이싱 게임 점수 정산·보상·알림을 처리하는 백엔드 워커의 ArgoCD+Kustomize 배포 관찰 문서",
+  "description": "온라인 레이싱 게임 서비스에서 점수 정산, 정기 보상 지급, 알림 발송 등 비실시간 작업을 처리하는 백엔드 워커를 Kubernetes에 GitOps 방식으로 배포하기 위한 노트입니다. 워커는 ingress 없이 outbound only로 동작하며, 작업 큐(Redis/SQS/Kafka)를 소비하거나 cron 스케줄로 실행되는 구조를 정리했습니다. 보상 중복 지급 방지를 위한 idempotency 가드, 랭킹 계산 시 race condition 대응, 대규모 알림 발송 시 rate limit 문제 등 게임 도메인 특화 함정과 해결 방향을 다룹니다. dev/qa/prod overlay 구성과 API 서버 대비 워커의 프로브·리소스·롤링업데이트 차이점도 함께 정리되어 있습니다.",
+  "category": "인프라",
+  "role": "동일 백엔드의 API 서버 배포 구성을 관찰하며, 워커 워크로드 특성에 맞는 GitOps 배포 패턴과 게임 도메인 운영 함정을 문서화",
+  "techStack": [
+    {
+      "name": "Kubernetes",
+      "category": "infra",
+      "usage": "워커 파드 배포 및 오케스트레이션 대상 플랫폼"
+    },
+    {
+      "name": "ArgoCD",
+      "category": "devops",
+      "usage": "GitOps 기반 k8s 배포 자동화"
+    },
+    {
+      "name": "Kustomize",
+      "category": "devops",
+      "usage": "dev/qa/prod overlay 구성 관리"
+    },
+    {
+      "name": "Jenkins",
+      "category": "devops",
+      "usage": "CI 파이프라인 구성"
+    },
+    {
+      "name": "Redis",
+      "category": "database",
+      "usage": "BullMQ/Bee-Queue 기반 작업 큐 및 랭킹 sorted set"
+    },
+    {
+      "name": "PostgreSQL",
+      "category": "database",
+      "usage": "점수/보상 결과 반영 및 UNIQUE 제약을 통한 중복 지급 방지"
+    },
+    {
+      "name": "AWS SQS",
+      "category": "infra",
+      "usage": "매니지드 작업 큐 대안 옵션"
+    },
+    {
+      "name": "Kafka",
+      "category": "infra",
+      "usage": "대량 처리용 큐 대안 옵션"
+    },
+    {
+      "name": "Prometheus",
+      "category": "devops",
+      "usage": "워커 큐 lag, 작업 처리량 모니터링"
+    }
+  ],
+  "highlights": [
+    "ingress 없는 outbound-only 워커 구조와 API 서버 대비 프로브/리소스 차이를 정리",
+    "보상 중복 지급 방지를 위한 (user_id, reward_period_id) UNIQUE 제약 기반 idempotent 설계",
+    "랭킹 갱신 race condition을 큐 partition 또는 SERIALIZABLE 트랜잭션으로 방지하는 전략 제시",
+    "대규모 알림 발송 시 FCM/SES rate limit 대응을 위한 batch + exponential backoff 권장",
+    "worker_job_processed_total, worker_lag_seconds 등 워커 특화 모니터링 지표 정의"
+  ],
+  "challenges": [
+    {
+      "problem": "정기 보상 워커가 작업을 중복 처리하면 사용자가 보상을 두 번 받는 문제",
+      "solution": "(user_id, reward_period_id) UNIQUE 제약으로 DB 차원에서 중복을 방지하고 워커는 idempotent insert만 시도"
+    },
+    {
+      "problem": "동시에 들어오는 경기 결과로 두 워커가 같은 ranking 테이블을 동시에 업데이트하는 write skew",
+      "solution": "작업 큐를 user/match 단위로 partition하거나 SERIALIZABLE 트랜잭션 + retry 적용"
+    },
+    {
+      "problem": "전체 사용자 대상 보상 발송 시 FCM/SES 호출이 폭주해 rate limit과 비용 문제 발생",
+      "solution": "batch send와 exponential backoff, 시간 분할 발송으로 부하 분산"
+    }
+  ],
+  "diagrams": [
+    {
+      "title": "워커 워크로드 아키텍처",
+      "description": "비실시간 작업 트리거부터 워커 처리, 외부 시스템 반영까지의 전체 흐름을 보여줍니다.",
+      "type": "architecture",
+      "mermaid": "flowchart TD\n  A[\"사용자 액션 / 스케줄러 / Webhook\"] --> B[\"작업 큐\"]\n  B --> C[\"Backend Worker Pod\"]\n  C --> D[\"PostgreSQL\"]\n  C --> E[\"Redis\"]\n  C --> F[\"외부 알림 API FCM SES\"]\n  G[\"Jenkins\"] --> H[\"ArgoCD\"]\n  H --> C"
+    },
+    {
+      "title": "보상 지급 idempotency 흐름",
+      "description": "중복 보상 지급을 방지하기 위한 idempotent insert 처리 흐름입니다.",
+      "type": "flow",
+      "mermaid": "flowchart LR\n  A[\"보상 작업 큐 소비\"] --> B[\"워커가 지급 시도\"]\n  B --> C[\"UNIQUE user_id reward_period_id 제약 확인\"]\n  C -->|\"신규\"| D[\"보상 지급 완료\"]\n  C -->|\"중복\"| E[\"conflict 무시\"]"
+    }
+  ],
+  "keywords": [
+    "kubernetes",
+    "argocd",
+    "kustomize",
+    "gitops",
+    "worker",
+    "game-backend",
+    "idempotency",
+    "queue",
+    "ranking",
+    "notification"
+  ],
+  "links": {
+    "repo": "https://github.com/jiyong-jeong/racing-platform-backend-worker-argocd-deploy-docs",
+    "homepage": null
+  },
+  "metrics": {
+    "stars": 0,
+    "forks": 0,
+    "watchers": 0,
+    "sizeKb": 4,
+    "openIssues": 0,
+    "languages": {},
+    "topics": [],
+    "primaryLanguage": null,
+    "license": null
+  },
+  "dates": {
+    "createdAt": "2026-05-13T21:01:13Z",
+    "updatedAt": "2026-05-13T21:01:21Z",
+    "pushedAt": "2026-05-13T21:01:17Z",
+    "analyzedAt": "2026-07-26T04:55:42.116Z"
+  },
+  "featured": false
+}

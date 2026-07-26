@@ -1,26 +1,113 @@
 @import "tailwindcss";
 
+/* 클래스 기반 다크모드 (html.dark). ThemeToggle 이 토글한다. */
+@custom-variant dark (&:where(.dark, .dark *));
+
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  --bg: #fbfcfd;
+  --bg-elevated: #ffffff;
+  --bg-subtle: #f2f4f8;
+  --border: #e2e7ee;
+  --border-strong: #cbd3df;
+  --text: #12151c;
+  --text-muted: #5b6677;
+  --text-faint: #8792a4;
+  --accent: #2563eb;
+  --accent-soft: #dbe6ff;
+  --accent-2: #0f9d58;
+}
+
+.dark {
+  --bg: #0a0c10;
+  --bg-elevated: #12151d;
+  --bg-subtle: #171b25;
+  --border: #232936;
+  --border-strong: #333b4d;
+  --text: #e7eaf0;
+  --text-muted: #97a1b4;
+  --text-faint: #6b7688;
+  --accent: #7aa2ff;
+  --accent-soft: #1c2740;
+  --accent-2: #6ee7a8;
 }
 
 @theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
+  --color-bg: var(--bg);
+  --color-elevated: var(--bg-elevated);
+  --color-subtle: var(--bg-subtle);
+  --color-line: var(--border);
+  --color-line-strong: var(--border-strong);
+  --color-ink: var(--text);
+  --color-muted: var(--text-muted);
+  --color-faint: var(--text-faint);
+  --color-accent: var(--accent);
+  --color-accent-soft: var(--accent-soft);
+  --color-accent-2: var(--accent-2);
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
+@layer base {
+  html {
+    color-scheme: light;
+  }
+
+  html.dark {
+    color-scheme: dark;
+  }
+
+  body {
+    background-color: var(--bg);
+    color: var(--text);
+    font-family:
+      "Pretendard Variable", Pretendard, -apple-system, BlinkMacSystemFont, "Apple SD Gothic Neo",
+      "Segoe UI", "Noto Sans KR", "Malgun Gothic", system-ui, sans-serif;
+    -webkit-font-smoothing: antialiased;
+    text-rendering: optimizeLegibility;
+    word-break: keep-all;
+    overflow-wrap: break-word;
+  }
+
+  code,
+  pre {
+    font-family:
+      ui-monospace, SFMono-Regular, "SF Mono", Menlo, Consolas, "Liberation Mono", monospace;
+  }
+
+  ::selection {
+    background: var(--accent-soft);
+    color: var(--text);
+  }
+
+  :focus-visible {
+    outline: 2px solid var(--accent);
+    outline-offset: 2px;
+    border-radius: 4px;
   }
 }
 
-body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+@layer components {
+  /* 은은한 격자 배경 — 히어로 영역에서만 사용 */
+  .grid-backdrop {
+    background-image:
+      linear-gradient(
+        to right,
+        color-mix(in srgb, var(--border) 70%, transparent) 1px,
+        transparent 1px
+      ),
+      linear-gradient(
+        to bottom,
+        color-mix(in srgb, var(--border) 70%, transparent) 1px,
+        transparent 1px
+      );
+    background-size: 56px 56px;
+    mask-image: radial-gradient(ellipse 75% 55% at 50% 0%, #000 35%, transparent 100%);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    transition-duration: 0.01ms !important;
+  }
 }

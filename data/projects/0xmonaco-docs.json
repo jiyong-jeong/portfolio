@@ -1,0 +1,99 @@
+{
+  "slug": "0xmonaco-docs",
+  "repo": "0xmonaco-docs",
+  "title": "온체인 경매 레이싱 게임 봇 전략 기술 노트",
+  "summary": "VRGDA 방식 동적 가격 경매 위에서 동작하는 온체인 레이싱 봇의 아키텍처와 전략 패턴을 정리한 학습 문서",
+  "description": "Paradigm CTF 2022의 0xMonaco 챌린지를 소재로, 경매 기반 가격 결정과 상태 없는 턴제 의사결정이 결합된 온체인 레이싱 게임용 AI 봇의 구조를 관찰자 시점에서 정리한 기술 노트 레포지토리다. 게임 컨트랙트가 정본 상태를 들고 있고 각 봇은 매 턴 `takeYourTurn` 한 함수로만 반응하는 무상태 설계, ACCELERATE/SHELL 두 액션이 VRGDA 스타일 연속 감쇠 곡선으로 가격이 매겨지는 구조, 3자 적대 환경에서의 상대 모델링 필요성을 다룬다. 코드 자체보다는 이런 도메인(연속 가격 경매 + 가스 제한 + 다자 적대 온체인 에이전트)에서 반복적으로 관찰되는 함정과 권장 작업 방식을 ARCHITECTURE/LESSONS/STACK 세 문서로 구조화했다. Solidity, Foundry, Solmate, SignedWadMath 등 실제 사용 스택과 fixed-point 연산의 함정, 가스 예산 안에서의 얕은 추론 패턴 등을 구체적으로 서술한다.",
+  "category": "학습",
+  "role": "온체인 경매 레이싱 게임 도메인을 분석해 아키텍처, 전략 패턴, 함정과 트레이드오프를 기술 문서로 정리",
+  "techStack": [
+    {
+      "name": "Solidity",
+      "category": "language",
+      "usage": "게임 컨트랙트 및 봇(Car) 컨트랙트 구현 언어"
+    },
+    {
+      "name": "Foundry",
+      "category": "testing",
+      "usage": "빌드, 테스트, 가스 프로파일링 및 배포 스크립트 실행"
+    },
+    {
+      "name": "Solmate",
+      "category": "blockchain",
+      "usage": "가스 효율적인 유틸 라이브러리(SafeCastLib 등) 활용"
+    },
+    {
+      "name": "SignedWadMath",
+      "category": "data",
+      "usage": "18자리 고정소수점 산술로 연속 지수 감쇠 가격 계산"
+    }
+  ],
+  "highlights": [
+    "ACCELERATE/SHELL 가격이 VRGDA 스타일 연속 감쇠 곡선으로 결정되는 구조를 온체인에서 정확히 계산 가능함을 정리",
+    "봇 로직 전체가 영구 저장소 없이 매 턴 순수 함수처럼 동작하는 무상태 설계 패턴을 분석",
+    "3자 적대 환경에서 단순 가격 최적화보다 상대 모델링이 더 큰 보상을 낸다는 도메인 통념을 문서화",
+    "fixed-point 연산 오버플로, revert 시 벌점 등 코드 레벨 함정을 구체적으로 정리",
+    "충실한 오프체인 시뮬레이터로 self-play 반복하는 방식이 온체인 테스트보다 권장됨을 명시"
+  ],
+  "challenges": [
+    {
+      "problem": "가격 수식은 완전히 결정적이라 계산 자체는 쉽지만, 같은 턴에 다른 두 봇이 무엇을 할지는 예측 불가능",
+      "solution": "컴퓨트 자원을 가격 최적화보다 상대 행동 휴리스틱 모델링에 투입하는 전략을 권장"
+    },
+    {
+      "problem": "가스 예산 한도로 인해 남은 라운드에 대한 깊은 트리 탐색이나 다회 시뮬레이션이 불가능",
+      "solution": "매 턴 얕은 추론을 반복하는 Monte-Carlo lite 방식과 버킷화된 정책 테이블 사용을 채택"
+    },
+    {
+      "problem": "18자리 wad 고정소수점 곱셈 시 36자리로 확장되며 한 곳이라도 나눗셈을 빠뜨리면 가격이 조용히 어긋남",
+      "solution": "wadMul/wadDiv/wadExp 등 SignedWadMath 헬퍼를 일관되게 사용하고 saturate 동작을 숙지"
+    }
+  ],
+  "diagrams": [
+    {
+      "title": "게임-봇 상호작용 아키텍처",
+      "description": "게임 컨트랙트(Monaco)가 정본 상태를 관리하고 각 봇 컨트랙트가 무상태로 매 턴 반응하는 구조를 보여준다.",
+      "type": "architecture",
+      "mermaid": "flowchart TD\n  Monaco[\"Monaco 게임 컨트랙트\"]\n  State[\"상태: cars balance speed position\"]\n  Pricing[\"VRGDA 가격 곡선\"]\n  BotA[\"Bot Car A\"]\n  BotB[\"Bot Car B\"]\n  BotC[\"Bot Car C\"]\n  Monaco --> State\n  Monaco --> Pricing\n  Monaco -->|takeYourTurn| BotA\n  Monaco -->|takeYourTurn| BotB\n  Monaco -->|takeYourTurn| BotC\n  BotA -->|buyAcceleration or buyShell| Monaco\n  BotB -->|buyAcceleration or buyShell| Monaco\n  BotC -->|buyAcceleration or buyShell| Monaco"
+    },
+    {
+      "title": "봇 턴별 의사결정 흐름",
+      "description": "매 턴 봇이 순위, 격차, 가격을 보고 어떤 액션을 선택하는지에 대한 전략 골격을 나타낸다.",
+      "type": "flow",
+      "mermaid": "flowchart TD\n  Start[\"턴 시작\"] --> Check1{\"안전한 격차로 선두인가\"}\n  Check1 -->|예| MinAccel[\"최소 가속만 매수\"]\n  Check1 -->|아니오| Check2{\"shell로 격차 축소가 저렴한가\"}\n  Check2 -->|예| BuyShell[\"shell 1발 매수\"]\n  Check2 -->|아니오| Check3{\"가속 가격이 충분히 낮은가\"}\n  Check3 -->|예| BuyAccel[\"공격적으로 가속 매수\"]\n  Check3 -->|아니오| Wait[\"아무것도 안 함\"]"
+    }
+  ],
+  "keywords": [
+    "solidity",
+    "foundry",
+    "onchain-game",
+    "auction-pricing",
+    "vrgda",
+    "trading-bot",
+    "ctf",
+    "fixed-point-math",
+    "game-theory"
+  ],
+  "links": {
+    "repo": "https://github.com/jiyong-jeong/0xmonaco-docs",
+    "homepage": null
+  },
+  "metrics": {
+    "stars": 0,
+    "forks": 0,
+    "watchers": 0,
+    "sizeKb": 16,
+    "openIssues": 0,
+    "languages": {},
+    "topics": [],
+    "primaryLanguage": null,
+    "license": null
+  },
+  "dates": {
+    "createdAt": "2026-05-13T12:48:54Z",
+    "updatedAt": "2026-05-13T13:43:40Z",
+    "pushedAt": "2026-05-13T13:29:41Z",
+    "analyzedAt": "2026-07-26T05:01:52.838Z"
+  },
+  "featured": false
+}

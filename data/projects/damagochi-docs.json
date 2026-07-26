@@ -1,0 +1,84 @@
+{
+  "slug": "damagochi-docs",
+  "repo": "damagochi-docs",
+  "title": "AI 마스코트 확장 개인정보 처리방침 문서",
+  "summary": "Chrome 확장 Damagochi의 개인정보 처리방침과 소개를 정리해 GitHub Pages로 공개하는 문서 사이트",
+  "description": "Damagochi는 사용자가 업로드한 사진으로 AI 마스코트를 생성해 웹페이지 위에서 대화하게 해주는 Chrome 확장이며, 이 레포는 그 확장의 공개 문서(개인정보 처리방침)만을 담은 별도 저장소입니다. Jekyll 기반 정적 사이트로 구성되어 GitHub Pages에서 index 페이지와 개인정보 처리방침 페이지를 서빙합니다. 문서는 사용자 본인의 OpenAI API 키만 사용하는 Bring Your Own Key 구조, 서버 미운영, 텔레메트리 없음, api.openai.com 단일 통신 대상 등 데이터 처리 방식을 한글/영문 병기로 투명하게 명시합니다. 실제 확장 소스 코드는 별도 메인 저장소에서 관리되고, 이 레포는 순수 문서 배포 용도로만 사용됩니다.",
+  "category": "프론트엔드",
+  "role": "Damagochi Chrome 확장의 공개 문서 사이트를 Jekyll로 구성하고 개인정보 처리방침 및 소개 페이지를 작성해 GitHub Pages로 배포했습니다.",
+  "techStack": [
+    {
+      "name": "Jekyll",
+      "category": "framework",
+      "usage": "_config.yml과 Markdown 페이지를 정적 사이트로 빌드"
+    },
+    {
+      "name": "GitHub Pages",
+      "category": "infra",
+      "usage": "빌드된 정적 문서 사이트를 무료로 호스팅 및 배포"
+    },
+    {
+      "name": "Markdown",
+      "category": "tool",
+      "usage": "index.md, privacy.md 등 문서 콘텐츠 작성"
+    },
+    {
+      "name": "YAML",
+      "category": "tool",
+      "usage": "_config.yml 및 각 페이지의 front matter 설정"
+    }
+  ],
+  "highlights": [
+    "서버를 운영하지 않고 순수 정적 문서만으로 개인정보 처리방침을 투명하게 공개",
+    "외부 통신 대상을 api.openai.com 단 하나로 명시해 데이터 흐름을 명확히 문서화",
+    "Bring Your Own Key 구조와 로컬 저장(chrome.storage.local, IndexedDB) 원칙을 한글/영문 병기로 설명",
+    "확장 소스 코드 레포와 문서 레포를 분리해 공개 문서만 별도 관리"
+  ],
+  "challenges": [],
+  "diagrams": [
+    {
+      "title": "Damagochi 데이터 처리 흐름",
+      "description": "확장이 로컬에 저장하는 데이터와 유일한 외부 통신 대상인 OpenAI API 호출 구조를 보여줍니다.",
+      "type": "dataflow",
+      "mermaid": "flowchart TD\n  A[\"사용자 브라우저\"] --> B[\"Damagochi Chrome 확장\"]\n  B --> C[\"chrome.storage.local\"]\n  B --> D[\"IndexedDB\"]\n  B -->|\"채팅 요청\"| E[\"api.openai.com\"]\n  B -->|\"스프라이트 생성 요청\"| E\n  B -->|\"API 키 검증\"| E\n  E -->|\"응답\"| B"
+    },
+    {
+      "title": "문서 사이트 구조",
+      "description": "Jekyll 설정과 페이지 간의 연결 구조를 보여줍니다.",
+      "type": "flow",
+      "mermaid": "flowchart LR\n  A[\"_config.yml\"] --> B[\"index.md\"]\n  B -->|\"링크\"| C[\"privacy.md\"]\n  C --> D[\"GitHub Pages 배포\"]\n  B --> D"
+    }
+  ],
+  "keywords": [
+    "chrome-extension",
+    "privacy-policy",
+    "jekyll",
+    "github-pages",
+    "openai-api",
+    "byok",
+    "documentation",
+    "mascot"
+  ],
+  "links": {
+    "repo": "https://github.com/jiyong-jeong/damagochi-docs",
+    "homepage": "https://jiyong-jeong.github.io/damagochi-docs/"
+  },
+  "metrics": {
+    "stars": 0,
+    "forks": 0,
+    "watchers": 0,
+    "sizeKb": 4,
+    "openIssues": 0,
+    "languages": {},
+    "topics": [],
+    "primaryLanguage": null,
+    "license": null
+  },
+  "dates": {
+    "createdAt": "2026-05-09T10:42:42Z",
+    "updatedAt": "2026-05-09T10:44:24Z",
+    "pushedAt": "2026-05-09T10:44:21Z",
+    "analyzedAt": "2026-07-26T05:02:26.404Z"
+  },
+  "featured": false
+}

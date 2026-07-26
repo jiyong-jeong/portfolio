@@ -1,0 +1,100 @@
+{
+  "slug": "racing-platform-backend-api-argocd-deploy-docs",
+  "repo": "racing-platform-backend-api-argocd-deploy-docs",
+  "title": "레이싱 플랫폼 API 서버 GitOps 배포",
+  "summary": "온라인 레이싱 게임 API 서버를 ArgoCD와 Kustomize로 운영하는 GitOps 배포 구성과 게임 도메인 특화 대응 정리",
+  "description": "온라인 레이싱 게임 서비스에서 사용자 요청을 직접 받는 ingress-exposed 웹 API 서버를 Kubernetes 위에서 GitOps 방식으로 배포하기 위한 노트다. 동일 코드베이스의 워커(worker)와 달리 ingress와 LoadBalancer가 필수이며, stateless한 특성상 RollingUpdate와 multi-replica + HPA 구성이 자연스럽게 적용된다. GitOps 파이프라인(Jenkins, ArgoCD, Kustomize base/overlay), ingress 운영, API 서버 vs 워커의 차이(probe, graceful shutdown) 등 핵심 배포 패턴은 sibling 문서들을 참조하는 구조로 정리했다. 이 문서 자체는 게임 도메인 API 서버에 특화된 이슈(실시간 polling 부하, 보상 지급 멱등성, 사용자별 rate limit, anti-cheat)만 짧게 다룬다.",
+  "category": "인프라",
+  "role": "온라인 레이싱 게임 API 서버의 k8s GitOps 배포 구성을 설계하고, 게임 도메인에서 발생하는 배포/운영 이슈를 문서화함",
+  "techStack": [
+    {
+      "name": "Kubernetes",
+      "category": "infra",
+      "usage": "API 서버 컨테이너를 multi-replica로 운영하는 배포 플랫폼"
+    },
+    {
+      "name": "ArgoCD",
+      "category": "devops",
+      "usage": "GitOps 기반으로 매니페스트 변경을 자동 동기화 및 배포"
+    },
+    {
+      "name": "Kustomize",
+      "category": "devops",
+      "usage": "base/overlay 구조로 환경별 배포 설정 관리"
+    },
+    {
+      "name": "Jenkins",
+      "category": "devops",
+      "usage": "빌드 및 배포 파이프라인(Jenkinsfile) 실행"
+    }
+  ],
+  "highlights": [
+    "워커와 달리 ingress + LoadBalancer가 필수인 API 서버 특성을 배포 구성에 반영",
+    "stateless API 특성을 살려 RollingUpdate와 multi-replica + HPA 구성을 표준으로 채택",
+    "보상 지급 endpoint에 claim_id UNIQUE 제약으로 중복 지급을 방지하는 멱등성 설계",
+    "경기 결과·랭킹 polling 폭주 문제를 WebSocket/SSE 전환으로 해결 방향 제시",
+    "공통 GitOps 패턴은 sibling 문서로 위임하고 게임 도메인 특화 이슈만 별도 정리"
+  ],
+  "challenges": [
+    {
+      "problem": "사용자가 보상 받기 버튼을 여러 번 눌러도 중복 지급되지 않아야 함",
+      "solution": "claim_id에 UNIQUE 제약을 걸어 멱등성을 보장"
+    },
+    {
+      "problem": "경기 결과와 랭킹을 사용자가 자주 새로고침하면서 polling이 폭주해 API 부담이 증가",
+      "solution": "WebSocket 또는 SSE로 전환해 실시간성을 확보하고 polling 비용을 줄이는 방향 권장"
+    },
+    {
+      "problem": "클라이언트가 보고하는 경기 결과를 그대로 신뢰하면 조작 위험이 있음",
+      "solution": "서버 측 검증 또는 별도 anti-cheat 컴포넌트 도입 필요성 명시"
+    }
+  ],
+  "diagrams": [
+    {
+      "title": "API 서버 GitOps 배포 구조",
+      "description": "Jenkins 빌드부터 ArgoCD를 통한 k8s 배포, 그리고 ingress를 통해 사용자 요청이 API 서버에 도달하기까지의 흐름을 보여준다.",
+      "type": "architecture",
+      "mermaid": "flowchart LR\n  Dev[\"개발자 커밋\"] --> Jenkins[\"Jenkins 파이프라인\"]\n  Jenkins --> Repo[\"매니페스트 Git 저장소\"]\n  Repo --> ArgoCD[\"ArgoCD\"]\n  ArgoCD --> Kustomize[\"Kustomize base 및 overlay\"]\n  Kustomize --> K8s[\"Kubernetes 클러스터\"]\n  User[\"사용자 요청\"] --> LB[\"LoadBalancer\"]\n  LB --> Ingress[\"Ingress\"]\n  Ingress --> API[\"API 서버 파드 다중 replica\"]\n  API --> K8s\n  HPA[\"HPA\"] --> API"
+    },
+    {
+      "title": "게임 도메인 API 특화 이슈 흐름",
+      "description": "레이싱 게임 API가 마주하는 폴링 부하, 보상 지급 멱등성, rate limit, anti-cheat 이슈와 대응 방향을 정리한 흐름도.",
+      "type": "flow",
+      "mermaid": "flowchart TD\n  Client[\"클라이언트\"] --> Polling[\"경기 결과 및 랭킹 폴링\"]\n  Polling --> Realtime[\"WebSocket 또는 SSE 전환\"]\n  Client --> Claim[\"보상 받기 호출\"]\n  Claim --> Idempotent[\"claim_id UNIQUE 검증\"]\n  Client --> RateCheck[\"사용자별 rate limit 검사\"]\n  Client --> Report[\"경기 결과 리포트\"]\n  Report --> AntiCheat[\"서버 측 검증 및 anti-cheat\"]"
+    }
+  ],
+  "keywords": [
+    "kubernetes",
+    "argocd",
+    "kustomize",
+    "gitops",
+    "jenkins",
+    "api-server",
+    "game-backend",
+    "idempotency",
+    "rate-limit",
+    "anti-cheat"
+  ],
+  "links": {
+    "repo": "https://github.com/jiyong-jeong/racing-platform-backend-api-argocd-deploy-docs",
+    "homepage": null
+  },
+  "metrics": {
+    "stars": 0,
+    "forks": 0,
+    "watchers": 0,
+    "sizeKb": 1,
+    "openIssues": 0,
+    "languages": {},
+    "topics": [],
+    "primaryLanguage": null,
+    "license": null
+  },
+  "dates": {
+    "createdAt": "2026-05-13T21:07:53Z",
+    "updatedAt": "2026-05-13T21:07:59Z",
+    "pushedAt": "2026-05-13T21:07:56Z",
+    "analyzedAt": "2026-07-26T04:54:22.372Z"
+  },
+  "featured": false
+}

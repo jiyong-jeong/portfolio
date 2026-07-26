@@ -1,0 +1,114 @@
+{
+  "slug": "upbit-altcoin-trading-bot-docs",
+  "repo": "upbit-altcoin-trading-bot-docs",
+  "title": "업비트·바이낸스 알트코인 자동매매 봇 구조 노트",
+  "summary": "두 거래소를 동시 운용하는 개인용 알트코인 매매 봇의 아키텍처와 운영 함정을 정리한 문서",
+  "description": "Upbit(KRW 현물)와 Binance(USDT 현물/선물)를 동시에 운용하는 개인용 암호화폐 자동 매매 봇의 구조를 관찰자 시점에서 정리한 기술 노트다. 봇은 비트코인·이더리움·알트 베스트(장기)·알트 단타 A/B 타입으로 자산을 분류해 각기 다른 매매 정책을 적용하며, 상태는 로컬 JSON 파일에 누적 저장된다. API 키는 자체 암복호화 로직과 별도 키 파일로 분리해 평문 노출을 회피하고, 매매 결과는 Line Notify로 실시간 알림된다. 문서는 실제 코드 대신 이 패턴에서 반복적으로 발생하는 API 키 보안, rate limit, 주문 멱등성, 상태 파일 race condition 등의 함정과 대안을 정리하는 데 초점을 둔다.",
+  "category": "자동화",
+  "role": "개인 프로젝트로 봇 아키텍처를 설계하고, 운영 중 마주친 보안·rate limit·상태관리 함정을 기술 노트로 정리",
+  "techStack": [
+    {
+      "name": "Python",
+      "category": "language",
+      "usage": "매매 로직 및 봇 전체 구현 언어"
+    },
+    {
+      "name": "pyupbit",
+      "category": "backend",
+      "usage": "Upbit REST/websocket API 연동"
+    },
+    {
+      "name": "ccxt",
+      "category": "backend",
+      "usage": "Binance 등 거래소 통합 API 클라이언트"
+    },
+    {
+      "name": "pandas",
+      "category": "data",
+      "usage": "캔들 데이터 분석 및 지표 계산"
+    },
+    {
+      "name": "JSON",
+      "category": "database",
+      "usage": "이동평균 상태, 수익 누적 등 로컬 상태 저장"
+    },
+    {
+      "name": "Line Notify",
+      "category": "tool",
+      "usage": "매매 결과 실시간 푸시 알림"
+    },
+    {
+      "name": "systemd",
+      "category": "devops",
+      "usage": "봇 daemon 실행 및 운영"
+    }
+  ],
+  "highlights": [
+    "Upbit·Binance 두 거래소를 동시 운용하며 포트폴리오를 6개 카테고리로 비중 분류",
+    "상승장 전용 A타입과 상시매수 B타입으로 단타 자금을 분산해 리스크 상쇄",
+    "API 키를 자체 암복호화 후 키 파일과 암호문 파일을 분리 보관해 평문 노출 회피",
+    "JSON 파일 기반 상태 저장의 race condition·crash 시 데이터 손상 문제를 문서화",
+    "rate limit, 주문 멱등성, 백테스트-실거래 괴리 등 실운영 함정을 구체적으로 정리"
+  ],
+  "challenges": [
+    {
+      "problem": "봇 인스턴스가 동시 실행되면 MaUpDict.json 등 상태 파일에 write 충돌이 발생해 파일이 손상될 수 있음",
+      "solution": "파일 lock(fcntl/flock) 또는 SQLite 도입, atomic write(temp file → rename) 패턴 권장"
+    },
+    {
+      "problem": "다수 코인에 대해 매초 캔들을 조회하면 거래소 API rate limit(Upbit 초당 8-10회, Binance weight 기반)을 즉시 초과",
+      "solution": "캔들/잔고 캐싱, websocket 스트리밍 활용, 분산 backoff 적용"
+    },
+    {
+      "problem": "네트워크 timeout 후 주문을 재시도하면 동일 주문이 중복 체결될 위험",
+      "solution": "Binance는 clientOrderId 활용, Upbit는 재시도 전 잔고 변화를 확인"
+    }
+  ],
+  "diagrams": [
+    {
+      "title": "봇 전체 아키텍처",
+      "description": "거래소 클라이언트 래퍼부터 전략 봇, 키 관리, 알림까지 모듈 간 관계를 보여준다.",
+      "type": "architecture",
+      "mermaid": "flowchart TD\n  subgraph EX[\"거래소 API\"]\n    UP[\"Upbit REST/WS\"]\n    BN[\"Binance ccxt\"]\n  end\n  WRAP1[\"myUpbit.py\"]\n  WRAP2[\"myBinance.py\"]\n  BOT1[\"upbit_best_bot.py\"]\n  BOT2[\"binance_auto_bot.py\"]\n  BOT3[\"binance_auto_grid.py\"]\n  KEY[\"ende_key.py + my_key.py\"]\n  STATE[\"상태 JSON 파일\"]\n  ALERT[\"line_alert.py\"]\n  UP --> WRAP1\n  BN --> WRAP2\n  WRAP1 --> BOT1\n  WRAP2 --> BOT2\n  WRAP2 --> BOT3\n  KEY --> BOT1\n  KEY --> BOT2\n  BOT1 --> STATE\n  BOT1 --> ALERT\n  BOT2 --> ALERT\n  BOT3 --> ALERT"
+    },
+    {
+      "title": "포트폴리오 분류 및 단타 전략 흐름",
+      "description": "자산이 비중별 카테고리로 분류되고, 단타 자금이 A/B 타입으로 분산되는 흐름을 보여준다.",
+      "type": "flow",
+      "mermaid": "flowchart LR\n  PORT[\"전체 포트폴리오\"] --> BTC[\"비트코인 25%\"]\n  PORT --> ETH[\"이더리움 10%\"]\n  PORT --> ALTLONG[\"알트 베스트 장기 25%\"]\n  PORT --> ALTA[\"알트 단타 A 8%\"]\n  PORT --> ALTB[\"알트 단타 B 8%\"]\n  PORT --> CASH[\"현금 리저브 24%\"]\n  ALTA --> RULE_A[\"상승장에서만 매수\"]\n  ALTB --> RULE_B[\"상승 하락장 모두 매수\"]"
+    }
+  ],
+  "keywords": [
+    "trading-bot",
+    "upbit",
+    "binance",
+    "cryptocurrency",
+    "python",
+    "pyupbit",
+    "ccxt",
+    "automation",
+    "portfolio-strategy"
+  ],
+  "links": {
+    "repo": "https://github.com/jiyong-jeong/upbit-altcoin-trading-bot-docs",
+    "homepage": null
+  },
+  "metrics": {
+    "stars": 0,
+    "forks": 0,
+    "watchers": 0,
+    "sizeKb": 6,
+    "openIssues": 0,
+    "languages": {},
+    "topics": [],
+    "primaryLanguage": null,
+    "license": null
+  },
+  "dates": {
+    "createdAt": "2026-05-13T21:03:57Z",
+    "updatedAt": "2026-05-13T21:04:43Z",
+    "pushedAt": "2026-05-13T21:04:39Z",
+    "analyzedAt": "2026-07-26T04:55:17.661Z"
+  },
+  "featured": false
+}

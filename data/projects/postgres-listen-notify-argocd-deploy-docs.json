@@ -1,0 +1,109 @@
+{
+  "slug": "postgres-listen-notify-argocd-deploy-docs",
+  "repo": "postgres-listen-notify-argocd-deploy-docs",
+  "title": "PG Listen/Notify 워커의 GitOps 배포 구조 정리",
+  "summary": "PostgreSQL LISTEN/NOTIFY 워커를 ArgoCD+Kustomize+Jenkins로 dev/qa/prod 배포하는 GitOps 파이프라인 노트",
+  "description": "PostgreSQL 의 LISTEN/NOTIFY 채널을 폴링하는 백엔드 워커를 Kubernetes 위에서 dev/qa/prod 세 환경으로 운영하기 위해, Jenkins 가 이미지 태그만 업데이트하고 ArgoCD 가 실제 apply 를 담당하는 GitOps 파이프라인을 관찰자 시점에서 정리한 문서 레포지토리이다. Kustomize 의 base/overlays 구조로 환경별 replica 수, 리소스 제한, ingress host, TLS cert 등을 patch 형태로 분리하는 방식을 다룬다. Jenkinsfile 이 sed 로 deployment-patch.yaml 의 이미지 태그를 바꾸고 git commit/push 하면, ArgoCD 가 변경을 감지해 kustomize build 후 cluster 에 적용하는 흐름을 아키텍처 다이어그램으로 설명한다. 또한 sed 의 OS 호환성, ArgoCD sync 지연, prune/selfHeal 설정의 위험, secret 평문 노출, sync-wave 순서 등 실제 운영에서 자주 마주치는 함정을 정리했다.",
+  "category": "인프라",
+  "role": "직접 구축한 GitOps 파이프라인을 관찰자 시점에서 분석하고, 아키텍처·스택·운영상 함정을 구조화된 문서로 정리했다.",
+  "techStack": [
+    {
+      "name": "Kubernetes",
+      "category": "infra",
+      "usage": "워커 워크로드가 실행되는 컨테이너 오케스트레이션 환경"
+    },
+    {
+      "name": "ArgoCD",
+      "category": "devops",
+      "usage": "infra repo 의 git 상태를 cluster 상태로 reconcile 하는 GitOps 컨트롤러"
+    },
+    {
+      "name": "Kustomize",
+      "category": "devops",
+      "usage": "base/overlays 구조로 dev/qa/prod 환경별 manifest 차이를 patch 관리"
+    },
+    {
+      "name": "Jenkins",
+      "category": "devops",
+      "usage": "CI 빌드 후 이미지 태그를 overlay patch 파일에 반영해 git push 하는 자동화"
+    },
+    {
+      "name": "PostgreSQL",
+      "category": "database",
+      "usage": "LISTEN/NOTIFY 채널을 통해 워커가 폴링하는 이벤트 소스"
+    },
+    {
+      "name": "AWS Route53",
+      "category": "infra",
+      "usage": "ingress 도메인에 연결되는 DNS 관리"
+    }
+  ],
+  "highlights": [
+    "Jenkins 가 k8s 에 직접 apply 하지 않고 git push 만 하는 GitOps 원칙을 준수",
+    "base/overlays 구조로 dev/qa/prod 의 replica, 리소스, ingress 차이를 명시적 patch 로 분리",
+    "prod 는 prune OFF·selfHeal 신중 적용, dev 는 prune ON 등 환경별 sync 정책 차등화",
+    "sync-wave annotation 으로 SealedSecret 을 deployment 보다 먼저 적용해 race 방지",
+    "sed 스크립트의 OS 호환성, CI 자격증명 노출, image latest 태그 금지 등 실전 함정을 문서화"
+  ],
+  "challenges": [
+    {
+      "problem": "auto-sync 의 prune 과 selfHeal 설정에 따라 drift 미제거 또는 운영자의 응급 수동 변경이 즉시 롤백되는 양면적 위험이 있음",
+      "solution": "dev 는 prune ON, prod 는 prune OFF + 명시적 sync 로 환경별 정책을 다르게 적용"
+    },
+    {
+      "problem": "SealedSecret 이 deployment 보다 늦게 적용되면 secret 없는 상태로 pod 가 떠 CrashLoopBackOff 발생",
+      "solution": "argocd.argoproj.io/sync-wave: -1 annotation 으로 적용 순서를 명시"
+    },
+    {
+      "problem": "동일 infra repo 에 두 환경 배포가 동시 트리거되면 같은 파일을 동시에 sed·push 해 충돌 발생",
+      "solution": "Jenkins 의 disableConcurrentBuilds() 또는 file lock 으로 race condition 방지"
+    }
+  ],
+  "diagrams": [
+    {
+      "title": "GitOps 배포 파이프라인",
+      "description": "PR merge 부터 Jenkins 의 이미지 태그 업데이트, ArgoCD reconcile 을 거쳐 k8s 에 적용되기까지의 흐름을 보여준다.",
+      "type": "architecture",
+      "mermaid": "flowchart LR\n  Dev[\"개발자 PR merge\"] --> CI[\"Jenkins CI 빌드 이미지 push\"]\n  CI --> Trigger[\"infra Jenkinsfile 트리거\"]\n  Trigger --> Patch[\"overlay patch 이미지 태그 sed\"]\n  Patch --> Push[\"git commit push\"]\n  Push --> Detect[\"ArgoCD 변경 감지\"]\n  Detect --> Build[\"kustomize build diff\"]\n  Build --> Apply[\"kubectl apply\"]\n  Apply --> Rollout[\"deployment rollout\"]"
+    },
+    {
+      "title": "Kustomize base/overlays 구조",
+      "description": "공통 base manifest 와 dev/qa/prod 환경별 patch 가 결합되는 구조를 보여준다.",
+      "type": "flow",
+      "mermaid": "flowchart TD\n  Base[\"base 공통 manifest\"] --> Dev[\"overlays dev patch\"]\n  Base --> Qa[\"overlays qa patch\"]\n  Base --> Prod[\"overlays prod patch\"]\n  Dev --> DevNs[\"dev namespace\"]\n  Qa --> QaNs[\"qa namespace\"]\n  Prod --> ProdNs[\"prod namespace\"]"
+    }
+  ],
+  "keywords": [
+    "gitops",
+    "argocd",
+    "kustomize",
+    "jenkins",
+    "kubernetes",
+    "postgresql",
+    "listen-notify",
+    "ci-cd",
+    "deployment"
+  ],
+  "links": {
+    "repo": "https://github.com/jiyong-jeong/postgres-listen-notify-argocd-deploy-docs",
+    "homepage": null
+  },
+  "metrics": {
+    "stars": 0,
+    "forks": 0,
+    "watchers": 0,
+    "sizeKb": 6,
+    "openIssues": 0,
+    "languages": {},
+    "topics": [],
+    "primaryLanguage": null,
+    "license": null
+  },
+  "dates": {
+    "createdAt": "2026-05-13T20:52:46Z",
+    "updatedAt": "2026-05-13T20:52:54Z",
+    "pushedAt": "2026-05-13T20:52:49Z",
+    "analyzedAt": "2026-07-26T04:57:24.540Z"
+  },
+  "featured": false
+}
