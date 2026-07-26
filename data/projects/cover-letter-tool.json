@@ -1,0 +1,104 @@
+{
+  "slug": "cover-letter-tool",
+  "repo": "cover-letter-tool",
+  "title": "Claude CLI 기반 자기소개서 생성 대시보드",
+  "summary": "로컬 Claude Code CLI로 PDF 이력서를 직접 읽혀 자기소개서를 생성하는 의존성 0 웹 도구",
+  "description": "자기소개서 작성 시 반복되는 자료 재입력, 글자수 제한 미준수, 근거 없는 경력 지어내기 문제를 해결하기 위해 만든 웹 대시보드입니다. 이력서·포트폴리오 PDF와 지원 정보를 세션 단위로 저장한 뒤, 문항마다 로컬 Claude Code CLI(`claude -p`)를 headless로 실행해 답변을 생성합니다. PDF 파싱 라이브러리를 두지 않고 Claude의 Read 도구가 세션 폴더 안의 원본 PDF를 직접 읽게 해 표와 레이아웃이 있는 문서도 그대로 해석합니다. 생성 과정은 NDJSON 스트림으로 브라우저에 실시간 전달되며, 완료된 답변은 파일 시스템에 저장되어 이후 세션 목록에서 그대로 불러올 수 있습니다.",
+  "category": "자동화",
+  "role": "1인 개발로 서버·프롬프트 설계·프론트엔드를 모두 구현했으며, 의존성 없는 아키텍처와 PDF Read-도구 활용 방식을 직접 설계했습니다.",
+  "techStack": [
+    {
+      "name": "Node.js",
+      "category": "backend",
+      "usage": "node:http 모듈만으로 별도 프레임워크 없이 HTTP 서버 구현"
+    },
+    {
+      "name": "JavaScript",
+      "category": "language",
+      "usage": "서버·프론트엔드 전체를 ES Module 형태의 바닐라 JS로 작성"
+    },
+    {
+      "name": "Claude Code CLI",
+      "category": "tool",
+      "usage": "claude -p headless 실행으로 자기소개서 생성을 담당하는 추론 엔진"
+    },
+    {
+      "name": "HTML",
+      "category": "frontend",
+      "usage": "빌드 단계 없는 단일 대시보드 페이지 마크업"
+    },
+    {
+      "name": "CSS",
+      "category": "frontend",
+      "usage": "대시보드 스타일링"
+    }
+  ],
+  "highlights": [
+    "PDF 파싱 라이브러리 없이 Claude의 Read 도구로 원본 PDF를 직접 해석해 표·레이아웃 손실 방지",
+    "npm 의존성 0, node:http만으로 라우트 5개짜리 서버를 직접 구현",
+    "문항별 글자수 상한·하한을 프롬프트에 명시해 채용 문항 분량 제약을 안정적으로 준수",
+    "stream-json을 NDJSON으로 변환해 생성 진행 상황을 브라우저에 실시간 스트리밍",
+    "세션 디렉터리 기반 저장으로 이전 세션의 입력·PDF·답변을 재사용 가능"
+  ],
+  "challenges": [
+    {
+      "problem": "이력서 PDF를 매번 채팅창에 복사하면 표와 레이아웃이 깨지는 문제",
+      "solution": "PDF를 세션 폴더에 원본 그대로 두고 Claude Code CLI에 Read/Glob/Grep 도구만 허용해 직접 읽게 함"
+    },
+    {
+      "problem": "글자수 제한이 있는 문항에서 분량이 매번 어긋나는 문제",
+      "solution": "프롬프트에 상한과 함께 상한의 90%를 하한으로 명시하고 작성 후 직접 글자수를 세도록 지시"
+    },
+    {
+      "problem": "근거 없는 수치나 경력이 만들어지는 문제",
+      "solution": "시스템 프롬프트에 사실 기반 작성 원칙과 함께 근거 부족 시 대안 행동(있는 사실을 더 깊이 서술)을 명시"
+    }
+  ],
+  "diagrams": [
+    {
+      "title": "전체 아키텍처",
+      "description": "브라우저 요청부터 세션 저장, Claude CLI 실행, 결과 스트리밍까지의 전체 흐름을 보여줍니다.",
+      "type": "architecture",
+      "mermaid": "flowchart TD\n  B[\"브라우저 대시보드\"] -->|\"POST /api/session\"| S[\"node:http 서버\"]\n  S --> FS[\"sessions/ID 저장소\"]\n  B -->|\"POST /api/generate\"| S\n  S --> P[\"prompt.js 프롬프트 생성\"]\n  P --> C[\"claude.js 실행 계층\"]\n  C -->|\"stdin 프롬프트\"| CLI[\"Claude Code CLI\"]\n  CLI -->|\"Read 도구\"| FS\n  CLI -->|\"stream-json\"| C\n  C -->|\"NDJSON\"| S\n  S -->|\"chunked 응답\"| B\n  S --> A[\"answers 저장\"]"
+    },
+    {
+      "title": "문항 생성 시퀀스",
+      "description": "문항 하나를 생성할 때 서버와 Claude CLI 사이에서 일어나는 순차적 처리 과정입니다.",
+      "type": "sequence",
+      "mermaid": "sequenceDiagram\n  participant U as 사용자\n  participant W as 대시보드\n  participant S as 서버\n  participant C as Claude CLI\n  U->>W: 입력 및 PDF 업로드\n  W->>S: POST /api/session\n  S->>S: 세션 폴더 생성 및 PDF 저장\n  S-->>W: sessionId 반환\n  W->>S: POST /api/generate\n  S->>C: claude -p 실행\n  C->>C: refs 폴더 PDF 읽기\n  C-->>S: 텍스트 델타 스트림\n  S-->>W: NDJSON 진행 이벤트\n  C-->>S: 최종 result 이벤트\n  S->>S: answers 파일 저장\n  S-->>W: done 이벤트 전달"
+    }
+  ],
+  "keywords": [
+    "claude-code",
+    "cli",
+    "nodejs",
+    "pdf",
+    "streaming",
+    "ndjson",
+    "cover-letter",
+    "zero-dependency",
+    "vanilla-js"
+  ],
+  "links": {
+    "repo": "https://github.com/jiyong-jeong/cover-letter-tool",
+    "homepage": null
+  },
+  "metrics": {
+    "stars": 0,
+    "forks": 0,
+    "watchers": 0,
+    "sizeKb": 0,
+    "openIssues": 0,
+    "languages": {},
+    "topics": [],
+    "primaryLanguage": null,
+    "license": null
+  },
+  "dates": {
+    "createdAt": "2026-07-26T06:53:14Z",
+    "updatedAt": "2026-07-26T06:53:14Z",
+    "pushedAt": "2026-07-26T06:53:17Z",
+    "analyzedAt": "2026-07-26T06:53:53.184Z"
+  },
+  "featured": false
+}
