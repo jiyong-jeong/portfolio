@@ -1,0 +1,47 @@
+{
+  "slug": "typechain",
+  "name": "TypeChain",
+  "category": "tool",
+  "tagline": "Solidity 스마트컨트랙트 ABI로부터 TypeScript 타입 정의를 자동 생성하는 도구",
+  "definition": "TypeChain은 스마트컨트랙트의 ABI(Application Binary Interface)를 입력받아 해당 컨트랙트의 함수, 이벤트, 반환값에 대한 TypeScript 타입 선언과 타입이 부여된 컨트랙트 인터페이스 코드를 자동으로 생성해 주는 도구입니다. 원래 Solidity 컨트랙트는 자바스크립트/타입스크립트 코드에서 호출할 때 함수 시그니처나 인자 타입이 컴파일 타임에 검증되지 않아, 오타나 타입 불일치가 런타임에서야 드러나는 문제가 있었습니다. TypeChain은 이 간극을 메워 컨트랙트와 상호작용하는 코드에서도 자동완성과 타입 체크를 받을 수 있게 해줍니다. ethers.js, web3.js, truffle 등 여러 라이브러리를 대상으로 타입을 생성할 수 있습니다.",
+  "concepts": [
+    {
+      "term": "ABI (Application Binary Interface)",
+      "description": "컨트랙트가 외부에 노출하는 함수와 이벤트의 시그니처를 JSON 형태로 정의한 명세로, TypeChain의 입력 소스입니다."
+    },
+    {
+      "term": "Type Generation",
+      "description": "ABI를 분석해 각 함수의 인자·반환값 타입, 이벤트 타입을 TypeScript interface/class로 변환해 코드 파일로 출력하는 과정입니다."
+    },
+    {
+      "term": "Target",
+      "description": "생성된 타입이 어떤 라이브러리(ethers-v5/v6, web3-v1, truffle 등) 형식에 맞춰 만들어질지 지정하는 옵션입니다."
+    },
+    {
+      "term": "Typed Contract Instance",
+      "description": "생성된 타입 정의를 통해 컨트랙트 함수 호출 시 인자와 반환 타입이 IDE에서 검증되는 객체입니다."
+    },
+    {
+      "term": "Factory",
+      "description": "컨트랙트 배포와 연결(attach/connect)을 타입 안전하게 수행할 수 있도록 생성되는 헬퍼 클래스입니다."
+    }
+  ],
+  "whenToUse": [
+    "TypeScript로 dApp이나 테스트 코드를 작성하며 컨트랙트 호출 타입 안정성이 필요할 때",
+    "Hardhat이나 Truffle 같은 개발 환경에서 컴파일 산출물과 프론트엔드 코드를 연동할 때",
+    "컨트랙트 함수명·인자 오타를 컴파일 타임에 잡고 IDE 자동완성을 활용하고 싶을 때",
+    "여러 컨트랙트를 다루는 프로젝트에서 수작업 타입 정의 유지보수 부담을 줄이고 싶을 때"
+  ],
+  "example": {
+    "title": "Hardhat 프로젝트에서 TypeChain 타입 생성 및 사용",
+    "language": "bash",
+    "code": "# 1) 패키지 설치\nnpm install --save-dev typechain @typechain/ethers-v6 @typechain/hardhat\n\n# 2) 컨트랙트 컴파일 시 타입 자동 생성 (hardhat.config에 @typechain/hardhat 등록 시)\nnpx hardhat compile\n\n# 3) 생성된 타입 사용 예 (TypeScript)\n# import { MyToken__factory } from \"./typechain-types\";\n# const token = MyToken__factory.connect(address, signer);\n# await token.transfer(to, amount); // 인자 타입이 컴파일 타임에 검증됨",
+    "description": "Hardhat 컴파일 과정에 TypeChain 플러그인을 연결하면 컴파일 시 자동으로 typechain-types 폴더에 타입이 생성되고, 이를 import해 타입 안전하게 컨트랙트를 호출할 수 있습니다."
+  },
+  "pitfalls": [
+    "컨트랙트 코드를 수정한 뒤 재컴파일하지 않으면 타입이 최신 ABI와 불일치할 수 있습니다.",
+    "생성된 타입 파일은 산출물이므로 직접 수정하지 말고 항상 재생성해서 써야 합니다.",
+    "타깃 라이브러리(ethers 버전 등) 설정을 잘못 지정하면 실제 런타임 API와 타입이 어긋날 수 있습니다."
+  ],
+  "generatedAt": "2026-07-26T06:13:56.524Z"
+}

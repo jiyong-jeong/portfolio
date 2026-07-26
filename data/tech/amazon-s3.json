@@ -1,0 +1,51 @@
+{
+  "slug": "amazon-s3",
+  "name": "Amazon S3",
+  "category": "infra",
+  "tagline": "인터넷을 통해 대용량 파일을 저장하고 꺼내 쓸 수 있는 완전관리형 객체 스토리지 서비스",
+  "definition": "Amazon S3(Simple Storage Service)는 파일을 '객체' 단위로 저장하고 HTTP 기반 API로 읽고 쓸 수 있게 해주는 클라우드 스토리지 서비스입니다. 서버의 디스크 용량을 직접 관리하지 않고도 이미지, 동영상, 로그, 백업 파일 등을 안전하게 저장하고, 필요할 때마다 확장되는 저장 공간을 쓰기 위해 만들어졌습니다. 데이터는 버킷이라는 논리적 컨테이너 안에 키(경로 형태의 이름)로 구분되어 저장되며, 별도의 파일 시스템 마운트 없이 네트워크를 통해 접근합니다.",
+  "concepts": [
+    {
+      "term": "Bucket",
+      "description": "객체를 담는 최상위 저장 단위로, 전역적으로 고유한 이름을 가지며 리전 단위로 생성됩니다."
+    },
+    {
+      "term": "Object",
+      "description": "S3에 저장되는 실제 데이터 단위로, 파일 내용과 메타데이터, 그리고 이를 식별하는 키(key)로 구성됩니다."
+    },
+    {
+      "term": "Key",
+      "description": "버킷 내에서 객체를 구분하는 고유 문자열로, 슬래시(/)를 포함해 폴더 구조처럼 보이게 표현할 수 있습니다."
+    },
+    {
+      "term": "Event Notification",
+      "description": "객체가 생성·삭제되는 시점에 Lambda, SQS 등 다른 서비스로 이벤트를 전달해 후속 처리를 트리거하는 기능입니다."
+    },
+    {
+      "term": "Storage Class",
+      "description": "접근 빈도와 비용에 따라 저장 방식을 나누는 등급으로, 자주 쓰는 데이터와 장기 보관용 데이터를 구분해 관리할 수 있습니다."
+    },
+    {
+      "term": "IAM Policy / Bucket Policy",
+      "description": "특정 사용자나 서비스가 버킷·객체에 어떤 작업을 할 수 있는지 정의하는 접근 제어 규칙입니다."
+    }
+  ],
+  "whenToUse": [
+    "서버 디스크 용량 걱정 없이 이미지·동영상 등 파일을 안정적으로 저장하고 싶을 때",
+    "업로드된 파일을 트리거로 다른 서비스(예: 썸네일 생성 함수)를 자동 실행하고 싶을 때",
+    "여러 서버나 서비스가 같은 파일 저장소를 공유해서 접근해야 할 때",
+    "정적 웹 자산이나 대용량 백업 데이터를 저렴하게 장기 보관하고 싶을 때"
+  ],
+  "example": {
+    "title": "AWS CLI로 버킷 생성 후 파일 업로드하기",
+    "language": "bash",
+    "code": "# 버킷 생성\naws s3api create-bucket \\\n  --bucket my-image-bucket \\\n  --region ap-northeast-2 \\\n  --create-bucket-configuration LocationConstraint=ap-northeast-2\n\n# 로컬 파일을 객체로 업로드\naws s3 cp ./photo.jpg s3://my-image-bucket/original/photo.jpg\n\n# 업로드된 객체 목록 확인\naws s3 ls s3://my-image-bucket/original/",
+    "description": "리전에 버킷을 만들고, 로컬 이미지를 원본 저장 경로에 업로드한 뒤 목록을 조회하는 기본 흐름입니다."
+  },
+  "pitfalls": [
+    "버킷 이름은 전 세계에서 유일해야 하므로 이미 사용 중인 이름은 생성이 거부됩니다.",
+    "버킷/객체 권한을 잘못 설정하면 의도치 않게 파일이 외부에 공개될 수 있습니다.",
+    "S3는 폴더 개념이 없고 키 문자열에 '/'가 포함된 것뿐이라 파일 시스템처럼 이동·이름변경이 되지 않습니다."
+  ],
+  "generatedAt": "2026-07-26T06:09:42.737Z"
+}

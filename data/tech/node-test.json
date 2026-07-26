@@ -1,0 +1,46 @@
+{
+  "slug": "node-test",
+  "name": "node:test",
+  "category": "testing",
+  "tagline": "Node.js에 내장된, 별도 설치 없이 바로 쓸 수 있는 테스트 실행기",
+  "definition": "node:test는 Node.js 런타임에 기본 내장된 테스트 모듈로, 외부 테스트 프레임워크를 설치하지 않고도 단위 테스트를 작성하고 실행할 수 있게 해준다. Node.js 생태계에서 Mocha, Jest 같은 서드파티 라이브러리에 의존하지 않고도 테스트 코드 작성, 실행, 리포팅까지 표준 도구만으로 처리하고자 만들어졌다. describe/it 스타일의 테스트 구조, 훅, assert 모듈과의 조합을 지원해 기존 테스트 프레임워크와 비슷한 사용감을 제공한다.",
+  "concepts": [
+    {
+      "term": "test runner",
+      "description": "테스트 파일을 찾아 실행하고 결과를 요약해 보여주는 node의 내장 실행 엔진이다."
+    },
+    {
+      "term": "test()",
+      "description": "테스트 케이스 하나를 정의하는 기본 함수로, 콜백 안에서 검증 로직을 작성한다."
+    },
+    {
+      "term": "describe/it",
+      "description": "관련된 테스트들을 그룹으로 묶어 구조화할 수 있는 선택적 문법이다."
+    },
+    {
+      "term": "assert 모듈",
+      "description": "node의 내장 assert 모듈과 함께 써서 값이 기대와 일치하는지 검증한다."
+    },
+    {
+      "term": "test context",
+      "description": "각 테스트 함수에 전달되는 객체로, 하위 테스트 실행이나 스킵 등의 제어를 담당한다."
+    }
+  ],
+  "whenToUse": [
+    "외부 의존성 설치 없이 빠르게 단위 테스트 환경을 갖추고 싶을 때",
+    "순수 로직 함수처럼 설치 없는 가벼운 테스트만 필요할 때",
+    "패키지 크기나 의존성 관리를 최소화하고 싶은 소규모 프로젝트일 때",
+    "CI 환경에서 별도 테스트 프레임워크 설치 시간을 줄이고 싶을 때"
+  ],
+  "example": {
+    "title": "기본 테스트 작성 및 실행",
+    "language": "javascript",
+    "code": "// sum.test.js\nconst test = require('node:test');\nconst assert = require('node:assert');\n\nfunction sum(a, b) {\n  return a + b;\n}\n\ntest('sum(1, 2)는 3을 반환한다', () => {\n  assert.strictEqual(sum(1, 2), 3);\n});\n\ntest('sum(-1, 1)은 0을 반환한다', () => {\n  assert.strictEqual(sum(-1, 1), 0);\n});\n\n// 실행: node --test",
+    "description": "sum 함수의 결과를 assert로 검증하는 간단한 테스트 두 개를 정의하고, node --test 명령으로 실행한다."
+  },
+  "pitfalls": [
+    "Mocha나 Jest만큼 풍부한 매처, 목킹, 스냅샷 기능이 기본 제공되지 않는다.",
+    "테스트 파일 이름 규칙과 node 버전 지원 여부를 확인하지 않으면 실행이 안 될 수 있다."
+  ],
+  "generatedAt": "2026-07-26T06:09:18.153Z"
+}

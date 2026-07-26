@@ -1,0 +1,51 @@
+{
+  "slug": "hugging-face-transformers",
+  "name": "Hugging Face Transformers",
+  "category": "framework",
+  "tagline": "다양한 사전학습 모델을 통일된 인터페이스로 불러와 쓰는 딥러닝 모델 라이브러리",
+  "definition": "Hugging Face Transformers는 자연어 처리, 이미지, 음성 등 다양한 분야의 사전학습된 딥러닝 모델을 표준화된 방식으로 내려받고, 추론하고, 파인튜닝할 수 있게 해주는 파이썬 라이브러리입니다. 원래는 트랜스포머 기반 언어 모델을 다루기 위해 만들어졌지만, 지금은 비전·오디오·멀티모달 모델까지 아우르는 범용 모델 허브 클라이언트 겸 실행 프레임워크 역할을 합니다. 연구자마다 다른 코드와 형식으로 공개하던 모델들을 동일한 API로 다룰 수 있게 해, 모델을 직접 구현하거나 가중치 변환 방식을 알아내는 수고를 줄여줍니다.",
+  "concepts": [
+    {
+      "term": "Model Hub",
+      "description": "수많은 사전학습 모델과 데이터셋이 등록된 온라인 저장소로, 라이브러리는 여기서 모델 이름만으로 가중치와 설정을 내려받는다."
+    },
+    {
+      "term": "pipeline",
+      "description": "토크나이징, 모델 추론, 후처리를 한 번에 묶어 몇 줄로 결과를 얻게 해주는 고수준 실행 함수다."
+    },
+    {
+      "term": "tokenizer",
+      "description": "텍스트를 모델이 이해하는 숫자 시퀀스로 변환하고, 모델 출력을 다시 텍스트로 되돌리는 전처리/후처리 도구다."
+    },
+    {
+      "term": "AutoClass",
+      "description": "모델 이름만 주면 알맞은 모델 구조와 설정 클래스를 자동으로 찾아 로드해주는 편의 인터페이스다."
+    },
+    {
+      "term": "checkpoint",
+      "description": "특정 시점까지 학습된 모델의 가중치 스냅샷으로, 이를 그대로 불러오거나 추가 학습(파인튜닝)의 출발점으로 쓴다."
+    },
+    {
+      "term": "fine-tuning",
+      "description": "공개된 사전학습 모델을 자신의 데이터로 추가 학습시켜 특정 작업에 맞게 조정하는 과정이다."
+    }
+  ],
+  "whenToUse": [
+    "이미 공개된 사전학습 모델을 코드 구현 없이 바로 불러와 추론해야 할 때",
+    "여러 모델/프레임워크(PyTorch, TensorFlow 등)를 동일한 API로 다루고 싶을 때",
+    "적은 데이터로 특정 작업에 맞춰 모델을 파인튜닝하고 싶을 때",
+    "로컬 GPU 환경에서 텍스트·이미지·음성 모델을 직접 구동해야 할 때"
+  ],
+  "example": {
+    "title": "사전학습 모델로 감정 분석 추론하기",
+    "language": "python",
+    "code": "from transformers import pipeline\n\n# 감정 분석용 파이프라인 생성 (모델 자동 다운로드)\nclassifier = pipeline(\"sentiment-analysis\")\n\nresult = classifier(\"이 라이브러리 정말 쓰기 편하네요.\")\nprint(result)\n# [{'label': 'POSITIVE', 'score': 0.99...}]",
+    "description": "pipeline 함수 하나로 토크나이징부터 모델 추론까지 자동 처리되어 텍스트의 감정을 바로 확인할 수 있습니다."
+  },
+  "pitfalls": [
+    "모델 파일 용량이 커서 최초 실행 시 다운로드 시간과 디스크 공간이 상당히 필요하다",
+    "GPU/CUDA 환경 설정이 맞지 않으면 같은 코드도 속도나 실행 여부가 크게 달라진다",
+    "모델마다 입력 형식·토크나이저가 달라 다른 모델로 바꿀 때 세부 설정을 다시 확인해야 한다"
+  ],
+  "generatedAt": "2026-07-26T06:14:47.032Z"
+}

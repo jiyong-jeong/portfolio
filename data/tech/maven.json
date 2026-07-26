@@ -1,0 +1,51 @@
+{
+  "slug": "maven",
+  "name": "Maven",
+  "category": "tool",
+  "tagline": "프로젝트의 빌드, 의존성, 배포 과정을 XML 설정으로 표준화하는 Java 빌드 도구",
+  "definition": "Maven은 Java 프로젝트의 빌드 과정을 정의하고 외부 라이브러리(의존성)를 관리하기 위한 도구다. 프로젝트마다 제각각이던 빌드 스크립트를 통일된 디렉터리 구조와 생명주기(lifecycle)로 표준화하고, 필요한 라이브러리를 버전과 함께 선언하면 중앙 저장소에서 자동으로 내려받아 관리해주는 방식으로 이 문제를 해결한다. 소스 컴파일, 테스트 실행, 패키징, 배포까지 하나의 일관된 흐름으로 처리할 수 있게 해준다.",
+  "concepts": [
+    {
+      "term": "pom.xml",
+      "description": "프로젝트의 이름, 버전, 의존성, 빌드 설정 등을 선언하는 Maven의 핵심 설정 파일이다."
+    },
+    {
+      "term": "dependency",
+      "description": "프로젝트가 사용하는 외부 라이브러리를 groupId, artifactId, version으로 식별해 선언하는 단위다."
+    },
+    {
+      "term": "repository",
+      "description": "라이브러리가 저장되고 공유되는 공간으로, 원격의 공용 저장소와 로컬 캐시 저장소로 구분된다."
+    },
+    {
+      "term": "build lifecycle",
+      "description": "compile, test, package, install, deploy 등 정해진 순서의 단계로 빌드 과정을 표준화한 개념이다."
+    },
+    {
+      "term": "plugin",
+      "description": "생명주기의 각 단계에서 실제 작업(컴파일, 테스트, 패키징 등)을 수행하는 실행 단위로, Maven 자체는 이 플러그인들을 실행하는 뼈대 역할을 한다."
+    },
+    {
+      "term": "artifact",
+      "description": "빌드 결과로 만들어지는 jar나 war 같은 산출물로, 다른 프로젝트가 의존성으로 참조할 수 있는 단위다."
+    }
+  ],
+  "whenToUse": [
+    "여러 명이 함께 작업하는 Java 프로젝트에서 빌드 방식을 통일하고 싶을 때",
+    "외부 라이브러리 버전을 명시적으로 관리하고 의존성 충돌을 줄이고 싶을 때",
+    "공유 라이브러리를 빌드해 여러 서비스에 배포하고 버전 관리를 해야 할 때",
+    "표준화된 디렉터리 구조와 생명주기로 신규 참여자의 진입 장벽을 낮추고 싶을 때"
+  ],
+  "example": {
+    "title": "기본적인 pom.xml 구조",
+    "language": "text",
+    "code": "<project>\n  <modelVersion>4.0.0</modelVersion>\n  <groupId>com.example</groupId>\n  <artifactId>my-app</artifactId>\n  <version>1.0.0</version>\n  <packaging>jar</packaging>\n\n  <dependencies>\n    <dependency>\n      <groupId>org.junit.jupiter</groupId>\n      <artifactId>junit-jupiter</artifactId>\n      <version>5.10.0</version>\n      <scope>test</scope>\n    </dependency>\n  </dependencies>\n</project>",
+    "description": "프로젝트 좌표(groupId, artifactId, version)와 의존성 하나를 선언한 최소 형태의 Maven 설정이다. mvn package 명령으로 이 설정을 기반으로 빌드가 실행된다."
+  },
+  "pitfalls": [
+    "의존성 버전을 명시하지 않으면 전이 의존성 충돌로 예기치 않은 버전이 섞여 들어갈 수 있다",
+    "로컬 저장소(.m2) 캐시가 오염되면 최신 배포본이 반영되지 않아 원인 파악이 어려운 문제가 생긴다",
+    "생명주기와 플러그인의 관계를 이해하지 못하면 goal과 phase를 혼동하기 쉽다"
+  ],
+  "generatedAt": "2026-07-26T06:08:47.179Z"
+}

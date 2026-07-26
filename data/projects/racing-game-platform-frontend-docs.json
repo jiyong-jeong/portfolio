@@ -1,0 +1,76 @@
+{
+  "slug": "racing-game-platform-frontend-docs",
+  "repo": "racing-game-platform-frontend-docs",
+  "title": "레이싱 게임 플랫폼 프런트엔드 구조 문서",
+  "summary": "CRA와 craco로 구성된 레이싱 게임 플랫폼 프런트엔드의 구조를 정리한 공개 문서 레포지토리",
+  "description": "레이싱 게임 플랫폼의 프런트엔드 프로젝트 구조를 외부에 공유하기 위해 별도로 만든 문서 전용 레포지토리입니다. Create React App(CRA) 기반에 craco로 빌드 설정을 커스터마이징했고, tsconfig 경로 별칭을 위한 별도 설정 파일을 두고 있습니다. 실제 소스 코드는 포함하지 않고 src, public 디렉터리 구조와 커스텀 설정 파일의 존재만 문서로 정리했습니다.",
+  "category": "프론트엔드",
+  "role": "레이싱 게임 플랫폼 프런트엔드 프로젝트의 구조를 정리하여 공개용 기술 문서로 작성했습니다.",
+  "techStack": [
+    {
+      "name": "React",
+      "category": "framework",
+      "usage": "src, public 디렉터리 구조를 갖춘 프런트엔드 UI 개발"
+    },
+    {
+      "name": "Create React App",
+      "category": "tool",
+      "usage": "프로젝트 초기 스캐폴딩 및 빌드 도구"
+    },
+    {
+      "name": "craco",
+      "category": "tool",
+      "usage": "CRA 기본 빌드 설정을 craco.config.js로 커스터마이징"
+    },
+    {
+      "name": "TypeScript",
+      "category": "language",
+      "usage": "tsconfig.paths.json으로 경로 별칭(paths)을 별도 관리"
+    }
+  ],
+  "highlights": [
+    "CRA의 기본 설정을 eject 없이 craco.config.js로 확장해 커스터마이징",
+    "tsconfig.paths.json을 분리해 절대경로/별칭 import 설정을 별도 관리",
+    "소스 코드 없이 구조와 설정 방식만 공개하는 문서 전용 레포지토리로 구성"
+  ],
+  "challenges": [],
+  "diagrams": [
+    {
+      "title": "프런트엔드 프로젝트 구조 개요",
+      "description": "CRA 기반 프로젝트에 craco와 별도 tsconfig paths 설정이 어떻게 관여하는지를 보여주는 구조도입니다.",
+      "type": "architecture",
+      "mermaid": "flowchart TD\n  A[\"CRA 기반 프로젝트\"] --> B[\"src 디렉터리\"]\n  A --> C[\"public 디렉터리\"]\n  A --> D[\"craco.config.js\"]\n  A --> E[\"tsconfig.paths.json\"]\n  D --> F[\"빌드 설정 커스터마이징\"]\n  E --> G[\"경로 별칭 설정\"]\n  F --> H[\"레이싱 게임 플랫폼 프런트엔드\"]\n  G --> H"
+    }
+  ],
+  "keywords": [
+    "react",
+    "cra",
+    "craco",
+    "typescript",
+    "frontend",
+    "racing-game",
+    "docs"
+  ],
+  "links": {
+    "repo": "https://github.com/jiyong-jeong/racing-game-platform-frontend-docs",
+    "homepage": null
+  },
+  "metrics": {
+    "stars": 0,
+    "forks": 0,
+    "watchers": 0,
+    "sizeKb": 0,
+    "openIssues": 0,
+    "languages": {},
+    "topics": [],
+    "primaryLanguage": null,
+    "license": null
+  },
+  "dates": {
+    "createdAt": "2026-07-26T05:30:36Z",
+    "updatedAt": "2026-07-26T05:30:49Z",
+    "pushedAt": "2026-07-26T05:30:40Z",
+    "analyzedAt": "2026-07-26T05:43:40.438Z"
+  },
+  "featured": false
+}

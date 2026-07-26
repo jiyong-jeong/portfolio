@@ -1,0 +1,51 @@
+{
+  "slug": "argo-workflows",
+  "name": "Argo Workflows",
+  "category": "infra",
+  "tagline": "쿠버네티스 위에서 여러 단계의 작업을 컨테이너 기반 워크플로로 정의하고 실행하는 엔진",
+  "definition": "Argo Workflows는 쿠버네티스 CRD(Custom Resource Definition)로 워크플로를 정의하고 실행하는 오픈소스 워크플로 엔진이다. 각 작업 단계를 컨테이너로 실행하기 때문에 CI/CD 파이프라인, 데이터 처리, 머신러닝 파이프라인처럼 여러 단계가 순차 또는 병렬로 연결된 작업을 쿠버네티스 네이티브 방식으로 오케스트레이션하려는 목적으로 만들어졌다. 별도의 외부 워크플로 서버 없이 쿠버네티스 클러스터 자체의 API와 리소스 모델을 그대로 활용하는 것이 특징이다.",
+  "concepts": [
+    {
+      "term": "Workflow",
+      "description": "실행할 작업의 전체 정의를 담은 커스텀 리소스로, 여러 단계(step)와 실행 순서를 포함한다."
+    },
+    {
+      "term": "Template",
+      "description": "워크플로 안에서 재사용 가능한 작업 단위이며, 실행할 컨테이너나 하위 워크플로 구조를 정의한다."
+    },
+    {
+      "term": "DAG (Directed Acyclic Graph)",
+      "description": "단계 간 의존 관계를 그래프 형태로 표현하는 방식으로, 병렬 실행과 순서 제어를 함께 표현할 수 있다."
+    },
+    {
+      "term": "Step",
+      "description": "워크플로를 구성하는 개별 실행 단위로, 보통 하나의 컨테이너 실행에 대응한다."
+    },
+    {
+      "term": "Artifact",
+      "description": "단계 사이에 전달되는 파일이나 데이터로, 외부 저장소를 통해 단계 간 결과물을 주고받는 데 사용된다."
+    },
+    {
+      "term": "CRD (Custom Resource Definition)",
+      "description": "쿠버네티스 API를 확장해 Workflow 같은 새로운 리소스 종류를 정의하는 메커니즘이다."
+    }
+  ],
+  "whenToUse": [
+    "쿠버네티스 환경에서 여러 단계를 컨테이너 단위로 오케스트레이션하고 싶을 때",
+    "CI/CD 파이프라인이나 배치성 작업을 쿠버네티스 네이티브 방식으로 관리하고 싶을 때",
+    "단계 간 병렬 실행, 재시도, 조건 분기 같은 워크플로 제어가 필요할 때",
+    "데이터 처리나 ML 파이프라인처럼 여러 컨테이너 작업을 연결해야 할 때"
+  ],
+  "example": {
+    "title": "가장 단순한 Workflow 정의",
+    "language": "yaml",
+    "code": "apiVersion: argoproj.io/v1alpha1\nkind: Workflow\nmetadata:\n  generateName: hello-world-\nspec:\n  entrypoint: main\n  templates:\n    - name: main\n      container:\n        image: busybox\n        command: [echo]\n        args: [\"hello world\"]",
+    "description": "busybox 컨테이너 하나를 실행해 문자열을 출력하는 가장 기본적인 형태의 워크플로 정의이다."
+  },
+  "pitfalls": [
+    "단계마다 컨테이너를 새로 띄우는 구조라 이미지 준비와 실행 오버헤드를 간과하기 쉽다.",
+    "Artifact 전달에 별도 저장소(S3 등) 설정이 필요하다는 점을 놓치기 쉽다.",
+    "DAG와 Steps 두 가지 표현 방식이 있어 어떤 것을 쓸지 초반에 혼동하기 쉽다."
+  ],
+  "generatedAt": "2026-07-26T06:05:56.545Z"
+}

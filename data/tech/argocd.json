@@ -1,0 +1,47 @@
+{
+  "slug": "argocd",
+  "name": "ArgoCD",
+  "category": "devops",
+  "tagline": "Git 저장소의 매니페스트 상태를 쿠버네티스 클러스터에 자동으로 동기화하는 GitOps 도구",
+  "definition": "ArgoCD는 쿠버네티스를 위한 GitOps 지속적 배포(CD) 도구로, Git 저장소에 선언된 매니페스트를 진실의 원천(source of truth)으로 삼아 실제 클러스터 상태를 그 상태와 지속적으로 비교하고 맞춰준다. 배포 스크립트를 직접 실행하는 대신 Git 커밋만으로 배포가 이루어지도록 하여, 배포 이력 추적과 롤백을 Git 히스토리로 관리할 수 있게 하려는 목적으로 만들어졌다. 클러스터 내부에서 컨트롤러 형태로 동작하며 대상 클러스터 상태를 주기적으로 감시(watch)한다.",
+  "concepts": [
+    {
+      "term": "GitOps",
+      "description": "Git 저장소의 선언적 설정을 시스템의 유일한 진실의 원천으로 삼고, 실제 상태를 그에 맞춰 자동 수렴시키는 운영 방식이다."
+    },
+    {
+      "term": "Application",
+      "description": "ArgoCD가 관리하는 배포 단위로, 어떤 Git 저장소·경로를 어떤 클러스터·네임스페이스에 배포할지를 정의하는 커스텀 리소스다."
+    },
+    {
+      "term": "Sync",
+      "description": "Git에 정의된 원하는 상태(desired state)와 클러스터의 실제 상태(live state) 차이를 감지해 실제 상태를 원하는 상태로 맞추는 동작이다."
+    },
+    {
+      "term": "Reconcile Loop",
+      "description": "컨트롤러가 대상 상태와 현재 상태를 지속적으로 비교하며 차이가 생기면 자동으로 교정하는 제어 루프 개념이다."
+    },
+    {
+      "term": "Kustomize/Helm 연동",
+      "description": "매니페스트를 순수 YAML뿐 아니라 Kustomize overlay나 Helm 차트 형태로도 정의할 수 있게 지원해 환경별 값 관리를 돕는다."
+    }
+  ],
+  "whenToUse": [
+    "배포 변경 이력과 승인 과정을 Git 커밋/PR로 남기고 감사(audit)하고 싶을 때",
+    "여러 클러스터·환경에 걸쳐 배포 상태를 일관되게 유지하고 싶을 때",
+    "수동 kubectl apply 없이 선언적 방식으로 배포를 자동화하고 싶을 때",
+    "배포 상태 드리프트(설정 불일치)를 자동으로 감지하고 되돌리고 싶을 때"
+  ],
+  "example": {
+    "title": "ArgoCD Application 정의 예시",
+    "language": "yaml",
+    "code": "apiVersion: argoproj.io/v1alpha1\nkind: Application\nmetadata:\n  name: my-service\n  namespace: argocd\nspec:\n  project: default\n  source:\n    repoURL: https://github.com/org/infra-repo.git\n    targetRevision: main\n    path: overlays/production\n  destination:\n    server: https://kubernetes.default.svc\n    namespace: my-service\n  syncPolicy:\n    automated:\n      prune: true\n      selfHeal: true",
+    "description": "infra-repo의 production overlay 경로를 감시하다가 변경이 생기면 자동으로 클러스터에 동기화(prune·selfHeal 포함)하는 Application 리소스다."
+  },
+  "pitfalls": [
+    "automated sync 미설정 시 Git 변경이 있어도 수동으로 sync 버튼을 눌러야 반영된다.",
+    "클러스터에서 kubectl로 직접 수정하면 selfHeal에 의해 곧 원래 상태로 되돌려진다.",
+    "Application의 source 저장소·경로 오타나 권한 문제로 조용히 OutOfSync 상태에 머무를 수 있다."
+  ],
+  "generatedAt": "2026-07-26T06:06:52.286Z"
+}

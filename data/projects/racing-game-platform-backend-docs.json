@@ -1,0 +1,82 @@
+{
+  "slug": "racing-game-platform-backend-docs",
+  "repo": "racing-game-platform-backend-docs",
+  "title": "레이싱 게임 플랫폼 백엔드 문서",
+  "summary": "NestJS 기반 레이싱 게임 백엔드의 구조와 E2E 테스트 격리 전략을 정리한 공개 문서",
+  "description": "레이싱 게임 플랫폼의 백엔드 서비스 구조를 설명하는 공개 문서 레포지토리입니다. NestJS 와 TypeORM 을 기반으로 하며, 런타임/E2E/E2E DB 용도로 Dockerfile 을 분리해 테스트 환경을 격리하는 방식을 다룹니다. 로컬에서 다중 DB 환경을 구성하기 위한 스크립트와 Jenkins 기반 CI 파이프라인 구조도 포함합니다. 도메인별로 별도의 ORM datasource 파일을 두어 데이터 접근 계층을 분리 관리한 점이 특징입니다.",
+  "category": "백엔드",
+  "role": "레이싱 게임 플랫폼 백엔드의 구조를 설계하고, E2E 테스트 격리 및 CI 파이프라인 구성 방식을 정리해 문서화했습니다.",
+  "techStack": [
+    {
+      "name": "NestJS",
+      "category": "framework",
+      "usage": "백엔드 서비스의 핵심 프레임워크"
+    },
+    {
+      "name": "TypeORM",
+      "category": "database",
+      "usage": "ORM 및 마이그레이션 관리"
+    },
+    {
+      "name": "Docker",
+      "category": "infra",
+      "usage": "런타임/E2E/E2E DB 용도로 분리된 다중 Dockerfile 구성"
+    },
+    {
+      "name": "Jenkins",
+      "category": "devops",
+      "usage": "CI 파이프라인 구성"
+    }
+  ],
+  "highlights": [
+    "런타임/E2E/E2E DB 용도로 Dockerfile을 분리해 테스트 환경 격리",
+    "도메인별로 별도 ORM datasource 파일을 두어 데이터 계층 분리",
+    "docker-multiple-db.sh 스크립트로 로컬 다중 DB 환경 부트스트랩 자동화"
+  ],
+  "challenges": [
+    {
+      "problem": "E2E 테스트 환경이 운영 런타임과 섞이면 테스트 신뢰성이 떨어지는 문제",
+      "solution": "런타임/E2E/E2E DB 용 Dockerfile을 각각 분리해 격리된 테스트 환경 구성"
+    }
+  ],
+  "diagrams": [
+    {
+      "title": "백엔드 서비스 구조",
+      "description": "NestJS 애플리케이션과 TypeORM, 다중 Dockerfile 환경, CI 파이프라인 간의 관계를 보여주는 구조도입니다.",
+      "type": "architecture",
+      "mermaid": "flowchart TD\n  Jenkins[\"Jenkins CI\"] --> Runtime[\"Runtime Dockerfile\"]\n  Jenkins --> E2E[\"E2E Dockerfile\"]\n  Jenkins --> E2EDB[\"E2E DB Dockerfile\"]\n  Runtime --> Nest[\"NestJS App (src/)\"]\n  Nest --> TypeORM[\"TypeORM\"]\n  TypeORM --> DataSources[\"도메인별 Datasource 파일\"]\n  E2E --> Test[\"test/ E2E 테스트\"]\n  E2EDB --> TestDB[\"격리된 테스트 DB\"]\n  Test --> TestDB\n  Script[\"docker-multiple-db.sh\"] --> TestDB"
+    }
+  ],
+  "keywords": [
+    "nestjs",
+    "typeorm",
+    "docker",
+    "jenkins",
+    "e2e-testing",
+    "backend",
+    "ci-cd",
+    "racing-game"
+  ],
+  "links": {
+    "repo": "https://github.com/jiyong-jeong/racing-game-platform-backend-docs",
+    "homepage": null
+  },
+  "metrics": {
+    "stars": 0,
+    "forks": 0,
+    "watchers": 0,
+    "sizeKb": 0,
+    "openIssues": 0,
+    "languages": {},
+    "topics": [],
+    "primaryLanguage": null,
+    "license": null
+  },
+  "dates": {
+    "createdAt": "2026-07-26T05:17:01Z",
+    "updatedAt": "2026-07-26T05:17:21Z",
+    "pushedAt": "2026-07-26T05:17:04Z",
+    "analyzedAt": "2026-07-26T05:59:01.173Z"
+  },
+  "featured": false
+}

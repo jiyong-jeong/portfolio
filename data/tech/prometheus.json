@@ -1,0 +1,47 @@
+{
+  "slug": "prometheus",
+  "name": "Prometheus",
+  "category": "devops",
+  "tagline": "메트릭을 시계열로 수집·저장하고 조건 기반 알림까지 처리하는 모니터링 시스템",
+  "definition": "Prometheus는 애플리케이션과 인프라의 상태를 숫자 지표(metric)로 수집해 시계열 데이터베이스에 저장하고, 이를 조회·시각화·알림에 활용할 수 있게 해주는 오픈소스 모니터링 도구입니다. 서버가 각 대상을 직접 찾아가 데이터를 긁어오는 pull 방식을 채택해, 모니터링 대상이 늘어나고 자주 바뀌는 동적 환경에서도 관리 부담을 줄이는 것을 목표로 만들어졌습니다. 수집한 지표는 자체 쿼리 언어로 집계·분석할 수 있고, 이상 상태를 감지하면 별도 컴포넌트를 통해 알림을 보낼 수 있습니다.",
+  "concepts": [
+    {
+      "term": "Pull-based scraping",
+      "description": "Prometheus 서버가 주기적으로 각 대상(target)의 HTTP 엔드포인트에 접속해 지표를 가져오는 수집 방식입니다."
+    },
+    {
+      "term": "Exporter",
+      "description": "대상 시스템의 내부 상태를 Prometheus가 읽을 수 있는 형식으로 노출해주는 작은 에이전트 프로그램입니다."
+    },
+    {
+      "term": "Time series & labels",
+      "description": "지표 값은 이름과 key-value 형태의 label 조합으로 구분되는 시계열로 저장되어, 다차원 필터링과 집계가 가능합니다."
+    },
+    {
+      "term": "PromQL",
+      "description": "저장된 시계열 데이터를 조회, 집계, 연산하기 위한 Prometheus 전용 쿼리 언어입니다."
+    },
+    {
+      "term": "Alertmanager",
+      "description": "Prometheus가 정의된 규칙에 따라 발생시킨 알림을 그룹화·중복 제거하고 실제 채널로 전달하는 별도 컴포넌트입니다."
+    }
+  ],
+  "whenToUse": [
+    "서비스나 워커의 처리량, 지연(lag) 같은 운영 지표를 지속적으로 관찰하고 싶을 때",
+    "컨테이너·클러스터처럼 대상이 자주 늘고 줄어드는 동적 환경을 모니터링할 때",
+    "임계치를 넘는 상황을 자동으로 감지해 알림으로 연결하고 싶을 때",
+    "Grafana 등 시각화 도구와 함께 대시보드를 구성하고 싶을 때"
+  ],
+  "example": {
+    "title": "scrape 대상 설정 예시",
+    "language": "yaml",
+    "code": "global:\n  scrape_interval: 15s\n\nscrape_configs:\n  - job_name: 'worker'\n    static_configs:\n      - targets: ['localhost:9100']\n\n# 애플리케이션이 노출해야 하는 지표 예시 (텍스트 포맷)\n# event_lag_seconds 5.2\n# job_processed_total 1024",
+    "description": "Prometheus 서버가 15초마다 지정된 대상에서 지표를 수집하도록 설정하는 기본 예시입니다."
+  },
+  "pitfalls": [
+    "label 값에 요청 ID처럼 카디널리티가 높은 값을 쓰면 저장 부담이 급격히 커집니다.",
+    "push 방식이 익숙한 사람에게는 대상이 서버에 등록되어야 하는 pull 구조가 낯설 수 있습니다.",
+    "기본 저장소는 장기 보관에 최적화되어 있지 않아 별도 원격 저장소 연동이 필요할 수 있습니다."
+  ],
+  "generatedAt": "2026-07-26T06:08:07.938Z"
+}

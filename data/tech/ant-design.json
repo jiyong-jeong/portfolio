@@ -1,0 +1,47 @@
+{
+  "slug": "ant-design",
+  "name": "Ant Design",
+  "category": "frontend",
+  "tagline": "React 기반으로 통일된 디자인의 UI 컴포넌트를 빠르게 조립하는 컴포넌트 라이브러리",
+  "definition": "Ant Design은 React 애플리케이션에서 자주 쓰이는 버튼, 폼, 테이블, 모달 같은 UI 요소를 미리 만들어진 컴포넌트 형태로 제공하는 라이브러리다. 매번 디자인을 새로 정의하고 CSS를 직접 작성하는 대신, 검증된 디자인 언어와 상호작용 패턴을 그대로 가져와 화면을 구성할 수 있도록 만들어졌다. 특히 관리자 페이지, 대시보드처럼 데이터 입력과 표시가 많은 화면을 빠르게 구축하는 데 초점이 맞춰져 있다. 컴포넌트뿐 아니라 레이아웃, 폼 검증, 국제화 같은 부가 기능도 함께 지원한다.",
+  "concepts": [
+    {
+      "term": "Component",
+      "description": "Button, Table, Form 등 화면을 이루는 단위를 미리 스타일링된 React 컴포넌트로 제공한다."
+    },
+    {
+      "term": "Design Language",
+      "description": "여백, 색상, 타이포그래피 규칙이 컴포넌트 전반에 일관되게 적용되어 통일된 UI 톤을 유지한다."
+    },
+    {
+      "term": "Ant Design Pro / 템플릿",
+      "description": "관리자 페이지 등 특정 목적에 맞춘 레이아웃과 페이지 구성을 미리 짜놓은 확장 패키지가 존재한다."
+    },
+    {
+      "term": "ConfigProvider",
+      "description": "테마 색상, 언어, 컴포넌트 기본 동작 등을 애플리케이션 전역에서 일괄 설정하는 최상위 컴포넌트다."
+    },
+    {
+      "term": "Form 컴포넌트",
+      "description": "입력값 상태 관리와 유효성 검사를 라이브러리 차원에서 처리해 폼 작성 코드를 줄여준다."
+    }
+  ],
+  "whenToUse": [
+    "관리자 대시보드처럼 데이터 입력·표 위주 화면을 빠르게 만들어야 할 때",
+    "디자이너 없이도 일관되고 정돈된 UI를 갖추고 싶을 때",
+    "폼 검증, 테이블 정렬 등 반복적인 UI 로직을 직접 구현하지 않고 재사용하고 싶을 때",
+    "React 기반 프로토타입이나 내부 도구를 짧은 시간에 완성해야 할 때"
+  ],
+  "example": {
+    "title": "기본 버튼과 폼 컴포넌트 사용",
+    "language": "typescript",
+    "code": "import { Button, Form, Input } from 'antd';\n\nfunction LoginForm() {\n  const onFinish = (values) => {\n    console.log('입력값:', values);\n  };\n\n  return (\n    <Form onFinish={onFinish}>\n      <Form.Item name=\"username\" rules={[{ required: true }]}>\n        <Input placeholder=\"아이디\" />\n      </Form.Item>\n      <Button type=\"primary\" htmlType=\"submit\">\n        로그인\n      </Button>\n    </Form>\n  );\n}",
+    "description": "Form과 Input, Button 컴포넌트를 조합해 유효성 검사가 포함된 간단한 로그인 폼을 구성한다."
+  },
+  "pitfalls": [
+    "전체 컴포넌트 스타일을 가져오면 번들 크기가 커질 수 있어 필요한 부분만 가져오는 설정이 필요하다",
+    "커스텀 디자인 요구가 많은 프로젝트에서는 테마 오버라이드 작업이 예상보다 커질 수 있다",
+    "다른 CSS 프레임워크와 함께 쓰면 스타일 우선순위 충돌이 발생할 수 있다"
+  ],
+  "generatedAt": "2026-07-26T06:08:33.969Z"
+}

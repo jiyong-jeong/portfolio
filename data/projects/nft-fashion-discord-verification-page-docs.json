@@ -1,0 +1,66 @@
+{
+  "slug": "nft-fashion-discord-verification-page-docs",
+  "repo": "nft-fashion-discord-verification-page-docs",
+  "title": "패션 NFT Discord 홀더 인증 SPA",
+  "summary": "패션 NFT 보유자를 확인해 Discord 채널 접근 권한을 부여하는 Vite 기반 인증 페이지",
+  "description": "패션 NFT 프로젝트의 Discord 커뮤니티에서 NFT 보유자만 특정 채널에 접근할 수 있도록 인증하는 웹 페이지입니다. Vite와 TypeScript로 구성된 SPA(Single Page Application) 구조로 되어 있으며, 사용자가 지갑을 연결하고 NFT 보유 여부를 검증받아 Discord 인증을 완료하는 흐름을 지원합니다. 현재 저장소에는 공개용 README 문서만 포함되어 있어 상세 구현 내용은 확인되지 않습니다.",
+  "category": "Web3",
+  "role": "NFT 홀더 인증 SPA의 구조 설계 및 문서화를 담당했습니다.",
+  "techStack": [
+    {
+      "name": "TypeScript",
+      "category": "language",
+      "usage": "SPA 클라이언트 코드 작성"
+    },
+    {
+      "name": "Vite",
+      "category": "frontend",
+      "usage": "SPA 빌드 및 개발 서버 구성"
+    }
+  ],
+  "highlights": [
+    "Vite 기반 SPA 구조로 빠른 개발 및 빌드 환경 구성",
+    "NFT 보유 검증을 통한 Discord 채널 접근 제어 컨셉 적용",
+    "TypeScript로 타입 안정성을 확보한 프론트엔드 구조"
+  ],
+  "challenges": [],
+  "diagrams": [
+    {
+      "title": "NFT 홀더 인증 흐름",
+      "description": "사용자가 지갑을 연결하고 NFT 보유 여부를 검증받아 Discord 접근 권한을 얻는 개념적 흐름을 보여줍니다.",
+      "type": "flow",
+      "mermaid": "flowchart TD\n    U[\"사용자\"] --> W[\"지갑 연결\"]\n    W --> V[\"NFT 보유 검증\"]\n    V --> R{\"보유 여부\"}\n    R -->|\"보유\"| D[\"Discord 역할 부여\"]\n    R -->|\"미보유\"| F[\"접근 거부\"]"
+    }
+  ],
+  "keywords": [
+    "nft",
+    "discord",
+    "vite",
+    "typescript",
+    "spa",
+    "web3",
+    "wallet-verification"
+  ],
+  "links": {
+    "repo": "https://github.com/jiyong-jeong/nft-fashion-discord-verification-page-docs",
+    "homepage": null
+  },
+  "metrics": {
+    "stars": 0,
+    "forks": 0,
+    "watchers": 0,
+    "sizeKb": 0,
+    "openIssues": 0,
+    "languages": {},
+    "topics": [],
+    "primaryLanguage": null,
+    "license": null
+  },
+  "dates": {
+    "createdAt": "2026-07-26T05:28:50Z",
+    "updatedAt": "2026-07-26T05:29:05Z",
+    "pushedAt": "2026-07-26T05:28:53Z",
+    "analyzedAt": "2026-07-26T05:50:27.607Z"
+  },
+  "featured": false
+}

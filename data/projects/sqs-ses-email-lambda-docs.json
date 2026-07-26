@@ -1,0 +1,90 @@
+{
+  "slug": "sqs-ses-email-lambda-docs",
+  "repo": "sqs-ses-email-lambda-docs",
+  "title": "SQS 기반 SES 이메일 발송 Lambda",
+  "summary": "SQS 큐 메시지를 트리거로 AWS Lambda가 SES를 통해 이메일을 비동기 발송하는 서버리스 구조 문서",
+  "description": "SQS에 적재된 이메일 발송 요청 메시지를 Lambda가 소비하여 SES로 실제 이메일을 전송하는 서버리스 이메일 발송 파이프라인이다. 큐를 매개로 요청과 발송 처리를 분리해 대량 발송이나 일시적 트래픽 증가 시에도 안정적으로 처리할 수 있도록 설계됐다. TypeScript로 Lambda 핸들러 로직을 작성하고 Jest로 단위 테스트를 구성했으며, Jenkins CI를 통해 빌드·테스트 파이프라인을 자동화했다. 이 레포지토리는 소스 코드 대신 해당 프로젝트의 구조와 동작 방식을 정리한 공개 문서만을 담고 있다.",
+  "category": "백엔드",
+  "role": "SQS-Lambda-SES 이메일 발송 구조를 설계하고, 해당 아키텍처와 동작 흐름을 정리한 공개 기술 문서를 작성했다.",
+  "techStack": [
+    {
+      "name": "TypeScript",
+      "category": "language",
+      "usage": "Lambda 핸들러 및 이메일 발송 로직 구현"
+    },
+    {
+      "name": "AWS Lambda",
+      "category": "infra",
+      "usage": "SQS 메시지를 처리하는 서버리스 컴퓨트"
+    },
+    {
+      "name": "Amazon SQS",
+      "category": "infra",
+      "usage": "이메일 발송 요청을 비동기로 적재하는 메시지 큐"
+    },
+    {
+      "name": "Amazon SES",
+      "category": "infra",
+      "usage": "실제 이메일 발송을 처리하는 서비스"
+    },
+    {
+      "name": "Jest",
+      "category": "testing",
+      "usage": "Lambda 로직에 대한 단위 테스트 작성"
+    },
+    {
+      "name": "Jenkins",
+      "category": "devops",
+      "usage": "빌드 및 테스트 CI 파이프라인 자동화"
+    }
+  ],
+  "highlights": [
+    "SQS 큐로 요청과 발송 처리를 분리해 트래픽 변동에 안정적으로 대응",
+    "AWS Lambda 기반 서버리스 구조로 별도 서버 운영 부담 최소화",
+    "Jest 기반 테스트 코드로 이메일 발송 로직의 신뢰성 확보",
+    "Jenkins CI로 빌드·테스트 과정을 자동화"
+  ],
+  "challenges": [],
+  "diagrams": [
+    {
+      "title": "이메일 발송 아키텍처",
+      "description": "SQS에 쌓인 이메일 요청 메시지를 Lambda가 소비하여 SES로 전달하는 전체 흐름을 보여준다.",
+      "type": "architecture",
+      "mermaid": "flowchart LR\n  Client[\"이메일 발송 요청\"] --> Queue[\"Amazon SQS\"]\n  Queue --> Lambda[\"AWS Lambda\"]\n  Lambda --> SES[\"Amazon SES\"]\n  SES --> Recipient[\"수신자\"]\n  Lambda -.-> Tests[\"Jest 테스트\"]\n  CI[\"Jenkins CI\"] -.-> Lambda"
+    }
+  ],
+  "keywords": [
+    "aws",
+    "lambda",
+    "sqs",
+    "ses",
+    "typescript",
+    "jest",
+    "jenkins",
+    "serverless",
+    "email",
+    "ci-cd"
+  ],
+  "links": {
+    "repo": "https://github.com/jiyong-jeong/sqs-ses-email-lambda-docs",
+    "homepage": null
+  },
+  "metrics": {
+    "stars": 0,
+    "forks": 0,
+    "watchers": 0,
+    "sizeKb": 0,
+    "openIssues": 0,
+    "languages": {},
+    "topics": [],
+    "primaryLanguage": null,
+    "license": null
+  },
+  "dates": {
+    "createdAt": "2026-07-26T05:31:00Z",
+    "updatedAt": "2026-07-26T05:31:11Z",
+    "pushedAt": "2026-07-26T05:31:03Z",
+    "analyzedAt": "2026-07-26T05:42:15.311Z"
+  },
+  "featured": false
+}

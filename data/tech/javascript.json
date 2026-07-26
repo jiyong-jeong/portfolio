@@ -1,0 +1,51 @@
+{
+  "slug": "javascript",
+  "name": "JavaScript",
+  "category": "language",
+  "tagline": "웹 브라우저와 서버 어디서든 실행되는, 동적이고 유연한 범용 프로그래밍 언어",
+  "definition": "JavaScript는 원래 웹 페이지에 상호작용을 더하기 위해 브라우저용으로 만들어진 스크립트 언어다. Node.js 같은 런타임이 등장하면서 브라우저 밖에서도 서버, CLI 도구, 백그라운드 워커 등 다양한 환경에서 실행할 수 있게 되었다. 인터프리터 방식의 동적 타이핑 언어이면서도 함수를 값처럼 다루는 특성 덕분에 짧은 스크립트부터 대규모 애플리케이션까지 폭넓게 쓰인다. 프론트엔드와 백엔드를 같은 언어로 작성할 수 있다는 점이 채택을 크게 확산시켰다.",
+  "concepts": [
+    {
+      "term": "Event Loop",
+      "description": "JavaScript가 단일 스레드로 동작하면서도 I/O나 타이머 같은 비동기 작업을 처리할 수 있게 하는 실행 모델이다."
+    },
+    {
+      "term": "Asynchronous programming (Promise/async-await)",
+      "description": "네트워크 요청이나 파일 처리처럼 시간이 걸리는 작업을 블로킹 없이 처리하기 위한 문법과 패턴이다."
+    },
+    {
+      "term": "First-class function",
+      "description": "함수를 변수에 담거나 다른 함수의 인자·반환값으로 전달할 수 있는 성질로, 콜백과 고차 함수 작성의 기반이 된다."
+    },
+    {
+      "term": "Prototype-based inheritance",
+      "description": "클래스 문법을 제공하지만 내부적으로는 객체가 다른 객체를 원형으로 삼아 속성을 상속받는 구조로 동작한다."
+    },
+    {
+      "term": "Module system",
+      "description": "코드를 파일 단위로 나누고 필요한 부분만 가져다 쓰기 위한 문법으로, CommonJS와 ES Modules 두 방식이 널리 쓰인다."
+    },
+    {
+      "term": "Runtime (Node.js, browser)",
+      "description": "JavaScript 엔진과 표준 라이브러리를 감싸 코드를 실제로 실행시켜주는 환경으로, 실행 위치에 따라 사용 가능한 API가 달라진다."
+    }
+  ],
+  "whenToUse": [
+    "웹 프론트엔드를 만들어야 할 때 사실상 유일한 브라우저 표준 언어라서 선택한다",
+    "프론트와 백엔드 언어를 통일해 개발 컨텍스트 전환 비용을 줄이고 싶을 때",
+    "비동기 I/O가 많은 서버나 워커(파일 처리, 외부 API 연동 등)를 가볍게 구현하고 싶을 때",
+    "생태계가 크고 참고 자료가 많아 빠르게 결과물을 만들어야 하는 프로젝트일 때"
+  ],
+  "example": {
+    "title": "비동기 함수로 데이터 가져오기",
+    "language": "javascript",
+    "code": "async function fetchUser(id) {\n  try {\n    const res = await fetch(`https://api.example.com/users/${id}`);\n    if (!res.ok) throw new Error(`HTTP ${res.status}`);\n    const user = await res.json();\n    console.log(user.name);\n    return user;\n  } catch (err) {\n    console.error('요청 실패:', err.message);\n  }\n}\n\nfetchUser(1);",
+    "description": "async/await 문법으로 외부 API를 호출하고 결과를 처리하는 가장 기본적인 형태의 비동기 함수다."
+  },
+  "pitfalls": [
+    "==와 ===의 동작이 달라 타입 강제 변환으로 인한 예기치 못한 비교 결과가 생길 수 있다",
+    "this 바인딩이 호출 방식에 따라 달라져 콜백 안에서 의도치 않은 값을 가리킬 수 있다",
+    "동적 타이핑 때문에 런타임에 가서야 타입 오류가 드러나는 경우가 많다"
+  ],
+  "generatedAt": "2026-07-26T06:08:53.616Z"
+}

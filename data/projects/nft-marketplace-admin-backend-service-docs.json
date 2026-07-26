@@ -1,0 +1,93 @@
+{
+  "slug": "nft-marketplace-admin-backend-service-docs",
+  "repo": "nft-marketplace-admin-backend-service-docs",
+  "title": "NFT 마켓플레이스 어드민 백엔드 구조 문서",
+  "summary": "NestJS·TypeORM 기반 NFT 마켓플레이스 어드민 백엔드의 구조, CI/CD, 개발 환경을 정리한 내부 운영 API 문서",
+  "description": "NFT 마켓플레이스의 운영을 담당하는 어드민 전용 백엔드 서비스로, 일반 사용자 트래픽 없이 내부 관리 목적으로만 사용되는 API 구조를 문서화했다. NestJS와 TypeORM을 기반으로 서비스와 데이터베이스 스키마 마이그레이션을 관리하며, Docker와 Jenkins를 통해 CI 파이프라인을 구성했다. 개발 단계에서는 Webpack HMR 설정을 적용해 코드 변경 시 서버 재시작 없이 빠르게 반영되도록 개발 이터레이션 속도를 높였다. 이 레포는 소스 코드 자체보다는 해당 백엔드 서비스의 구조와 설계 방식을 공개용으로 정리한 문서 레포다.",
+  "category": "백엔드",
+  "role": "어드민 백엔드 서비스의 구조를 설계하고 NestJS/TypeORM으로 구현했으며, Docker·Jenkins 기반 CI 파이프라인과 Webpack HMR 개발 환경을 구성했다.",
+  "techStack": [
+    {
+      "name": "TypeScript",
+      "category": "language",
+      "usage": "NestJS 기반 백엔드 서비스 구현 언어"
+    },
+    {
+      "name": "NestJS",
+      "category": "framework",
+      "usage": "어드민 백엔드 API 서버 프레임워크"
+    },
+    {
+      "name": "TypeORM",
+      "category": "database",
+      "usage": "데이터베이스 ORM 및 마이그레이션 관리"
+    },
+    {
+      "name": "Docker",
+      "category": "devops",
+      "usage": "서비스 컨테이너화 및 배포 이미지 빌드"
+    },
+    {
+      "name": "Jenkins",
+      "category": "devops",
+      "usage": "CI 파이프라인 구성"
+    },
+    {
+      "name": "Webpack",
+      "category": "tool",
+      "usage": "HMR 설정을 통한 개발 서버 핫리로드"
+    }
+  ],
+  "highlights": [
+    "사용자 트래픽 없는 내부 운영 전용 어드민 API로 구조를 단순화",
+    "TypeORM 마이그레이션으로 데이터베이스 스키마 변경 이력을 관리",
+    "Docker와 Jenkins로 CI 파이프라인을 구성해 배포 과정을 표준화",
+    "Webpack HMR 설정으로 개발 서버 핫리로드를 적용해 개발 이터레이션 속도 확보"
+  ],
+  "challenges": [
+    {
+      "problem": "개발 중 코드 변경 시마다 서버를 재시작해야 해 이터레이션 속도가 저하됨",
+      "solution": "webpack-hmr.config.js 설정으로 HMR을 도입해 재시작 없이 변경 사항을 반영"
+    }
+  ],
+  "diagrams": [
+    {
+      "title": "어드민 백엔드 구조 및 CI/CD 흐름",
+      "description": "NestJS 어드민 API가 TypeORM을 통해 데이터베이스와 통신하고, Docker/Jenkins로 빌드·배포되는 전체 흐름을 보여준다.",
+      "type": "architecture",
+      "mermaid": "flowchart TD\n  Dev[\"개발자\"] --> App[\"NestJS 어드민 API\"]\n  App --> ORM[\"TypeORM\"]\n  ORM --> DB[\"Database\"]\n  App -.-> HMR[\"Webpack HMR\"]\n  Dev --> CI[\"Jenkins CI\"]\n  CI --> Build[\"Docker 이미지 빌드\"]\n  Build --> Deploy[\"배포 서버\"]"
+    }
+  ],
+  "keywords": [
+    "nestjs",
+    "typeorm",
+    "docker",
+    "jenkins",
+    "webpack",
+    "admin-api",
+    "backend",
+    "nft-marketplace"
+  ],
+  "links": {
+    "repo": "https://github.com/jiyong-jeong/nft-marketplace-admin-backend-service-docs",
+    "homepage": null
+  },
+  "metrics": {
+    "stars": 0,
+    "forks": 0,
+    "watchers": 0,
+    "sizeKb": 0,
+    "openIssues": 0,
+    "languages": {},
+    "topics": [],
+    "primaryLanguage": null,
+    "license": null
+  },
+  "dates": {
+    "createdAt": "2026-07-26T05:16:17Z",
+    "updatedAt": "2026-07-26T05:16:26Z",
+    "pushedAt": "2026-07-26T05:16:21Z",
+    "analyzedAt": "2026-07-26T06:02:07.202Z"
+  },
+  "featured": false
+}

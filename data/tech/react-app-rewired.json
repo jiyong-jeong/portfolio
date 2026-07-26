@@ -1,0 +1,42 @@
+{
+  "slug": "react-app-rewired",
+  "name": "react-app-rewired",
+  "category": "tool",
+  "tagline": "Create React App의 내부 webpack 설정을 eject 없이 재정의하는 CLI 도구",
+  "definition": "react-app-rewired는 Create React App(CRA)으로 생성한 프로젝트의 webpack, babel 등 내부 빌드 설정을 eject 하지 않고 오버라이드할 수 있게 해주는 도구입니다. CRA는 설정 파일을 감추어 관리 편의성을 높이는 대신 커스터마이징 자유도를 낮췄는데, eject를 하면 숨겨진 설정이 모두 프로젝트로 드러나 되돌릴 수 없고 유지보수 부담이 커집니다. react-app-rewired는 react-scripts 명령을 감싸는 래퍼를 제공해, 이 문제를 피하면서 별도 설정 파일에서 필요한 부분만 수정할 수 있게 합니다.",
+  "concepts": [
+    {
+      "term": "config-overrides.js",
+      "description": "프로젝트 루트에 두는 설정 파일로, webpack 설정 객체를 받아 수정한 뒤 반환하는 함수를 작성한다."
+    },
+    {
+      "term": "eject",
+      "description": "CRA가 숨겨둔 webpack, babel 등 설정 파일을 프로젝트로 노출시키는 되돌릴 수 없는 명령으로, react-app-rewired는 이를 대체하는 목적을 가진다."
+    },
+    {
+      "term": "wrapper script",
+      "description": "react-scripts 대신 실행되어 원래 빌드 프로세스를 그대로 수행하면서 config-overrides.js의 수정 내용을 중간에 주입하는 실행 스크립트다."
+    },
+    {
+      "term": "customize-cra",
+      "description": "config-overrides.js 작성을 돕는 보조 라이브러리로, 자주 쓰이는 설정 변경(alias 추가, babel 플러그인 등)을 함수 형태로 조합할 수 있게 해준다."
+    }
+  ],
+  "whenToUse": [
+    "CRA 기반 프로젝트에서 webpack alias, 추가 babel 플러그인 등을 적용해야 할 때",
+    "eject 없이 빌드 설정을 부분적으로만 수정하고 CRA의 업데이트 편의성은 유지하고 싶을 때",
+    "특정 라이브러리가 요구하는 폴리필이나 로더 설정을 CRA 기본값에 추가해야 할 때"
+  ],
+  "example": {
+    "title": "config-overrides.js 기본 형태",
+    "language": "javascript",
+    "code": "module.exports = function override(config, env) {\n  // webpack 설정 객체를 직접 수정\n  config.resolve.alias = {\n    ...config.resolve.alias,\n    '@components': 'src/components',\n  };\n\n  return config; // 수정된 설정을 반드시 반환\n};",
+    "description": "webpack 설정에 경로 alias를 추가하는 예시로, react-app-rewired가 빌드 시 이 함수를 호출해 반환된 설정을 사용합니다."
+  },
+  "pitfalls": [
+    "package.json의 scripts를 react-scripts에서 react-app-rewired로 바꾸지 않으면 오버라이드가 적용되지 않는다",
+    "CRA 메이저 버전이 바뀌면 내부 설정 구조가 달라져 config-overrides.js가 깨질 수 있다",
+    "CRA를 완전히 대체하는 것이 아니라 감싸는 구조라서, 근본적으로 다른 빌드 구조가 필요하면 한계가 있다"
+  ],
+  "generatedAt": "2026-07-26T06:12:07.585Z"
+}

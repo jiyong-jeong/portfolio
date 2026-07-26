@@ -1,0 +1,51 @@
+{
+  "slug": "postgresql",
+  "name": "PostgreSQL",
+  "category": "database",
+  "tagline": "관계형 데이터를 안정적으로 저장·조회하는 오픈소스 객체-관계형 데이터베이스",
+  "definition": "PostgreSQL은 SQL 표준을 폭넓게 지원하는 오픈소스 관계형 데이터베이스 관리 시스템(RDBMS)이다. 트랜잭션 무결성과 동시성 제어를 보장하면서도, JSON, 배열, 사용자 정의 타입 등 비정형 데이터까지 다룰 수 있도록 확장성을 갖춘 것이 특징이다. 단순 CRUD 저장소를 넘어 LISTEN/NOTIFY 같은 메시징 기능, materialized view 같은 분석 도구, 제약 조건 기반 정합성 보장까지 하나의 엔진 안에서 제공하려는 목적으로 발전해왔다. 그 결과 트랜잭션 처리, 분석 쿼리, 이벤트 기반 워커의 상태 저장소 등 다양한 용도로 널리 쓰인다.",
+  "concepts": [
+    {
+      "term": "ACID Transaction",
+      "description": "여러 작업을 하나의 논리적 단위로 묶어 원자성과 일관성을 보장하며, 중간에 실패하면 전체를 되돌린다."
+    },
+    {
+      "term": "Constraint",
+      "description": "UNIQUE, FOREIGN KEY, CHECK 등으로 데이터의 무결성 규칙을 DB 레벨에서 강제해 애플리케이션 버그로부터 데이터를 보호한다."
+    },
+    {
+      "term": "MVCC (Multi-Version Concurrency Control)",
+      "description": "읽기와 쓰기가 서로 잠금 없이 동시에 진행되도록 여러 버전의 행을 관리하는 동시성 제어 방식이다."
+    },
+    {
+      "term": "LISTEN/NOTIFY",
+      "description": "특정 채널에 이벤트를 발행(NOTIFY)하고 구독 중인 클라이언트(LISTEN)가 이를 실시간으로 수신하는 경량 pub/sub 메커니즘이다."
+    },
+    {
+      "term": "Materialized View",
+      "description": "쿼리 결과를 실제 테이블처럼 저장해두고 필요할 때 갱신하는 뷰로, 반복되는 집계·분석 쿼리의 응답 속도를 높인다."
+    },
+    {
+      "term": "Index",
+      "description": "특정 컬럼에 대한 조회 속도를 높이기 위한 별도 자료구조로, B-tree 외에도 GIN, GiST 등 다양한 종류를 지원한다."
+    }
+  ],
+  "whenToUse": [
+    "트랜잭션 무결성과 제약 조건으로 데이터 정합성을 엄격히 지켜야 할 때",
+    "이벤트 처리 진행 상태(offset, cursor)를 안전하게 영속화해야 할 때",
+    "집계·분석성 쿼리와 materialized view로 리포팅을 함께 처리하고 싶을 때",
+    "LISTEN/NOTIFY로 별도 메시지 브로커 없이 가벼운 이벤트 알림을 구현하고 싶을 때"
+  ],
+  "example": {
+    "title": "UNIQUE 제약으로 중복 지급 방지하기",
+    "language": "sql",
+    "code": "-- 보상 지급 결과를 저장하는 테이블\nCREATE TABLE reward_payouts (\n  id BIGSERIAL PRIMARY KEY,\n  round_id BIGINT NOT NULL,\n  user_id BIGINT NOT NULL,\n  amount NUMERIC NOT NULL,\n  paid_at TIMESTAMPTZ DEFAULT now(),\n  UNIQUE (round_id, user_id)\n);\n\n-- 동일 라운드에 같은 유저가 두 번 지급되면 에러 발생\nINSERT INTO reward_payouts (round_id, user_id, amount)\nVALUES (1001, 55, 250)\nON CONFLICT (round_id, user_id) DO NOTHING;",
+    "description": "UNIQUE 제약과 ON CONFLICT 구문을 활용해 동일 이벤트에 대한 중복 처리를 DB 레벨에서 막는 예시이다."
+  },
+  "pitfalls": [
+    "커넥션을 매번 새로 열면 오버헤드가 크므로 커넥션 풀링 없이 사용하면 병목이 생긴다",
+    "인덱스를 무분별하게 추가하면 조회는 빨라져도 쓰기 성능이 저하될 수 있다",
+    "긴 트랜잭션이나 유휴 커넥션이 오래 남으면 VACUUM이 지연되어 성능이 저하될 수 있다"
+  ],
+  "generatedAt": "2026-07-26T06:07:56.868Z"
+}

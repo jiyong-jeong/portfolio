@@ -1,0 +1,46 @@
+{
+  "slug": "klaytn",
+  "name": "Klaytn",
+  "category": "blockchain",
+  "tagline": "빠른 확정 속도와 EVM 호환성을 갖춰 기업 서비스에 적합하도록 설계된 퍼블릭 블록체인 플랫폼",
+  "definition": "Klaytn은 이더리움 가상머신(EVM)과 호환되면서도 실제 서비스 환경에서 쓸 수 있는 처리 속도와 확정성을 목표로 만들어진 퍼블릭 블록체인 플랫폼이다. 일반 퍼블릭체인이 겪는 느린 블록 생성과 처리량 한계를 신뢰 가능한 소수 기관 중심의 합의 구조로 보완해, 결제·게임·NFT 등 실서비스에 바로 붙일 수 있는 인프라를 지향한다. 스마트컨트랙트 언어와 개발 도구는 이더리움 생태계를 그대로 재사용할 수 있도록 설계되어, 기존 EVM 개발 경험을 가진 팀이 낮은 진입장벽으로 합류할 수 있다.",
+  "concepts": [
+    {
+      "term": "EVM Compatibility",
+      "description": "이더리움 가상머신과 호환되어 Solidity로 작성한 스마트컨트랙트와 기존 이더리움 개발 도구를 그대로 사용할 수 있다."
+    },
+    {
+      "term": "Governance Council",
+      "description": "신뢰할 수 있는 소수의 기관 참여자가 검증 노드를 운영하며 네트워크 운영과 정책 결정에 관여하는 거버넌스 구조다."
+    },
+    {
+      "term": "BFT Consensus & Instant Finality",
+      "description": "비잔틴 장애 허용(BFT) 계열 합의 알고리즘을 사용해 블록이 생성되는 즉시 확정되며, 별도의 재구성(fork) 없이 트랜잭션이 확정된다."
+    },
+    {
+      "term": "KLAY",
+      "description": "네트워크의 기본 통화로, 트랜잭션 수수료(가스) 지불과 스마트컨트랙트 실행 자원 소비에 사용된다."
+    },
+    {
+      "term": "Node Roles (CN/EN)",
+      "description": "합의와 블록 생성을 담당하는 컨센서스 노드와, 사용자·서비스가 붙어 트랜잭션을 조회·전송하는 엔드포인트 노드로 역할이 분리되어 있다."
+    }
+  ],
+  "whenToUse": [
+    "EVM 호환 스마트컨트랙트를 운영하면서 빠른 처리 속도와 즉시 확정성이 필요할 때",
+    "여러 체인에 걸친 이벤트를 처리하는 멀티체인 서비스에서 대상 체인 중 하나로 연동할 때",
+    "결제·NFT처럼 트랜잭션 되돌림 위험을 최소화해야 하는 서비스에 적합할 때"
+  ],
+  "example": {
+    "title": "JSON-RPC로 최신 블록 번호 조회",
+    "language": "bash",
+    "code": "curl -X POST https://public-en.node.url \\\n  -H \"Content-Type: application/json\" \\\n  -d '{\n    \"jsonrpc\": \"2.0\",\n    \"method\": \"klay_blockNumber\",\n    \"params\": [],\n    \"id\": 1\n  }'\n# EVM 호환 체인이므로 eth_blockNumber 형태의 표준 JSON-RPC 메서드도 함께 지원한다",
+    "description": "엔드포인트 노드에 JSON-RPC 요청을 보내 현재 블록 높이를 조회하는 가장 기본적인 방식이다."
+  },
+  "pitfalls": [
+    "이더리움과 대부분 호환되지만 일부 API나 트랜잭션 필드는 이더리움과 완전히 동일하지 않다",
+    "네이티브 토큰 단위와 가스 체계가 KLAY 기준이라 이더리움 도구 설정을 그대로 옮기면 값이 어긋날 수 있다",
+    "검증 노드가 소수 기관 중심으로 구성되어 완전 탈중앙화 체인과는 신뢰 모델이 다르다"
+  ],
+  "generatedAt": "2026-07-26T06:12:45.746Z"
+}

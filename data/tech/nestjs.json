@@ -1,0 +1,51 @@
+{
+  "slug": "nestjs",
+  "name": "NestJS",
+  "category": "framework",
+  "tagline": "Node.js 위에서 구조화된 백엔드 서버를 만들도록 돕는 서버사이드 프레임워크",
+  "definition": "NestJS는 Express나 Fastify 같은 HTTP 서버 위에 계층 구조와 규칙을 얹은 Node.js 백엔드 프레임워크입니다. Angular에서 영향을 받은 모듈-컨트롤러-서비스 구조와 의존성 주입(Dependency Injection)을 기본 제공하여, 순수 Express로 개발할 때 팀마다 제각각 정해야 했던 폴더 구조·계층 분리·확장 방식을 표준화합니다. TypeScript를 우선적으로 지원하며, REST API뿐 아니라 마이크로서비스, 스케줄링, 큐 처리 등 다양한 백엔드 요구를 같은 아키텍처 패턴으로 다룰 수 있게 해줍니다.",
+  "concepts": [
+    {
+      "term": "Module",
+      "description": "관련된 컨트롤러와 프로바이더를 하나의 단위로 묶는 구조로, 애플리케이션을 기능별로 조직화하는 기본 단위입니다."
+    },
+    {
+      "term": "Controller",
+      "description": "HTTP 요청을 받아 라우팅하고 응답을 반환하는 역할을 담당하며, 실제 로직은 서비스에 위임합니다."
+    },
+    {
+      "term": "Provider (Service)",
+      "description": "비즈니스 로직을 담는 클래스로, 컨트롤러나 다른 프로바이더에 주입되어 재사용됩니다."
+    },
+    {
+      "term": "Dependency Injection",
+      "description": "클래스가 필요로 하는 의존 객체를 직접 생성하지 않고 프레임워크가 주입해주는 방식으로, 테스트와 모듈 간 결합도 관리를 쉽게 합니다."
+    },
+    {
+      "term": "Decorator",
+      "description": "@Controller, @Injectable 같은 TypeScript 데코레이터로 클래스나 메서드의 역할과 메타데이터를 선언적으로 표시합니다."
+    },
+    {
+      "term": "Middleware / Guard / Interceptor",
+      "description": "요청 처리 파이프라인에 인증, 로깅, 응답 변환 같은 공통 로직을 끼워 넣는 확장 지점들입니다."
+    }
+  ],
+  "whenToUse": [
+    "여러 개발자가 함께 작업할 때 일관된 폴더·계층 구조가 필요한 경우",
+    "REST API 외에 스케줄링, 백그라운드 워커, 마이크로서비스로 확장 가능성이 있는 경우",
+    "TypeScript 기반으로 타입 안정성을 갖춘 백엔드를 구축하고 싶은 경우",
+    "의존성 주입을 통해 테스트하기 쉬운 구조로 서비스를 설계하고 싶은 경우"
+  ],
+  "example": {
+    "title": "기본 컨트롤러와 서비스 구성",
+    "language": "typescript",
+    "code": "// app.service.ts\n@Injectable()\nexport class AppService {\n  getHello(): string {\n    return 'Hello NestJS';\n  }\n}\n\n// app.controller.ts\n@Controller()\nexport class AppController {\n  constructor(private readonly appService: AppService) {}\n\n  @Get()\n  getHello(): string {\n    return this.appService.getHello();\n  }\n}",
+    "description": "컨트롤러가 HTTP 요청을 받으면, 의존성 주입된 서비스에 로직 처리를 위임하고 결과를 응답으로 반환합니다."
+  },
+  "pitfalls": [
+    "모듈 간 프로바이더를 공유하려면 export/import를 명시해야 하는 규칙을 놓치기 쉽습니다.",
+    "데코레이터와 DI 개념이 익숙하지 않으면 초반 학습 곡선이 Express보다 가파릅니다.",
+    "구조가 정해져 있는 만큼 작은 프로젝트에서는 과한 보일러플레이트로 느껴질 수 있습니다."
+  ],
+  "generatedAt": "2026-07-26T06:07:11.495Z"
+}

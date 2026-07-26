@@ -1,0 +1,46 @@
+{
+  "slug": "openzeppelin",
+  "name": "OpenZeppelin",
+  "category": "blockchain",
+  "tagline": "감사받은 표준 스마트 컨트랙트를 제공하는 오픈소스 솔리디티 라이브러리",
+  "definition": "OpenZeppelin은 이더리움 등 EVM 기반 블록체인에서 스마트 컨트랙트를 개발할 때 사용하는 오픈소스 라이브러리로, ERC20·ERC721 같은 토큰 표준과 접근 제어, 보안 유틸리티를 재사용 가능한 형태로 제공한다. 스마트 컨트랙트는 배포 후 코드 수정이 사실상 불가능하고 버그가 곧바로 자산 손실로 이어질 수 있기 때문에, 검증되지 않은 코드를 매번 새로 작성하는 위험을 줄이기 위해 만들어졌다. 커뮤니티와 보안 전문가들의 감사를 거친 구현체를 제공함으로써 개발자가 표준 로직을 직접 짜지 않고도 안전하게 상속·조합해 쓸 수 있게 한다.",
+  "concepts": [
+    {
+      "term": "Standard Token Contracts",
+      "description": "ERC20(대체 가능 토큰), ERC721(NFT), ERC1155 등 이더리움 표준 인터페이스를 구현한 기본 컨트랙트를 제공한다."
+    },
+    {
+      "term": "Inheritance-based Composition",
+      "description": "필요한 기능을 가진 컨트랙트를 상속받아 조합하는 방식으로 개발하며, 직접 로직을 재작성하지 않아도 된다."
+    },
+    {
+      "term": "Access Control",
+      "description": "Ownable, Roles 등 특정 주소만 함수를 실행할 수 있도록 권한을 제한하는 모듈을 제공한다."
+    },
+    {
+      "term": "Upgradeable Contracts",
+      "description": "프록시 패턴을 활용해 배포 후에도 로직을 교체할 수 있는 업그레이드 가능 컨트랙트 버전을 별도로 제공한다."
+    },
+    {
+      "term": "Security Utilities",
+      "description": "재진입 공격 방지(ReentrancyGuard), 안전한 수학 연산 등 흔한 취약점을 막기 위한 유틸리티 모듈을 포함한다."
+    }
+  ],
+  "whenToUse": [
+    "검증된 토큰(ERC20/ERC721) 표준 구현체를 직접 짜지 않고 빠르게 시작하고 싶을 때",
+    "감사를 거친 코드로 보안 리스크를 줄이고 싶을 때",
+    "접근 제어, 일시정지 등 컨트랙트에 공통적으로 필요한 기능을 표준 방식으로 구현하고 싶을 때"
+  ],
+  "example": {
+    "title": "OpenZeppelin ERC20 상속 예시",
+    "language": "solidity",
+    "code": "// SPDX-License-Identifier: MIT\npragma solidity ^0.8.20;\n\nimport \"@openzeppelin/contracts/token/ERC20/ERC20.sol\";\nimport \"@openzeppelin/contracts/access/Ownable.sol\";\n\ncontract MyToken is ERC20, Ownable {\n    constructor(uint256 initialSupply)\n        ERC20(\"MyToken\", \"MTK\")\n        Ownable(msg.sender)\n    {\n        _mint(msg.sender, initialSupply);\n    }\n\n    function mint(address to, uint256 amount) public onlyOwner {\n        _mint(to, amount);\n    }\n}",
+    "description": "ERC20과 Ownable을 상속받아, 전송·잔액 조회 같은 표준 토큰 기능과 소유자만 추가 발행할 수 있는 권한 제어를 동시에 갖춘 토큰 컨트랙트를 구현한다."
+  },
+  "pitfalls": [
+    "라이브러리 컨트랙트를 그대로 배포하지 말고 상속해서 커스터마이징해야 한다",
+    "업그레이드 가능 버전과 일반 버전의 임포트 경로·초기화 방식이 달라 혼용하면 오류가 난다",
+    "설치한 버전에 따라 함수 시그니처나 생성자 인자가 달라질 수 있어 문서와 버전을 맞춰 확인해야 한다"
+  ],
+  "generatedAt": "2026-07-26T06:15:09.354Z"
+}

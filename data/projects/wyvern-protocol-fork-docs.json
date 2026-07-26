@@ -1,0 +1,67 @@
+{
+  "slug": "wyvern-protocol-fork-docs",
+  "repo": "wyvern-protocol-fork-docs",
+  "title": "Wyvern 프로토콜 포크 구조 문서화",
+  "summary": "Wyvern Protocol 기반 Solidity 스마트컨트랙트 포크 저장소의 구조와 배포 체계를 정리한 공개 문서",
+  "description": "이 프로젝트는 NFT 거래에 널리 쓰인 Wyvern Protocol을 포크한 Solidity 저장소의 구조를 설명하는 공개 문서입니다. Hardhat 기반 개발 환경 위에서 커스텀 태스크, 헬퍼 함수, 배포 스크립트를 어떻게 구성했는지를 다룹니다. 실제 소스 코드 대신 프로젝트의 구조와 개념을 요약해 외부에 공유하기 위한 목적의 저장소입니다. 상세한 구현 내용보다는 전체적인 프로젝트 구성 방식을 파악하는 데 초점을 맞추고 있습니다.",
+  "category": "Web3",
+  "role": "Wyvern Protocol 포크 저장소의 구조를 정리하고, Hardhat 기반 커스텀 태스크·배포 스크립트 구성을 문서화함.",
+  "techStack": [
+    {
+      "name": "Solidity",
+      "category": "language",
+      "usage": "스마트컨트랙트 구현 언어"
+    },
+    {
+      "name": "Hardhat",
+      "category": "framework",
+      "usage": "컨트랙트 컴파일, 테스트, 배포를 위한 개발 프레임워크"
+    }
+  ],
+  "highlights": [
+    "Wyvern Protocol을 포크하여 Solidity + Hardhat 환경으로 구성",
+    "커스텀 Hardhat 태스크와 헬퍼 함수로 반복 작업을 정리",
+    "배포 스크립트를 별도로 분리해 배포 프로세스를 관리"
+  ],
+  "challenges": [],
+  "diagrams": [
+    {
+      "title": "프로젝트 구조 개요",
+      "description": "Wyvern 프로토콜 포크 저장소의 주요 구성 요소와 흐름을 보여줍니다.",
+      "type": "architecture",
+      "mermaid": "flowchart TD\n  A[\"Wyvern Protocol Fork\"] --> B[\"Solidity 컨트랙트\"]\n  A --> C[\"Hardhat 설정\"]\n  C --> D[\"커스텀 태스크\"]\n  C --> E[\"헬퍼 함수\"]\n  C --> F[\"배포 스크립트\"]\n  F --> G[\"네트워크 배포\"]"
+    }
+  ],
+  "keywords": [
+    "wyvern",
+    "solidity",
+    "hardhat",
+    "smart-contract",
+    "nft",
+    "web3",
+    "fork",
+    "deployment"
+  ],
+  "links": {
+    "repo": "https://github.com/jiyong-jeong/wyvern-protocol-fork-docs",
+    "homepage": null
+  },
+  "metrics": {
+    "stars": 0,
+    "forks": 0,
+    "watchers": 0,
+    "sizeKb": 0,
+    "openIssues": 0,
+    "languages": {},
+    "topics": [],
+    "primaryLanguage": null,
+    "license": null
+  },
+  "dates": {
+    "createdAt": "2026-07-26T05:31:26Z",
+    "updatedAt": "2026-07-26T05:31:36Z",
+    "pushedAt": "2026-07-26T05:31:31Z",
+    "analyzedAt": "2026-07-26T05:40:28.173Z"
+  },
+  "featured": false
+}

@@ -1,0 +1,72 @@
+{
+  "slug": "legacy-nft-worker-docs",
+  "repo": "legacy-nft-worker-docs",
+  "title": "NFT 이미지 처리 및 S3 업로드 워커",
+  "summary": "레거시 NFT 프로젝트를 위해 만든 순수 Node.js 워커로, 이미지 처리와 S3 업로드 기능을 자동화합니다.",
+  "description": "legacy-nft-worker-docs는 레거시 NFT 프로젝트에서 사용된 백엔드 워커 스크립트에 대한 공개 문서 레포지토리입니다. 이 워커는 별도의 프레임워크 없이 순수 Node.js로 작성되어 이미지 관련 유틸리티 처리와 AWS S3 업로드 기능을 수행합니다. S3 업로드 로직은 전용 유틸 모듈로 분리되어 재사용 가능하도록 구성되어 있으며, 이미지 유틸리티에는 테스트 코드가 포함되어 동작을 검증합니다. 원본 소스코드가 아닌 프로젝트의 구조와 노하우를 공유하기 위한 문서화 레포지토리 성격을 가집니다.",
+  "category": "백엔드",
+  "role": "워커 스크립트의 설계 및 구현을 담당했으며, S3 업로드 유틸리티와 이미지 처리 유틸리티, 테스트 코드를 작성했습니다.",
+  "techStack": [
+    {
+      "name": "Node.js",
+      "category": "backend",
+      "usage": "외부 프레임워크 없이 순수 Node.js로 워커 스크립트를 구현"
+    },
+    {
+      "name": "JavaScript",
+      "category": "language",
+      "usage": "워커 및 유틸리티 모듈 작성 언어"
+    },
+    {
+      "name": "AWS S3",
+      "category": "infra",
+      "usage": "이미지 파일 업로드를 위한 스토리지로 사용"
+    }
+  ],
+  "highlights": [
+    "외부 프레임워크 의존 없이 순수 Node.js만으로 워커 스크립트를 구현",
+    "S3 업로드 기능을 전용 유틸리티 모듈로 분리해 재사용성 확보",
+    "이미지 처리 유틸리티에 대한 테스트 코드를 함께 작성해 동작을 검증"
+  ],
+  "challenges": [],
+  "diagrams": [
+    {
+      "title": "워커 처리 흐름",
+      "description": "워커가 이미지를 처리한 뒤 S3 업로드 유틸을 통해 AWS S3에 저장하는 기본 흐름을 보여줍니다.",
+      "type": "dataflow",
+      "mermaid": "flowchart TD\n  A[\"입력 이미지\"] --> B[\"이미지 유틸 처리\"]\n  B --> C[\"S3 업로드 유틸\"]\n  C --> D[\"AWS S3 버킷\"]\n  E[\"테스트 코드\"] -.-> B"
+    }
+  ],
+  "keywords": [
+    "nodejs",
+    "javascript",
+    "s3",
+    "aws",
+    "image-processing",
+    "worker",
+    "nft",
+    "automation"
+  ],
+  "links": {
+    "repo": "https://github.com/jiyong-jeong/legacy-nft-worker-docs",
+    "homepage": null
+  },
+  "metrics": {
+    "stars": 0,
+    "forks": 0,
+    "watchers": 0,
+    "sizeKb": 0,
+    "openIssues": 0,
+    "languages": {},
+    "topics": [],
+    "primaryLanguage": null,
+    "license": null
+  },
+  "dates": {
+    "createdAt": "2026-07-26T05:28:11Z",
+    "updatedAt": "2026-07-26T05:28:18Z",
+    "pushedAt": "2026-07-26T05:28:14Z",
+    "analyzedAt": "2026-07-26T05:53:04.673Z"
+  },
+  "featured": false
+}

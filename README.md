@@ -37,6 +37,7 @@ GitHub API ──▶ 레포 목록 + pushed_at
 portfolio.config.json      대상 계정, 제외 목록, 분석 옵션, 프로필
 data/
   projects/<repo>.json     레포별 분석 결과 (사이트가 이걸 읽어 렌더링)
+  tech/<slug>.json         기술별 학습용 개요 (정의·핵심 개념·예시·함정)
   state.json               레포별 마지막 반영 시각 — 갱신 판단의 기준
   profile.json, meta.json  설정에서 생성되는 사이트 메타데이터
 scripts/
@@ -44,12 +45,13 @@ scripts/
   lib/github.mjs           GitHub API 클라이언트 (gh 토큰 자동 사용)
   lib/context.mjs          README·트리·매니페스트 수집
   lib/analyze.mjs          claude 호출 + 출력 검증/정규화
+  lib/tech-doc.mjs         기술 학습용 개요 생성 (기술당 1회, 이후 재사용)
   lib/mermaid-check.mjs    생성된 다이어그램 문법 검사
   validate-diagrams.mjs    저장된 다이어그램 일괄 검사
   run-sync.sh              스케줄러 엔트리 (pull → sync → commit → push)
   install-scheduler.sh     launchd 등록
 src/
-  app/                     홈 · /projects/[slug] · /about
+  app/                     홈 · /projects/[slug] · /tech/[slug] · /about
   components/Mermaid.tsx   클라이언트 사이드 다이어그램 렌더러 (테마 연동)
   lib/data.ts              빌드 타임 데이터 로더 + 기술스택 집계
 ```
@@ -105,6 +107,18 @@ launchd 가 깨어난 직후 한 번 실행합니다.
 | `analysis.model` | 분석에 쓸 모델 (`sonnet`, `opus` 등) |
 | `analysis.maxAttempts` | 스키마 검증 실패 시 재시도 횟수 |
 | `profile` | 사이트에 표시할 이름·소개·연락처 |
+
+## 기술 페이지 (`/tech/<slug>`)
+
+기술 배지를 누르면 열리는 페이지로, 두 층으로 구성됩니다.
+
+1. **기술 개요** — `data/tech/<slug>.json`. 정의, 핵심 개념, 사용 시점, 최소 예시 코드,
+   흔한 함정. 레포 내용과 무관한 일반 지식이라 **기술당 한 번만 생성**하고 이후 재사용합니다.
+   (`npm run sync:force` 로 다시 만들 수 있습니다)
+2. **프로젝트별 활용 방식** — 각 프로젝트의 `techStack[].usage` 를 모아 보여줍니다.
+   이쪽은 레포가 바뀌면 함께 갱신됩니다.
+
+기술 개요가 아직 없으면 해당 섹션만 숨기고 나머지는 정상 동작합니다.
 
 ## 데이터 품질에 대해
 

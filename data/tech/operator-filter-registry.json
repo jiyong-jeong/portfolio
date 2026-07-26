@@ -1,0 +1,50 @@
+{
+  "slug": "operator-filter-registry",
+  "name": "operator-filter-registry",
+  "category": "blockchain",
+  "tagline": "NFT 전송 시 로열티를 지불하지 않는 마켓플레이스와의 거래를 온체인에서 차단하는 필터링 레지스트리",
+  "definition": "OperatorFilterRegistry는 OpenSea가 만든 온체인 레지스트리 컨트랙트로, NFT 컬렉션이 특정 마켓플레이스나 컨트랙트(오퍼레이터)를 통한 transferFrom·approve 호출을 선택적으로 차단할 수 있게 해준다. 일부 마켓플레이스가 크리에이터 로열티를 지불하지 않고 NFT 거래를 중개하는 문제에 대응하기 위해 만들어졌다. NFT 컨트랙트는 레지스트리를 참조하는 베이스 컨트랙트를 상속해 전송 관련 함수에 필터링 검사를 추가하고, 레지스트리에 등록된 차단 목록에 해당하는 오퍼레이터의 요청을 거부한다.",
+  "concepts": [
+    {
+      "term": "OperatorFilterer",
+      "description": "NFT 컨트랙트가 상속하는 베이스 컨트랙트로, transferFrom·approve 같은 함수에 필터링 검사 로직을 주입한다."
+    },
+    {
+      "term": "Registry",
+      "description": "차단되거나 허용된 오퍼레이터 주소 목록을 온체인에 저장하고 조회할 수 있게 해주는 중앙 컨트랙트."
+    },
+    {
+      "term": "Subscription",
+      "description": "개별 컬렉션이 목록을 직접 관리하지 않고, 큐레이터가 관리하는 필터 목록을 구독해 업데이트를 자동으로 반영받는 방식."
+    },
+    {
+      "term": "Curated filter list",
+      "description": "로열티를 지불하지 않는 마켓플레이스 등의 주소를 모아 관리하는 큐레이터 목록으로, 구독을 통해 여러 컬렉션에 공유된다."
+    },
+    {
+      "term": "onlyAllowedOperator modifier",
+      "description": "전송·승인 함수를 호출한 오퍼레이터가 레지스트리에서 차단 상태인지 검사하는 함수 수정자."
+    },
+    {
+      "term": "CodeHash filtering",
+      "description": "주소뿐 아니라 오퍼레이터 컨트랙트의 코드 해시로도 차단할 수 있는 기능으로, 새 주소로 우회 배포하는 것을 방지하기 위한 보완 장치다."
+    }
+  ],
+  "whenToUse": [
+    "크리에이터 로열티를 지불하지 않는 마켓플레이스와의 거래를 컨트랙트 단에서 막고 싶을 때",
+    "차단 목록을 직접 관리하지 않고 큐레이터가 관리하는 목록을 구독해 유지보수 부담을 줄이고 싶을 때",
+    "표준 ERC-721/1155 컨트랙트에 최소한의 코드 변경으로 오퍼레이터 필터링을 추가하고 싶을 때"
+  ],
+  "example": {
+    "title": "DefaultOperatorFilterer를 상속한 ERC-721 컨트랙트",
+    "language": "solidity",
+    "code": "// SPDX-License-Identifier: MIT\npragma solidity ^0.8.13;\n\nimport \"operator-filter-registry/src/DefaultOperatorFilterer.sol\";\nimport \"@openzeppelin/contracts/token/ERC721/ERC721.sol\";\n\ncontract MyNFT is ERC721, DefaultOperatorFilterer {\n    constructor() ERC721(\"MyNFT\", \"MNFT\") {}\n\n    function transferFrom(address from, address to, uint256 tokenId)\n        public\n        override\n        onlyAllowedOperator(from)\n    {\n        super.transferFrom(from, to, tokenId);\n    }\n\n    function approve(address operator, uint256 tokenId)\n        public\n        override\n        onlyAllowedOperator(msg.sender)\n    {\n        super.approve(operator, tokenId);\n    }\n}",
+    "description": "컨트랙트 배포 시 기본 필터 목록을 구독하고, transferFrom·approve 호출 시 오퍼레이터가 차단 목록에 없는지 검사한다."
+  },
+  "pitfalls": [
+    "마켓플레이스가 새 컨트랙트 주소로 재배포하면 기존 차단 목록을 우회할 수 있다",
+    "필터 구독 설정은 보통 생성자에서 처리되며 이후 변경 범위가 제한될 수 있다",
+    "정책이나 법적 상황에 따라 큐레이터 목록의 실효성과 운영 여부가 달라질 수 있다"
+  ],
+  "generatedAt": "2026-07-26T06:13:36.113Z"
+}

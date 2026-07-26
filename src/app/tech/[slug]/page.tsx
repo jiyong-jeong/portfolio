@@ -2,7 +2,8 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 
-import { getTechDetail, getTechDetails } from "@/lib/data";
+import TechPrimer from "@/components/TechPrimer";
+import { getTechDetail, getTechDetails, getTechDoc } from "@/lib/data";
 import { projectCategoryStyle, techCategoryLabel, techStyle } from "@/lib/tech";
 
 type Params = { slug: string };
@@ -16,7 +17,9 @@ export async function generateMetadata({ params }: { params: Promise<Params> }):
   const tech = getTechDetail(slug);
   if (!tech) return { title: "기술을 찾을 수 없습니다" };
 
-  const description = `${tech.name} 활용 사례 — 프로젝트 ${tech.count}개에서의 사용 방식 정리`;
+  const doc = getTechDoc(slug);
+  const description =
+    doc?.tagline ?? `${tech.name} 활용 사례 — 프로젝트 ${tech.count}개에서의 사용 방식 정리`;
   return {
     title: `${tech.name} 활용 사례`,
     description,
@@ -38,6 +41,8 @@ export default async function TechPage({ params }: { params: Promise<Params> }) 
   const { slug } = await params;
   const tech = getTechDetail(slug);
   if (!tech) notFound();
+
+  const doc = getTechDoc(slug);
 
   return (
     <div className="mx-auto max-w-4xl px-5 py-12">
@@ -62,10 +67,36 @@ export default async function TechPage({ params }: { params: Promise<Params> }) 
           프로젝트 <strong className="font-semibold text-ink">{tech.count}개</strong>에서
           사용했습니다. 각 프로젝트에서 어떤 역할로 썼는지 아래에 정리했습니다.
         </p>
+
+        <nav className="mt-5 flex flex-wrap gap-2 text-sm">
+          {doc && (
+            <a
+              href="#overview"
+              className="rounded-lg border border-line bg-elevated px-3 py-1.5 text-muted transition hover:border-line-strong hover:text-ink"
+            >
+              기술 개요
+            </a>
+          )}
+          <a
+            href="#usage"
+            className="rounded-lg border border-line bg-elevated px-3 py-1.5 text-muted transition hover:border-line-strong hover:text-ink"
+          >
+            프로젝트별 활용 {tech.count}
+          </a>
+        </nav>
       </header>
 
-      <section className="mt-10">
+      {doc && (
+        <div id="overview" className="scroll-mt-20">
+          <TechPrimer doc={doc} />
+        </div>
+      )}
+
+      <section id="usage" className="mt-12 scroll-mt-20">
         <h2 className="text-xl font-bold tracking-tight">프로젝트별 활용 방식</h2>
+        <p className="mt-1.5 text-sm text-muted">
+          위 개념이 실제 프로젝트에서 어떻게 쓰였는지 보여줍니다.
+        </p>
 
         <ol className="mt-6 space-y-4">
           {tech.usages.map(({ project, usage }, i) => (

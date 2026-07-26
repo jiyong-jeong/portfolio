@@ -1,0 +1,46 @@
+{
+  "slug": "cert-manager",
+  "name": "cert-manager",
+  "category": "devops",
+  "tagline": "쿠버네티스 클러스터에서 TLS 인증서 발급과 갱신을 자동화하는 컨트롤러",
+  "definition": "cert-manager는 쿠버네티스 위에서 동작하는 컨트롤러로, Let's Encrypt 같은 인증 기관이나 내부 CA로부터 TLS 인증서를 자동으로 발급받고 만료 전에 갱신해 Secret으로 관리해준다. 원래 클러스터 운영자가 수동으로 인증서를 발급받아 파일을 복사하고 만료일을 챙겨 갱신하던 반복 작업을 없애기 위해 만들어졌다. 인증서 요청, 검증, 발급, 갱신의 전체 생명주기를 쿠버네티스 리소스로 선언적으로 다루게 해준다.",
+  "concepts": [
+    {
+      "term": "Issuer / ClusterIssuer",
+      "description": "인증서를 실제로 발급해줄 CA(예: Let's Encrypt, 사내 PKI)의 접속 정보와 인증 방식을 정의하는 리소스이다. Issuer는 특정 네임스페이스에서만, ClusterIssuer는 클러스터 전역에서 사용된다."
+    },
+    {
+      "term": "Certificate",
+      "description": "어떤 도메인에 대해 어떤 Issuer를 통해 인증서를 발급받고 어느 Secret에 저장할지 선언하는 리소스로, cert-manager가 이를 보고 자동으로 발급·갱신 작업을 수행한다."
+    },
+    {
+      "term": "ACME Challenge",
+      "description": "Let's Encrypt처럼 ACME 프로토콜을 쓰는 CA가 도메인 소유권을 검증하는 절차로, HTTP-01(웹 경로 응답)이나 DNS-01(TXT 레코드 등록) 방식이 흔히 쓰인다."
+    },
+    {
+      "term": "CertificateRequest",
+      "description": "Certificate 리소스로부터 파생되어 실제 CSR(인증서 서명 요청)을 담고 있는 중간 리소스로, Issuer가 이를 처리해 서명된 인증서를 반환한다."
+    },
+    {
+      "term": "자동 갱신(Auto Renewal)",
+      "description": "인증서 만료 시점이 가까워지면 cert-manager가 별도 개입 없이 새 인증서를 발급받아 대상 Secret을 갱신하는 동작이다."
+    }
+  ],
+  "whenToUse": [
+    "다수의 서비스나 도메인에 대해 TLS 인증서를 수동 관리하지 않고 자동화하고 싶을 때",
+    "Let's Encrypt 등 외부 CA와 사내 CA를 동일한 방식으로 쿠버네티스에서 다루고 싶을 때",
+    "Ingress나 서비스 메시에 TLS를 붙이면서 만료로 인한 장애를 예방하고 싶을 때"
+  ],
+  "example": {
+    "title": "ClusterIssuer와 Certificate 정의",
+    "language": "yaml",
+    "code": "apiVersion: cert-manager.io/v1\nkind: ClusterIssuer\nmetadata:\n  name: letsencrypt-prod\nspec:\n  acme:\n    server: https://acme-v02.api.letsencrypt.org/directory\n    email: admin@example.com\n    privateKeySecretRef:\n      name: letsencrypt-prod-key\n    solvers:\n      - http01:\n          ingress:\n            class: nginx\n---\napiVersion: cert-manager.io/v1\nkind: Certificate\nmetadata:\n  name: example-com-tls\nspec:\n  secretName: example-com-tls\n  issuerRef:\n    name: letsencrypt-prod\n    kind: ClusterIssuer\n  dnsNames:\n    - example.com",
+    "description": "Let's Encrypt를 사용하는 ClusterIssuer를 정의하고, example.com 도메인에 대한 인증서를 발급받아 example-com-tls Secret에 저장하도록 요청한다."
+  },
+  "pitfalls": [
+    "HTTP-01 챌린지는 와일드카드 도메인을 검증할 수 없어 DNS-01 방식이 필요하다",
+    "Issuer/ClusterIssuer 설정만 만들고 Certificate를 따로 선언하지 않으면 인증서가 발급되지 않는다",
+    "발급 실패는 대부분 챌린지 검증 단계(DNS 전파, Ingress 라우팅)에서 발생한다"
+  ],
+  "generatedAt": "2026-07-26T06:11:16.010Z"
+}

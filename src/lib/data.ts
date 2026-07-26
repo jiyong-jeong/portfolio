@@ -2,7 +2,7 @@ import { existsSync, readFileSync, readdirSync } from "node:fs";
 import { join } from "node:path";
 
 import { techSlug } from "./tech";
-import type { Profile, Project } from "./types";
+import type { Profile, Project, TechDoc } from "./types";
 
 const DATA_DIR = join(process.cwd(), "data");
 const PROJECTS_DIR = join(DATA_DIR, "projects");
@@ -158,6 +158,12 @@ export function getTechDetails(): TechDetail[] {
 
 export function getTechDetail(slug: string): TechDetail | undefined {
   return getTechDetails().find((t) => t.slug === slug);
+}
+
+/** 기술 학습용 설명. 아직 생성되지 않았으면 undefined. */
+export function getTechDoc(slug: string): TechDoc | undefined {
+  const doc = readJson<TechDoc | null>(join(DATA_DIR, "tech", `${slug}.json`), null);
+  return doc?.slug ? doc : undefined;
 }
 
 export function getCategories(projects: Project[]): { name: string; count: number }[] {

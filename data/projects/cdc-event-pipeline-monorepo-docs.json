@@ -1,0 +1,79 @@
+{
+  "slug": "cdc-event-pipeline-monorepo-docs",
+  "repo": "cdc-event-pipeline-monorepo-docs",
+  "title": "CDC 이벤트 파이프라인 모노레포 구조",
+  "summary": "Lerna 기반 모노레포로 CDC 이벤트 파이프라인 패키지들을 관리하고 Makefile·Docker로 로컬 개발 환경을 표준화한 프로젝트",
+  "description": "Change Data Capture(CDC) 이벤트 파이프라인을 구성하는 여러 패키지를 Lerna 모노레포 구조로 관리하는 프로젝트입니다. Makefile을 태스크 러너로 사용해 빌드·테스트 등 반복 작업을 표준화했고, docker-compose로 로컬 개발용 스택을 한 번에 부트스트랩할 수 있도록 구성했습니다. 루트 수준의 Jest 설정을 두어 모노레포 내 패키지들의 테스트를 일관되게 실행합니다. 또한 templates/ 디렉터리와 헬퍼 스크립트를 통해 새로운 패키지나 모듈을 빠르게 스캐폴딩할 수 있도록 지원합니다. 본 레포는 해당 파이프라인 프로젝트의 구조와 개념을 정리한 공개 문서 레포입니다.",
+  "category": "데이터",
+  "role": "CDC 이벤트 파이프라인 모노레포의 전체 구조(패키지 구성, 태스크 러너, 로컬 스택, 테스트 설정)를 설계하고 문서화했습니다.",
+  "techStack": [
+    {
+      "name": "Lerna",
+      "category": "tool",
+      "usage": "여러 패키지를 하나의 모노레포로 관리"
+    },
+    {
+      "name": "Make",
+      "category": "tool",
+      "usage": "빌드·테스트 등 반복 작업을 위한 태스크 러너"
+    },
+    {
+      "name": "Jest",
+      "category": "testing",
+      "usage": "모노레포 루트 수준의 테스트 설정 및 실행"
+    },
+    {
+      "name": "Docker Compose",
+      "category": "devops",
+      "usage": "로컬 개발용 스택을 한 번에 부트스트랩"
+    }
+  ],
+  "highlights": [
+    "Lerna로 CDC 파이프라인 관련 패키지들을 하나의 모노레포에서 관리",
+    "Makefile 기반 태스크 러너로 개발 명령어를 표준화",
+    "docker-compose로 로컬 스택 부트스트랩을 단순화",
+    "templates/와 헬퍼 스크립트로 신규 패키지 스캐폴딩 지원",
+    "루트 Jest 설정으로 패키지 전반의 테스트 일관성 확보"
+  ],
+  "challenges": [],
+  "diagrams": [
+    {
+      "title": "모노레포 구조 개요",
+      "description": "Makefile을 진입점으로 Lerna 모노레포 하위의 패키지, 템플릿, 스크립트와 로컬 스택 구성 요소가 어떻게 연결되는지 보여줍니다.",
+      "type": "architecture",
+      "mermaid": "flowchart TD\n  A[\"Makefile 태스크 러너\"] --> B[\"Lerna 모노레포\"]\n  A --> F[\"docker-compose 로컬 스택\"]\n  B --> C[\"packages\"]\n  B --> D[\"templates\"]\n  B --> E[\"scripts\"]\n  B --> G[\"Jest 루트 설정\"]"
+    }
+  ],
+  "keywords": [
+    "cdc",
+    "event-pipeline",
+    "monorepo",
+    "lerna",
+    "docker-compose",
+    "jest",
+    "makefile",
+    "scaffolding"
+  ],
+  "links": {
+    "repo": "https://github.com/jiyong-jeong/cdc-event-pipeline-monorepo-docs",
+    "homepage": null
+  },
+  "metrics": {
+    "stars": 0,
+    "forks": 0,
+    "watchers": 0,
+    "sizeKb": 0,
+    "openIssues": 0,
+    "languages": {},
+    "topics": [],
+    "primaryLanguage": null,
+    "license": null
+  },
+  "dates": {
+    "createdAt": "2026-07-26T05:27:22Z",
+    "updatedAt": "2026-07-26T05:27:30Z",
+    "pushedAt": "2026-07-26T05:27:25Z",
+    "analyzedAt": "2026-07-26T05:57:18.271Z"
+  },
+  "featured": false
+}

@@ -1,0 +1,82 @@
+{
+  "slug": "racing-game-onchain-contracts-docs",
+  "repo": "racing-game-onchain-contracts-docs",
+  "title": "온체인 레이싱 게임 스마트컨트랙트 구조 문서",
+  "summary": "Hardhat과 Foundry를 병행하는 레이싱 게임 온체인 컨트랙트 저장소의 구조를 정리한 공개 문서",
+  "description": "블록체인 기반 레이싱 게임의 스마트컨트랙트 저장소가 어떻게 구성되어 있는지 외부에 공개하기 위해 작성한 문서입니다. contracts, scripts, test 디렉토리로 역할을 분리하고, Hardhat으로 배포와 타입 생성을, Foundry로 단위 테스트를 병행하는 하이브리드 개발 구조를 설명합니다. 실제 컨트랙트 소스 코드는 포함하지 않고 저장소 구조와 개발 도구 조합에 대한 개념 정리만 담고 있습니다.",
+  "category": "Web3",
+  "role": "레이싱 게임 온체인 컨트랙트 저장소의 구조를 설계하고, Hardhat/Foundry 하이브리드 개발 환경을 구성한 뒤 그 구조를 문서로 정리했습니다.",
+  "techStack": [
+    {
+      "name": "Solidity",
+      "category": "language",
+      "usage": "온체인 레이싱 게임 컨트랙트 작성 언어"
+    },
+    {
+      "name": "Hardhat",
+      "category": "blockchain",
+      "usage": "컨트랙트 배포 및 TypeChain 타입 생성"
+    },
+    {
+      "name": "Foundry",
+      "category": "testing",
+      "usage": "컨트랙트 단위 테스트 실행"
+    },
+    {
+      "name": "TypeChain",
+      "category": "tool",
+      "usage": "컨트랙트 타입 정의 자동 생성"
+    },
+    {
+      "name": "TypeScript",
+      "category": "language",
+      "usage": "Hardhat 설정 및 배포 스크립트 작성"
+    }
+  ],
+  "highlights": [
+    "Hardhat과 Foundry를 함께 사용해 배포/타입생성과 단위 테스트 도구를 역할별로 분리",
+    "contracts, scripts, test 디렉토리로 컨트랙트 코드와 배포/테스트 로직을 명확히 구분",
+    "artifacts, typechain-types 캐시를 활용해 반복 빌드 시 타입 안정성 확보"
+  ],
+  "challenges": [],
+  "diagrams": [
+    {
+      "title": "저장소 구조 및 도구 흐름",
+      "description": "컨트랙트 소스가 Hardhat과 Foundry 두 도구를 거쳐 각각 배포/타입생성, 테스트로 이어지는 흐름을 보여줍니다.",
+      "type": "architecture",
+      "mermaid": "flowchart TD\n  contracts[\"contracts/\"] --> hardhat[\"Hardhat\"]\n  contracts --> foundry[\"Foundry\"]\n  hardhat --> scripts[\"scripts/ 배포\"]\n  hardhat --> typechain[\"typechain-types/\"]\n  foundry --> test[\"test/ 단위 테스트\"]\n  hardhat --> artifacts[\"artifacts/ 캐시\"]"
+    }
+  ],
+  "keywords": [
+    "solidity",
+    "hardhat",
+    "foundry",
+    "onchain",
+    "smart-contract",
+    "web3",
+    "typechain",
+    "racing-game"
+  ],
+  "links": {
+    "repo": "https://github.com/jiyong-jeong/racing-game-onchain-contracts-docs",
+    "homepage": null
+  },
+  "metrics": {
+    "stars": 0,
+    "forks": 0,
+    "watchers": 0,
+    "sizeKb": 0,
+    "openIssues": 0,
+    "languages": {},
+    "topics": [],
+    "primaryLanguage": null,
+    "license": null
+  },
+  "dates": {
+    "createdAt": "2026-07-26T05:16:55Z",
+    "updatedAt": "2026-07-26T05:17:23Z",
+    "pushedAt": "2026-07-26T05:16:59Z",
+    "analyzedAt": "2026-07-26T05:59:15.283Z"
+  },
+  "featured": false
+}

@@ -1,0 +1,58 @@
+{
+  "slug": "racing-platform-misc-scripts-docs",
+  "repo": "racing-platform-misc-scripts-docs",
+  "title": "레이싱 플랫폼 운영 지원 스크립트 모음",
+  "summary": "레이싱 플랫폼 운영에 필요한 단발성 작업들을 처리하는 Node.js 헬퍼 스크립트 모음집입니다.",
+  "description": "레이싱 플랫폼을 운영하면서 반복적으로 필요한 잡다한 작업들을 매번 수작업으로 처리하지 않도록 만든 원샷 스크립트 모음입니다. 각 스크립트는 특정 단일 목적을 위해 독립적으로 실행되도록 설계되어 있어, 필요한 작업마다 해당 스크립트만 실행하면 됩니다. src 디렉토리 아래에 기능별 스크립트가 구성되어 있으며, Node.js 런타임 위에서 동작합니다. 공개 저장소로는 프로젝트에 대한 개요 문서만 제공하고 있습니다.",
+  "category": "자동화",
+  "role": "레이싱 플랫폼 운영 과정에서 필요한 단발성 자동화 스크립트를 설계 및 개발하였습니다.",
+  "techStack": [
+    {
+      "name": "Node.js",
+      "category": "language",
+      "usage": "단일 목적 헬퍼 스크립트 실행 런타임"
+    }
+  ],
+  "highlights": [
+    "반복 운영 작업을 스크립트화하여 수작업 대응 시간을 줄임",
+    "각 스크립트가 단일 목적으로 독립 실행되도록 구조화"
+  ],
+  "challenges": [],
+  "diagrams": [
+    {
+      "title": "스크립트 모음 구조",
+      "description": "레이싱 플랫폼 운영자가 필요에 따라 개별 원샷 스크립트를 실행하는 흐름을 나타냅니다.",
+      "type": "flow",
+      "mermaid": "flowchart TD\n  A[\"운영자 요청\"] --> B[\"src 스크립트 모음\"]\n  B --> C[\"단일 목적 스크립트 1\"]\n  B --> D[\"단일 목적 스크립트 2\"]\n  B --> E[\"단일 목적 스크립트 N\"]\n  C --> F[\"레이싱 플랫폼\"]\n  D --> F\n  E --> F"
+    }
+  ],
+  "keywords": [
+    "nodejs",
+    "automation",
+    "scripts",
+    "racing-platform",
+    "ops-tools"
+  ],
+  "links": {
+    "repo": "https://github.com/jiyong-jeong/racing-platform-misc-scripts-docs",
+    "homepage": null
+  },
+  "metrics": {
+    "stars": 0,
+    "forks": 0,
+    "watchers": 0,
+    "sizeKb": 0,
+    "openIssues": 0,
+    "languages": {},
+    "topics": [],
+    "primaryLanguage": null,
+    "license": null
+  },
+  "dates": {
+    "createdAt": "2026-07-26T05:30:43Z",
+    "updatedAt": "2026-07-26T05:31:10Z",
+    "pushedAt": "2026-07-26T05:30:46Z",
+    "analyzedAt": "2026-07-26T05:43:17.820Z"
+  },
+  "featured": false
+}

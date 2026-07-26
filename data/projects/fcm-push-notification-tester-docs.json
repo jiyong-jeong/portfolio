@@ -1,0 +1,70 @@
+{
+  "slug": "fcm-push-notification-tester-docs",
+  "repo": "fcm-push-notification-tester-docs",
+  "title": "FCM 푸시 알림 발송 테스트 도구",
+  "summary": "Firebase Cloud Messaging 푸시 발송 시나리오를 로컬에서 검증하기 위한 Vite 기반 웹 테스터",
+  "description": "FCM(Firebase Cloud Messaging)을 이용한 푸시 알림 발송을 로컬 환경에서 직접 테스트할 수 있도록 만든 웹 애플리케이션입니다. Vite와 TypeScript로 구성되어 있으며, 프론트엔드 화면(web)과 실제 발송 로직을 처리하는 API(api) 영역을 분리해 각각 별도의 tsconfig로 관리합니다. 개발자가 실제 서비스에 배포하기 전에 다양한 푸시 발송 케이스를 빠르게 확인할 수 있도록 돕는 것이 목적입니다. 이 레포지토리는 해당 프로젝트의 구조를 정리한 공개 문서입니다.",
+  "category": "자동화",
+  "role": "FCM 발송 테스트 도구의 web/api 구조 설계 및 로컬 검증 환경 구축을 담당했습니다.",
+  "techStack": [
+    {
+      "name": "TypeScript",
+      "category": "language",
+      "usage": "web/api 양쪽 코드의 타입 안정성 확보"
+    },
+    {
+      "name": "Vite",
+      "category": "tool",
+      "usage": "웹 테스터 앱의 빌드 및 개발 서버 구성"
+    },
+    {
+      "name": "Firebase Cloud Messaging",
+      "category": "backend",
+      "usage": "실제 푸시 알림 발송 대상 서비스"
+    }
+  ],
+  "highlights": [
+    "web/api 이중 tsconfig 구조로 프론트와 발송 로직의 타입 설정을 분리",
+    "실제 FCM 발송 시나리오를 로컬에서 재현 가능하도록 구성",
+    "Vite 기반으로 빠른 개발 및 테스트 반복이 가능한 구조"
+  ],
+  "challenges": [],
+  "diagrams": [
+    {
+      "title": "FCM 테스터 구조",
+      "description": "web과 api 영역이 분리된 Vite 기반 FCM 푸시 테스터의 기본 구조를 보여줍니다.",
+      "type": "architecture",
+      "mermaid": "flowchart LR\n  Dev[\"개발자\"] --> WebApp[\"web (Vite 앱)\"]\n  WebApp --> ApiLayer[\"api (발송 로직)\"]\n  ApiLayer --> FCM[\"FCM 서버\"]\n  FCM --> Device[\"테스트 디바이스\"]"
+    }
+  ],
+  "keywords": [
+    "fcm",
+    "push-notification",
+    "vite",
+    "typescript",
+    "tester",
+    "firebase"
+  ],
+  "links": {
+    "repo": "https://github.com/jiyong-jeong/fcm-push-notification-tester-docs",
+    "homepage": null
+  },
+  "metrics": {
+    "stars": 0,
+    "forks": 0,
+    "watchers": 0,
+    "sizeKb": 0,
+    "openIssues": 0,
+    "languages": {},
+    "topics": [],
+    "primaryLanguage": null,
+    "license": null
+  },
+  "dates": {
+    "createdAt": "2026-07-26T05:27:44Z",
+    "updatedAt": "2026-07-26T05:28:18Z",
+    "pushedAt": "2026-07-26T05:27:47Z",
+    "analyzedAt": "2026-07-26T05:55:31.584Z"
+  },
+  "featured": false
+}

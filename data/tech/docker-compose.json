@@ -1,0 +1,47 @@
+{
+  "slug": "docker-compose",
+  "name": "Docker Compose",
+  "category": "devops",
+  "tagline": "여러 컨테이너로 구성된 애플리케이션을 하나의 파일로 정의하고 실행하는 도구",
+  "definition": "Docker Compose는 웹 서버, 데이터베이스, 캐시 등 여러 컨테이너로 이루어진 애플리케이션을 YAML 파일 하나로 정의하고, 명령 한 번으로 전체 스택을 실행·중지·재생성할 수 있게 해주는 도구다. 각 컨테이너를 `docker run` 명령으로 하나씩 띄우고 네트워크와 볼륨을 수동으로 연결하던 번거로움을 없애기 위해 만들어졌다. 주로 로컬 개발 환경 구성이나 단일 호스트 배포에 쓰이며, 팀원 누구나 동일한 명령으로 동일한 환경을 재현할 수 있게 해준다.",
+  "concepts": [
+    {
+      "term": "service",
+      "description": "compose 파일에서 정의하는 컨테이너 단위로, 이미지·포트·환경변수·볼륨 등 실행에 필요한 설정을 담는다."
+    },
+    {
+      "term": "docker-compose.yml",
+      "description": "전체 스택을 구성하는 서비스, 네트워크, 볼륨을 선언적으로 기술하는 YAML 설정 파일이다."
+    },
+    {
+      "term": "network",
+      "description": "compose가 자동으로 생성하는 서비스 간 통신용 가상 네트워크로, 서비스 이름을 호스트명처럼 사용해 서로 접근할 수 있다."
+    },
+    {
+      "term": "volume",
+      "description": "컨테이너가 재생성되어도 데이터가 유지되도록 호스트나 Docker가 관리하는 저장 공간을 컨테이너에 마운트하는 메커니즘이다."
+    },
+    {
+      "term": "override file",
+      "description": "기본 compose 파일 위에 환경별(개발, 테스트 등) 설정을 덧씌우기 위해 추가로 지정하는 YAML 파일이다."
+    }
+  ],
+  "whenToUse": [
+    "로컬에서 여러 서비스를 한 번에 띄우고 내려야 하는 개발 환경을 구성할 때",
+    "팀원 간에 동일한 개발/테스트 환경을 코드로 재현하고 공유하고 싶을 때",
+    "단일 호스트에서 소규모 서비스 조합을 간단히 배포할 때",
+    "테스트용 DB나 메시지 큐 같은 의존 서비스를 임시로 실행할 때"
+  ],
+  "example": {
+    "title": "웹 서버와 데이터베이스로 구성된 기본 스택",
+    "language": "yaml",
+    "code": "services:\n  app:\n    build: .\n    ports:\n      - \"3000:3000\"\n    environment:\n      DATABASE_URL: postgres://user:pass@db:5432/mydb\n    depends_on:\n      - db\n\n  db:\n    image: postgres:16\n    environment:\n      POSTGRES_USER: user\n      POSTGRES_PASSWORD: pass\n      POSTGRES_DB: mydb\n    volumes:\n      - db-data:/var/lib/postgresql/data\n\nvolumes:\n  db-data:",
+    "description": "app 서비스와 db 서비스를 정의하고, `docker compose up` 한 번으로 두 컨테이너를 함께 실행하는 예시다."
+  },
+  "pitfalls": [
+    "depends_on은 컨테이너 시작 순서만 보장할 뿐 내부 서비스가 준비됐는지는 확인하지 않는다",
+    "볼륨을 정리하지 않고 down만 반복하면 오래된 데이터나 설정이 남아 예상치 못한 동작을 일으킬 수 있다",
+    "로컬 개발용으로 만든 compose 파일을 그대로 운영 환경에 쓰면 확장성과 장애 복구 측면에서 부족하다"
+  ],
+  "generatedAt": "2026-07-26T06:07:08.733Z"
+}

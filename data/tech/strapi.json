@@ -1,0 +1,51 @@
+{
+  "slug": "strapi",
+  "name": "Strapi",
+  "category": "backend",
+  "tagline": "관리자 UI와 API를 자동 생성해 콘텐츠를 관리하는 오픈소스 헤드리스 CMS",
+  "definition": "Strapi는 Node.js 기반의 오픈소스 헤드리스 CMS로, 콘텐츠 모델을 정의하면 관리자용 대시보드와 REST/GraphQL API를 자동으로 만들어준다. 전통적인 CMS가 화면 출력까지 담당하던 것과 달리, 콘텐츠 저장·관리와 데이터 제공만 맡고 프론트엔드는 별도로 자유롭게 구성하는 방식을 지향한다. 개발자가 콘텐츠 구조 설계와 API 서버 구축에 드는 반복 작업을 줄이기 위해 만들어졌다.",
+  "concepts": [
+    {
+      "term": "Headless CMS",
+      "description": "콘텐츠를 화면 렌더링과 분리해 API 형태로만 제공하는 CMS 방식으로, 웹·앱 등 여러 프론트엔드에서 같은 콘텐츠를 재사용할 수 있다."
+    },
+    {
+      "term": "Content-Type Builder",
+      "description": "필드와 관계를 정의해 콘텐츠 구조(스키마)를 만드는 관리자 화면 도구로, 코드 없이 데이터 모델을 설계할 수 있다."
+    },
+    {
+      "term": "Collection Type / Single Type",
+      "description": "여러 항목을 반복 생성하는 Collection Type과 항목이 하나뿐인 Single Type으로 콘텐츠 구조의 성격을 구분한다."
+    },
+    {
+      "term": "Admin Panel",
+      "description": "콘텐츠 입력·수정, 사용자·권한 관리를 담당하는 자동 생성 관리자 웹 인터페이스다."
+    },
+    {
+      "term": "Role-Based Access Control",
+      "description": "관리자와 API 사용자별로 역할과 권한을 세분화해 콘텐츠 접근 범위를 제어하는 기능이다."
+    },
+    {
+      "term": "Plugin",
+      "description": "이메일, 미디어 라이브러리, i18n 등 기능을 추가하거나 확장할 수 있는 모듈 구조다."
+    }
+  ],
+  "whenToUse": [
+    "여러 프론트엔드(웹, 앱)에서 같은 콘텐츠를 API로 공유해야 할 때",
+    "비개발자도 콘텐츠를 직접 입력·수정할 관리자 화면이 필요할 때",
+    "콘텐츠 모델과 API를 빠르게 구축하고 세밀하게 커스터마이징하고 싶을 때",
+    "자체 서버에 호스팅하며 데이터와 인프라를 직접 통제하고 싶을 때"
+  ],
+  "example": {
+    "title": "Strapi 프로젝트 생성 및 실행",
+    "language": "bash",
+    "code": "# 새 Strapi 프로젝트 생성\nnpx create-strapi-app@latest my-project\n\ncd my-project\n\n# 개발 서버 실행 (관리자 패널: http://localhost:1337/admin)\nnpm run develop",
+    "description": "CLI로 새 Strapi 프로젝트를 생성하고 개발 모드로 실행해 관리자 패널에 접속하는 기본 흐름이다."
+  },
+  "pitfalls": [
+    "콘텐츠 타입을 만들어도 기본적으로 API 권한이 열려있지 않아 별도 권한 설정이 필요하다",
+    "관리자 패널과 API 서버가 같은 프로세스에서 동작해 배포·스케일링 구조를 함께 고려해야 한다",
+    "스키마 변경이 데이터베이스 마이그레이션에 영향을 주므로 운영 환경에서는 신중히 다뤄야 한다"
+  ],
+  "generatedAt": "2026-07-26T06:14:56.657Z"
+}

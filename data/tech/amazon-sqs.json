@@ -1,0 +1,47 @@
+{
+  "slug": "amazon-sqs",
+  "name": "Amazon SQS",
+  "category": "infra",
+  "tagline": "메시지를 큐에 적재해 애플리케이션 컴포넌트 간 비동기 통신을 중개하는 완전관리형 메시지 큐 서비스",
+  "definition": "Amazon SQS는 애플리케이션이나 서비스 사이에서 주고받을 메시지를 임시로 저장하는 완전관리형 큐 서비스이다. 발신자와 수신자가 직접 연결되지 않고 큐를 매개로 통신하게 만들어, 한쪽이 느리거나 일시적으로 중단되어도 메시지가 유실되지 않도록 하기 위해 만들어졌다. 이를 통해 요청 처리를 즉시 응답이 필요 없는 백그라운드 작업으로 분리하고, 트래픽이 몰릴 때도 처리 속도 차이를 큐가 흡수하도록 한다.",
+  "concepts": [
+    {
+      "term": "Queue",
+      "description": "메시지가 저장되는 논리적 공간으로, 생산자가 넣은 메시지를 소비자가 순서와 무관하게 꺼내가는 저장소 역할을 한다."
+    },
+    {
+      "term": "Producer / Consumer",
+      "description": "메시지를 큐에 보내는 주체와 큐에서 메시지를 꺼내 처리하는 주체를 가리키며, 서로 존재를 알 필요 없이 큐를 통해서만 상호작용한다."
+    },
+    {
+      "term": "Visibility Timeout",
+      "description": "한 소비자가 메시지를 가져간 뒤 일정 시간 동안 다른 소비자에게 보이지 않게 하는 설정으로, 처리 중 중복 소비를 방지한다."
+    },
+    {
+      "term": "Dead-letter Queue",
+      "description": "일정 횟수 이상 처리에 실패한 메시지를 별도로 격리해 원인 분석과 재처리를 가능하게 하는 큐이다."
+    },
+    {
+      "term": "Polling",
+      "description": "소비자가 큐에 메시지가 있는지 직접 확인하러 가는 방식으로, 짧은 대기 후 재시도하는 롱 폴링을 통해 불필요한 호출을 줄인다."
+    }
+  ],
+  "whenToUse": [
+    "요청을 받는 쪽과 실제 처리하는 쪽의 속도 차이를 흡수하고 싶을 때",
+    "서비스 간 결합도를 낮추고 한쪽 장애가 다른 쪽에 즉시 전파되지 않게 하고 싶을 때",
+    "일시적인 트래픽 폭증을 큐에 쌓아두고 나중에 순차 처리하고 싶을 때",
+    "실패한 작업을 재시도하거나 별도로 격리해 안정적으로 처리하고 싶을 때"
+  ],
+  "example": {
+    "title": "큐 생성과 메시지 전송 (AWS CLI)",
+    "language": "bash",
+    "code": "# 큐 생성\naws sqs create-queue --queue-name email-send-queue\n\n# 메시지 전송\naws sqs send-message \\\n  --queue-url https://sqs.ap-northeast-2.amazonaws.com/123456789012/email-send-queue \\\n  --message-body '{\"to\":\"user@example.com\",\"subject\":\"hello\"}'\n\n# 메시지 수신 (컨슈머 측)\naws sqs receive-message \\\n  --queue-url https://sqs.ap-northeast-2.amazonaws.com/123456789012/email-send-queue",
+    "description": "큐를 만들고 이메일 발송 요청 데이터를 메시지로 넣은 뒤, 다른 프로세스가 이를 꺼내 처리하는 기본 흐름을 보여준다."
+  },
+  "pitfalls": [
+    "메시지가 큐에 남아있는 것과 처리가 끝난 것은 다르므로, 처리 완료 후 반드시 메시지를 삭제해야 한다.",
+    "Visibility Timeout을 실제 처리 시간보다 짧게 잡으면 같은 메시지가 중복 처리될 수 있다.",
+    "큐는 기본적으로 순서를 보장하지 않으므로, 순서가 중요한 작업에는 별도 설정이나 다른 방식이 필요하다."
+  ],
+  "generatedAt": "2026-07-26T06:14:15.553Z"
+}

@@ -1,0 +1,83 @@
+{
+  "slug": "legacy-nft-platform-backend-docs",
+  "repo": "legacy-nft-platform-backend-docs",
+  "title": "NFT 플랫폼 모놀리식 백엔드 구조 문서",
+  "summary": "초기 세대 NFT 플랫폼 백엔드의 모놀리식 구조와 이후 도메인별 모듈화 과정을 정리한 공개 문서",
+  "description": "초기 세대 NFT 플랫폼 백엔드가 dex, market, nft, test, config 등 도메인별 서브디렉터리로 구성된 모놀리식 구조로 시작했음을 기록한 문서 저장소입니다. init_pkg.sh 스크립트를 통해 각 서브 프로젝트를 초기화하는 방식으로 개발 환경을 구성했습니다. 이후 이 모놀리식 구조는 도메인별로 분리되어 별도의 리포지토리로 모듈화된 것으로 관찰되었으며, 이는 서비스 규모 확장에 따른 아키텍처 전환 과정을 보여줍니다. 소스 코드는 비공개로 유지하고, 구조와 설계 배경만 공개 문서로 정리했습니다.",
+  "category": "Web3",
+  "role": "레거시 NFT 플랫폼 백엔드의 모놀리식 구조를 설계 및 초기화하고, 이후 도메인별 모듈화 전환 과정을 문서로 정리함.",
+  "techStack": [
+    {
+      "name": "Shell",
+      "category": "tool",
+      "usage": "init_pkg.sh 스크립트로 각 도메인 서브 프로젝트 초기화"
+    },
+    {
+      "name": "NFT",
+      "category": "blockchain",
+      "usage": "nft 서브디렉터리로 NFT 발행/관리 도메인 로직을 분리해 구성"
+    },
+    {
+      "name": "DEX",
+      "category": "blockchain",
+      "usage": "dex 서브디렉터리로 탈중앙화 거래소 관련 도메인 로직을 분리해 구성"
+    }
+  ],
+  "highlights": [
+    "단일 백엔드 안에서 dex, market, nft, test 도메인을 서브디렉터리로 분리해 설계함",
+    "init_pkg.sh 스크립트로 서브 프로젝트 초기화 과정을 자동화함",
+    "이후 도메인별로 별도 리포지토리로 모듈화되며 아키텍처 전환의 출발점이 됨"
+  ],
+  "challenges": [
+    {
+      "problem": "모놀리식 구조로 인해 dex, market, nft 등 서로 다른 도메인 로직이 하나의 백엔드에 결합되어 있었음",
+      "solution": "도메인별 서브디렉터리로 우선 분리한 뒤, 이후 각 도메인을 별도 리포지토리로 모듈화하여 독립적으로 관리하도록 전환함"
+    }
+  ],
+  "diagrams": [
+    {
+      "title": "모놀리식 백엔드 구조",
+      "description": "init_pkg.sh로 초기화되는 단일 백엔드 내부의 도메인별 서브 프로젝트 구성을 보여줍니다.",
+      "type": "architecture",
+      "mermaid": "flowchart TD\n  Init[\"init_pkg.sh 초기화 스크립트\"] --> Dex[\"dex 서브프로젝트\"]\n  Init --> Market[\"market 서브프로젝트\"]\n  Init --> Nft[\"nft 서브프로젝트\"]\n  Init --> Test[\"test 서브프로젝트\"]\n  Init --> Config[\"config\"]\n  subgraph Mono[\"레거시 NFT 플랫폼 백엔드 모놀리식\"]\n    Dex\n    Market\n    Nft\n    Test\n    Config\n  end"
+    },
+    {
+      "title": "모듈화 전환 흐름",
+      "description": "모놀리식 백엔드가 이후 도메인별 별도 리포지토리로 분리된 흐름을 보여줍니다.",
+      "type": "flow",
+      "mermaid": "flowchart LR\n  Legacy[\"레거시 모놀리식 백엔드\"] --> DexRepo[\"dex 전용 리포지토리\"]\n  Legacy --> MarketRepo[\"market 전용 리포지토리\"]\n  Legacy --> NftRepo[\"nft 전용 리포지토리\"]\n  Legacy --> TestRepo[\"test 전용 리포지토리\"]"
+    }
+  ],
+  "keywords": [
+    "nft",
+    "dex",
+    "marketplace",
+    "monolith",
+    "backend",
+    "legacy",
+    "modularization",
+    "web3"
+  ],
+  "links": {
+    "repo": "https://github.com/jiyong-jeong/legacy-nft-platform-backend-docs",
+    "homepage": null
+  },
+  "metrics": {
+    "stars": 0,
+    "forks": 0,
+    "watchers": 0,
+    "sizeKb": 0,
+    "openIssues": 0,
+    "languages": {},
+    "topics": [],
+    "primaryLanguage": null,
+    "license": null
+  },
+  "dates": {
+    "createdAt": "2026-07-26T05:27:59Z",
+    "updatedAt": "2026-07-26T05:28:24Z",
+    "pushedAt": "2026-07-26T05:28:03Z",
+    "analyzedAt": "2026-07-26T05:54:17.129Z"
+  },
+  "featured": false
+}

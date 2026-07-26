@@ -1,0 +1,47 @@
+{
+  "slug": "solmate",
+  "name": "Solmate",
+  "category": "blockchain",
+  "tagline": "가스 효율을 최우선으로 설계된 솔리디티 스마트 컨트랙트 빌딩 블록 라이브러리",
+  "definition": "Solmate는 이더리움 스마트 컨트랙트 개발에 필요한 ERC 토큰 표준, 인증, 안전한 수학·타입 캐스팅 등의 기본 구성 요소를 가스 효율에 초점을 맞춰 재구현한 솔리디티 라이브러리입니다. 기존에 널리 쓰이던 OpenZeppelin 라이브러리가 안전성과 가독성, 확장성을 우선시하는 대신 코드가 다소 무거워지는 경향이 있었는데, Solmate는 동일한 기능을 더 적은 가스로 수행하도록 코드를 압축하고 어셈블리를 적극 활용해 이 문제를 보완합니다. 감사(audit)를 거쳤지만 기능 최소주의를 지향하며, 안전장치보다 효율을 우선하는 설계 철학을 가지고 있습니다.",
+  "concepts": [
+    {
+      "term": "Gas Optimization",
+      "description": "동일한 로직을 더 적은 EVM 연산으로 수행하도록 코드를 작성해 트랜잭션 실행 비용을 낮추는 것을 목표로 합니다."
+    },
+    {
+      "term": "Inline Assembly",
+      "description": "솔리디티 표준 문법 대신 저수준 Yul 어셈블리를 사용해 불필요한 검사나 오버헤드를 제거함으로써 가스를 절약합니다."
+    },
+    {
+      "term": "Minimalist Design",
+      "description": "기능을 최소한으로 유지하고 불필요한 안전장치나 확장 기능을 배제해 컨트랙트 크기와 실행 비용을 줄이는 설계 원칙입니다."
+    },
+    {
+      "term": "SafeCastLib",
+      "description": "숫자 타입 간 형변환(예: uint256 → uint128) 시 값이 손실되지 않도록 범위를 검증하는 유틸리티 라이브러리입니다."
+    },
+    {
+      "term": "Token Standard Implementations",
+      "description": "ERC20, ERC721 등 토큰 표준을 가스 효율적으로 재구현한 컨트랙트 모듈을 제공합니다."
+    }
+  ],
+  "whenToUse": [
+    "트랜잭션 가스 비용이 사용자 경험이나 수익성에 직접적인 영향을 주는 경우",
+    "반복 호출이 많은 봇·자동화 전략처럼 가스 절감 효과가 누적되는 컨트랙트를 만들 때",
+    "OpenZeppelin보다 가벼운 대안을 원하고 어셈블리 수준 최적화를 감수할 수 있을 때",
+    "표준 토큰 로직 위에 커스텀 로직을 얹어 컨트랙트 크기와 배포 비용을 줄이고 싶을 때"
+  ],
+  "example": {
+    "title": "SafeCastLib을 이용한 안전한 타입 캐스팅",
+    "language": "solidity",
+    "code": "// SPDX-License-Identifier: MIT\npragma solidity ^0.8.0;\n\nimport {SafeCastLib} from \"solmate/utils/SafeCastLib.sol\";\n\ncontract Example {\n    using SafeCastLib for uint256;\n\n    // uint256 값을 uint128로 안전하게 축소 변환\n    function toUint128(uint256 value) external pure returns (uint128) {\n        return value.safeCastTo128();\n    }\n}",
+    "description": "uint256 값을 더 작은 타입으로 캐스팅할 때 오버플로우 여부를 검증해, 값이 잘리면서 발생할 수 있는 버그를 방지합니다."
+  },
+  "pitfalls": [
+    "가스 최적화를 위해 일부 안전 검사를 생략하므로, 입력값 검증을 직접 추가해야 하는 경우가 있습니다.",
+    "어셈블리 코드 비중이 높아 OpenZeppelin 대비 코드 가독성과 디버깅 난이도가 높을 수 있습니다.",
+    "표준 라이브러리처럼 광범위한 기능 세트를 제공하지 않으므로 필요한 기능을 직접 확장해야 할 수 있습니다."
+  ],
+  "generatedAt": "2026-07-26T06:05:40.106Z"
+}

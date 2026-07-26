@@ -1,0 +1,79 @@
+{
+  "slug": "nft-marketplace-admin-frontend-app-docs",
+  "repo": "nft-marketplace-admin-frontend-app-docs",
+  "title": "NFT 마켓플레이스 관리자 프런트엔드",
+  "summary": "NFT 마켓플레이스 운영자를 위한 React 기반 어드민 웹앱을 nginx와 Docker로 배포하는 프로젝트",
+  "description": "NFT 마켓플레이스의 운영·관리 업무를 처리하는 어드민 프런트엔드 애플리케이션입니다. CRA(Create React App) 계열로 빌드된 정적 산출물을 nginx를 통해 서빙하며, Docker 컨테이너로 패키징하여 배포 환경 간 일관성을 확보했습니다. Jenkins를 이용한 CI 파이프라인으로 빌드와 배포 과정을 자동화했습니다. 본 레포지토리는 해당 프로젝트의 공개용 문서 저장소로, 소스 코드 대신 구조와 배포 방식을 정리하고 있습니다.",
+  "category": "프론트엔드",
+  "role": "NFT 마켓플레이스 어드민 프런트엔드 앱의 구조 설계 및 nginx/Docker/Jenkins 기반 배포 파이프라인 구성을 담당했습니다.",
+  "techStack": [
+    {
+      "name": "React",
+      "category": "framework",
+      "usage": "어드민 화면 UI 구현을 위한 프런트엔드 프레임워크"
+    },
+    {
+      "name": "nginx",
+      "category": "infra",
+      "usage": "빌드된 정적 리소스를 서빙하는 웹 서버"
+    },
+    {
+      "name": "Docker",
+      "category": "devops",
+      "usage": "애플리케이션과 nginx 설정을 컨테이너로 패키징"
+    },
+    {
+      "name": "Jenkins",
+      "category": "devops",
+      "usage": "빌드 및 배포 과정을 자동화하는 CI 파이프라인"
+    }
+  ],
+  "highlights": [
+    "CRA 계열 React 앱을 정적 빌드하여 nginx로 서빙하는 경량 배포 구조 채택",
+    "nginx.conf를 통해 정적 서빙 설정을 명시적으로 관리",
+    "Docker 컨테이너 기반 배포로 실행 환경 일관성 확보",
+    "Jenkins CI로 빌드/배포 프로세스를 자동화하여 반복 작업 최소화"
+  ],
+  "challenges": [],
+  "diagrams": [
+    {
+      "title": "배포 아키텍처",
+      "description": "React 어드민 앱이 빌드되어 nginx로 서빙되고, Docker 컨테이너와 Jenkins CI를 통해 배포되는 흐름을 보여줍니다.",
+      "type": "architecture",
+      "mermaid": "flowchart LR\n  Dev[\"개발자 커밋\"] --> Jenkins[\"Jenkins CI\"]\n  Jenkins --> Build[\"React 빌드 (CRA)\"]\n  Build --> Docker[\"Docker 이미지 생성\"]\n  Docker --> Nginx[\"nginx 정적 서빙\"]\n  Nginx --> User[\"관리자 브라우저\"]"
+    }
+  ],
+  "keywords": [
+    "nft",
+    "marketplace",
+    "admin",
+    "frontend",
+    "react",
+    "docker",
+    "nginx",
+    "jenkins",
+    "ci-cd"
+  ],
+  "links": {
+    "repo": "https://github.com/jiyong-jeong/nft-marketplace-admin-frontend-app-docs",
+    "homepage": null
+  },
+  "metrics": {
+    "stars": 0,
+    "forks": 0,
+    "watchers": 0,
+    "sizeKb": 0,
+    "openIssues": 0,
+    "languages": {},
+    "topics": [],
+    "primaryLanguage": null,
+    "license": null
+  },
+  "dates": {
+    "createdAt": "2026-07-26T05:29:39Z",
+    "updatedAt": "2026-07-26T05:30:01Z",
+    "pushedAt": "2026-07-26T05:29:43Z",
+    "analyzedAt": "2026-07-26T05:47:05.469Z"
+  },
+  "featured": false
+}

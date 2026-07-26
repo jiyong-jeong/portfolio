@@ -1,0 +1,45 @@
+{
+  "slug": "rollup",
+  "name": "Rollup",
+  "category": "tool",
+  "tagline": "JavaScript 라이브러리를 최적화된 하나의 번들로 묶어주는 모듈 번들러",
+  "definition": "Rollup은 ES 모듈(ESM) 형태로 작성된 여러 개의 소스 파일을 분석해 하나 또는 여러 개의 배포용 파일로 묶어주는 모듈 번들러입니다. 특히 사용하지 않는 코드를 제거하는 Tree Shaking에 강점이 있어, 애플리케이션보다는 다른 프로젝트에서 가져다 쓸 라이브러리나 SDK를 만들 때 주로 사용됩니다. Webpack 같은 범용 번들러가 애플리케이션 번들링에 초점을 맞춘 것과 달리, Rollup은 결과물이 작고 깔끔한 라이브러리 산출물을 만드는 데 특화되어 있습니다.",
+  "concepts": [
+    {
+      "term": "ES Module",
+      "description": "import/export 문법으로 작성된 표준 자바스크립트 모듈 형식으로, Rollup이 정적 분석을 수행하는 기반이 됩니다."
+    },
+    {
+      "term": "Tree Shaking",
+      "description": "실제로 사용되지 않는 export나 코드를 정적 분석을 통해 찾아내 최종 번들에서 제거하는 최적화 기법입니다."
+    },
+    {
+      "term": "Plugin",
+      "description": "타입스크립트 변환, node_modules 해석, CSS 처리 등 Rollup 자체가 지원하지 않는 기능을 확장하는 방식입니다."
+    },
+    {
+      "term": "Output Format",
+      "description": "번들 결과를 ESM, CommonJS, UMD 등 어떤 모듈 형식으로 내보낼지 지정하는 옵션으로, 여러 환경을 동시에 지원할 수 있게 해줍니다."
+    },
+    {
+      "term": "Code Splitting",
+      "description": "하나의 번들이 아니라 여러 청크로 나눠 필요한 시점에 로드되도록 코드를 분할하는 기능입니다."
+    }
+  ],
+  "whenToUse": [
+    "다른 프로젝트가 import해서 쓸 라이브러리나 컴포넌트 SDK를 배포용으로 빌드할 때",
+    "불필요한 코드를 걷어내고 번들 용량을 최소화하고 싶을 때",
+    "ESM, CJS, UMD 등 여러 모듈 형식으로 동시에 배포해야 할 때"
+  ],
+  "example": {
+    "title": "기본 Rollup 설정 파일",
+    "language": "javascript",
+    "code": "// rollup.config.js\nimport resolve from '@rollup/plugin-node-resolve';\nimport commonjs from '@rollup/plugin-commonjs';\n\nexport default {\n  input: 'src/index.js',\n  output: [\n    { file: 'dist/bundle.esm.js', format: 'esm' },\n    { file: 'dist/bundle.cjs.js', format: 'cjs' }\n  ],\n  plugins: [\n    resolve(),\n    commonjs()\n  ]\n};",
+    "description": "src/index.js를 진입점으로 삼아 ESM과 CJS 두 가지 형식의 번들을 동시에 생성하는 설정입니다."
+  },
+  "pitfalls": [
+    "CommonJS로 작성된 의존성을 다룰 때 별도 플러그인 없이는 제대로 번들링되지 않을 수 있다",
+    "애플리케이션용 번들링(코드 분할, 개발 서버 등)에는 Webpack이나 Vite가 더 적합할 수 있다"
+  ],
+  "generatedAt": "2026-07-26T06:12:40.843Z"
+}

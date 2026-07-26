@@ -1,0 +1,51 @@
+{
+  "slug": "npm",
+  "name": "npm",
+  "category": "tool",
+  "tagline": "JavaScript 패키지를 설치·배포·관리하는 표준 패키지 매니저 겸 레지스트리",
+  "definition": "npm은 Node.js 생태계의 기본 패키지 매니저로, 재사용 가능한 코드 모듈(패키지)을 설치, 버전 관리, 배포할 수 있게 해준다. 개발자가 매번 라이브러리 코드를 직접 복사하거나 의존성 버전을 수동으로 맞추는 문제를 해결하기 위해 만들어졌으며, package.json이라는 메타데이터 파일을 통해 프로젝트의 의존성과 실행 스크립트를 선언적으로 관리한다. 공개 레지스트리에 패키지를 올려 다른 프로젝트가 설치해 쓸 수 있도록 배포하는 용도로도 널리 쓰인다.",
+  "concepts": [
+    {
+      "term": "package.json",
+      "description": "프로젝트의 이름, 버전, 의존성 목록, 실행 스크립트 등을 정의하는 메타데이터 파일이다."
+    },
+    {
+      "term": "node_modules",
+      "description": "설치된 패키지들이 실제로 저장되는 디렉터리로, 프로젝트가 참조하는 모든 의존성 코드가 위치한다."
+    },
+    {
+      "term": "semantic versioning (semver)",
+      "description": "MAJOR.MINOR.PATCH 형식으로 버전을 표기해 호환성 여부를 규칙적으로 표현하는 버전 관리 규약이다."
+    },
+    {
+      "term": "lockfile (package-lock.json)",
+      "description": "실제로 설치된 각 의존성의 정확한 버전을 고정해, 팀원 간·환경 간 동일한 설치 결과를 보장한다."
+    },
+    {
+      "term": "registry",
+      "description": "패키지를 검색·다운로드·게시할 수 있는 중앙 저장소로, npm 명령어가 통신하는 서버 역할을 한다."
+    },
+    {
+      "term": "scripts",
+      "description": "package.json 안에 정의해 npm run 명령으로 실행하는 빌드, 테스트 등의 작업 단축 명령이다."
+    }
+  ],
+  "whenToUse": [
+    "Node.js/JavaScript 프로젝트에서 외부 라이브러리를 재사용하고 싶을 때",
+    "여러 프로젝트나 팀이 공유할 공통 설정·코드를 패키지로 배포하고 싶을 때",
+    "의존성 버전을 고정해 팀원·CI 환경 간 동일한 빌드 결과를 보장하고 싶을 때",
+    "빌드·테스트·배포 같은 반복 작업을 스크립트로 표준화하고 싶을 때"
+  ],
+  "example": {
+    "title": "패키지 초기화와 의존성 설치",
+    "language": "bash",
+    "code": "# 프로젝트에 package.json 생성\nnpm init -y\n\n# 의존성 패키지 설치 (package.json에 자동 기록)\nnpm install lodash\n\n# 개발 전용 의존성 설치\nnpm install --save-dev typescript\n\n# package.json에 정의된 스크립트 실행\nnpm run build\n\n# 다른 프로젝트에서 설치할 수 있도록 배포\nnpm publish",
+    "description": "패키지를 초기화하고 의존성을 설치한 뒤, 스크립트를 실행하거나 레지스트리에 패키지를 배포하는 기본 흐름을 보여준다."
+  },
+  "pitfalls": [
+    "lockfile을 커밋하지 않으면 설치 시점마다 버전이 달라져 환경 간 불일치가 생길 수 있다",
+    "semver 범위(^, ~)를 오해하면 의도치 않게 상위 버전이 설치될 수 있다",
+    "전역 설치(-g)와 프로젝트 로컬 설치를 혼동하면 스크립트나 CI에서 실행이 안 될 수 있다"
+  ],
+  "generatedAt": "2026-07-26T06:10:15.770Z"
+}

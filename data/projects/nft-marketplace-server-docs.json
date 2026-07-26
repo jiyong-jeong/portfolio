@@ -1,0 +1,88 @@
+{
+  "slug": "nft-marketplace-server-docs",
+  "repo": "nft-marketplace-server-docs",
+  "title": "NestJS 기반 NFT 마켓플레이스 백엔드",
+  "summary": "NestJS·TypeORM으로 구성한 NFT 마켓플레이스 서버의 구조와 CI/배포 체계를 정리한 문서 저장소",
+  "description": "NFT 마켓플레이스 서비스를 위한 백엔드 서버의 구조를 정리한 공개 문서 프로젝트입니다. NestJS와 TypeORM을 기반으로 API 서버를 구성하고, Docker 및 별도의 테스트용 Docker Compose 설정을 통해 개발·테스트 환경을 분리했습니다. Jest로 테스트를 작성하고 Jenkins CI 파이프라인으로 빌드·검증 과정을 자동화했으며, CODEOWNERS로 코드 소유권과 리뷰 체계를 관리했습니다. infra, scripts, resource 디렉터리로 인프라 설정과 운영 스크립트, 리소스 파일을 구분해 관리하는 구조를 갖추고 있습니다.",
+  "category": "백엔드",
+  "role": "NestJS 기반 서버 아키텍처 설계 및 테스트/CI 환경 구성을 담당했습니다.",
+  "techStack": [
+    {
+      "name": "NestJS",
+      "category": "framework",
+      "usage": "백엔드 API 서버 프레임워크"
+    },
+    {
+      "name": "TypeORM",
+      "category": "backend",
+      "usage": "데이터베이스 ORM"
+    },
+    {
+      "name": "Docker",
+      "category": "infra",
+      "usage": "애플리케이션 컨테이너화"
+    },
+    {
+      "name": "Docker Compose",
+      "category": "infra",
+      "usage": "개발 및 테스트 환경 구성 (테스트용 별도 파일 분리)"
+    },
+    {
+      "name": "Jest",
+      "category": "testing",
+      "usage": "단위/통합 테스트 작성"
+    },
+    {
+      "name": "Jenkins",
+      "category": "devops",
+      "usage": "CI 파이프라인 구성"
+    }
+  ],
+  "highlights": [
+    "테스트 환경을 별도 Docker Compose 파일로 분리해 운영 환경과 격리",
+    "Jenkins CI로 빌드·테스트 자동화 파이프라인 구성",
+    "CODEOWNERS로 코드 소유권과 리뷰 프로세스 명시",
+    "infra/scripts/resource 디렉터리로 인프라·운영·리소스 관심사 분리"
+  ],
+  "challenges": [],
+  "diagrams": [
+    {
+      "title": "서버 구조 개요",
+      "description": "NestJS 서버를 중심으로 데이터베이스, 테스트, CI/배포 흐름이 어떻게 연결되는지 보여주는 구조도입니다.",
+      "type": "architecture",
+      "mermaid": "flowchart TD\n  Client[\"클라이언트\"] --> API[\"NestJS API 서버\"]\n  API --> ORM[\"TypeORM\"]\n  ORM --> DB[\"데이터베이스\"]\n  API --> Infra[\"infra 설정\"]\n  API --> Scripts[\"scripts\"]\n  API --> Resource[\"resource\"]\n  Test[\"Jest 테스트\"] --> ComposeTest[\"테스트용 Docker Compose\"]\n  ComposeTest --> API\n  CI[\"Jenkins CI\"] --> Test\n  CI --> Build[\"Docker 빌드\"]\n  Build --> Deploy[\"배포\"]"
+    }
+  ],
+  "keywords": [
+    "nestjs",
+    "typeorm",
+    "nft",
+    "marketplace",
+    "docker",
+    "jenkins",
+    "jest",
+    "backend"
+  ],
+  "links": {
+    "repo": "https://github.com/jiyong-jeong/nft-marketplace-server-docs",
+    "homepage": null
+  },
+  "metrics": {
+    "stars": 0,
+    "forks": 0,
+    "watchers": 0,
+    "sizeKb": 0,
+    "openIssues": 0,
+    "languages": {},
+    "topics": [],
+    "primaryLanguage": null,
+    "license": null
+  },
+  "dates": {
+    "createdAt": "2026-07-26T05:16:33Z",
+    "updatedAt": "2026-07-26T05:16:59Z",
+    "pushedAt": "2026-07-26T05:16:37Z",
+    "analyzedAt": "2026-07-26T06:01:01.877Z"
+  },
+  "featured": false
+}

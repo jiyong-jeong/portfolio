@@ -1,0 +1,47 @@
+{
+  "slug": "node-js",
+  "name": "Node.js",
+  "category": "language",
+  "tagline": "브라우저 밖에서 자바스크립트를 실행할 수 있게 해주는 서버사이드 런타임",
+  "definition": "Node.js는 크롬의 V8 엔진 위에서 동작하는 자바스크립트 실행 환경으로, 원래 브라우저 안에서만 쓰이던 자바스크립트를 서버, CLI 도구, 스크립트 등 어디서든 실행할 수 있게 만들어졌다. 이벤트 기반 비동기 I/O 모델을 채택해 파일, 네트워크, 외부 API 호출처럼 대기 시간이 긴 작업을 스레드를 블로킹하지 않고 처리한다. 웹 서버 프레임워크뿐 아니라 배치 스크립트, 워커, CLI 유틸리티 등 다양한 형태로 활용된다.",
+  "concepts": [
+    {
+      "term": "Event Loop",
+      "description": "단일 스레드로 동작하면서도 비동기 작업을 큐에 등록하고 순차적으로 처리해 동시성을 흉내내는 핵심 메커니즘이다."
+    },
+    {
+      "term": "Non-blocking I/O",
+      "description": "파일 읽기, 네트워크 요청 같은 I/O 작업을 콜백이나 Promise로 위임해, 응답을 기다리는 동안 다른 코드를 계속 실행할 수 있게 한다."
+    },
+    {
+      "term": "npm / package.json",
+      "description": "npm은 Node.js 생태계의 표준 패키지 매니저이며, package.json은 프로젝트의 의존성과 실행 스크립트를 정의하는 설정 파일이다."
+    },
+    {
+      "term": "CommonJS / ES Modules",
+      "description": "Node.js가 지원하는 두 가지 모듈 시스템으로, require/module.exports를 쓰는 CommonJS와 import/export를 쓰는 ES Modules가 공존한다."
+    },
+    {
+      "term": "Single-threaded runtime",
+      "description": "자바스크립트 실행 자체는 단일 스레드에서 이뤄지며, 무거운 I/O는 내부적으로 별도 스레드 풀이나 OS 커널에 위임한다."
+    }
+  ],
+  "whenToUse": [
+    "프론트엔드와 백엔드를 같은 언어(자바스크립트/타입스크립트)로 통일하고 싶을 때",
+    "외부 API 호출, DB 조회 등 I/O가 많은 서버나 워커를 가볍게 만들고 싶을 때",
+    "프레임워크 없이 순수 스크립트나 CLI 도구를 빠르게 짜야 할 때",
+    "npm 생태계의 방대한 라이브러리를 그대로 활용하고 싶을 때"
+  ],
+  "example": {
+    "title": "가장 단순한 Node.js 스크립트 실행",
+    "language": "javascript",
+    "code": "// index.js\nconst http = require('http');\n\nconst server = http.createServer((req, res) => {\n  res.writeHead(200, { 'Content-Type': 'text/plain' });\n  res.end('Hello from Node.js\\n');\n});\n\nserver.listen(3000, () => {\n  console.log('Server running at http://localhost:3000/');\n});",
+    "description": "외부 프레임워크 없이 Node.js 내장 http 모듈만으로 간단한 웹 서버를 띄우는 예시이며, `node index.js`로 실행한다."
+  },
+  "pitfalls": [
+    "단일 스레드라는 이유로 무조건 느리다고 오해하지만, I/O 위주 작업에는 오히려 효율적이다.",
+    "동기(sync) 함수나 무거운 연산을 실수로 메인 스레드에서 돌리면 이벤트 루프 전체가 멈춘다.",
+    "콜백/Promise/async-await가 섞여 쓰이면서 비동기 흐름을 놓치기 쉽다."
+  ],
+  "generatedAt": "2026-07-26T06:06:40.592Z"
+}

@@ -1,0 +1,47 @@
+{
+  "slug": "hardhat-toolbox",
+  "name": "hardhat-toolbox",
+  "category": "testing",
+  "tagline": "Hardhat 기반 스마트 컨트랙트 개발과 테스트에 필요한 핵심 플러그인을 한 번에 묶은 도구 모음",
+  "definition": "hardhat-toolbox는 Hardhat 개발 환경에서 스마트 컨트랙트를 작성·테스트·배포할 때 자주 함께 쓰이는 여러 플러그인을 하나의 패키지로 묶어 제공하는 공식 번들이다. ethers.js 연동, chai 기반 컨트랙트 전용 matcher, 가스 사용량 리포트, 코드 커버리지, TypeScript 타입 생성(TypeChain), 컨트랙트 검증 도구 등을 개별적으로 설치·설정해야 했던 번거로움을 없애기 위해 만들어졌다. 개발자는 이 패키지 하나만 설치하면 스마트 컨트랙트 개발에 필요한 기본 도구 체인을 곧바로 사용할 수 있다.",
+  "concepts": [
+    {
+      "term": "Hardhat plugin",
+      "description": "Hardhat의 기능을 확장하는 모듈 단위로, hardhat-toolbox는 여러 플러그인을 묶어서 한 번에 설치·활성화한다."
+    },
+    {
+      "term": "ethers.js integration",
+      "description": "컨트랙트 배포, 호출, 계정 서명 등을 자바스크립트/타입스크립트 코드에서 다룰 수 있게 해주는 ethers 라이브러리를 테스트 환경에 자동으로 연결해준다."
+    },
+    {
+      "term": "chai matcher",
+      "description": "revert 발생 여부, 이벤트 emit 여부, 잔액 변화 등 스마트 컨트랙트 특유의 검증을 chai의 expect 문법으로 표현할 수 있게 해주는 확장 assertion 세트다."
+    },
+    {
+      "term": "TypeChain",
+      "description": "컨트랙트 ABI를 기반으로 타입스크립트 타입 정의를 자동 생성해, 컨트랙트 호출 시 타입 안전성을 보장해주는 도구다."
+    },
+    {
+      "term": "gas reporter / coverage",
+      "description": "테스트 실행 시 함수별 가스 소비량을 표로 보여주거나, 테스트가 컨트랙트 코드를 얼마나 실행했는지 커버리지를 측정해주는 부가 도구다."
+    }
+  ],
+  "whenToUse": [
+    "Hardhat으로 스마트 컨트랙트를 개발할 때 테스트 도구를 개별 설정하지 않고 바로 시작하고 싶을 때",
+    "컨트랙트 revert, 이벤트, 잔액 변화 등을 자연스러운 assertion 문법으로 검증하고 싶을 때",
+    "타입스크립트 환경에서 컨트랙트 타입을 자동 생성해 오타나 타입 오류를 줄이고 싶을 때",
+    "가스 비용과 테스트 커버리지를 함께 확인하며 컨트랙트 품질을 관리하고 싶을 때"
+  ],
+  "example": {
+    "title": "hardhat.config.js에서 toolbox 활성화 및 테스트 작성",
+    "language": "javascript",
+    "code": "// hardhat.config.js\nrequire(\"@nomicfoundation/hardhat-toolbox\");\n\nmodule.exports = {\n  solidity: \"0.8.20\",\n};\n\n// test/Token.test.js\nconst { expect } = require(\"chai\");\nconst { ethers } = require(\"hardhat\");\n\ndescribe(\"Token\", function () {\n  it(\"deploys and mints correctly\", async function () {\n    const Token = await ethers.getContractFactory(\"Token\");\n    const token = await Token.deploy();\n\n    await expect(token.mint(100)).to.emit(token, \"Transfer\");\n  });\n});",
+    "description": "hardhat.config.js에 toolbox를 한 줄로 등록하면 ethers와 chai matcher가 테스트 코드에서 바로 사용 가능해진다."
+  },
+  "pitfalls": [
+    "toolbox에 포함된 개별 플러그인 버전을 직접 지정해야 하는 상황에서 충돌이 발생할 수 있다",
+    "번들에 포함된 기능이 많아 실제로 필요한 것보다 훨씬 무거운 의존성이 설치된다",
+    "chai matcher 문법이 일반 자바스크립트 assertion과 달라 초반에 익숙해지는 시간이 필요하다"
+  ],
+  "generatedAt": "2026-07-26T06:13:24.199Z"
+}

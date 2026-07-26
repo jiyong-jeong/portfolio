@@ -1,0 +1,51 @@
+{
+  "slug": "redis",
+  "name": "Redis",
+  "category": "database",
+  "tagline": "메모리 기반으로 동작해 빠른 응답이 필요한 캐시·큐·랭킹 등에 쓰이는 인메모리 데이터 저장소",
+  "definition": "Redis는 데이터를 디스크가 아닌 메모리에 저장해 매우 빠른 읽기/쓰기 속도를 제공하는 인메모리 key-value 데이터 저장소입니다. 단순 문자열뿐 아니라 리스트, 해시, set, sorted set, stream 같은 다양한 자료구조를 기본 지원해, 캐시 서버를 넘어 메시지 큐, 랭킹 시스템, 세션 저장소 등 여러 용도로 활용됩니다. 관계형 DB가 처리하기엔 무겁고 느린, 자주 읽고 쓰는 휘발성 데이터를 빠르게 다루기 위한 목적으로 만들어졌습니다. 필요에 따라 디스크에 스냅샷이나 로그를 남겨 영속성을 확보할 수도 있습니다.",
+  "concepts": [
+    {
+      "term": "In-memory storage",
+      "description": "모든 데이터를 메모리(RAM)에 두고 처리하기 때문에 디스크 기반 DB보다 훨씬 빠른 응답 속도를 낼 수 있습니다."
+    },
+    {
+      "term": "Data structures",
+      "description": "단순 key-value 외에 list, hash, set, sorted set 등 다양한 자료구조를 제공해 용도에 맞는 연산을 바로 사용할 수 있습니다."
+    },
+    {
+      "term": "TTL (Time To Live)",
+      "description": "키마다 만료 시간을 지정할 수 있어, 캐시나 세션처럼 일정 시간 후 자동 삭제되어야 하는 데이터를 쉽게 관리합니다."
+    },
+    {
+      "term": "Persistence (RDB/AOF)",
+      "description": "기본은 메모리 저장이지만 스냅샷(RDB)이나 명령 로그(AOF) 방식으로 디스크에 데이터를 남겨 재시작 후 복구할 수 있습니다."
+    },
+    {
+      "term": "Pub/Sub",
+      "description": "채널에 메시지를 발행(publish)하고 구독(subscribe)하는 방식으로 간단한 실시간 메시징을 구현할 수 있습니다."
+    },
+    {
+      "term": "Distributed lock (Redlock)",
+      "description": "여러 프로세스가 동시에 같은 작업을 수행하지 않도록, Redis를 이용해 분산 환경에서 락(lock)을 구현하는 방식입니다."
+    }
+  ],
+  "whenToUse": [
+    "자주 조회되는 데이터를 캐싱해 DB 부하를 줄이고 응답 속도를 높이고 싶을 때",
+    "작업 큐, 랭킹(sorted set), 카운터처럼 빠른 연산이 필요한 자료구조가 필요할 때",
+    "여러 서버 인스턴스 간 세션 공유나 rate limit 상태를 중앙에서 관리하고 싶을 때",
+    "leader election처럼 분산 환경에서 가벼운 동기화·락 메커니즘이 필요할 때"
+  ],
+  "example": {
+    "title": "기본 key-value 및 sorted set 사용",
+    "language": "bash",
+    "code": "# 문자열 저장과 만료 시간(TTL) 설정\nSET session:1234 \"user-data\" EX 3600\nGET session:1234\n\n# sorted set으로 랭킹 관리\nZADD leaderboard 100 \"player1\"\nZADD leaderboard 250 \"player2\"\nZREVRANGE leaderboard 0 -1 WITHSCORES\n\n# 큐처럼 사용하는 리스트\nLPUSH job:queue \"task-1\"\nRPOP job:queue",
+    "description": "redis-cli로 문자열 저장/만료, sorted set 기반 랭킹, 리스트 기반 큐를 다루는 기본 명령 예시입니다."
+  },
+  "pitfalls": [
+    "메모리에만 의존하면 재시작·장애 시 데이터가 사라질 수 있어 영속성 설정을 확인해야 합니다",
+    "모든 데이터가 메모리에 올라가므로 용량 계획 없이 쓰면 메모리 부족이 발생할 수 있습니다",
+    "단일 인스턴스는 단일 장애점이 될 수 있어 운영 환경에서는 복제·클러스터 구성이 필요합니다"
+  ],
+  "generatedAt": "2026-07-26T06:08:07.606Z"
+}

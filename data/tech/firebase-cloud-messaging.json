@@ -1,0 +1,46 @@
+{
+  "slug": "firebase-cloud-messaging",
+  "name": "Firebase Cloud Messaging",
+  "category": "backend",
+  "tagline": "모바일·웹 앱에 무료로 푸시 알림을 보낼 수 있게 해주는 클라우드 메시징 플랫폼",
+  "definition": "Firebase Cloud Messaging(FCM)은 서버에서 안드로이드, iOS, 웹 클라이언트로 메시지와 알림을 전달할 수 있게 해주는 구글의 크로스플랫폼 메시징 서비스입니다. 각 플랫폼마다 다른 푸시 알림 인프라(APNs, 각 제조사별 서비스 등)를 직접 연동해야 하는 번거로움을 없애고, 하나의 API로 여러 플랫폼에 동시에 메시지를 보낼 수 있도록 추상화한 것이 핵심 목적입니다. 개발자는 앱에 SDK를 붙이고 발급받은 디바이스 토큰으로 서버에서 메시지를 전송하기만 하면 됩니다.",
+  "concepts": [
+    {
+      "term": "Registration Token",
+      "description": "클라이언트 앱 인스턴스마다 발급되는 고유 식별자로, 서버가 특정 기기로 메시지를 보낼 때 수신 대상을 지정하는 데 사용됩니다."
+    },
+    {
+      "term": "Notification message vs Data message",
+      "description": "알림 UI를 자동으로 표시하는 notification 메시지와, 앱이 직접 처리 로직을 실행하는 data 메시지로 나뉘며 용도에 따라 선택합니다."
+    },
+    {
+      "term": "Topic Messaging",
+      "description": "특정 주제(topic)를 구독한 모든 기기에 한 번에 메시지를 보낼 수 있는 발행-구독 방식의 전송 모델입니다."
+    },
+    {
+      "term": "Server Key / Service Account",
+      "description": "서버가 FCM API를 호출해 메시지를 발송할 때 신원을 증명하는 인증 수단입니다."
+    },
+    {
+      "term": "Delivery Priority",
+      "description": "메시지를 즉시 전달할지, 기기 상태에 따라 지연 전달할지를 지정해 배터리·네트워크 사용을 조절하는 속성입니다."
+    }
+  ],
+  "whenToUse": [
+    "여러 플랫폼(안드로이드/iOS/웹)에 동일한 알림 로직을 하나의 API로 관리하고 싶을 때",
+    "실시간 이벤트 발생 시 사용자에게 즉시 알림을 보내야 하는 서비스를 만들 때",
+    "특정 그룹 사용자에게만 알림을 보내는 토픽 기반 브로드캐스트가 필요할 때",
+    "자체 푸시 서버 인프라를 구축하지 않고 빠르게 알림 기능을 붙이고 싶을 때"
+  ],
+  "example": {
+    "title": "서버에서 FCM으로 푸시 메시지 발송",
+    "language": "json",
+    "code": "{\n  \"message\": {\n    \"token\": \"<디바이스 등록 토큰>\",\n    \"notification\": {\n      \"title\": \"주문이 접수되었습니다\",\n      \"body\": \"곧 배송이 시작됩니다.\"\n    },\n    \"data\": {\n      \"orderId\": \"12345\"\n    }\n  }\n}",
+    "description": "특정 디바이스 토큰을 대상으로 알림 제목/본문과 함께 추가 데이터를 전달하는 FCM 전송 요청 본문 예시입니다."
+  },
+  "pitfalls": [
+    "등록 토큰은 앱 재설치나 시간 경과로 만료될 수 있어 갱신 처리가 필요합니다.",
+    "앱이 백그라운드/종료 상태일 때 플랫폼별로 메시지 수신 동작이 달라질 수 있습니다."
+  ],
+  "generatedAt": "2026-07-26T06:08:43.212Z"
+}

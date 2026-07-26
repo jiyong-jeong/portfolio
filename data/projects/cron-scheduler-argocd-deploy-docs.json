@@ -1,0 +1,96 @@
+{
+  "slug": "cron-scheduler-argocd-deploy-docs",
+  "repo": "cron-scheduler-argocd-deploy-docs",
+  "title": "멀티체인 크론 스케줄러 배포 구조 문서",
+  "summary": "체인별 폴더 구조와 Kustomize base/overlays로 크론 스케줄러를 Jenkins-ArgoCD GitOps 흐름으로 배포하는 구조를 정리한 문서",
+  "description": "체인(서비스) 컨텍스트별로 분리된 폴더 아래에서 크론 스케줄러 워크로드를 배포하는 구조를 관찰하고 정리한 문서 레포지토리입니다. 각 체인 폴더에는 Jenkinsfile과 infra/k8s(Kustomize base+overlays)가 위치하며, Jenkins가 이미지를 빌드·push하고 이미지 태그와 overlay 값을 레포에 커밋하면 ArgoCD가 이를 클러스터에 동기화하는 GitOps 흐름을 따릅니다. 스케줄러는 수수료 정산, 잔여 상태 초기화, 이벤트 재처리 등 체인 컨텍스트에 종속된 배치성 작업을 수행하며, CronJob 또는 @nestjs/schedule 기반 Deployment 형태로 실행됩니다. 다중 체인으로 확장할 때는 동일한 패턴의 폴더를 추가하는 방식으로 구조가 재사용됩니다.",
+  "category": "인프라",
+  "role": "체인별 스케줄러 배포 구조와 Jenkins-ArgoCD GitOps 파이프라인 흐름을 조사하여 문서로 정리함.",
+  "techStack": [
+    {
+      "name": "Jenkins",
+      "category": "devops",
+      "usage": "체인별 스케줄러 애플리케이션 이미지를 빌드하고 push하는 CI 파이프라인"
+    },
+    {
+      "name": "ArgoCD",
+      "category": "devops",
+      "usage": "레포에 커밋된 이미지 태그/overlay 값을 클러스터에 자동 동기화하는 GitOps 배포"
+    },
+    {
+      "name": "Kubernetes",
+      "category": "infra",
+      "usage": "CronJob 또는 Deployment 형태로 스케줄러 워크로드를 실행"
+    },
+    {
+      "name": "Kustomize",
+      "category": "tool",
+      "usage": "base와 환경별 overlays 구조로 배포 설정을 분리 관리"
+    },
+    {
+      "name": "NestJS",
+      "category": "framework",
+      "usage": "@nestjs/schedule 기반으로 스케줄러 로직을 구현"
+    }
+  ],
+  "highlights": [
+    "체인/서비스 컨텍스트별 폴더로 분리해 다중 체인 확장 시 폴더 추가만으로 패턴을 재사용",
+    "Kustomize base+overlays 구조로 환경별 배포 설정을 분리 관리",
+    "Jenkins 빌드 후 이미지 태그를 레포에 커밋하면 ArgoCD가 자동 동기화하는 GitOps 흐름",
+    "수수료 정산, 상태 초기화, 이벤트 재처리 등 체인 종속적 배치 작업을 스케줄러로 분리 운영"
+  ],
+  "challenges": [
+    {
+      "problem": "스케줄러 워크로드의 리소스 요청량을 낮게 유지하면서도 실패 시 안정성을 확보해야 함",
+      "solution": "overlay 레벨에서 재시도 및 알람 정책을 별도로 조정해 리소스 절감과 안정성을 함께 확보"
+    }
+  ],
+  "diagrams": [
+    {
+      "title": "GitOps 기반 스케줄러 배포 흐름",
+      "description": "Jenkins에서 ArgoCD를 거쳐 클러스터에 스케줄러가 배포되기까지의 전체 흐름을 보여줍니다.",
+      "type": "architecture",
+      "mermaid": "flowchart LR\n  A[\"Jenkins 파이프라인\"] --> B[\"이미지 빌드 및 Push\"]\n  B --> C[\"이미지 태그/overlay 값 레포 커밋\"]\n  C --> D[\"ArgoCD\"]\n  D --> E[\"Kubernetes 클러스터\"]\n  E --> F[\"CronJob/Deployment 스케줄러\"]"
+    },
+    {
+      "title": "체인별 Kustomize 디렉터리 구조",
+      "description": "체인 이름을 딴 폴더 아래에 Jenkinsfile과 Kustomize base/overlays가 배치되는 구조를 보여줍니다.",
+      "type": "flow",
+      "mermaid": "flowchart TD\n  subgraph POLY[\"polygon 폴더\"]\n    J[\"Jenkinsfile\"]\n    K[\"infra/k8s\"]\n  end\n  K --> BASE[\"base\"]\n  K --> OV[\"overlays\"]\n  OV --> DEV[\"dev overlay\"]\n  OV --> PROD[\"prod overlay\"]"
+    }
+  ],
+  "keywords": [
+    "cron",
+    "scheduler",
+    "argocd",
+    "kustomize",
+    "kubernetes",
+    "jenkins",
+    "gitops",
+    "nestjs",
+    "cronjob",
+    "multi-chain"
+  ],
+  "links": {
+    "repo": "https://github.com/jiyong-jeong/cron-scheduler-argocd-deploy-docs",
+    "homepage": null
+  },
+  "metrics": {
+    "stars": 0,
+    "forks": 0,
+    "watchers": 0,
+    "sizeKb": 0,
+    "openIssues": 0,
+    "languages": {},
+    "topics": [],
+    "primaryLanguage": null,
+    "license": null
+  },
+  "dates": {
+    "createdAt": "2026-07-26T05:15:44Z",
+    "updatedAt": "2026-07-26T05:16:04Z",
+    "pushedAt": "2026-07-26T05:15:48Z",
+    "analyzedAt": "2026-07-26T06:05:03.397Z"
+  },
+  "featured": false
+}

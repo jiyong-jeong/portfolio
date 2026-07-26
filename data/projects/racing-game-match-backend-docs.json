@@ -1,0 +1,88 @@
+{
+  "slug": "racing-game-match-backend-docs",
+  "repo": "racing-game-match-backend-docs",
+  "title": "레이싱 게임 매치 처리 백엔드",
+  "summary": "NestJS와 TypeORM 기반으로 레이싱 게임의 매치 처리를 담당하는 백엔드 구조 정리 문서",
+  "description": "온라인 레이싱 게임의 매치(대전) 처리를 담당하는 백엔드 서버의 구조를 정리한 문서 프로젝트입니다. NestJS와 TypeORM을 기반으로 하며, 같은 이름의 서브디렉터리가 중첩되는 구조 패턴으로 모듈을 구성합니다. 로컬 개발 환경과 E2E 테스트 환경의 실행 조건이 다르다는 점을 고려해 Dockerfile을 용도별로 분리했고, DB 마이그레이션과 정적 리소스를 각각 migration/, resource/ 디렉터리로 나누어 관리합니다. Jenkins를 통한 빌드/배포 파이프라인도 함께 구성되어 있습니다.",
+  "category": "백엔드",
+  "role": "매치 처리 백엔드의 모듈 구조와 로컬/E2E 실행 환경 분리 등 인프라 구성을 설계하고 문서화했습니다.",
+  "techStack": [
+    {
+      "name": "NestJS",
+      "category": "framework",
+      "usage": "매치 처리 백엔드 서버의 기본 프레임워크"
+    },
+    {
+      "name": "TypeScript",
+      "category": "language",
+      "usage": "NestJS 기반 서버 개발 언어"
+    },
+    {
+      "name": "TypeORM",
+      "category": "backend",
+      "usage": "DB 엔티티 및 마이그레이션 관리를 위한 ORM"
+    },
+    {
+      "name": "Docker",
+      "category": "devops",
+      "usage": "로컬 개발용과 E2E 테스트용 컨테이너 이미지를 분리 구성"
+    },
+    {
+      "name": "Jenkins",
+      "category": "devops",
+      "usage": "빌드 및 배포 파이프라인 자동화"
+    }
+  ],
+  "highlights": [
+    "같은 이름의 서브디렉터리가 중첩되는 모듈 구조 패턴으로 프로젝트를 구성",
+    "로컬 개발용 Dockerfile.local과 E2E 테스트용 Dockerfile을 분리 운영",
+    "migration/, resource/ 디렉터리로 DB 마이그레이션과 리소스 관리를 분리",
+    "NestJS + TypeORM 기반 백엔드에 Jenkins CI 파이프라인 적용"
+  ],
+  "challenges": [
+    {
+      "problem": "로컬 개발 환경과 E2E 테스트 환경이 요구하는 실행 조건이 서로 달라 하나의 Dockerfile로는 대응하기 어려움",
+      "solution": "Dockerfile.local을 별도로 두어 로컬용과 E2E용 이미지를 분리 빌드"
+    }
+  ],
+  "diagrams": [
+    {
+      "title": "매치 백엔드 구조 개요",
+      "description": "NestJS 매치 처리 백엔드의 모듈 구성과 마이그레이션/리소스 분리, 실행 환경별 Docker 구성을 보여주는 다이어그램입니다.",
+      "type": "architecture",
+      "mermaid": "flowchart TD\n  Client[\"클라이언트\"] --> App[\"NestJS 매치 처리 서버\"]\n  App --> ORM[\"TypeORM\"]\n  ORM --> DB[\"데이터베이스\"]\n  App --> Migration[\"migration 디렉터리\"]\n  App --> Resource[\"resource 디렉터리\"]\n  subgraph Env[\"실행 환경\"]\n    Local[\"Dockerfile.local (로컬)\"]\n    E2E[\"Dockerfile (E2E)\"]\n  end\n  App --> Env\n  CI[\"Jenkins 파이프라인\"] --> App"
+    }
+  ],
+  "keywords": [
+    "nestjs",
+    "typeorm",
+    "docker",
+    "jenkins",
+    "backend",
+    "racing-game",
+    "matchmaking",
+    "migration"
+  ],
+  "links": {
+    "repo": "https://github.com/jiyong-jeong/racing-game-match-backend-docs",
+    "homepage": null
+  },
+  "metrics": {
+    "stars": 0,
+    "forks": 0,
+    "watchers": 0,
+    "sizeKb": 0,
+    "openIssues": 0,
+    "languages": {},
+    "topics": [],
+    "primaryLanguage": null,
+    "license": null
+  },
+  "dates": {
+    "createdAt": "2026-07-26T05:16:50Z",
+    "updatedAt": "2026-07-26T05:16:57Z",
+    "pushedAt": "2026-07-26T05:16:53Z",
+    "analyzedAt": "2026-07-26T05:59:44.032Z"
+  },
+  "featured": false
+}

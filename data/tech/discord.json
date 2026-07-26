@@ -1,0 +1,50 @@
+{
+  "slug": "discord",
+  "name": "Discord",
+  "category": "tool",
+  "tagline": "커뮤니티 음성·텍스트 채팅과 봇 연동을 지원하는 커뮤니케이션 플랫폼",
+  "definition": "Discord는 서버(길드) 단위로 채널을 구성해 텍스트, 음성, 알림 등을 관리할 수 있는 커뮤니티 커뮤니케이션 플랫폼이다. 원래 게이머들의 음성 채팅 도구로 시작했지만, 역할(Role) 기반 권한 관리와 봇(Bot) API를 강력하게 지원하면서 커뮤니티 운영, 인증, 자동화의 허브로 확장되었다. 특히 외부 서비스(예: 지갑, NFT 소유 여부)와 연동해 사용자에게 자동으로 역할을 부여하거나 채널 접근을 제한하는 용도로 널리 쓰인다.",
+  "concepts": [
+    {
+      "term": "Guild",
+      "description": "Discord API에서 '서버'를 부르는 내부 명칭으로, 채널과 멤버, 역할이 속하는 최상위 단위이다."
+    },
+    {
+      "term": "Role",
+      "description": "멤버에게 부여되는 권한 묶음으로, 특정 채널 접근이나 기능 사용 여부를 역할 단위로 제어한다."
+    },
+    {
+      "term": "Bot",
+      "description": "Discord 계정 형태로 서버에 참여해 API 요청에 반응하거나 자동으로 메시지·역할을 처리하는 프로그램이다."
+    },
+    {
+      "term": "OAuth2",
+      "description": "사용자가 외부 서비스에 Discord 계정으로 로그인하거나 서버 참여 권한을 위임할 때 사용하는 인증 방식이다."
+    },
+    {
+      "term": "Webhook",
+      "description": "외부 시스템이 특정 URL로 요청을 보내면 Discord 채널에 자동으로 메시지를 게시하도록 하는 단방향 연동 방식이다."
+    },
+    {
+      "term": "Slash Command",
+      "description": "'/'로 시작해 서버 내에서 실행할 수 있는 봇 명령어로, 사용자와 봇 간 상호작용의 표준 진입점이다."
+    }
+  ],
+  "whenToUse": [
+    "커뮤니티 회원 등급이나 자격을 역할로 나누어 관리하고 싶을 때",
+    "외부 인증(지갑 연결, 결제, NFT 소유 등) 결과를 자동으로 채널 접근 권한에 반영하고 싶을 때",
+    "실시간 채팅과 알림, 봇 자동화를 하나의 플랫폼에서 함께 운영하고 싶을 때"
+  ],
+  "example": {
+    "title": "봇이 멤버에게 역할을 부여하는 최소 예시",
+    "language": "javascript",
+    "code": "const { Client, GatewayIntentBits } = require('discord.js');\nconst client = new Client({ intents: [GatewayIntentBits.Guilds, GatewayIntentBits.GuildMembers] });\n\nclient.once('ready', () => {\n  console.log(`Logged in as ${client.user.tag}`);\n});\n\n// 외부 인증 로직에서 통과된 사용자에게 'Verified' 역할을 부여\nasync function grantVerifiedRole(guildId, userId) {\n  const guild = await client.guilds.fetch(guildId);\n  const member = await guild.members.fetch(userId);\n  const role = guild.roles.cache.find(r => r.name === 'Verified');\n  await member.roles.add(role);\n}\n\nclient.login(process.env.DISCORD_BOT_TOKEN);",
+    "description": "discord.js 라이브러리로 봇을 실행하고, 외부 인증이 통과된 사용자에게 'Verified' 역할을 부여하는 기본 흐름이다."
+  },
+  "pitfalls": [
+    "봇 토큰과 OAuth2 시크릿을 코드에 노출하면 서버 전체 권한이 탈취될 수 있다",
+    "봇에 필요한 Intent(GuildMembers 등)를 활성화하지 않으면 멤버 정보를 받아올 수 없다",
+    "역할 부여 자동화 시 봇 역할이 대상 역할보다 상위에 있어야 권한 변경이 가능하다"
+  ],
+  "generatedAt": "2026-07-26T06:11:53.498Z"
+}

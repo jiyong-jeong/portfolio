@@ -1,0 +1,101 @@
+{
+  "slug": "multi-product-mobile-app-deploy-config-docs",
+  "repo": "multi-product-mobile-app-deploy-config-docs",
+  "title": "멀티체인 마이크로서비스 GitOps 배포 구성 문서",
+  "summary": "ArgoCD 부트스트랩부터 10+ 서비스의 환경·체인별 시크릿 관리까지 정리한 GitOps 배포 구성 관찰 문서",
+  "description": "여러 마이크로서비스(marketplace, scheduler, launchpad, worker, indexer, raffle, ums 등)로 구성된 백엔드 스택의 배포 구성을 관찰하고 정리한 문서 리포지토리입니다. infra/argocd 아래에 ArgoCD 자체 설치 매니페스트와 base/overlays 구조를 두어 클러스터의 GitOps 컨트롤 플레인 부트스트랩과 애플리케이션 배포를 함께 다룹니다. secrets 디렉터리는 서비스별로 klaytn/polygon/ethereum 같은 체인과 dev/qa/prod 환경 조합에 따라 세분화되어 있으며, sealed-secret·SOPS·SSM 참조 등 암호화된 형태로 시크릿을 저장하는 컨벤션을 확인할 수 있습니다. 새 서비스가 추가될 때는 secrets/<service>/<chain>/<env> 디렉터리 스캐폴딩만 늘리면 되는 구조로, 하나의 조직 내 다수 서비스의 배포 설정을 중앙 집중식으로 관리하는 패턴을 보여줍니다.",
+  "category": "인프라",
+  "role": "기존 배포 구성 리포지토리의 구조를 관찰·분석하여 GitOps 배포 흐름과 시크릿 관리 컨벤션을 문서로 정리.",
+  "techStack": [
+    {
+      "name": "ArgoCD",
+      "category": "devops",
+      "usage": "클러스터 부트스트랩 및 서비스별 매니페스트 동기화를 담당하는 GitOps 도구"
+    },
+    {
+      "name": "Kubernetes",
+      "category": "infra",
+      "usage": "매니페스트 기반으로 배포되는 대상 플랫폼"
+    },
+    {
+      "name": "Kustomize",
+      "category": "devops",
+      "usage": "base/overlays 구조로 환경별 설정을 오버레이"
+    },
+    {
+      "name": "Sealed Secrets",
+      "category": "tool",
+      "usage": "일부 서비스의 시크릿을 암호화 저장하는 방식 중 하나"
+    },
+    {
+      "name": "SOPS",
+      "category": "tool",
+      "usage": "일부 서비스의 시크릿을 암호화 저장하는 방식 중 하나"
+    },
+    {
+      "name": "AWS SSM Parameter Store",
+      "category": "infra",
+      "usage": "일부 시크릿 값을 참조하는 외부 저장소로 추정"
+    }
+  ],
+  "highlights": [
+    "ArgoCD 설치 매니페스트와 애플리케이션 배포 매니페스트를 한 리포에서 함께 관리",
+    "10개 이상 마이크로서비스의 환경(dev/qa/prod)·체인(klaytn/polygon/ethereum)별 시크릿을 분리 저장",
+    "sealed-secret/SOPS/SSM 등 여러 시크릿 암호화 방식을 혼용하는 구조 확인",
+    "새 서비스 추가 시 디렉터리 스캐폴딩만으로 확장 가능한 컨벤션 확립"
+  ],
+  "challenges": [
+    {
+      "problem": "다수 마이크로서비스와 여러 체인·환경 조합의 시크릿을 하나의 리포에서 안전하게 관리해야 함",
+      "solution": "서비스별로 secrets/<service>/<chain>/<env> 디렉터리 컨벤션을 만들고 sealed-secret/SOPS/SSM 참조 등 암호화된 형태로만 저장"
+    }
+  ],
+  "diagrams": [
+    {
+      "title": "GitOps 배포 아키텍처",
+      "description": "ArgoCD 부트스트랩부터 서비스별 시크릿 매니페스트가 동기화되는 전체 흐름을 보여줍니다.",
+      "type": "architecture",
+      "mermaid": "flowchart TD\n  A[\"Git 리포지토리\"] --> B[\"infra/argocd/argocd-install.yaml\"]\n  B --> C[\"ArgoCD 컨트롤 플레인 설치\"]\n  C --> D[\"ArgoCD Application 리소스\"]\n  D --> E[\"secrets/ 서비스별 매니페스트\"]\n  E --> F[\"marketplace/scheduler/launchpad 등\"]\n  F --> G[\"dev/qa/prod x klaytn/polygon/ethereum\"]\n  D --> H[\"커밋 변경 감지 및 동기화\"]"
+    },
+    {
+      "title": "신규 서비스 온보딩 흐름",
+      "description": "새로운 서비스를 추가할 때 시크릿 디렉터리를 스캐폴딩하고 ArgoCD가 이를 배포하기까지의 절차입니다.",
+      "type": "flow",
+      "mermaid": "flowchart LR\n  A[\"신규 서비스 정의\"] --> B[\"secrets/서비스명 디렉터리 생성\"]\n  B --> C[\"체인별 하위 디렉터리 생성\"]\n  C --> D[\"환경별 하위 디렉터리 생성\"]\n  D --> E[\"암호화된 시크릿 매니페스트 커밋\"]\n  E --> F[\"ArgoCD 감지 및 배포\"]"
+    }
+  ],
+  "keywords": [
+    "argocd",
+    "gitops",
+    "kubernetes",
+    "secrets-management",
+    "sealed-secrets",
+    "sops",
+    "multi-chain",
+    "microservices",
+    "deployment",
+    "infra"
+  ],
+  "links": {
+    "repo": "https://github.com/jiyong-jeong/multi-product-mobile-app-deploy-config-docs",
+    "homepage": null
+  },
+  "metrics": {
+    "stars": 0,
+    "forks": 0,
+    "watchers": 0,
+    "sizeKb": 0,
+    "openIssues": 0,
+    "languages": {},
+    "topics": [],
+    "primaryLanguage": null,
+    "license": null
+  },
+  "dates": {
+    "createdAt": "2026-07-26T05:15:50Z",
+    "updatedAt": "2026-07-26T05:16:13Z",
+    "pushedAt": "2026-07-26T05:15:53Z",
+    "analyzedAt": "2026-07-26T06:04:06.861Z"
+  },
+  "featured": false
+}

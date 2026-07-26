@@ -1,0 +1,51 @@
+{
+  "slug": "pyupbit",
+  "name": "pyupbit",
+  "category": "backend",
+  "tagline": "업비트 거래소의 REST/WebSocket API를 파이썬으로 감싼 시세 조회·주문 자동화 라이브러리",
+  "definition": "pyupbit는 국내 암호화폐 거래소 업비트가 제공하는 REST API와 WebSocket API를 파이썬 함수 호출만으로 사용할 수 있게 감싼 오픈소스 라이브러리다. HTTP 요청 작성, 인증 헤더(JWT) 생성, 응답 파싱 같은 반복 작업을 직접 구현하지 않아도 시세 조회, 주문 실행, 잔고 확인이 가능하도록 만들어졌다. 자동매매 봇이나 데이터 분석 스크립트에서 거래소 연동 코드를 단순화하는 것이 주된 목적이다.",
+  "concepts": [
+    {
+      "term": "Access Key / Secret Key",
+      "description": "업비트 계정에서 발급받는 API 인증 키 쌍으로, 주문·잔고 조회 등 인증이 필요한 요청에 사용된다."
+    },
+    {
+      "term": "OHLCV",
+      "description": "시가·고가·저가·종가·거래량 데이터를 뜻하며, 캔들 차트 및 백테스트에 사용되는 기본 시세 데이터 형식이다."
+    },
+    {
+      "term": "REST API",
+      "description": "요청-응답 방식으로 시세 조회, 주문, 잔고 확인 등을 처리하는 HTTP 기반 인터페이스다."
+    },
+    {
+      "term": "WebSocket",
+      "description": "실시간 체결·호가 데이터를 지속적으로 수신하기 위해 사용하는 양방향 통신 방식으로, 폴링 없이 최신 데이터를 스트리밍 받을 수 있다."
+    },
+    {
+      "term": "JWT 인증",
+      "description": "요청마다 비밀 키로 서명한 토큰을 헤더에 담아 신원을 증명하는 방식으로, 주문·자산 관련 요청에 필요하다."
+    },
+    {
+      "term": "Rate Limit",
+      "description": "거래소 API가 일정 시간 내 허용하는 요청 횟수 제한으로, 초과 시 요청이 거부되므로 호출 빈도 조절이 필요하다."
+    }
+  ],
+  "whenToUse": [
+    "파이썬으로 업비트 시세·주문 API를 빠르게 연동해야 할 때",
+    "자동매매 봇이나 트레이딩 전략을 직접 구현하고 검증하려는 경우",
+    "과거 캔들 데이터를 받아 백테스트나 데이터 분석에 활용하려는 경우",
+    "HTTP 요청·인증 로직을 직접 작성하지 않고 API 연동 시간을 줄이고 싶을 때"
+  ],
+  "example": {
+    "title": "현재가 조회 및 잔고 확인",
+    "language": "python",
+    "code": "import pyupbit\n\n# 인증이 필요 없는 시세 조회\nprice = pyupbit.get_current_price(\"KRW-BTC\")\nprint(\"BTC 현재가:\", price)\n\n# 인증이 필요한 계좌 조회\naccess_key = \"발급받은 access key\"\nsecret_key = \"발급받은 secret key\"\nupbit = pyupbit.Upbit(access_key, secret_key)\n\nbalance = upbit.get_balance(\"KRW\")\nprint(\"보유 원화 잔고:\", balance)",
+    "description": "인증 없이 현재가를 조회하고, API 키를 이용해 계좌 잔고를 확인하는 가장 기본적인 사용 예시다."
+  },
+  "pitfalls": [
+    "요청을 너무 자주 보내면 Rate Limit에 걸려 일시적으로 응답이 차단될 수 있다",
+    "Secret Key를 코드에 그대로 노출하면 계좌 자산이 위험해질 수 있다",
+    "실시간성이 중요한 데이터는 REST 폴링 대신 WebSocket을 써야 지연을 줄일 수 있다"
+  ],
+  "generatedAt": "2026-07-26T06:15:24.000Z"
+}

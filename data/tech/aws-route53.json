@@ -1,0 +1,47 @@
+{
+  "slug": "aws-route53",
+  "name": "AWS Route53",
+  "category": "infra",
+  "tagline": "도메인 이름과 실제 인프라 리소스를 연결해주는 AWS의 관리형 DNS 서비스",
+  "definition": "Route53은 AWS에서 제공하는 관리형 DNS(Domain Name System) 서비스로, 사람이 읽는 도메인 이름을 IP 주소나 다른 AWS 리소스로 변환해주는 역할을 한다. 직접 DNS 서버를 구축하고 운영하는 부담을 없애고, 도메인 등록부터 트래픽 라우팅, 헬스체크까지 하나의 서비스에서 처리할 수 있도록 만들어졌다. 특히 다른 AWS 서비스(로드밸런서, S3, CloudFront 등)와 긴밀하게 연동되어 인프라 변경 시 DNS 레코드를 손쉽게 관리할 수 있다.",
+  "concepts": [
+    {
+      "term": "Hosted Zone",
+      "description": "특정 도메인에 대한 DNS 레코드들의 모음으로, Route53에서 도메인을 관리하는 기본 단위이다."
+    },
+    {
+      "term": "Record Set",
+      "description": "도메인 이름을 IP나 다른 리소스로 매핑하는 규칙으로, A, CNAME, TXT 등 다양한 타입이 있다."
+    },
+    {
+      "term": "Alias Record",
+      "description": "AWS 리소스(로드밸런서, CloudFront 등)를 도메인 루트에서도 직접 가리킬 수 있게 해주는 Route53 전용 레코드 타입이다."
+    },
+    {
+      "term": "Routing Policy",
+      "description": "가중치 기반, 지연 시간 기반, 페일오버 등 트래픽을 여러 대상으로 분산하거나 전환하는 방식을 결정하는 정책이다."
+    },
+    {
+      "term": "Health Check",
+      "description": "엔드포인트의 상태를 주기적으로 확인하여 장애 시 자동으로 트래픽을 다른 리소스로 전환할 수 있게 해주는 기능이다."
+    }
+  ],
+  "whenToUse": [
+    "AWS 인프라(ELB, CloudFront, S3 등)와 DNS를 밀접하게 연동해야 할 때",
+    "여러 리전이나 인스턴스로 트래픽을 분산하거나 장애 조치를 자동화하고 싶을 때",
+    "GitOps나 IaC 도구로 도메인과 인그레스 설정을 코드로 관리하고 싶을 때",
+    "도메인 등록부터 DNS 관리까지 하나의 콘솔/API로 통합하고 싶을 때"
+  ],
+  "example": {
+    "title": "CLI로 A 레코드 등록하기",
+    "language": "bash",
+    "code": "aws route53 change-resource-record-sets \\\n  --hosted-zone-id ZXXXXXXXXXXXXX \\\n  --change-batch '{\n    \"Changes\": [{\n      \"Action\": \"UPSERT\",\n      \"ResourceRecordSet\": {\n        \"Name\": \"app.example.com\",\n        \"Type\": \"A\",\n        \"TTL\": 300,\n        \"ResourceRecords\": [{\"Value\": \"203.0.113.10\"}]\n      }\n    }]\n  }'",
+    "description": "app.example.com 도메인을 지정한 IP 주소로 연결하는 A 레코드를 생성하거나 갱신한다."
+  },
+  "pitfalls": [
+    "TTL 값을 너무 크게 설정하면 레코드 변경 후 반영까지 시간이 오래 걸린다",
+    "Alias 레코드와 일반 CNAME 레코드의 차이를 혼동해 루트 도메인에 CNAME을 쓰려다 실패한다",
+    "Hosted Zone과 실제 도메인 등록기관(Registrar)의 네임서버 설정을 동기화하지 않아 DNS가 반영되지 않는다"
+  ],
+  "generatedAt": "2026-07-26T06:13:50.402Z"
+}

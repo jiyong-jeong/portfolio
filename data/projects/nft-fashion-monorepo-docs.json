@@ -1,0 +1,74 @@
+{
+  "slug": "nft-fashion-monorepo-docs",
+  "repo": "nft-fashion-monorepo-docs",
+  "title": "패션 NFT 홀더 인증 모노레포",
+  "summary": "백엔드·프런트엔드·컨트랙트·Discord 홀더 인증을 하나의 워크스페이스로 묶은 패션 NFT 프로젝트 구조",
+  "description": "패션 NFT 프로덕트를 구성하는 여러 서브 프로젝트를 하나의 모노레포로 통합 관리하기 위한 문서 레포입니다. 백엔드, 백엔드 배포 config, 프런트엔드, 컨트랙트뿐 아니라 NFT 보유자 인증을 위한 Discord 연동 백엔드/프런트엔드를 별도 모듈로 두어 인증 흐름을 분리 관리합니다. script 폴더에는 반복 작업을 돕는 헬퍼 스크립트가 포함되어 있습니다. 각 서브 프로젝트가 독립적으로 개발·배포되면서도 상위 폴더 하나로 전체 구조를 파악할 수 있도록 설계되었습니다.",
+  "category": "Web3",
+  "role": "모노레포 전체 폴더 구조를 설계하고 백엔드, 프런트엔드, 컨트랙트, Discord 홀더 인증 모듈 구성을 정리·문서화함.",
+  "techStack": [
+    {
+      "name": "Smart Contract",
+      "category": "blockchain",
+      "usage": "패션 NFT 관련 컨트랙트 모듈 구성"
+    },
+    {
+      "name": "Discord",
+      "category": "tool",
+      "usage": "NFT 홀더 인증을 위한 백엔드/프런트엔드 연동"
+    },
+    {
+      "name": "Monorepo",
+      "category": "tool",
+      "usage": "백엔드, 프런트엔드, 컨트랙트 등 다수 서브 프로젝트를 단일 워크스페이스로 관리"
+    }
+  ],
+  "highlights": [
+    "백엔드, 프런트엔드, 컨트랙트, Discord 인증까지 다수 서브 프로젝트를 하나의 모노레포로 통합 관리",
+    "Discord 홀더 인증을 위한 백엔드/프런트엔드를 별도 모듈로 분리 구성",
+    "백엔드 배포 config 를 독립 폴더로 분리해 배포 프로세스를 표준화",
+    "script 폴더의 헬퍼 스크립트로 반복 작업을 자동화"
+  ],
+  "challenges": [],
+  "diagrams": [
+    {
+      "title": "모노레포 서브 프로젝트 구조",
+      "description": "상위 워크스페이스가 백엔드, 프런트엔드, 컨트랙트, Discord 인증 모듈을 감싸는 전체 구조를 보여줍니다.",
+      "type": "architecture",
+      "mermaid": "flowchart TD\n  Mono[\"nft-fashion-monorepo\"]\n  Mono --> Backend[\"백엔드\"]\n  Mono --> Deploy[\"백엔드 배포 Config\"]\n  Mono --> DiscordBE[\"Discord 홀더 인증 백엔드\"]\n  Mono --> DiscordFE[\"Discord 홀더 인증 프런트\"]\n  Mono --> Frontend[\"프런트엔드\"]\n  Mono --> Contracts[\"컨트랙트\"]\n  Mono --> Scripts[\"script 헬퍼\"]"
+    }
+  ],
+  "keywords": [
+    "nft",
+    "fashion",
+    "monorepo",
+    "discord",
+    "holder-verification",
+    "web3",
+    "contracts",
+    "backend",
+    "frontend"
+  ],
+  "links": {
+    "repo": "https://github.com/jiyong-jeong/nft-fashion-monorepo-docs",
+    "homepage": null
+  },
+  "metrics": {
+    "stars": 0,
+    "forks": 0,
+    "watchers": 0,
+    "sizeKb": 0,
+    "openIssues": 0,
+    "languages": {},
+    "topics": [],
+    "primaryLanguage": null,
+    "license": null
+  },
+  "dates": {
+    "createdAt": "2026-07-26T05:28:55Z",
+    "updatedAt": "2026-07-26T05:29:02Z",
+    "pushedAt": "2026-07-26T05:28:58Z",
+    "analyzedAt": "2026-07-26T05:50:13.545Z"
+  },
+  "featured": false
+}

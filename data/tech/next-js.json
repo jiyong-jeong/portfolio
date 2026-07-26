@@ -1,0 +1,47 @@
+{
+  "slug": "next-js",
+  "name": "Next.js",
+  "category": "frontend",
+  "tagline": "React 기반으로 라우팅과 렌더링 방식을 함께 제공하는 웹 프런트엔드 프레임워크",
+  "definition": "Next.js는 React 위에서 파일 기반 라우팅, 서버 사이드 렌더링, 정적 사이트 생성 등을 기본 기능으로 제공하는 프레임워크다. React 만으로 앱을 만들 때 개발자가 직접 구성해야 했던 라우팅, 번들링, 렌더링 전략 선택 같은 설정을 프레임워크가 미리 정해진 규칙으로 대신 처리해준다. 이를 통해 초기 로딩 속도, 검색엔진 최적화(SEO), 개발 생산성을 함께 개선하는 것을 목표로 만들어졌다.",
+  "concepts": [
+    {
+      "term": "File-based Routing",
+      "description": "폴더와 파일 구조가 곧 URL 경로가 되는 방식으로, 별도의 라우터 설정 코드 없이 페이지를 추가할 수 있다."
+    },
+    {
+      "term": "Server-Side Rendering (SSR)",
+      "description": "요청이 올 때마다 서버에서 HTML을 생성해 내려주는 렌더링 방식으로, 초기 화면 표시와 SEO에 유리하다."
+    },
+    {
+      "term": "Static Site Generation (SSG)",
+      "description": "빌드 시점에 미리 HTML을 만들어두는 방식으로, 변경이 잦지 않은 페이지에서 빠른 응답 속도를 제공한다."
+    },
+    {
+      "term": "API Routes",
+      "description": "프런트엔드 프로젝트 안에 서버 엔드포인트를 함께 작성할 수 있는 기능으로, 별도 백엔드 없이 간단한 API를 둘 수 있다."
+    },
+    {
+      "term": "Pages/App Router",
+      "description": "라우팅과 레이아웃을 구성하는 디렉터리 규칙으로, 프로젝트 구조와 데이터 로딩 방식을 결정하는 기준이 된다."
+    }
+  ],
+  "whenToUse": [
+    "SEO가 중요해 서버 렌더링이나 정적 생성이 필요한 웹 서비스를 만들 때",
+    "라우팅·빌드 설정을 직접 구성하지 않고 정해진 규칙 위에서 빠르게 개발하고 싶을 때",
+    "관리자 페이지처럼 화면 수가 많은 프런트엔드를 일관된 구조로 관리하고 싶을 때",
+    "프런트엔드와 간단한 API 서버를 하나의 프로젝트로 함께 운영하고 싶을 때"
+  ],
+  "example": {
+    "title": "기본 페이지 라우트 생성",
+    "language": "javascript",
+    "code": "// pages/about.js\n// 이 파일 하나만으로 /about 경로 페이지가 생성된다\nexport default function About() {\n  return (\n    <div>\n      <h1>소개 페이지</h1>\n      <p>이 페이지는 pages/about.js 로 자동 라우팅된다.</p>\n    </div>\n  );\n}",
+    "description": "pages 디렉터리에 파일을 추가하면 별도 라우터 설정 없이 해당 경로의 페이지가 만들어진다."
+  },
+  "pitfalls": [
+    "서버에서 실행되는 코드와 브라우저에서 실행되는 코드를 구분하지 않아 오류를 겪기 쉽다",
+    "pages 방식과 app 방식의 데이터 로딩 규칙이 달라 프로젝트 구조를 혼동하기 쉽다",
+    "SSR/SSG 중 어떤 렌더링 방식을 쓸지 처음부터 고민하지 않으면 나중에 구조 변경이 커진다"
+  ],
+  "generatedAt": "2026-07-26T06:06:12.285Z"
+}

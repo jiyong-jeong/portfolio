@@ -1,0 +1,47 @@
+{
+  "slug": "github-pages",
+  "name": "GitHub Pages",
+  "category": "infra",
+  "tagline": "GitHub 저장소에 있는 정적 파일을 무료로 웹에 호스팅해주는 서비스",
+  "definition": "GitHub Pages는 GitHub 저장소에 담긴 HTML, CSS, JavaScript 같은 정적 파일을 별도의 서버 없이 웹에 그대로 배포해주는 정적 사이트 호스팅 서비스입니다. 개인 블로그, 프로젝트 소개 페이지, 문서 사이트처럼 서버 로직 없이 파일만 보여주면 되는 사이트를 빠르고 무료로 공개하기 위해 만들어졌습니다. 저장소에 코드를 푸시하면 GitHub가 자동으로 이를 빌드하거나 그대로 서빙해 지정된 주소로 접속할 수 있게 해줍니다.",
+  "concepts": [
+    {
+      "term": "repository",
+      "description": "GitHub Pages는 특정 저장소(또는 저장소 안의 특정 브랜치·폴더)를 사이트의 소스로 지정해 그 내용을 그대로 배포합니다."
+    },
+    {
+      "term": "static site",
+      "description": "서버에서 동적으로 데이터를 처리하지 않고 미리 만들어진 HTML/CSS/JS 파일만으로 구성된 사이트를 말하며, GitHub Pages는 이런 정적 사이트만 지원합니다."
+    },
+    {
+      "term": "branch deployment",
+      "description": "보통 main 브랜치나 별도의 gh-pages 브랜치, 혹은 지정 폴더(docs 등)를 배포 대상으로 설정해 해당 내용이 변경될 때마다 사이트가 갱신됩니다."
+    },
+    {
+      "term": "custom domain",
+      "description": "GitHub가 기본으로 제공하는 주소 대신 사용자가 소유한 도메인을 연결해 사이트를 서비스할 수 있습니다."
+    },
+    {
+      "term": "GitHub Actions build",
+      "description": "정적 사이트 생성기(예: Jekyll, 또는 별도 빌드 도구)로 만든 결과물을 GitHub Actions 워크플로로 빌드한 뒤 Pages에 배포하는 방식도 지원합니다."
+    }
+  ],
+  "whenToUse": [
+    "서버 없이 정적 파일만으로 이루어진 문서·소개 페이지를 무료로 공개하고 싶을 때",
+    "GitHub 저장소와 배포 과정을 별도 설정 없이 바로 연결하고 싶을 때",
+    "오픈소스 프로젝트의 문서 사이트나 개인정보 처리방침 같은 고정 문서를 간단히 게시할 때",
+    "별도 인프라 비용이나 서버 관리 부담 없이 정적 페이지를 유지하고 싶을 때"
+  ],
+  "example": {
+    "title": "저장소 설정으로 Pages 배포 지정",
+    "language": "yaml",
+    "code": "# .github/workflows/deploy.yml\nname: Deploy Pages\non:\n  push:\n    branches: [main]\njobs:\n  deploy:\n    runs-on: ubuntu-latest\n    steps:\n      - uses: actions/checkout@v4\n      - uses: actions/upload-pages-artifact@v3\n        with:\n          path: './dist'\n      - uses: actions/deploy-pages@v4",
+    "description": "main 브랜치에 푸시될 때마다 dist 폴더의 빌드 결과물을 GitHub Pages로 배포하는 워크플로 예시입니다."
+  },
+  "pitfalls": [
+    "빌드 산출물 경로를 잘못 지정하면 배포는 성공해도 빈 페이지나 404가 나타날 수 있습니다.",
+    "비공개 저장소의 무료 플랜에서는 Pages 공개 범위나 사용 조건에 제약이 있을 수 있습니다.",
+    "정적 파일만 서빙하므로 서버 측 로직이나 DB 연동이 필요한 기능은 별도 백엔드가 필요합니다."
+  ],
+  "generatedAt": "2026-07-26T06:07:32.496Z"
+}

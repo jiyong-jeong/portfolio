@@ -1,0 +1,47 @@
+{
+  "slug": "shell-script",
+  "name": "Shell Script",
+  "category": "tool",
+  "tagline": "리눅스/유닉스 명령어를 파일로 묶어 반복 작업을 자동으로 실행하는 스크립팅 도구",
+  "definition": "Shell Script는 터미널에서 한 줄씩 입력하던 명령어들을 파일로 저장해 순서대로 실행할 수 있게 만든 스크립트 언어다. 사람이 매번 반복해서 입력해야 하는 설치, 배포, 빌드, 환경 설정 같은 작업을 자동화하기 위해 사용된다. 별도의 컴파일 과정 없이 셸(bash, sh 등) 인터프리터가 파일을 그대로 읽어 실행하므로, 다른 도구를 연결하는 접착제 역할로 널리 쓰인다.",
+  "concepts": [
+    {
+      "term": "shebang",
+      "description": "스크립트 첫 줄에 '#!/bin/bash'처럼 적어 어떤 인터프리터로 실행할지 지정하는 표기이다."
+    },
+    {
+      "term": "environment variable",
+      "description": "스크립트 실행 환경에 저장된 값으로, 설정값이나 비밀 정보를 코드에 하드코딩하지 않고 주입할 때 사용한다."
+    },
+    {
+      "term": "exit code",
+      "description": "명령어나 스크립트가 종료될 때 반환하는 상태값으로, 0은 성공, 그 외 값은 실패를 의미하며 후속 로직 분기에 활용된다."
+    },
+    {
+      "term": "pipe / redirection",
+      "description": "'|'로 명령어의 출력을 다른 명령어의 입력으로 연결하거나, '>' 등으로 파일에 출력을 저장하는 기법이다."
+    },
+    {
+      "term": "idempotency",
+      "description": "스크립트를 여러 번 실행해도 같은 결과가 되도록 설계하는 것으로, 자동화 스크립트에서 특히 중요하게 다뤄지는 개념이다."
+    }
+  ],
+  "whenToUse": [
+    "반복되는 설치·빌드·배포 절차를 사람 개입 없이 자동으로 실행하고 싶을 때",
+    "여러 CLI 도구(git, kubectl, docker 등)를 순서대로 연결해 하나의 파이프라인으로 만들 때",
+    "cron이나 스케줄러와 결합해 주기적으로 반복 실행되는 작업을 만들 때",
+    "별도 런타임 설치 없이 어떤 서버·컨테이너에서도 바로 실행 가능한 자동화가 필요할 때"
+  ],
+  "example": {
+    "title": "간단한 배포 자동화 스크립트",
+    "language": "bash",
+    "code": "#!/bin/bash\nset -e  # 명령어 실패 시 즉시 중단\n\nREPO_DIR=\"./app\"\n\nif [ ! -d \"$REPO_DIR\" ]; then\n  git clone https://example.com/app.git \"$REPO_DIR\"\nfi\n\ncd \"$REPO_DIR\"\ngit pull\nnpm install\nnpm run build\n\necho \"배포 완료: $(date)\"",
+    "description": "저장소가 없으면 클론하고, 있으면 최신화한 뒤 의존성 설치와 빌드까지 자동으로 수행하는 예시이다."
+  },
+  "pitfalls": [
+    "명령어 실패를 무시하고 다음 줄이 계속 실행돼 문제가 커질 수 있다 (set -e 등으로 방지 필요).",
+    "따옴표 없이 변수를 사용하면 공백이나 특수문자가 있는 값에서 예상치 못하게 깨질 수 있다.",
+    "환경(OS, 셸 종류)마다 명령어 동작이 달라 다른 환경에서 그대로 실행되지 않을 수 있다."
+  ],
+  "generatedAt": "2026-07-26T06:09:02.391Z"
+}

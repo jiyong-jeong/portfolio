@@ -1,0 +1,46 @@
+{
+  "slug": "diffusers",
+  "name": "diffusers",
+  "category": "framework",
+  "tagline": "사전학습된 diffusion 모델로 이미지·오디오를 생성하는 파이썬 라이브러리",
+  "definition": "diffusers는 Hugging Face에서 만든 라이브러리로, Stable Diffusion 같은 diffusion 기반 생성 모델을 쉽게 불러오고 실행할 수 있게 해준다. 논문마다 제각각인 모델 구조와 샘플링 알고리즘을 통일된 인터페이스로 감싸서, 연구자와 개발자가 매번 원본 코드를 재구현하지 않고도 최신 생성 모델을 빠르게 실험하고 조합할 수 있도록 만들어졌다. 모델 가중치, 노이즈 제거 스케줄러, 전처리 유틸을 모듈 단위로 나누어 제공해 커스터마이징도 쉽다.",
+  "concepts": [
+    {
+      "term": "Pipeline",
+      "description": "모델, 스케줄러, 토크나이저 등을 하나로 묶어 텍스트나 이미지를 입력받아 결과물을 생성하는 최상위 실행 단위이다."
+    },
+    {
+      "term": "Diffusion Model",
+      "description": "노이즈를 점진적으로 제거해 가면서 이미지를 생성하는 생성 모델 방식으로, diffusers가 다루는 핵심 모델 유형이다."
+    },
+    {
+      "term": "Scheduler",
+      "description": "노이즈 제거 과정을 몇 단계로, 어떤 방식으로 진행할지 정의하는 알고리즘으로, 품질과 속도 사이의 균형을 조절한다."
+    },
+    {
+      "term": "UNet / VAE",
+      "description": "이미지 생성의 핵심 신경망 구조로, UNet은 노이즈 예측을, VAE는 이미지와 잠재 공간(latent space) 간 변환을 담당한다."
+    },
+    {
+      "term": "Checkpoint / Model Hub",
+      "description": "학습된 모델 가중치 묶음을 의미하며, Hugging Face Hub에 공개된 다양한 체크포인트를 그대로 불러와 쓸 수 있다."
+    }
+  ],
+  "whenToUse": [
+    "Stable Diffusion 계열 모델을 직접 코드로 제어하며 이미지를 생성하고 싶을 때",
+    "여러 diffusion 모델과 스케줄러를 손쉽게 바꿔가며 실험하고 싶을 때",
+    "생성 파이프라인을 커스터마이징하거나 다른 파이프라인과 연동하고 싶을 때"
+  ],
+  "example": {
+    "title": "텍스트로 이미지 생성하기",
+    "language": "python",
+    "code": "from diffusers import StableDiffusionPipeline\nimport torch\n\npipe = StableDiffusionPipeline.from_pretrained(\n    \"runwayml/stable-diffusion-v1-5\",\n    torch_dtype=torch.float16,\n).to(\"cuda\")\n\nimage = pipe(\"a photo of a mountain lake at sunset\").images[0]\nimage.save(\"output.png\")",
+    "description": "사전학습된 Stable Diffusion 체크포인트를 불러와 텍스트 프롬프트로부터 이미지를 생성하고 파일로 저장하는 예시이다."
+  },
+  "pitfalls": [
+    "모델 크기가 커서 GPU 메모리가 부족하면 실행 자체가 안 될 수 있다.",
+    "스케줄러나 스텝 수 설정에 따라 결과 품질과 속도가 크게 달라진다.",
+    "라이브러리와 모델 체크포인트 버전이 서로 맞지 않으면 오류가 발생할 수 있다."
+  ],
+  "generatedAt": "2026-07-26T06:14:49.532Z"
+}

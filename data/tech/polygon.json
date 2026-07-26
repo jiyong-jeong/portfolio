@@ -1,0 +1,47 @@
+{
+  "slug": "polygon",
+  "name": "Polygon",
+  "category": "blockchain",
+  "tagline": "이더리움 확장성 문제를 해결하기 위한 레이어2·사이드체인 블록체인 플랫폼",
+  "definition": "Polygon은 이더리움과 호환되면서도 더 빠르고 저렴한 트랜잭션 처리를 목표로 만들어진 블록체인 네트워크입니다. 이더리움 메인넷은 보안성이 높지만 트랜잭션 수수료(가스비)가 비싸고 처리 속도가 느린 문제가 있었는데, Polygon은 별도의 체인에서 트랜잭션을 처리한 뒤 이더리움과 자산을 주고받거나 상태를 검증하는 방식으로 이를 보완합니다. EVM(이더리움 가상머신) 호환성을 유지해 기존 이더리움용 스마트 컨트랙트와 도구를 거의 그대로 사용할 수 있는 것이 특징입니다.",
+  "concepts": [
+    {
+      "term": "EVM compatibility",
+      "description": "이더리움 가상머신과 동일한 실행 환경을 제공해 Solidity로 작성한 스마트 컨트랙트와 Web3 도구를 수정 없이 그대로 배포·사용할 수 있게 합니다."
+    },
+    {
+      "term": "Sidechain",
+      "description": "이더리움 메인넷과 별도로 독립적인 합의 메커니즘으로 동작하는 체인으로, 자체 검증자 집합이 트랜잭션을 처리하고 주기적으로 이더리움과 상태를 동기화합니다."
+    },
+    {
+      "term": "Bridge",
+      "description": "이더리움 메인넷과 Polygon 체인 간에 토큰이나 자산을 상호 예치·인출하며 이동시키는 메커니즘입니다."
+    },
+    {
+      "term": "Testnet",
+      "description": "실제 자산 가치가 없는 테스트 전용 네트워크로, 스마트 컨트랙트 배포와 동작을 실제 자금 손실 위험 없이 검증하는 데 사용됩니다."
+    },
+    {
+      "term": "Gas fee",
+      "description": "네트워크에서 트랜잭션을 처리하는 데 지불하는 수수료로, Polygon은 이더리움 메인넷보다 낮은 가스비를 목표로 설계되었습니다."
+    }
+  ],
+  "whenToUse": [
+    "이더리움 컨트랙트를 그대로 재사용하면서 트랜잭션 비용을 낮추고 싶을 때",
+    "NFT 발행·거래처럼 빈번한 트랜잭션이 발생하는 서비스를 구축할 때",
+    "메인넷 배포 전 무료 테스트넷에서 컨트랙트 동작을 검증하고 싶을 때",
+    "여러 체인을 아우르는 멀티체인 서비스에서 지원 대상 체인 중 하나로 포함할 때"
+  ],
+  "example": {
+    "title": "Hardhat으로 Polygon 네트워크 설정하기",
+    "language": "javascript",
+    "code": "// hardhat.config.js\nmodule.exports = {\n  solidity: \"0.8.19\",\n  networks: {\n    polygon: {\n      url: process.env.POLYGON_RPC_URL,\n      accounts: [process.env.PRIVATE_KEY]\n    },\n    polygonMumbai: {\n      url: process.env.MUMBAI_RPC_URL,\n      accounts: [process.env.PRIVATE_KEY]\n    }\n  }\n};",
+    "description": "Hardhat 개발 도구에서 Polygon 메인넷과 테스트넷을 배포 대상 네트워크로 등록하는 설정 예시입니다."
+  },
+  "pitfalls": [
+    "이더리움과 호환된다고 해서 완전히 동일한 보안 수준을 가진 것은 아닙니다.",
+    "네트워크 이름과 체인 ID를 혼동하면 잘못된 체인에 컨트랙트를 배포할 수 있습니다.",
+    "브릿지를 통한 자산 이동은 즉시 반영되지 않고 대기 시간이 걸릴 수 있습니다."
+  ],
+  "generatedAt": "2026-07-26T06:12:24.499Z"
+}

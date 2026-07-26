@@ -1,0 +1,51 @@
+{
+  "slug": "typescript",
+  "name": "TypeScript",
+  "category": "language",
+  "tagline": "자바스크립트에 정적 타입을 더해 대규모 코드의 안정성을 높이는 언어",
+  "definition": "TypeScript는 마이크로소프트가 만든 오픈소스 언어로, 자바스크립트 문법을 그대로 확장하면서 변수·함수·객체에 타입을 명시할 수 있게 한다. 컴파일(트랜스파일) 시점에 타입 오류를 미리 잡아내어, 런타임에서야 드러나던 버그를 코드 작성 단계에서 발견하도록 돕는다. 결과물은 결국 순수 자바스크립트로 변환되므로 브라우저나 Node.js 등 자바스크립트가 동작하는 모든 환경에서 그대로 실행할 수 있다. 코드베이스가 커지고 협업 인원이 늘어날수록 타입 정보가 문서 역할과 자동완성·리팩토링 지원을 해준다는 점이 도입 동기가 된다.",
+  "concepts": [
+    {
+      "term": "Type Annotation",
+      "description": "변수나 함수 매개변수, 반환값에 타입을 명시적으로 선언하는 문법으로, 잘못된 타입의 값이 들어오면 컴파일 단계에서 오류로 알려준다."
+    },
+    {
+      "term": "Type Inference",
+      "description": "타입을 직접 쓰지 않아도 대입된 값이나 문맥을 보고 컴파일러가 타입을 자동으로 추론해주는 기능이다."
+    },
+    {
+      "term": "Interface / Type Alias",
+      "description": "객체나 함수의 모양(shape)을 이름 붙여 재사용할 수 있게 정의하는 방법으로, 서로 다른 모듈 간 데이터 구조를 약속하는 데 쓰인다."
+    },
+    {
+      "term": "Structural Typing",
+      "description": "타입 이름이 아니라 실제로 가진 속성과 형태가 같으면 호환되는 것으로 보는 타입 검사 방식이다."
+    },
+    {
+      "term": "tsconfig.json",
+      "description": "컴파일 대상, 출력 형식, 엄격도(strict) 등 TypeScript 컴파일러의 동작 방식을 프로젝트 단위로 설정하는 파일이다."
+    },
+    {
+      "term": "Generics",
+      "description": "타입을 매개변수처럼 받아 함수나 클래스가 여러 타입에 대해 재사용 가능하도록 만드는 문법이다."
+    }
+  ],
+  "whenToUse": [
+    "여러 명이 함께 작업하는 중~대규모 프로젝트에서 타입 불일치로 인한 버그를 줄이고 싶을 때",
+    "API 응답이나 함수 시그니처 등 데이터 구조를 명확히 문서화하고 싶을 때",
+    "에디터의 자동완성·정의 이동·리팩토링 지원을 적극적으로 활용하고 싶을 때",
+    "프런트엔드와 백엔드가 타입 정의를 공유하며 일관성을 맞춰야 할 때"
+  ],
+  "example": {
+    "title": "기본 타입 선언과 인터페이스 사용",
+    "language": "typescript",
+    "code": "interface User {\n  id: number;\n  name: string;\n  email?: string; // 선택적 속성\n}\n\nfunction greet(user: User): string {\n  return `Hello, ${user.name}!`;\n}\n\nconst user: User = { id: 1, name: \"Jiyoung\" };\nconsole.log(greet(user));\n\n// 타입이 다른 값을 넣으면 컴파일 시점에 오류 발생\n// const invalid: User = { id: \"1\", name: 42 };",
+    "description": "User 인터페이스로 객체의 모양을 정의하고, 이를 함수 매개변수 타입으로 사용해 잘못된 데이터가 전달되는 것을 컴파일 단계에서 막는 예시다."
+  },
+  "pitfalls": [
+    "타입을 any로 남발하면 TypeScript를 쓰는 의미가 사라지고 타입 안정성이 무너진다",
+    "컴파일 시점 타입 검사일 뿐 런타임에는 타입 정보가 사라지므로, 외부 입력값은 별도 검증이 필요하다",
+    "strict 모드 설정 여부에 따라 타입 검사 엄격도가 크게 달라져 팀 컨벤션 통일이 중요하다"
+  ],
+  "generatedAt": "2026-07-26T06:07:46.200Z"
+}

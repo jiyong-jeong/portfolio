@@ -1,0 +1,51 @@
+{
+  "slug": "kubernetes",
+  "name": "Kubernetes",
+  "category": "infra",
+  "tagline": "여러 서버에 걸쳐 컨테이너의 배포·확장·자가 복구를 자동화하는 오케스트레이션 플랫폼",
+  "definition": "Kubernetes는 여러 대의 서버(노드)를 하나의 클러스터로 묶어, 그 위에서 컨테이너 워크로드를 자동으로 배치·실행·복구하는 오케스트레이션 시스템이다. 컨테이너를 수동으로 서버에 올리고 장애 시 재시작하고 트래픽에 따라 늘리는 작업을 사람이 직접 하기 어려워지면서, 이런 운영을 선언적 설정과 컨트롤러 기반으로 자동화하기 위해 만들어졌다. 사용자는 원하는 상태(state)를 YAML로 선언하기만 하면, Kubernetes가 실제 상태를 그 목표에 맞게 지속적으로 조정한다. 단일 애플리케이션부터 다수의 마이크로서비스, 배치 작업, 주기적 스케줄러까지 하나의 플랫폼에서 일관된 방식으로 운영할 수 있다.",
+  "concepts": [
+    {
+      "term": "Pod",
+      "description": "Kubernetes에서 배포 가능한 최소 단위로, 하나 이상의 컨테이너를 묶어 같은 네트워크·스토리지를 공유하며 실행한다."
+    },
+    {
+      "term": "Deployment",
+      "description": "동일한 Pod를 원하는 개수만큼 유지하고 롤링 업데이트와 재시작을 관리하는 컨트롤러로, 상시 실행형 워크로드에 주로 쓰인다."
+    },
+    {
+      "term": "CronJob",
+      "description": "정해진 스케줄에 따라 일회성 작업(Job)을 반복 생성해 실행하는 리소스로, 주기적 배치 작업에 사용된다."
+    },
+    {
+      "term": "Controller / Control Loop",
+      "description": "클러스터의 현재 상태를 계속 관찰하며 선언된 목표 상태와 비교해, 차이가 있으면 자동으로 맞춰가는 반복 제어 로직이다."
+    },
+    {
+      "term": "Custom Resource Definition (CRD)",
+      "description": "Kubernetes 기본 API에 없는 사용자 정의 리소스 타입을 등록해, 특정 도메인 전용 컨트롤러(예: Workflow)를 확장 가능하게 만드는 메커니즘이다."
+    },
+    {
+      "term": "Service",
+      "description": "여러 Pod에 대해 안정적인 네트워크 엔드포인트를 제공해, Pod가 재생성되어도 동일한 주소로 접근할 수 있게 하는 추상화다."
+    }
+  ],
+  "whenToUse": [
+    "여러 마이크로서비스를 일관된 방식으로 배포·확장·운영해야 할 때",
+    "장애 발생 시 컨테이너를 자동으로 재시작·재배치하는 자가 복구가 필요할 때",
+    "GitOps 등 선언적 매니페스트 기반으로 배포 이력을 관리하고 싶을 때",
+    "트래픽 변화에 따라 워크로드를 자동으로 늘리거나 줄여야 할 때"
+  ],
+  "example": {
+    "title": "가장 단순한 Deployment 매니페스트",
+    "language": "yaml",
+    "code": "apiVersion: apps/v1\nkind: Deployment\nmetadata:\n  name: sample-app\nspec:\n  replicas: 2\n  selector:\n    matchLabels:\n      app: sample-app\n  template:\n    metadata:\n      labels:\n        app: sample-app\n    spec:\n      containers:\n        - name: sample-app\n          image: sample-app:latest\n          ports:\n            - containerPort: 8080",
+    "description": "sample-app 컨테이너를 2개의 Pod 복제본으로 실행하도록 선언하며, Kubernetes는 이 상태를 계속 유지하려고 시도한다."
+  },
+  "pitfalls": [
+    "Pod가 죽어도 자동 재시작될 것으로 오해하지만, 리소스 부족·설정 오류는 자동으로 해결되지 않는다",
+    "리소스 요청/제한(requests·limits)을 설정하지 않으면 노드 자원 경합이나 예기치 않은 종료가 발생할 수 있다",
+    "Kubernetes 자체가 CI/CD는 아니므로, 실제 배포 자동화는 별도 GitOps 도구와 함께 구성해야 한다"
+  ],
+  "generatedAt": "2026-07-26T06:06:00.295Z"
+}

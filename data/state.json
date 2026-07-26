@@ -108,6 +108,396 @@
       "analyzedAt": "2026-07-26T05:02:26.404Z",
       "status": "ok",
       "failures": 0
+    },
+    "wyvern-protocol-fork-docs": {
+      "pushedAt": "2026-07-26T05:31:31Z",
+      "analyzedAt": "2026-07-26T05:40:28.173Z",
+      "status": "ok",
+      "failures": 0
+    },
+    "user-management-system-monorepo-docs": {
+      "pushedAt": "2026-07-26T05:31:24Z",
+      "analyzedAt": "2026-07-26T05:40:53.169Z",
+      "status": "ok",
+      "failures": 0
+    },
+    "ums-history-script-docs": {
+      "pushedAt": "2026-07-26T05:31:19Z",
+      "analyzedAt": "2026-07-26T05:41:04.492Z",
+      "status": "ok",
+      "failures": 0
+    },
+    "telecom-partner-discord-verification-docs": {
+      "pushedAt": "2026-07-26T05:31:14Z",
+      "analyzedAt": "2026-07-26T05:41:21.427Z",
+      "status": "ok",
+      "failures": 0
+    },
+    "strapi-cms-admin-docs": {
+      "pushedAt": "2026-07-26T05:31:08Z",
+      "analyzedAt": "2026-07-26T05:41:49.480Z",
+      "status": "ok",
+      "failures": 0
+    },
+    "sqs-ses-email-lambda-docs": {
+      "pushedAt": "2026-07-26T05:31:03Z",
+      "analyzedAt": "2026-07-26T05:42:15.311Z",
+      "status": "ok",
+      "failures": 0
+    },
+    "shared-db-schema-docs": {
+      "pushedAt": "2026-07-26T05:30:57Z",
+      "analyzedAt": "2026-07-26T05:42:40.587Z",
+      "status": "ok",
+      "failures": 0
+    },
+    "s3-migration-script-docs": {
+      "pushedAt": "2026-07-26T05:30:52Z",
+      "analyzedAt": "2026-07-26T05:43:03.992Z",
+      "status": "ok",
+      "failures": 0
+    },
+    "racing-platform-misc-scripts-docs": {
+      "pushedAt": "2026-07-26T05:30:46Z",
+      "analyzedAt": "2026-07-26T05:43:17.820Z",
+      "status": "ok",
+      "failures": 0
+    },
+    "racing-game-platform-frontend-docs": {
+      "pushedAt": "2026-07-26T05:30:40Z",
+      "analyzedAt": "2026-07-26T05:43:40.438Z",
+      "status": "ok",
+      "failures": 0
+    },
+    "policy-platform-api-server-docs": {
+      "pushedAt": "2026-07-26T05:30:33Z",
+      "analyzedAt": "2026-07-26T05:44:07.477Z",
+      "status": "ok",
+      "failures": 0
+    },
+    "nx-policy-platform-monorepo-docs": {
+      "pushedAt": "2026-07-26T05:30:28Z",
+      "analyzedAt": "2026-07-26T05:44:20.764Z",
+      "status": "ok",
+      "failures": 0
+    },
+    "nft-social-platform-monorepo-docs": {
+      "pushedAt": "2026-07-26T05:30:23Z",
+      "analyzedAt": "2026-07-26T05:44:37.613Z",
+      "status": "ok",
+      "failures": 0
+    },
+    "nft-refine-sample-docs": {
+      "pushedAt": "2026-07-26T05:30:17Z",
+      "analyzedAt": "2026-07-26T05:45:14.855Z",
+      "status": "ok",
+      "failures": 0
+    },
+    "nft-raffle-monorepo-docs": {
+      "pushedAt": "2026-07-26T05:30:12Z",
+      "analyzedAt": "2026-07-26T05:45:38.120Z",
+      "status": "ok",
+      "failures": 0
+    },
+    "nft-platform-ui-sdk-docs": {
+      "pushedAt": "2026-07-26T05:30:07Z",
+      "analyzedAt": "2026-07-26T05:45:50.877Z",
+      "status": "ok",
+      "failures": 0
+    },
+    "nft-platform-monorepo-docs": {
+      "pushedAt": "2026-07-26T05:30:02Z",
+      "analyzedAt": "2026-07-26T05:46:16.224Z",
+      "status": "ok",
+      "failures": 0
+    },
+    "nft-marketplace-migration-scripts-docs": {
+      "pushedAt": "2026-07-26T05:29:54Z",
+      "analyzedAt": "2026-07-26T05:46:29.877Z",
+      "status": "ok",
+      "failures": 0
+    },
+    "nft-marketplace-contracts-docs": {
+      "pushedAt": "2026-07-26T05:29:49Z",
+      "analyzedAt": "2026-07-26T05:46:43.756Z",
+      "status": "ok",
+      "failures": 0
+    },
+    "nft-marketplace-admin-frontend-app-docs": {
+      "pushedAt": "2026-07-26T05:29:43Z",
+      "analyzedAt": "2026-07-26T05:47:05.469Z",
+      "status": "ok",
+      "failures": 0
+    },
+    "nft-launchpad-frontend-app-docs": {
+      "pushedAt": "2026-07-26T05:29:35Z",
+      "analyzedAt": "2026-07-26T05:47:20.477Z",
+      "status": "ok",
+      "failures": 0
+    },
+    "nft-launchpad-backend-service-docs": {
+      "pushedAt": "2026-07-26T05:29:30Z",
+      "analyzedAt": "2026-07-26T05:48:07.102Z",
+      "status": "ok",
+      "failures": 0
+    },
+    "nft-image-generator-script-docs": {
+      "pushedAt": "2026-07-26T05:29:25Z",
+      "analyzedAt": "2026-07-26T05:48:26.281Z",
+      "status": "ok",
+      "failures": 0
+    },
+    "nft-holder-checker-scripts-docs": {
+      "pushedAt": "2026-07-26T05:29:19Z",
+      "analyzedAt": "2026-07-26T05:48:40.574Z",
+      "status": "ok",
+      "failures": 0
+    },
+    "nft-fashionista-contracts-docs": {
+      "pushedAt": "2026-07-26T05:29:13Z",
+      "analyzedAt": "2026-07-26T05:48:58.225Z",
+      "status": "ok",
+      "failures": 0
+    },
+    "nft-fashion-platform-frontend-docs": {
+      "pushedAt": "2026-07-26T05:29:08Z",
+      "analyzedAt": "2026-07-26T05:49:21.563Z",
+      "status": "ok",
+      "failures": 0
+    },
+    "nft-fashion-platform-backend-docs": {
+      "pushedAt": "2026-07-26T05:29:04Z",
+      "analyzedAt": "2026-07-26T05:49:42.733Z",
+      "status": "ok",
+      "failures": 0
+    },
+    "nft-fashion-monorepo-docs": {
+      "pushedAt": "2026-07-26T05:28:58Z",
+      "analyzedAt": "2026-07-26T05:50:13.545Z",
+      "status": "ok",
+      "failures": 0
+    },
+    "nft-fashion-discord-verification-page-docs": {
+      "pushedAt": "2026-07-26T05:28:53Z",
+      "analyzedAt": "2026-07-26T05:50:27.607Z",
+      "status": "ok",
+      "failures": 0
+    },
+    "nft-collection-cosmos-docs": {
+      "pushedAt": "2026-07-26T05:28:47Z",
+      "analyzedAt": "2026-07-26T05:50:48.234Z",
+      "status": "ok",
+      "failures": 0
+    },
+    "nft-batch-job-runner-docs": {
+      "pushedAt": "2026-07-26T05:28:42Z",
+      "analyzedAt": "2026-07-26T05:51:04.542Z",
+      "status": "ok",
+      "failures": 0
+    },
+    "news-platform-monorepo-docs": {
+      "pushedAt": "2026-07-26T05:28:37Z",
+      "analyzedAt": "2026-07-26T05:51:32.031Z",
+      "status": "ok",
+      "failures": 0
+    },
+    "nestjs-microservice-experimental-docs": {
+      "pushedAt": "2026-07-26T05:28:31Z",
+      "analyzedAt": "2026-07-26T05:51:53.680Z",
+      "status": "ok",
+      "failures": 0
+    },
+    "nats-event-consumer-docs": {
+      "pushedAt": "2026-07-26T05:28:25Z",
+      "analyzedAt": "2026-07-26T05:52:09.351Z",
+      "status": "ok",
+      "failures": 0
+    },
+    "multichain-event-indexer-docs": {
+      "pushedAt": "2026-07-26T05:28:20Z",
+      "analyzedAt": "2026-07-26T05:52:24.086Z",
+      "status": "ok",
+      "failures": 0
+    },
+    "legacy-nft-worker-docs": {
+      "pushedAt": "2026-07-26T05:28:14Z",
+      "analyzedAt": "2026-07-26T05:53:04.673Z",
+      "status": "ok",
+      "failures": 0
+    },
+    "legacy-nft-platform-frontend-docs": {
+      "pushedAt": "2026-07-26T05:28:08Z",
+      "analyzedAt": "2026-07-26T05:53:22.414Z",
+      "status": "ok",
+      "failures": 0
+    },
+    "legacy-nft-platform-backend-docs": {
+      "pushedAt": "2026-07-26T05:28:03Z",
+      "analyzedAt": "2026-07-26T05:54:17.129Z",
+      "status": "ok",
+      "failures": 0
+    },
+    "lambda-thumbnail-generator-docs": {
+      "pushedAt": "2026-07-26T05:27:57Z",
+      "analyzedAt": "2026-07-26T05:54:51.835Z",
+      "status": "ok",
+      "failures": 0
+    },
+    "java-batch-worker-docs": {
+      "pushedAt": "2026-07-26T05:27:52Z",
+      "analyzedAt": "2026-07-26T05:55:03.994Z",
+      "status": "ok",
+      "failures": 0
+    },
+    "fcm-push-notification-tester-docs": {
+      "pushedAt": "2026-07-26T05:27:47Z",
+      "analyzedAt": "2026-07-26T05:55:31.584Z",
+      "status": "ok",
+      "failures": 0
+    },
+    "discord-nft-holder-verification-docs": {
+      "pushedAt": "2026-07-26T05:27:42Z",
+      "analyzedAt": "2026-07-26T05:56:14.388Z",
+      "status": "ok",
+      "failures": 0
+    },
+    "cryptozombies-tutorial-docs": {
+      "pushedAt": "2026-07-26T05:27:37Z",
+      "analyzedAt": "2026-07-26T05:56:41.196Z",
+      "status": "ok",
+      "failures": 0
+    },
+    "cron-scheduler-backend-service-docs": {
+      "pushedAt": "2026-07-26T05:27:32Z",
+      "analyzedAt": "2026-07-26T05:56:54.888Z",
+      "status": "ok",
+      "failures": 0
+    },
+    "cdc-event-pipeline-monorepo-docs": {
+      "pushedAt": "2026-07-26T05:27:25Z",
+      "analyzedAt": "2026-07-26T05:57:18.271Z",
+      "status": "ok",
+      "failures": 0
+    },
+    "blockchain-event-listener-service-docs": {
+      "pushedAt": "2026-07-26T05:27:19Z",
+      "analyzedAt": "2026-07-26T05:57:35.824Z",
+      "status": "ok",
+      "failures": 0
+    },
+    "benefits-admin-frontend-docs": {
+      "pushedAt": "2026-07-26T05:27:14Z",
+      "analyzedAt": "2026-07-26T05:57:53.759Z",
+      "status": "ok",
+      "failures": 0
+    },
+    "racing-match-backend-argocd-deploy-docs": {
+      "pushedAt": "2026-07-26T05:17:16Z",
+      "analyzedAt": "2026-07-26T05:58:17.344Z",
+      "status": "ok",
+      "failures": 0
+    },
+    "racing-game-platform-worker-docs": {
+      "pushedAt": "2026-07-26T05:17:09Z",
+      "analyzedAt": "2026-07-26T05:58:43.975Z",
+      "status": "ok",
+      "failures": 0
+    },
+    "racing-game-platform-backend-docs": {
+      "pushedAt": "2026-07-26T05:17:04Z",
+      "analyzedAt": "2026-07-26T05:59:01.173Z",
+      "status": "ok",
+      "failures": 0
+    },
+    "racing-game-onchain-contracts-docs": {
+      "pushedAt": "2026-07-26T05:16:59Z",
+      "analyzedAt": "2026-07-26T05:59:15.283Z",
+      "status": "ok",
+      "failures": 0
+    },
+    "racing-game-match-backend-docs": {
+      "pushedAt": "2026-07-26T05:16:53Z",
+      "analyzedAt": "2026-07-26T05:59:44.032Z",
+      "status": "ok",
+      "failures": 0
+    },
+    "nft-marketplace-worker-runtime-docs": {
+      "pushedAt": "2026-07-26T05:16:48Z",
+      "analyzedAt": "2026-07-26T05:59:58.450Z",
+      "status": "ok",
+      "failures": 0
+    },
+    "nft-marketplace-worker-argocd-deploy-docs": {
+      "pushedAt": "2026-07-26T05:16:42Z",
+      "analyzedAt": "2026-07-26T06:00:45.246Z",
+      "status": "ok",
+      "failures": 0
+    },
+    "nft-marketplace-server-docs": {
+      "pushedAt": "2026-07-26T05:16:37Z",
+      "analyzedAt": "2026-07-26T06:01:01.877Z",
+      "status": "ok",
+      "failures": 0
+    },
+    "nft-marketplace-backend-argocd-deploy-docs": {
+      "pushedAt": "2026-07-26T05:16:31Z",
+      "analyzedAt": "2026-07-26T06:01:15.139Z",
+      "status": "ok",
+      "failures": 0
+    },
+    "nft-marketplace-admin-frontend-argocd-deploy-docs": {
+      "pushedAt": "2026-07-26T05:16:26Z",
+      "analyzedAt": "2026-07-26T06:01:34.147Z",
+      "status": "ok",
+      "failures": 0
+    },
+    "nft-marketplace-admin-backend-service-docs": {
+      "pushedAt": "2026-07-26T05:16:21Z",
+      "analyzedAt": "2026-07-26T06:02:07.202Z",
+      "status": "ok",
+      "failures": 0
+    },
+    "nft-marketplace-admin-backend-argocd-deploy-docs": {
+      "pushedAt": "2026-07-26T05:16:15Z",
+      "analyzedAt": "2026-07-26T06:02:25.345Z",
+      "status": "ok",
+      "failures": 0
+    },
+    "nft-fashion-backend-argocd-deploy-docs": {
+      "pushedAt": "2026-07-26T05:16:10Z",
+      "analyzedAt": "2026-07-26T06:02:42.838Z",
+      "status": "ok",
+      "failures": 0
+    },
+    "news-platform-k8s-infra-docs": {
+      "pushedAt": "2026-07-26T05:16:05Z",
+      "analyzedAt": "2026-07-26T06:03:07.006Z",
+      "status": "ok",
+      "failures": 0
+    },
+    "news-platform-deploy-config-docs": {
+      "pushedAt": "2026-07-26T05:15:59Z",
+      "analyzedAt": "2026-07-26T06:03:22.340Z",
+      "status": "ok",
+      "failures": 0
+    },
+    "multi-product-mobile-app-deploy-config-docs": {
+      "pushedAt": "2026-07-26T05:15:53Z",
+      "analyzedAt": "2026-07-26T06:04:06.861Z",
+      "status": "ok",
+      "failures": 0
+    },
+    "cron-scheduler-argocd-deploy-docs": {
+      "pushedAt": "2026-07-26T05:15:48Z",
+      "analyzedAt": "2026-07-26T06:05:03.397Z",
+      "status": "ok",
+      "failures": 0
+    },
+    "blockchain-indexer-argocd-deploy-docs": {
+      "pushedAt": "2026-07-26T05:15:42Z",
+      "analyzedAt": "2026-07-26T06:05:19.205Z",
+      "status": "ok",
+      "failures": 0
     }
   }
 }

@@ -1,0 +1,47 @@
+{
+  "slug": "express",
+  "name": "Express",
+  "category": "framework",
+  "tagline": "Node.js 위에서 라우팅과 미들웨어로 웹 서버와 REST API를 만드는 백엔드 프레임워크",
+  "definition": "Express는 Node.js의 HTTP 모듈을 감싸서 라우팅, 요청/응답 처리, 미들웨어 체인을 간단한 API로 다룰 수 있게 해주는 웹 애플리케이션 프레임워크입니다. 순수 Node.js로 서버를 만들면 요청 파싱, URL 분기, 에러 처리 등을 매번 직접 구현해야 하는데, Express는 이런 반복 작업을 표준화된 패턴으로 제공해 개발 속도를 높입니다. 최소한의 구조만 강제하고 나머지는 자유롭게 구성할 수 있어, 소규모 API 서버부터 대규모 백엔드까지 폭넓게 쓰입니다.",
+  "concepts": [
+    {
+      "term": "Middleware",
+      "description": "요청과 응답 객체 사이에 끼어들어 로깅, 인증, 파싱 등을 처리하는 함수로, 여러 개를 체인처럼 연결해 실행 흐름을 구성한다."
+    },
+    {
+      "term": "Routing",
+      "description": "HTTP 메서드와 URL 경로 조합에 따라 어떤 함수가 요청을 처리할지 정의하는 방식이다."
+    },
+    {
+      "term": "Request/Response Object",
+      "description": "들어온 요청 정보를 담은 req 객체와 응답을 만들어 보내는 res 객체로, 대부분의 핸들러가 이 둘을 다룬다."
+    },
+    {
+      "term": "Router",
+      "description": "관련된 라우트들을 하나의 모듈로 묶어 재사용하고 조합할 수 있게 해주는 단위다."
+    },
+    {
+      "term": "Error Handling Middleware",
+      "description": "인자가 4개인 특수한 미들웨어 형태로, 요청 처리 중 발생한 예외를 한 곳에서 공통으로 처리한다."
+    }
+  ],
+  "whenToUse": [
+    "REST API 백엔드를 빠르게 구축하고 싶을 때",
+    "라우팅과 요청 처리 로직을 미들웨어 단위로 나눠 관리하고 싶을 때",
+    "특정 아키텍처를 강제하지 않는 가벼운 프레임워크가 필요할 때",
+    "외부 서비스(Jira 등) 연동용 REST API 서버를 구성할 때"
+  ],
+  "example": {
+    "title": "기본 Express 서버와 라우트",
+    "language": "javascript",
+    "code": "const express = require('express');\nconst app = express();\n\napp.use(express.json()); // JSON 요청 본문 파싱 미들웨어\n\napp.get('/cards/:id', (req, res) => {\n  res.json({ id: req.params.id, status: 'open' });\n});\n\napp.post('/cards', (req, res) => {\n  const { title } = req.body;\n  res.status(201).json({ title });\n});\n\napp.listen(3000, () => console.log('서버 실행 중'));",
+    "description": "JSON 파싱 미들웨어를 등록하고, 카드 조회(GET)와 생성(POST) 라우트를 정의하는 최소한의 Express 서버 예시입니다."
+  },
+  "pitfalls": [
+    "미들웨어 등록 순서에 따라 동작이 달라지므로 순서를 신경 써야 한다",
+    "next()를 호출하지 않으면 요청이 멈춘 채 응답되지 않는다",
+    "비동기 함수 내 에러를 직접 처리하지 않으면 에러 핸들러로 전달되지 않을 수 있다"
+  ],
+  "generatedAt": "2026-07-26T06:09:00.786Z"
+}

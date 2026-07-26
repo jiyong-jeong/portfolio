@@ -1,0 +1,71 @@
+{
+  "slug": "lambda-thumbnail-generator-docs",
+  "repo": "lambda-thumbnail-generator-docs",
+  "title": "S3 이미지 자동 썸네일 생성기",
+  "summary": "S3에 업로드된 이미지를 감지해 Lambda가 자동으로 썸네일을 생성하는 서버리스 파이프라인",
+  "description": "이미지가 업로드될 때마다 별도 서버 없이 크기별 썸네일을 자동 생성하기 위한 AWS Lambda 기반 프로젝트입니다. lambda-function 디렉터리에 썸네일 생성 핸들러를, s3-migration 디렉터리에 기존에 이미 저장된 이미지들을 새 파이프라인에 맞게 일괄 처리하는 마이그레이션 헬퍼를 두어 신규/기존 이미지를 모두 대응하도록 구성했습니다. tests 디렉터리를 통해 핸들러 동작을 검증하며, 이 레포는 소스코드 대신 프로젝트 구조와 아키텍처를 정리한 공개 문서 저장소입니다.",
+  "category": "인프라",
+  "role": "Lambda 기반 썸네일 생성 함수와 기존 이미지 마이그레이션 헬퍼를 설계·구현했으며, 소스코드는 비공개로 유지하고 구조와 아키텍처만 정리해 공개 문서로 작성했다.",
+  "techStack": [
+    {
+      "name": "AWS",
+      "category": "infra",
+      "usage": "썸네일 생성 파이프라인 전체를 구성하는 클라우드 플랫폼"
+    },
+    {
+      "name": "AWS Lambda",
+      "category": "infra",
+      "usage": "이미지 업로드 이벤트에 반응해 썸네일을 생성하는 서버리스 함수 실행"
+    },
+    {
+      "name": "Amazon S3",
+      "category": "infra",
+      "usage": "원본 이미지 저장, 썸네일 결과 저장 및 기존 이미지 마이그레이션 대상"
+    }
+  ],
+  "highlights": [
+    "서버 운영 없이 이벤트 기반으로 동작하는 서버리스 썸네일 생성 구조",
+    "신규 업로드뿐 아니라 기존에 저장된 이미지까지 처리하는 별도 마이그레이션 헬퍼 분리 설계",
+    "핸들러 로직과 마이그레이션 로직, 테스트 코드를 디렉터리 단위로 명확히 분리"
+  ],
+  "challenges": [],
+  "diagrams": [
+    {
+      "title": "썸네일 생성 아키텍처",
+      "description": "S3에 이미지가 업로드되면 Lambda 함수가 트리거되어 썸네일을 생성하고 다시 S3에 저장하는 전체 흐름을 보여줍니다.",
+      "type": "architecture",
+      "mermaid": "flowchart LR\n  U[\"이미지 업로드\"] --> S1[\"S3 원본 버킷\"]\n  S1 -->|\"이벤트 트리거\"| L[\"Lambda 썸네일 생성 함수\"]\n  L --> S2[\"S3 썸네일 버킷\"]\n  M[\"S3 마이그레이션 헬퍼\"] --> S1\n  M --> S2\n  T[\"테스트\"] --> L"
+    }
+  ],
+  "keywords": [
+    "aws-lambda",
+    "amazon-s3",
+    "thumbnail",
+    "serverless",
+    "image-processing",
+    "migration",
+    "docs"
+  ],
+  "links": {
+    "repo": "https://github.com/jiyong-jeong/lambda-thumbnail-generator-docs",
+    "homepage": null
+  },
+  "metrics": {
+    "stars": 0,
+    "forks": 0,
+    "watchers": 0,
+    "sizeKb": 0,
+    "openIssues": 0,
+    "languages": {},
+    "topics": [],
+    "primaryLanguage": null,
+    "license": null
+  },
+  "dates": {
+    "createdAt": "2026-07-26T05:27:54Z",
+    "updatedAt": "2026-07-26T05:28:19Z",
+    "pushedAt": "2026-07-26T05:27:57Z",
+    "analyzedAt": "2026-07-26T05:54:51.835Z"
+  },
+  "featured": false
+}

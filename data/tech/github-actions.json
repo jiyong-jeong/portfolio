@@ -1,0 +1,51 @@
+{
+  "slug": "github-actions",
+  "name": "GitHub Actions",
+  "category": "devops",
+  "tagline": "코드 저장소 이벤트에 반응해 빌드·테스트·배포를 자동화하는 CI/CD 플랫폼",
+  "definition": "GitHub Actions는 GitHub 저장소에서 발생하는 push, pull request, 스케줄 등의 이벤트에 맞춰 정해진 작업을 자동으로 실행해 주는 CI/CD 도구다. 저장소마다 별도의 CI 서버를 구축하지 않고도, 저장소 안에 워크플로 파일만 두면 GitHub이 제공하는 실행 환경에서 테스트·빌드·배포 같은 반복 작업을 자동화할 수 있도록 만들어졌다. YAML로 파이프라인을 선언하고, 커뮤니티가 만든 재사용 가능한 단위(Action)를 조합해 쓸 수 있다는 점이 특징이다.",
+  "concepts": [
+    {
+      "term": "Workflow",
+      "description": "저장소의 .github/workflows 디렉터리에 YAML 파일로 정의하는 자동화 파이프라인 전체 단위다."
+    },
+    {
+      "term": "Event / Trigger",
+      "description": "push, pull_request, schedule 등 워크플로를 실행시키는 계기가 되는 이벤트다."
+    },
+    {
+      "term": "Job",
+      "description": "워크플로 안에서 하나의 실행 환경(runner)에서 수행되는 작업 단위이며, 여러 job은 기본적으로 병렬 실행된다."
+    },
+    {
+      "term": "Step / Action",
+      "description": "job을 구성하는 개별 실행 단계이며, Action은 커뮤니티나 직접 만든 재사용 가능한 스텝 묶음이다."
+    },
+    {
+      "term": "Runner",
+      "description": "실제로 job이 실행되는 서버(가상 머신 또는 컨테이너)로, GitHub이 호스팅하거나 직접 등록한 self-hosted runner를 쓸 수 있다."
+    },
+    {
+      "term": "container (job container)",
+      "description": "job의 실행 환경을 특정 Docker 이미지로 고정해, 필요한 도구나 버전이 미리 갖춰진 격리된 환경에서 실행하도록 지정하는 설정이다."
+    }
+  ],
+  "whenToUse": [
+    "GitHub 저장소와 통합된 CI/CD를 별도 서버 구축 없이 바로 쓰고 싶을 때",
+    "커밋·PR마다 린트, 테스트, 유효성 검증을 자동으로 반복 실행하고 싶을 때",
+    "여러 프로젝트에 걸쳐 동일한 검증 규칙(포맷팅, 스키마 검증 등)을 표준화하고 싶을 때",
+    "특정 도구 버전이 필요한 작업을 Docker 컨테이너 기반 실행 환경으로 고정하고 싶을 때"
+  ],
+  "example": {
+    "title": "PR마다 lint 검사를 실행하는 기본 워크플로",
+    "language": "yaml",
+    "code": "name: CI\non:\n  pull_request:\n    branches: [main]\n\njobs:\n  lint:\n    runs-on: ubuntu-latest\n    container: node:20\n    steps:\n      - uses: actions/checkout@v4\n      - run: npm ci\n      - run: npx prettier --check .",
+    "description": "pull_request 이벤트가 발생하면 node:20 컨테이너 안에서 저장소를 체크아웃한 뒤 prettier 포맷 검사를 실행한다."
+  },
+  "pitfalls": [
+    "workflow 파일 경로(.github/workflows)와 YAML 들여쓰기 오류로 실행 자체가 안 되는 경우가 많다",
+    "job은 기본적으로 병렬 실행되므로 순서가 필요하면 needs로 의존관계를 명시해야 한다",
+    "container 키워드 사용 시 이미지 크기와 다운로드 시간이 늘어나 실행 속도가 느려질 수 있다"
+  ],
+  "generatedAt": "2026-07-26T06:10:19.443Z"
+}

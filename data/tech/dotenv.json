@@ -1,0 +1,46 @@
+{
+  "slug": "dotenv",
+  "name": "dotenv",
+  "category": "devops",
+  "tagline": "환경 변수를 .env 파일에 정의해 애플리케이션 설정과 민감정보를 코드에서 분리하는 라이브러리",
+  "definition": "dotenv는 API 키, 비밀번호, 데이터베이스 접속 정보 같은 설정값을 소스 코드에 하드코딩하지 않고 별도의 .env 파일에 모아두고, 애플리케이션 실행 시 이를 읽어 환경 변수로 주입해주는 도구다. 원래 Ruby 커뮤니티의 관행을 여러 언어로 이식한 것으로, 코드와 설정을 분리해 배포 환경마다 다른 값을 안전하게 관리하려는 목적으로 만들어졌다. 개발자는 .env 파일을 버전 관리에서 제외함으로써 민감정보가 저장소에 노출되는 것을 막을 수 있다.",
+  "concepts": [
+    {
+      "term": ".env file",
+      "description": "KEY=VALUE 형식으로 환경 변수를 한 줄씩 정의하는 텍스트 파일이며, 보통 프로젝트 루트에 위치한다."
+    },
+    {
+      "term": "environment variable",
+      "description": "운영체제나 실행 환경이 프로세스에 제공하는 키-값 쌍으로, 코드 수정 없이 동작을 바꿀 수 있게 해준다."
+    },
+    {
+      "term": "config loading",
+      "description": "애플리케이션 시작 시점에 .env 파일 내용을 읽어 process.env 같은 실행 환경 변수 객체에 채워 넣는 과정이다."
+    },
+    {
+      "term": "gitignore exclusion",
+      "description": ".env 파일을 .gitignore에 등록해 버전 관리 시스템에 커밋되지 않도록 막는 관례로, dotenv 사용의 핵심 전제다."
+    },
+    {
+      "term": "12-factor config",
+      "description": "설정을 코드와 분리해 환경 변수로 관리해야 한다는 원칙으로, dotenv는 로컬 개발 환경에서 이를 손쉽게 흉내 내는 도구다."
+    }
+  ],
+  "whenToUse": [
+    "API 키, 비밀번호 등 민감정보를 코드나 저장소에 노출하지 않고 관리하고 싶을 때",
+    "로컬·개발·운영 환경마다 다른 설정값을 코드 변경 없이 전환하고 싶을 때",
+    "여러 명이 협업하는 프로젝트에서 각자 다른 로컬 설정을 유지해야 할 때"
+  ],
+  "example": {
+    "title": "Node.js에서 dotenv로 환경 변수 로드하기",
+    "language": "javascript",
+    "code": "// .env 파일\n// PRIVATE_KEY=0xabc123...\n// RPC_URL=https://example-rpc.com\n\n// index.js\nrequire('dotenv').config();\n\nconst privateKey = process.env.PRIVATE_KEY;\nconst rpcUrl = process.env.RPC_URL;\n\nconsole.log('RPC 연결 대상:', rpcUrl);\n// privateKey는 로그로 출력하지 않는다",
+    "description": ".env 파일에 정의한 값을 config() 호출로 읽어 들여 process.env를 통해 코드에서 사용하는 기본 패턴이다."
+  },
+  "pitfalls": [
+    ".env 파일을 .gitignore에 빠뜨려 민감정보가 저장소에 그대로 커밋되는 실수가 흔하다",
+    "dotenv는 값을 로드만 할 뿐 암호화하지 않으므로 파일 자체의 보안은 별도로 관리해야 한다",
+    "배포 환경(CI, 클라우드)에서는 .env 대신 플랫폼이 제공하는 환경 변수 설정을 쓰는 경우가 많다"
+  ],
+  "generatedAt": "2026-07-26T06:13:33.396Z"
+}

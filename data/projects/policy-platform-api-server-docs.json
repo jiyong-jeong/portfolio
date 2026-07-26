@@ -1,0 +1,83 @@
+{
+  "slug": "policy-platform-api-server-docs",
+  "repo": "policy-platform-api-server-docs",
+  "title": "정책 플랫폼 백엔드 API 서버",
+  "summary": "NestJS 기반으로 구축되고 Docker/docker-compose로 배포되는 정책 플랫폼 백엔드 API 서버 문서",
+  "description": "정책 관련 데이터를 다루는 백엔드 API 서버로, NestJS 프레임워크 위에서 구현되었다. Docker와 docker-compose를 활용해 컨테이너 기반으로 실행 및 배포되도록 구성되어 있다. 원래는 Nx 모노레포 내부에 포함되어 있던 서비스였으나, 독립적인 서비스로 분리되어 별도로 운영되는 구조로 관찰된다. 본 레포는 해당 API 서버의 구조를 정리한 공개 문서 저장소이다.",
+  "category": "백엔드",
+  "role": "정책 플랫폼 API 서버(NestJS)의 구조를 정리하고, Nx 모노레포에서 독립 서비스로 분리되는 과정을 문서화했다.",
+  "techStack": [
+    {
+      "name": "TypeScript",
+      "category": "language",
+      "usage": "NestJS 프레임워크 기반 API 서버 구현 언어"
+    },
+    {
+      "name": "NestJS",
+      "category": "framework",
+      "usage": "정책 플랫폼 API 서버의 핵심 백엔드 프레임워크"
+    },
+    {
+      "name": "Docker",
+      "category": "devops",
+      "usage": "API 서버를 컨테이너로 패키징 및 실행"
+    },
+    {
+      "name": "Docker Compose",
+      "category": "devops",
+      "usage": "여러 컨테이너로 구성된 서비스 환경을 정의하고 실행"
+    },
+    {
+      "name": "Nx",
+      "category": "tool",
+      "usage": "서비스가 원래 속해 있던 모노레포 관리 도구"
+    }
+  ],
+  "highlights": [
+    "NestJS 기반으로 구현된 정책 플랫폼 전용 백엔드 API 서버",
+    "Docker와 docker-compose를 통한 컨테이너 기반 실행 환경 구성",
+    "Nx 모노레포에서 분리되어 독립적으로 운영되는 서비스 구조"
+  ],
+  "challenges": [],
+  "diagrams": [
+    {
+      "title": "정책 플랫폼 API 서버 구조",
+      "description": "Nx 모노레포에서 분리된 정책 플랫폼 API 서버가 NestJS로 구현되고 Docker 환경에서 실행되는 흐름을 나타낸다.",
+      "type": "architecture",
+      "mermaid": "flowchart TD\n  A[\"Nx 모노레포\"] -.-> B[\"정책 플랫폼 API 서버 NestJS\"]\n  B --> C[\"Docker 컨테이너\"]\n  C --> D[\"docker-compose 배포 환경\"]\n  B --> E[\"정책 데이터 처리\"]"
+    }
+  ],
+  "keywords": [
+    "nestjs",
+    "docker",
+    "docker-compose",
+    "nx",
+    "monorepo",
+    "backend",
+    "api",
+    "policy-platform",
+    "typescript"
+  ],
+  "links": {
+    "repo": "https://github.com/jiyong-jeong/policy-platform-api-server-docs",
+    "homepage": null
+  },
+  "metrics": {
+    "stars": 0,
+    "forks": 0,
+    "watchers": 0,
+    "sizeKb": 0,
+    "openIssues": 0,
+    "languages": {},
+    "topics": [],
+    "primaryLanguage": null,
+    "license": null
+  },
+  "dates": {
+    "createdAt": "2026-07-26T05:30:30Z",
+    "updatedAt": "2026-07-26T05:30:41Z",
+    "pushedAt": "2026-07-26T05:30:33Z",
+    "analyzedAt": "2026-07-26T05:44:07.477Z"
+  },
+  "featured": false
+}

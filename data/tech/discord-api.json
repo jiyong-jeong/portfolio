@@ -1,0 +1,51 @@
+{
+  "slug": "discord-api",
+  "name": "Discord API",
+  "category": "backend",
+  "tagline": "Discord 서버와 봇/외부 서비스를 연결해 메시지, 권한, 이벤트를 자동으로 다루는 API",
+  "definition": "Discord API는 Discord 서버(길드), 채널, 사용자, 역할 등의 정보를 외부 애플리케이션이 읽고 조작할 수 있도록 제공하는 REST 및 실시간 이벤트 인터페이스다. 봇이 메시지를 보내거나 명령을 처리하는 것뿐 아니라, 특정 사용자에게 서버 역할(role)을 자동으로 부여하거나 회수하는 등 서버 운영을 프로그래밍적으로 자동화하려는 목적에서 널리 쓰인다. OAuth2 인증과 결합하면 외부 서비스가 사용자의 Discord 계정 정보를 확인하고, 그 결과에 따라 서버 접근 권한을 조정하는 흐름도 구현할 수 있다.",
+  "concepts": [
+    {
+      "term": "Bot Token",
+      "description": "Discord 개발자 포털에서 발급받는 봇 전용 인증 키로, API 요청 시 봇의 신원을 증명하는 데 사용된다."
+    },
+    {
+      "term": "Guild",
+      "description": "Discord에서 하나의 서버를 가리키는 공식 명칭으로, API 상의 대부분의 자원이 guild ID를 기준으로 구분된다."
+    },
+    {
+      "term": "Role",
+      "description": "사용자에게 부여되는 권한 묶음으로, 특정 채널 접근이나 기능 사용 여부를 역할 단위로 제어할 수 있다."
+    },
+    {
+      "term": "OAuth2 Flow",
+      "description": "외부 서비스가 사용자 대신 Discord 계정 정보(아이디, 이메일 등)에 접근하도록 사용자 동의를 받는 인증 절차다."
+    },
+    {
+      "term": "Gateway (WebSocket)",
+      "description": "메시지 전송, 멤버 입장 등 실시간 이벤트를 지속적으로 수신하기 위한 웹소켓 기반 연결이다."
+    },
+    {
+      "term": "Webhook",
+      "description": "봇 없이도 특정 채널에 자동으로 메시지를 전송할 수 있게 해주는 단방향 URL 기반 연동 방식이다."
+    }
+  ],
+  "whenToUse": [
+    "커뮤니티 서버의 권한이나 역할 부여를 자동화하고 싶을 때",
+    "외부 인증 결과(NFT 보유, 결제 등)를 서버 접근 권한과 연결하고 싶을 때",
+    "채널 메시지나 이벤트를 실시간으로 감지해 반응하는 봇을 만들 때",
+    "별도 봇 없이 특정 이벤트를 채널에 알림으로만 전달하고 싶을 때"
+  ],
+  "example": {
+    "title": "특정 사용자에게 역할 부여하기",
+    "language": "bash",
+    "code": "curl -X PUT \\\n  \"https://discord.com/api/v10/guilds/{guild.id}/members/{user.id}/roles/{role.id}\" \\\n  -H \"Authorization: Bot {BOT_TOKEN}\" \\\n  -H \"Content-Type: application/json\"",
+    "description": "봇 토큰으로 인증한 뒤, 특정 서버(guild)의 특정 사용자에게 지정한 역할을 부여하는 REST API 호출 예시다."
+  },
+  "pitfalls": [
+    "Bot Token과 OAuth2 Access Token의 용도를 혼동해 잘못된 인증 방식을 사용하기 쉽다",
+    "봇에게 역할 관리 권한과 대상 역할보다 높은 계층 설정이 없으면 역할 부여가 조용히 실패한다",
+    "짧은 시간에 요청을 많이 보내면 rate limit에 걸려 요청이 지연되거나 거부될 수 있다"
+  ],
+  "generatedAt": "2026-07-26T06:07:52.078Z"
+}

@@ -1,0 +1,46 @@
+{
+  "slug": "lombok",
+  "name": "Lombok",
+  "category": "tool",
+  "tagline": "어노테이션으로 getter, setter, 생성자 등 반복 코드를 자동 생성하는 자바 라이브러리",
+  "definition": "Lombok은 자바 클래스에서 getter, setter, equals, hashCode, toString, 생성자 같은 반복적인 코드를 어노테이션 하나로 컴파일 시점에 자동 생성해주는 라이브러리다. 자바는 이런 코드를 명시적으로 작성해야 하는 언어라 클래스가 커질수록 실제 로직보다 보일러플레이트 코드가 훨씬 많아지는 문제가 있었고, Lombok은 이를 어노테이션 프로세싱으로 해결한다. 개발자는 필드와 어노테이션만 선언하면 되고, 실제 메서드 코드는 컴파일 시 바이트코드에 삽입된다.",
+  "concepts": [
+    {
+      "term": "Annotation Processing",
+      "description": "소스 코드가 컴파일되는 과정에서 어노테이션을 읽어 코드를 자동으로 생성하거나 수정하는 자바의 표준 메커니즘이다. Lombok은 이 메커니즘을 이용해 별도의 런타임 의존성 없이 동작한다."
+    },
+    {
+      "term": "@Data",
+      "description": "getter, setter, equals, hashCode, toString을 한 번에 생성해주는 대표적인 복합 어노테이션이다."
+    },
+    {
+      "term": "@Builder",
+      "description": "객체를 단계적으로 조립해서 생성할 수 있는 빌더 패턴 코드를 자동으로 만들어준다."
+    },
+    {
+      "term": "@NoArgsConstructor / @AllArgsConstructor",
+      "description": "각각 매개변수 없는 생성자와 모든 필드를 받는 생성자를 자동으로 생성해주는 어노테이션이다."
+    },
+    {
+      "term": "delombok",
+      "description": "Lombok 어노테이션이 실제로 생성한 코드를 순수 자바 소스로 풀어서 보여주는 도구로, 디버깅이나 코드 검토 시 사용된다."
+    }
+  ],
+  "whenToUse": [
+    "엔티티나 DTO처럼 필드 위주의 클래스에서 반복 코드를 줄이고 싶을 때",
+    "여러 서비스가 공유하는 스키마·모델 라이브러리의 유지보수 비용을 낮추고 싶을 때",
+    "코드 리뷰나 문서화 시 핵심 로직에 집중하고 보일러플레이트를 걷어내고 싶을 때"
+  ],
+  "example": {
+    "title": "Lombok을 적용한 기본 엔티티 클래스",
+    "language": "java",
+    "code": "import lombok.Data;\nimport lombok.NoArgsConstructor;\nimport lombok.AllArgsConstructor;\n\n@Data\n@NoArgsConstructor\n@AllArgsConstructor\npublic class User {\n    private Long id;\n    private String email;\n    private String name;\n}\n// getter/setter, equals, hashCode, toString, 생성자가\n// 별도 코드 작성 없이 컴파일 시 자동으로 생성된다.",
+    "description": "필드만 선언한 클래스에 어노테이션 몇 개를 붙여 getter, setter, 생성자 등을 자동 생성하는 예시다."
+  },
+  "pitfalls": [
+    "IDE에 Lombok 플러그인을 설치하지 않으면 자동 생성된 메서드가 에디터에서 오류로 표시된다",
+    "@Data의 equals/hashCode가 연관 관계(다른 엔티티 참조) 필드까지 포함해 순환 참조를 일으킬 수 있다",
+    "@Builder만 사용하면 기본 생성자가 사라져 JPA 등 프레임워크와 충돌할 수 있다"
+  ],
+  "generatedAt": "2026-07-26T06:10:52.828Z"
+}

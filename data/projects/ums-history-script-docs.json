@@ -1,0 +1,72 @@
+{
+  "slug": "ums-history-script-docs",
+  "repo": "ums-history-script-docs",
+  "title": "사용자 관리 히스토리 정리 스크립트",
+  "summary": "사용자 관리(UMS) 이력 데이터를 정리하고 변환하는 Node.js 스크립트 모음 문서",
+  "description": "사용자 관리 시스템(UMS)에서 발생하는 히스토리 데이터를 정리하기 위한 Node.js 스크립트 모음을 문서화한 프로젝트입니다. CSV와 JSON 형식 간 데이터를 변환하는 유틸리티를 포함하며, 반복적인 데이터 정제 작업을 스크립트로 자동화하는 것을 목표로 합니다. 이 레포지토리는 소스 코드 대신 프로젝트 구조와 개요를 담은 공개 문서로 구성되어 있습니다.",
+  "category": "자동화",
+  "role": "사용자 관리 히스토리 정리를 위한 Node.js 스크립트와 데이터 변환 유틸리티를 설계 및 개발",
+  "techStack": [
+    {
+      "name": "Node.js",
+      "category": "language",
+      "usage": "히스토리 정리 스크립트 실행 환경"
+    },
+    {
+      "name": "JSON",
+      "category": "data",
+      "usage": "변환 대상 및 결과 데이터 포맷"
+    },
+    {
+      "name": "CSV",
+      "category": "data",
+      "usage": "변환 대상 및 결과 데이터 포맷"
+    }
+  ],
+  "highlights": [
+    "사용자 관리 히스토리 데이터를 스크립트로 자동 정리",
+    "CSV/JSON 상호 변환을 위한 데이터 헬퍼 유틸 제공",
+    "Node.js 기반 스크립트 모음으로 구성"
+  ],
+  "challenges": [],
+  "diagrams": [
+    {
+      "title": "히스토리 정리 스크립트 흐름",
+      "description": "원본 사용자 관리 히스토리 데이터가 스크립트를 거쳐 변환·정리되는 과정을 보여줍니다.",
+      "type": "dataflow",
+      "mermaid": "flowchart LR\n  A[\"UMS 히스토리 원본 데이터\"] --> B[\"Node.js 정리 스크립트\"]\n  B --> C[\"CSV/JSON 변환 유틸\"]\n  C --> D[\"정리된 히스토리 결과\"]"
+    }
+  ],
+  "keywords": [
+    "ums",
+    "history",
+    "nodejs",
+    "script",
+    "csv",
+    "json",
+    "data-transform",
+    "automation"
+  ],
+  "links": {
+    "repo": "https://github.com/jiyong-jeong/ums-history-script-docs",
+    "homepage": null
+  },
+  "metrics": {
+    "stars": 0,
+    "forks": 0,
+    "watchers": 0,
+    "sizeKb": 0,
+    "openIssues": 0,
+    "languages": {},
+    "topics": [],
+    "primaryLanguage": null,
+    "license": null
+  },
+  "dates": {
+    "createdAt": "2026-07-26T05:31:16Z",
+    "updatedAt": "2026-07-26T05:31:23Z",
+    "pushedAt": "2026-07-26T05:31:19Z",
+    "analyzedAt": "2026-07-26T05:41:04.492Z"
+  },
+  "featured": false
+}

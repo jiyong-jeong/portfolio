@@ -1,0 +1,77 @@
+{
+  "slug": "news-platform-deploy-config-docs",
+  "repo": "news-platform-deploy-config-docs",
+  "title": "Compose·K8s 하이브리드 배포 구성 문서",
+  "summary": "Docker Compose와 Kubernetes(Kustomize)를 병행 운용하는 플랫폼 배포 구성을 정리한 문서 레포지토리",
+  "description": "개발/스테이징 환경은 Docker Compose 오버레이로, 프로덕션 환경은 Kubernetes Kustomize와 ArgoCD로 배포하는 하이브리드 배포 전략을 정리한 문서입니다. docker 디렉터리에는 서비스별 compose 템플릿(base + overlay)을, kubernetes 디렉터리에는 Kustomize base와 overlay 구성을 두어 환경별 배포 설정을 분리 관리합니다. scripts 디렉터리에는 오버레이 렌더링과 프로모션을 돕는 헬퍼 스크립트를 포함합니다. 개발/스테이징은 compose 오버레이를 통해 대상 호스트에 직접 배포하고, 프로덕션은 Kustomize overlay를 커밋하면 ArgoCD가 동기화하는 GitOps 흐름을 따릅니다.",
+  "category": "인프라",
+  "role": "배포 구성 문서 작성자로서 Compose와 Kubernetes 간 환경별 배포 전략과 디렉터리 구조, 배포 흐름을 정리했습니다.",
+  "techStack": [
+    {
+      "name": "Docker Compose",
+      "category": "devops",
+      "usage": "개발/스테이징 환경의 서비스별 배포 템플릿(base + overlay) 구성"
+    },
+    {
+      "name": "Kubernetes",
+      "category": "infra",
+      "usage": "프로덕션 환경의 컨테이너 오케스트레이션 기반"
+    },
+    {
+      "name": "Kustomize",
+      "category": "devops",
+      "usage": "환경별 K8s 매니페스트를 base/overlay로 관리"
+    },
+    {
+      "name": "ArgoCD",
+      "category": "devops",
+      "usage": "프로덕션 배포를 위한 GitOps 기반 자동 동기화"
+    }
+  ],
+  "highlights": [
+    "개발/스테이징은 Compose, 프로덕션은 K8s로 나눈 하이브리드 배포 전략을 문서화",
+    "base + overlay 구조로 환경별 설정 중복을 줄이는 방식 정리",
+    "Kustomize overlay 커밋 → ArgoCD sync 흐름으로 GitOps 배포 프로세스 명시",
+    "오버레이 렌더링·프로모션을 돕는 스크립트 영역을 별도로 분리"
+  ],
+  "challenges": [],
+  "diagrams": [
+    {
+      "title": "환경별 배포 흐름",
+      "description": "개발/스테이징과 프로덕션 환경이 각각 어떤 방식으로 배포되는지를 보여주는 흐름도입니다.",
+      "type": "deployment",
+      "mermaid": "flowchart TD\n  A[\"docker 오버레이\"] --> B[\"개발/스테이징 호스트\"]\n  C[\"kubernetes Kustomize overlay\"] --> D[\"Git 커밋\"]\n  D --> E[\"ArgoCD sync\"]\n  E --> F[\"프로덕션 클러스터\"]\n  G[\"scripts 렌더링/프로모션\"] --> A\n  G --> C"
+    }
+  ],
+  "keywords": [
+    "docker-compose",
+    "kubernetes",
+    "kustomize",
+    "argocd",
+    "gitops",
+    "deployment",
+    "infra-docs"
+  ],
+  "links": {
+    "repo": "https://github.com/jiyong-jeong/news-platform-deploy-config-docs",
+    "homepage": null
+  },
+  "metrics": {
+    "stars": 0,
+    "forks": 0,
+    "watchers": 0,
+    "sizeKb": 0,
+    "openIssues": 0,
+    "languages": {},
+    "topics": [],
+    "primaryLanguage": null,
+    "license": null
+  },
+  "dates": {
+    "createdAt": "2026-07-26T05:15:55Z",
+    "updatedAt": "2026-07-26T05:16:05Z",
+    "pushedAt": "2026-07-26T05:15:59Z",
+    "analyzedAt": "2026-07-26T06:03:22.340Z"
+  },
+  "featured": false
+}

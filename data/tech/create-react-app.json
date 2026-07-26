@@ -1,0 +1,45 @@
+{
+  "slug": "create-react-app",
+  "name": "Create React App",
+  "category": "tool",
+  "tagline": "별도 설정 없이 React 프로젝트를 즉시 시작할 수 있게 해주는 초기 스캐폴딩 도구",
+  "definition": "Create React App(CRA)은 Webpack, Babel, ESLint 등 React 개발에 필요한 빌드 도구 체인을 미리 구성해 제공하는 명령줄 유틸리티다. React 프로젝트를 새로 시작할 때마다 번들러와 컴파일러를 직접 설정해야 하는 번거로움을 없애기 위해 만들어졌다. 개발자는 복잡한 설정 파일을 다루지 않고도 명령 하나로 개발 서버, 테스트 러너, 프로덕션 빌드가 갖춰진 프로젝트를 생성할 수 있다.",
+  "concepts": [
+    {
+      "term": "Zero Configuration",
+      "description": "Webpack, Babel 등의 설정 파일을 직접 작성하지 않아도 바로 개발을 시작할 수 있는 방식이다."
+    },
+    {
+      "term": "Build Toolchain",
+      "description": "소스 코드를 브라우저에서 실행 가능한 형태로 변환·번들링하는 컴파일러와 번들러의 조합을 의미한다."
+    },
+    {
+      "term": "Development Server",
+      "description": "코드 변경 시 자동으로 새로고침되는 로컬 서버로, 개발 중 실시간으로 결과를 확인할 수 있게 한다."
+    },
+    {
+      "term": "Eject",
+      "description": "숨겨진 내부 설정 파일들을 프로젝트 밖으로 꺼내 직접 커스터마이징할 수 있게 하는 되돌릴 수 없는 명령이다."
+    },
+    {
+      "term": "Production Build",
+      "description": "코드를 압축·최적화하여 배포용 정적 파일로 만들어내는 과정이다."
+    }
+  ],
+  "whenToUse": [
+    "React를 처음 배우거나 빠르게 프로토타입을 만들어야 할 때",
+    "번들러·컴파일러 설정에 시간을 쓰지 않고 개발에 집중하고 싶을 때",
+    "표준화된 프로젝트 구조로 여러 개발자가 협업해야 할 때"
+  ],
+  "example": {
+    "title": "새 React 프로젝트 생성 및 실행",
+    "language": "bash",
+    "code": "# 새 프로젝트 생성\nnpx create-react-app my-app\ncd my-app\n\n# 개발 서버 실행 (핫 리로드 지원)\nnpm start\n\n# 프로덕션용 빌드 생성\nnpm run build",
+    "description": "명령 하나로 React 프로젝트 구조를 생성하고, 별도 설정 없이 개발 서버 실행과 배포용 빌드까지 수행하는 예시다."
+  },
+  "pitfalls": [
+    "eject 이후에는 자동 설정 관리 이점을 잃고 모든 설정을 직접 유지보수해야 한다",
+    "내부 설정을 자유롭게 바꾸기 어려워 세밀한 커스터마이징에는 한계가 있다"
+  ],
+  "generatedAt": "2026-07-26T06:13:55.351Z"
+}

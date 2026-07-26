@@ -1,0 +1,47 @@
+{
+  "slug": "refine-dev",
+  "name": "Refine.dev",
+  "category": "framework",
+  "tagline": "React 기반으로 관리자 패널, 대시보드, CRUD 앱을 빠르게 만드는 헤드리스 프레임워크",
+  "definition": "Refine은 관리자 패널, 대시보드, B2B 내부 도구처럼 데이터 CRUD가 중심인 애플리케이션을 빠르게 만들기 위한 React 프레임워크다. 데이터 페칭, 인증, 라우팅, 권한 처리 같은 반복적인 로직을 훅과 프로바이더 형태로 추상화해 제공하고, UI는 강제하지 않는 헤드리스 구조를 택해 특정 디자인 시스템에 종속되지 않는다. REST, GraphQL, Supabase 등 다양한 백엔드를 데이터 프로바이더로 연결할 수 있어, 매번 CRUD 화면과 인증 로직을 직접 구현하는 반복 작업을 줄이려는 목적으로 만들어졌다.",
+  "concepts": [
+    {
+      "term": "Data Provider",
+      "description": "백엔드 API와 Refine 훅 사이를 연결하는 어댑터로, REST·GraphQL·Supabase 등 서로 다른 백엔드를 동일한 인터페이스로 다루게 해준다."
+    },
+    {
+      "term": "Headless Core",
+      "description": "UI 컴포넌트를 강제하지 않고 데이터 로직만 훅으로 제공해, Ant Design·Material UI 등 원하는 UI 라이브러리를 자유롭게 붙일 수 있다."
+    },
+    {
+      "term": "Resource",
+      "description": "CRUD 대상이 되는 데이터 단위(예: posts, users)를 정의하는 개념으로, 각 리소스에 목록/생성/수정/삭제 페이지가 자동으로 매핑된다."
+    },
+    {
+      "term": "Auth Provider",
+      "description": "로그인, 로그아웃, 권한 체크 등 인증·인가 로직을 추상화한 인터페이스로, 원하는 인증 시스템을 붙여 커스터마이징한다."
+    },
+    {
+      "term": "Hooks (useTable, useForm 등)",
+      "description": "목록 조회, 폼 처리, 필터링 같은 CRUD 화면에 필요한 로직을 미리 구현해 제공하는 React 훅 모음이다."
+    }
+  ],
+  "whenToUse": [
+    "관리자 패널, 내부 대시보드처럼 CRUD 화면 비중이 큰 앱을 빠르게 만들 때",
+    "특정 UI 라이브러리에 종속되지 않고 데이터 로직만 재사용하고 싶을 때",
+    "REST·GraphQL·Supabase 등 다양한 백엔드를 동일한 방식으로 다루고 싶을 때",
+    "해커톤이나 프로토타입처럼 반복적인 CRUD 보일러플레이트를 최소화하고 싶을 때"
+  ],
+  "example": {
+    "title": "Refine 앱 생성 및 리소스 정의",
+    "language": "bash",
+    "code": "# Refine 프로젝트 생성\nnpm create refine-app@latest my-admin\n\ncd my-admin\nnpm run dev",
+    "description": "CLI로 Refine 프로젝트를 생성한 뒤, App 컴포넌트에서 resources 배열로 posts 같은 데이터 리소스를 등록하면 목록/생성/수정 페이지 라우팅이 자동으로 구성된다."
+  },
+  "pitfalls": [
+    "UI 컴포넌트가 기본 제공되지 않아 헤드리스 코어만으로는 화면을 직접 조립해야 한다",
+    "데이터 프로바이더가 백엔드 API 응답 형식에 맞게 정확히 구현되지 않으면 훅이 오작동한다",
+    "Ant Design 등 UI 패키지 버전과 Refine 코어 버전 간 호환성을 맞추지 않으면 빌드 오류가 난다"
+  ],
+  "generatedAt": "2026-07-26T06:08:15.035Z"
+}

@@ -1,0 +1,51 @@
+{
+  "slug": "foundry",
+  "name": "Foundry",
+  "category": "testing",
+  "tagline": "Solidity로 스마트컨트랙트를 빌드·테스트·배포할 수 있는 빠른 개발 툴킷",
+  "definition": "Foundry는 Rust로 작성된 이더리움 스마트컨트랙트 개발 프레임워크로, 컨트랙트 빌드, 테스트, 가스 사용량 분석, 로컬 체인 실행, 배포까지 한 도구 체인으로 처리할 수 있게 만들어졌다. 테스트 코드를 JavaScript가 아닌 Solidity로 직접 작성할 수 있어 별도의 언어 전환 없이 컨트랙트와 동일한 언어로 테스트를 짤 수 있다는 점이 특징이다. 컴파일과 테스트 실행 속도가 빠르고, 실제 체인 상태를 로컬에 포크해 테스트할 수 있어 온체인 상호작용이 많은 컨트랙트를 검증하는 데 적합하다.",
+  "concepts": [
+    {
+      "term": "Forge",
+      "description": "컨트랙트를 컴파일하고 Solidity로 작성된 테스트를 실행하는 Foundry의 핵심 CLI 도구다."
+    },
+    {
+      "term": "Anvil",
+      "description": "로컬에서 실행되는 개발용 이더리움 노드로, 테스트나 스크립트 실행 시 즉석에서 체인 환경을 띄워준다."
+    },
+    {
+      "term": "Cast",
+      "description": "체인에 직접 트랜잭션을 보내거나 컨트랙트 함수를 호출하는 등 이더리움과 상호작용하는 커맨드라인 유틸리티다."
+    },
+    {
+      "term": "Fuzz Testing",
+      "description": "입력값을 무작위로 생성해 함수에 전달하며 예상치 못한 실패 조건을 찾아내는 테스트 방식으로, Forge가 기본 지원한다."
+    },
+    {
+      "term": "Forking",
+      "description": "메인넷이나 테스트넷 등 실제 체인의 상태를 로컬로 복제해, 실제 배포된 컨트랙트와 상호작용하며 테스트하는 기능이다."
+    },
+    {
+      "term": "Gas Report",
+      "description": "각 함수 호출마다 소비된 가스량을 측정해 보여주는 기능으로, 컨트랙트 최적화 여부를 판단하는 데 쓰인다."
+    }
+  ],
+  "whenToUse": [
+    "Solidity 컨트랙트의 단위 테스트를 같은 언어로 빠르게 작성하고 싶을 때",
+    "가스 소비량을 함수 단위로 프로파일링해 최적화 지점을 찾을 때",
+    "실제 체인 상태를 포크해 배포된 컨트랙트와의 상호작용을 검증할 때",
+    "스크립트 기반으로 컨트랙트 배포 과정을 자동화하고 재현 가능하게 만들 때"
+  ],
+  "example": {
+    "title": "간단한 Forge 테스트 작성 및 실행",
+    "language": "solidity",
+    "code": "// test/Counter.t.sol\npragma solidity ^0.8.13;\n\nimport \"forge-std/Test.sol\";\nimport \"../src/Counter.sol\";\n\ncontract CounterTest is Test {\n    Counter public counter;\n\n    function setUp() public {\n        counter = new Counter();\n    }\n\n    function test_Increment() public {\n        counter.increment();\n        assertEq(counter.number(), 1);\n    }\n}",
+    "description": "Counter 컨트랙트를 배포한 뒤 increment 함수 호출 결과를 검증하는 테스트로, `forge test` 명령으로 실행한다."
+  },
+  "pitfalls": [
+    "테스트 파일 확장자와 함수명 규칙(test_ 접두사 등)을 지키지 않으면 테스트가 인식되지 않는다",
+    "포크 테스트는 RPC 엔드포인트에 의존하므로 네트워크 지연이나 요청 제한에 영향을 받는다",
+    "퍼즈 테스트는 실행할 때마다 입력값이 달라질 수 있어 실패 재현 시 시드 고정이 필요하다"
+  ],
+  "generatedAt": "2026-07-26T06:05:38.304Z"
+}

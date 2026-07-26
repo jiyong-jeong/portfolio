@@ -1,0 +1,71 @@
+{
+  "slug": "s3-migration-script-docs",
+  "repo": "s3-migration-script-docs",
+  "title": "S3 오브젝트 마이그레이션 자동화 스크립트",
+  "summary": "TypeScript로 작성된 S3 오브젝트 마이그레이션용 원샷 실행 스크립트 구조 문서",
+  "description": "대량의 S3 오브젝트를 다른 위치나 버킷으로 옮기는 작업을 자동화하기 위한 TypeScript 스크립트입니다. src, common, utils, config 디렉토리로 역할을 분리해 설정과 공통 로직, 유틸리티를 구분하고, index.ts 단일 진입점에서 전체 마이그레이션 과정을 한 번에 실행하는 원샷 실행 구조로 동작합니다. 반복적인 수동 S3 이관 작업을 스크립트 실행 한 번으로 대체하는 것을 목표로 합니다.",
+  "category": "자동화",
+  "role": "S3 마이그레이션 스크립트의 디렉토리 구조 설계 및 원샷 실행 로직을 구현했습니다.",
+  "techStack": [
+    {
+      "name": "TypeScript",
+      "category": "language",
+      "usage": "마이그레이션 스크립트 전체를 작성하는 데 사용"
+    },
+    {
+      "name": "AWS S3",
+      "category": "infra",
+      "usage": "오브젝트 마이그레이션 대상 스토리지"
+    },
+    {
+      "name": "Node.js",
+      "category": "backend",
+      "usage": "index.ts 스크립트를 실행하는 런타임"
+    }
+  ],
+  "highlights": [
+    "src, common, utils, config로 관심사를 분리한 디렉토리 구조",
+    "index.ts 하나로 전체 마이그레이션을 실행하는 원샷 구조",
+    "반복 수동 작업이던 S3 이관 과정을 스크립트로 자동화"
+  ],
+  "challenges": [],
+  "diagrams": [
+    {
+      "title": "S3 마이그레이션 스크립트 구조",
+      "description": "설정과 유틸리티를 참조해 index.ts가 S3 오브젝트 마이그레이션을 한 번에 실행하는 흐름을 보여줍니다.",
+      "type": "flow",
+      "mermaid": "flowchart TD\n  config[\"config\"] --> index[\"index.ts\"]\n  common[\"common\"] --> index\n  utils[\"utils\"] --> index\n  index --> s3source[\"S3 원본 버킷\"]\n  index --> s3target[\"S3 대상 버킷\"]"
+    }
+  ],
+  "keywords": [
+    "s3",
+    "migration",
+    "typescript",
+    "aws",
+    "script",
+    "automation",
+    "nodejs"
+  ],
+  "links": {
+    "repo": "https://github.com/jiyong-jeong/s3-migration-script-docs",
+    "homepage": null
+  },
+  "metrics": {
+    "stars": 0,
+    "forks": 0,
+    "watchers": 0,
+    "sizeKb": 0,
+    "openIssues": 0,
+    "languages": {},
+    "topics": [],
+    "primaryLanguage": null,
+    "license": null
+  },
+  "dates": {
+    "createdAt": "2026-07-26T05:30:48Z",
+    "updatedAt": "2026-07-26T05:31:20Z",
+    "pushedAt": "2026-07-26T05:30:52Z",
+    "analyzedAt": "2026-07-26T05:43:03.992Z"
+  },
+  "featured": false
+}

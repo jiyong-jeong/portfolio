@@ -1,0 +1,87 @@
+{
+  "slug": "multichain-event-indexer-docs",
+  "repo": "multichain-event-indexer-docs",
+  "title": "멀티체인 이벤트 인덱서 문서화 프로젝트",
+  "summary": "Spring Boot 기반 멀티체인 이벤트 인덱서의 구조와 운영 방식을 정리한 공개 기술 문서",
+  "description": "여러 블록체인 네트워크에서 발생하는 이벤트를 수집·인덱싱하는 Spring Boot 기반 인덱서 시스템의 공개 문서 레포지토리입니다. 실제 소스코드는 비공개로 유지하고, 프로젝트의 구조와 빌드/배포 방식만 정리해 공유하는 것을 목적으로 합니다. Java와 Maven 기반으로 빌드되며 Lombok을 활용해 보일러플레이트 코드를 줄였고, Docker로 컨테이너화하여 Jenkins CI 파이프라인을 통해 빌드 및 배포가 이루어지는 구조입니다.",
+  "category": "Web3",
+  "role": "멀티체인 이벤트 인덱서 프로젝트의 구조를 정리하고, 소스코드 노출 없이 아키텍처와 기술 스택을 공개 문서로 작성했습니다.",
+  "techStack": [
+    {
+      "name": "Java",
+      "category": "language",
+      "usage": "인덱서 애플리케이션의 주 개발 언어"
+    },
+    {
+      "name": "Spring Boot",
+      "category": "framework",
+      "usage": "이벤트 인덱서 애플리케이션의 기반 프레임워크"
+    },
+    {
+      "name": "Maven",
+      "category": "tool",
+      "usage": "빌드 및 의존성 관리"
+    },
+    {
+      "name": "Lombok",
+      "category": "tool",
+      "usage": "보일러플레이트 코드 축소"
+    },
+    {
+      "name": "Docker",
+      "category": "devops",
+      "usage": "애플리케이션 컨테이너화"
+    },
+    {
+      "name": "Jenkins",
+      "category": "devops",
+      "usage": "CI 빌드 및 배포 파이프라인 구성"
+    }
+  ],
+  "highlights": [
+    "여러 블록체인 네트워크의 이벤트를 하나의 인덱서 구조로 수집하도록 설계",
+    "소스코드는 비공개로 유지하면서 구조와 노하우만 공개 문서로 분리",
+    "Docker와 Jenkins를 활용한 CI 기반 빌드/배포 파이프라인 구성"
+  ],
+  "challenges": [],
+  "diagrams": [
+    {
+      "title": "멀티체인 이벤트 인덱서 개념 구조",
+      "description": "여러 체인의 이벤트가 인덱서를 거쳐 저장 및 CI/CD 파이프라인으로 배포되는 흐름을 보여줍니다.",
+      "type": "architecture",
+      "mermaid": "flowchart TD\n  subgraph Chains[\"블록체인 네트워크들\"]\n    C1[\"체인 A\"]\n    C2[\"체인 B\"]\n    C3[\"체인 C\"]\n  end\n  C1 --> IDX[\"이벤트 인덱서 (Spring Boot)\"]\n  C2 --> IDX\n  C3 --> IDX\n  IDX --> STORE[\"데이터 저장소\"]\n  IDX --> DOCKER[\"Docker 컨테이너\"]\n  DOCKER --> CI[\"Jenkins CI/CD\"]\n  CI --> DEPLOY[\"배포 환경\"]"
+    }
+  ],
+  "keywords": [
+    "multichain",
+    "blockchain",
+    "event-indexer",
+    "spring-boot",
+    "java",
+    "docker",
+    "jenkins",
+    "web3"
+  ],
+  "links": {
+    "repo": "https://github.com/jiyong-jeong/multichain-event-indexer-docs",
+    "homepage": null
+  },
+  "metrics": {
+    "stars": 0,
+    "forks": 0,
+    "watchers": 0,
+    "sizeKb": 0,
+    "openIssues": 0,
+    "languages": {},
+    "topics": [],
+    "primaryLanguage": null,
+    "license": null
+  },
+  "dates": {
+    "createdAt": "2026-07-26T05:28:17Z",
+    "updatedAt": "2026-07-26T05:28:24Z",
+    "pushedAt": "2026-07-26T05:28:20Z",
+    "analyzedAt": "2026-07-26T05:52:24.086Z"
+  },
+  "featured": false
+}

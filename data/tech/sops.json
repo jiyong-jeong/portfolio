@@ -1,0 +1,47 @@
+{
+  "slug": "sops",
+  "name": "SOPS",
+  "category": "tool",
+  "tagline": "YAML·JSON 등 설정 파일의 값만 암호화해 Git에 안전하게 커밋할 수 있게 해주는 시크릿 암호화 도구",
+  "definition": "SOPS(Secrets OPerationS)는 Mozilla에서 만든 오픈소스 도구로, YAML, JSON, ENV, INI 등 구조화된 파일 안의 값만 선택적으로 암호화한다. 시크릿을 평문으로 커밋하거나 별도의 시크릿 관리 시스템에 전적으로 의존하는 대신, 파일의 키 구조는 그대로 두고 값만 암호화해 Git 저장소에 안전하게 저장할 수 있도록 설계되었다. AWS KMS, GCP KMS, Azure Key Vault, PGP, age 등 다양한 키 관리 방식을 백엔드로 사용할 수 있어 팀이나 클라우드 환경에 맞게 골라 쓸 수 있다.",
+  "concepts": [
+    {
+      "term": "In-place encryption",
+      "description": "파일의 key 이름과 구조는 그대로 두고 value만 암호화하는 방식으로, 암호화된 상태로도 diff와 코드리뷰가 가능하다."
+    },
+    {
+      "term": "Key backend (KMS/PGP/age)",
+      "description": "SOPS는 자체 키 관리 서비스가 아니라 KMS, PGP, age 같은 외부 키 관리 수단을 백엔드로 사용해 실제 복호화 권한을 제어한다."
+    },
+    {
+      "term": "Envelope encryption",
+      "description": "실제 값은 무작위로 생성된 data key로 암호화하고, 그 data key 자체를 KMS/PGP/age 키로 다시 암호화해 파일 안에 함께 저장하는 이중 구조다."
+    },
+    {
+      "term": ".sops.yaml",
+      "description": "어떤 경로의 파일을 어떤 키(들)로 암호화할지 규칙을 정의하는 설정 파일로, 팀 전체의 암호화 정책을 표준화한다."
+    },
+    {
+      "term": "GitOps 연동",
+      "description": "암호화된 파일을 그대로 Git에 커밋하고, 배포 파이프라인이나 클러스터의 복호화 권한을 가진 주체만 실제 값을 볼 수 있게 하는 사용 패턴이다."
+    }
+  ],
+  "whenToUse": [
+    "시크릿도 Git으로 버전관리하고 코드리뷰 대상으로 삼고 싶을 때",
+    "여러 클라우드의 KMS나 PGP/age 키를 함께 써야 하는 환경일 때",
+    "CI/CD·GitOps 파이프라인에서 배포 시점에 자동으로 시크릿을 복호화하고 싶을 때",
+    "값은 감추면서도 어떤 키가 바뀌었는지는 diff로 추적하고 싶을 때"
+  ],
+  "example": {
+    "title": "sops로 시크릿 파일 암호화/복호화하기",
+    "language": "bash",
+    "code": "# .sops.yaml: 경로별로 사용할 키 규칙 정의\n# creation_rules:\n#   - path_regex: secrets/.*\\.yaml$\n#     age: age1qyqszqgpqyqszqgpqyqszqgpq...\n\n# 평문 시크릿 파일의 값만 암호화해 같은 파일에 저장\nsops --encrypt --in-place secrets/db.yaml\n\n# 암호화된 파일 내용을 복호화해서 확인\nsops --decrypt secrets/db.yaml\n\n# 에디터로 열어 수정 후 저장하면 자동으로 다시 암호화됨\nsops secrets/db.yaml",
+    "description": ".sops.yaml에 등록된 규칙에 따라 secrets/db.yaml 파일의 값만 암호화·복호화하는 기본 흐름이다."
+  },
+  "pitfalls": [
+    ".sops.yaml 규칙 없이 쓰면 매번 키를 수동 지정해야 해 팀 표준화가 어려워진다",
+    "암호화에 쓴 키를 분실하면 해당 파일을 영구히 복호화할 수 없다",
+    "최상위가 배열로만 이루어진 파일은 키 경로 지정이 안 돼 일부 구조에서 암호화가 제한될 수 있다"
+  ],
+  "generatedAt": "2026-07-26T06:11:07.146Z"
+}

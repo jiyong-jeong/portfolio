@@ -1,0 +1,71 @@
+{
+  "slug": "nestjs-microservice-experimental-docs",
+  "repo": "nestjs-microservice-experimental-docs",
+  "title": "NestJS 마이크로서비스 실험 프로토타입",
+  "summary": "NestJS 기본 스캐폴딩만으로 마이크로서비스 구조를 검증해 본 최소 구성 실험 프로젝트입니다.",
+  "description": "NestJS 마이크로서비스 아키텍처를 학습하고 검증하기 위해 만든 실험용 프로토타입입니다. Docker, CI, DB 등 부가 인프라 없이 NestJS의 기본 스캐폴딩만으로 최소한의 구조를 구성한 것이 특징입니다. 실제 운영 서비스가 아니라 마이크로서비스 패턴을 빠르게 시험해보기 위한 목적의 저장소입니다.",
+  "category": "백엔드",
+  "role": "NestJS 마이크로서비스 구조를 개인적으로 실험하며 기본 스캐폴딩을 구성했습니다.",
+  "techStack": [
+    {
+      "name": "NestJS",
+      "category": "framework",
+      "usage": "마이크로서비스 기본 스캐폴딩 구성에 사용"
+    },
+    {
+      "name": "TypeScript",
+      "category": "language",
+      "usage": "NestJS 프로젝트의 기본 개발 언어"
+    },
+    {
+      "name": "Node.js",
+      "category": "backend",
+      "usage": "NestJS 애플리케이션 실행 런타임"
+    }
+  ],
+  "highlights": [
+    "Docker, CI, DB 없이 NestJS 기본 스캐폴딩만으로 최소 구성 구조를 실험함",
+    "마이크로서비스 구조를 빠르게 프로토타이핑하기 위한 목적의 저장소",
+    "복잡한 인프라 요소를 배제해 핵심 구조 검증에 집중함"
+  ],
+  "challenges": [],
+  "diagrams": [
+    {
+      "title": "최소 구성 마이크로서비스 실험 구조",
+      "description": "Docker/CI/DB 없이 NestJS 기본 스캐폴딩만으로 구성된 실험 구조를 보여줍니다.",
+      "type": "architecture",
+      "mermaid": "flowchart TD\n  A[\"NestJS 기본 스캐폴딩\"] --> B[\"마이크로서비스 실험 모듈\"]\n  B --> C[\"최소 구성 (DB 없음)\"]\n  B --> D[\"최소 구성 (CI 없음)\"]\n  B --> E[\"최소 구성 (Docker 없음)\"]"
+    }
+  ],
+  "keywords": [
+    "nestjs",
+    "microservice",
+    "prototype",
+    "backend",
+    "typescript",
+    "experimental",
+    "scaffold"
+  ],
+  "links": {
+    "repo": "https://github.com/jiyong-jeong/nestjs-microservice-experimental-docs",
+    "homepage": null
+  },
+  "metrics": {
+    "stars": 0,
+    "forks": 0,
+    "watchers": 0,
+    "sizeKb": 0,
+    "openIssues": 0,
+    "languages": {},
+    "topics": [],
+    "primaryLanguage": null,
+    "license": null
+  },
+  "dates": {
+    "createdAt": "2026-07-26T05:28:27Z",
+    "updatedAt": "2026-07-26T05:28:34Z",
+    "pushedAt": "2026-07-26T05:28:31Z",
+    "analyzedAt": "2026-07-26T05:51:53.680Z"
+  },
+  "featured": false
+}

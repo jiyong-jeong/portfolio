@@ -1,0 +1,47 @@
+{
+  "slug": "signedwadmath",
+  "name": "SignedWadMath",
+  "category": "data",
+  "tagline": "부호 있는 18자리 고정소수점(wad) 정수로 지수·로그 연산을 처리하는 Solidity 수학 라이브러리",
+  "definition": "SignedWadMath는 int256 타입에 10^18 배율(wad)을 적용해 소수를 정수로 표현하고 연산하는 Solidity 라이브러리다. 스마트 컨트랙트 환경은 부동소수점을 지원하지 않아 소수 연산이 까다로운데, 이를 정수 연산으로 근사하면서도 정밀도를 유지하기 위해 만들어졌다. 곱셈·나눗셈 같은 기본 연산뿐 아니라 지수(exp)와 자연로그(ln) 근사 함수까지 제공해, 연속 복리나 지수 감쇠처럼 비선형적인 값 변화를 온체인에서 계산할 수 있게 한다.",
+  "concepts": [
+    {
+      "term": "wad",
+      "description": "10^18을 1로 취급하는 고정소수점 표현 단위로, int256을 사용해 음수도 표현할 수 있다."
+    },
+    {
+      "term": "fixed-point arithmetic",
+      "description": "부동소수점 없이 정수에 배율을 적용해 소수를 근사하는 방식으로, 정밀도와 오버플로우 범위 사이의 트레이드오프가 있다."
+    },
+    {
+      "term": "wadExp / wadLn",
+      "description": "wad 단위 값에 대해 지수함수와 자연로그를 근사 계산하는 함수로, 연속 성장·감쇠 곡선 계산에 쓰인다."
+    },
+    {
+      "term": "wadMul / wadDiv",
+      "description": "wad 단위로 표현된 두 값을 곱하거나 나눌 때 자릿수(10^18) 보정을 자동으로 처리하는 연산 함수."
+    },
+    {
+      "term": "unsafe variants",
+      "description": "오버플로우 검사나 반올림 보정을 생략해 가스를 절약하는 대신, 입력 범위를 호출자가 직접 보장해야 하는 버전."
+    }
+  ],
+  "whenToUse": [
+    "경매 가격, 이자율 등 연속 지수 감쇠·성장 곡선을 온체인에서 계산해야 할 때",
+    "부동소수점 없이 int256으로 정밀한 소수 연산을 안전하게 표현하고 싶을 때",
+    "VRGDA 같은 동적 가격결정 알고리즘을 구현할 때",
+    "가스 효율과 계산 정밀도를 함께 고려한 검증된 수학 유틸리티가 필요할 때"
+  ],
+  "example": {
+    "title": "지수 감쇠를 이용한 가격 계산",
+    "language": "solidity",
+    "code": "import {wadExp, wadMul, unsafeWadDiv} from \"solmate/utils/SignedWadMath.sol\";\n\nfunction getPrice(\n    int256 initialPrice,\n    int256 decayConstant,\n    int256 timeSinceStart\n) public pure returns (int256) {\n    // price = initialPrice * e^(-decayConstant * time)\n    int256 exponent = unsafeWadDiv(-decayConstant * timeSinceStart, 1e18);\n    return wadMul(initialPrice, wadExp(exponent));\n}",
+    "description": "초기 가격에 경과 시간과 감쇠 상수를 반영한 지수 계수를 곱해 현재 가격을 계산하는 예시다."
+  },
+  "pitfalls": [
+    "wad 단위(10^18)를 맞추지 않고 일반 정수와 그대로 곱하거나 나누면 자릿수 오류가 발생한다",
+    "unsafe 접두사가 붙은 함수는 오버플로우·정밀도 검증을 생략하므로 입력 범위를 직접 보장해야 한다",
+    "wadExp/wadLn은 근사 계산이라 극단적으로 크거나 작은 값에서는 오차가 누적될 수 있다"
+  ],
+  "generatedAt": "2026-07-26T06:05:54.341Z"
+}

@@ -14,10 +14,19 @@
 import { existsSync, mkdirSync, readFileSync, readdirSync, rmSync, writeFileSync } from "node:fs";
 import { join } from "node:path";
 
-import { DATA_DIR, PROFILE_FILE, PROJECTS_DIR, ROOT, STATE_FILE, loadConfig } from "./lib/config.mjs";
+import {
+  DATA_DIR,
+  PROFILE_FILE,
+  PROJECTS_DIR,
+  ROOT,
+  STATE_FILE,
+  TECH_DIR,
+  loadConfig,
+} from "./lib/config.mjs";
 import { listRepos, resolveToken } from "./lib/github.mjs";
 import { collectRepoContext } from "./lib/context.mjs";
 import { analyzeRepo } from "./lib/analyze.mjs";
+import { generateTechDoc } from "./lib/tech-doc.mjs";
 
 const log = (msg = "") => console.log(msg);
 
@@ -148,6 +157,94 @@ function buildProject(repo, ctx, analysis) {
   };
 }
 
+/** 기술명 → URL slug. src/lib/tech.ts 의 techSlug 와 같은 규칙을 유지해야 한다. */
+function techSlug(name) {
+  const slug = name
+    .toLowerCase()
+    .replace(/[^a-z0-9]+/g, "-")
+    .replace(/^-+|-+$/g, "");
+  return slug || encodeURIComponent(name.trim().toLowerCase());
+}
+
+/** 저장된 프로젝트 문서에서 기술 목록을 집계한다. */
+function collectTechs() {
+  const map = new Map();
+  for (const file of readdirSync(PROJECTS_DIR).filter((f) => f.endsWith(".json"))) {
+    const project = JSON.parse(readFileSync(join(PROJECTS_DIR, file), "utf8"));
+    for (const tech of project.techStack ?? []) {
+      const key = tech.name.toLowerCase();
+      const entry = map.get(key);
+      const usage = { projectTitle: project.title, usage: tech.usage };
+      if (entry) entry.usages.push(usage);
+      else
+        map.set(key, {
+          slug: techSlug(tech.name),
+          name: tech.name,
+          category: tech.category,
+          usages: [usage],
+        });
+    }
+  }
+  return [...map.values()];
+}
+
+/**
+ * 기술별 학습용 설명(정의·개념·예시)을 생성한다.
+ * 기술 설명은 레포 내용과 무관한 일반 지식이므로 한 번 만들면 다시 만들지 않는다.
+ * (--force 를 주면 전부 다시 만든다)
+ */
+async function syncTechDocs(config, force, log) {
+  mkdirSync(TECH_DIR, { recursive: true });
+
+  const techs = collectTechs();
+  const valid = new Set(techs.map((t) => `${t.slug}.json`));
+
+  // 더 이상 쓰이지 않는 기술 문서 정리
+  let removed = 0;
+  for (const file of readdirSync(TECH_DIR).filter((f) => f.endsWith(".json"))) {
+    if (!valid.has(file)) {
+      rmSync(join(TECH_DIR, file));
+      removed += 1;
+    }
+  }
+
+  const todo = techs.filter((t) => force || !existsSync(join(TECH_DIR, `${t.slug}.json`)));
+
+  log(`\n▶ 기술 설명: 전체 ${techs.length}개 중 생성 대상 ${todo.length}개, 삭제 ${removed}개`);
+  if (!todo.length) return { generated: 0, failed: [], removed };
+
+  const failed = [];
+  let generated = 0;
+  let cursor = 0;
+
+  const worker = async () => {
+    while (cursor < todo.length) {
+      const tech = todo[cursor++];
+      const position = cursor;
+      try {
+        const doc = await generateTechDoc(tech, config.analysis, log);
+        writeJson(join(TECH_DIR, `${tech.slug}.json`), {
+          slug: tech.slug,
+          name: tech.name,
+          category: tech.category,
+          ...doc,
+          generatedAt: new Date().toISOString(),
+        });
+        generated += 1;
+        log(`  ✓ [${position}/${todo.length}] ${tech.name} — 개념 ${doc.concepts.length}개`);
+      } catch (err) {
+        failed.push({ tech: tech.name, error: err.message });
+        log(`  ✗ [${position}/${todo.length}] ${tech.name}: ${err.message}`);
+      }
+    }
+  };
+
+  const concurrency = Math.max(1, Math.min(config.analysis.techDocConcurrency, todo.length));
+  await Promise.all(Array.from({ length: concurrency }, worker));
+
+  return { generated, failed, removed };
+}
+
 async function main() {
   const args = parseArgs(process.argv.slice(2));
   const config = loadConfig();
@@ -209,6 +306,9 @@ async function main() {
         failures: 0,
       };
       result.analyzed.push(repo.name);
+      // 레포마다 즉시 state 를 저장한다. 중간에 중단돼도 이미 분석한 레포는
+      // 다음 실행에서 다시 분석하지 않는다(대량 유입 시 재작업 비용이 크다).
+      writeJson(STATE_FILE, state);
       log(`  ✓ 완료 — 기술스택 ${analysis.techStack.length}개, 다이어그램 ${analysis.diagrams.length}개`);
     } catch (err) {
       const prev = state.repos[repo.name];
@@ -229,6 +329,7 @@ async function main() {
         failures: (prev?.failures ?? 0) + 1,
         error: err.message.slice(0, 300),
       };
+      writeJson(STATE_FILE, state);
     }
     log("");
   }
@@ -245,6 +346,10 @@ async function main() {
         log(`  - ${name}: 대상에서 제외되어 문서를 삭제했습니다.`);
       }
     }
+
+    // 프로젝트 문서가 확정된 뒤에 기술 설명을 만든다(기술 목록이 여기서 정해지므로).
+    const techResult = await syncTechDocs(config, args.force, log);
+    result.techDocs = techResult;
 
     writeJson(STATE_FILE, state);
     writeJson(PROFILE_FILE, config.profile);
@@ -263,6 +368,9 @@ async function main() {
       siteUrl: config.siteUrl,
       generatedAt: lastChangedAt ?? null,
       totalProjects: projectFiles.length,
+      totalTechDocs: existsSync(TECH_DIR)
+        ? readdirSync(TECH_DIR).filter((f) => f.endsWith(".json")).length
+        : 0,
     });
 
     // 스케줄러 실행 기록은 사이트 데이터가 아니므로 커밋 대상 밖(.logs)에 남긴다.
@@ -283,6 +391,11 @@ async function main() {
   log(`실패: ${result.failed.length}개${result.failed.length ? ` (${result.failed.map((f) => f.repo).join(", ")})` : ""}`);
   log(`삭제: ${result.removed.length}개`);
   log(`변경 없음: ${result.skipped}개`);
+  if (result.techDocs) {
+    const t = result.techDocs;
+    log(`기술 설명: 생성 ${t.generated}개, 실패 ${t.failed.length}개, 삭제 ${t.removed}개`);
+    for (const f of t.failed) log(`  ✗ ${f.tech}: ${f.error}`);
+  }
 
   if (result.failed.length && !result.analyzed.length) process.exitCode = 1;
 }

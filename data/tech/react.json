@@ -1,0 +1,50 @@
+{
+  "slug": "react",
+  "name": "React",
+  "category": "frontend",
+  "tagline": "재사용 가능한 컴포넌트로 사용자 인터페이스를 선언적으로 구축하는 자바스크립트 라이브러리",
+  "definition": "React는 UI를 컴포넌트 단위로 쪼개고, 데이터(state)가 바뀔 때마다 화면을 자동으로 다시 그려주는 자바스크립트 라이브러리입니다. DOM을 직접 조작하며 상태를 관리하던 방식이 코드 규모가 커질수록 복잡해지고 버그가 늘어나는 문제를 해결하기 위해 만들어졌습니다. 개발자는 '현재 상태에서 화면이 어떻게 보여야 하는가'만 선언하면, React가 실제 DOM 업데이트를 알아서 처리합니다. 이런 컴포넌트 기반 구조 덕분에 대시보드, 어드민 화면, 관리자 콘솔처럼 화면 요소가 많고 반복되는 UI를 일관되게 구성하기 쉽습니다.",
+  "concepts": [
+    {
+      "term": "Component",
+      "description": "UI의 한 조각을 독립적인 함수나 클래스로 정의한 단위로, 조합해서 전체 화면을 구성한다."
+    },
+    {
+      "term": "JSX",
+      "description": "자바스크립트 코드 안에 HTML과 비슷한 문법으로 UI 구조를 작성할 수 있게 해주는 확장 문법이다."
+    },
+    {
+      "term": "State",
+      "description": "컴포넌트가 가지는 데이터로, 값이 바뀌면 해당 컴포넌트와 하위 UI가 다시 렌더링된다."
+    },
+    {
+      "term": "Props",
+      "description": "부모 컴포넌트가 자식 컴포넌트에 전달하는 읽기 전용 데이터로, 컴포넌트 간 데이터 흐름을 만든다."
+    },
+    {
+      "term": "Virtual DOM",
+      "description": "실제 DOM을 직접 조작하는 대신 메모리상의 가상 트리를 비교해 변경된 부분만 반영하는 내부 동작 방식이다."
+    },
+    {
+      "term": "Hooks",
+      "description": "함수형 컴포넌트에서 상태나 생명주기 같은 기능을 사용할 수 있게 해주는 함수들(useState, useEffect 등)이다."
+    }
+  ],
+  "whenToUse": [
+    "화면 요소가 많고 상태 변화가 잦은 대시보드나 관리자 UI를 만들 때",
+    "재사용 가능한 컴포넌트로 여러 화면에서 UI를 일관되게 유지하고 싶을 때",
+    "생태계가 넓어 라우팅, 상태 관리 등 다양한 라이브러리와 조합하기 쉬울 때"
+  ],
+  "example": {
+    "title": "가장 기본적인 React 컴포넌트",
+    "language": "javascript",
+    "code": "import { useState } from 'react';\n\nfunction Counter() {\n  const [count, setCount] = useState(0);\n\n  return (\n    <div>\n      <p>현재 값: {count}</p>\n      <button onClick={() => setCount(count + 1)}>\n        증가\n      </button>\n    </div>\n  );\n}\n\nexport default Counter;",
+    "description": "버튼을 클릭할 때마다 state가 변경되고, React가 화면의 숫자 부분만 자동으로 다시 렌더링합니다."
+  },
+  "pitfalls": [
+    "state를 직접 수정하지 않고 반드시 setter 함수를 통해 갱신해야 화면이 리렌더링된다",
+    "useEffect 등 훅의 의존성 배열을 잘못 지정하면 무한 렌더링이나 오래된 값 참조가 발생한다",
+    "props와 state를 혼동하면 데이터 흐름 방향(부모→자식)이 꼬여 예측 못한 동작이 생긴다"
+  ],
+  "generatedAt": "2026-07-26T06:08:24.851Z"
+}

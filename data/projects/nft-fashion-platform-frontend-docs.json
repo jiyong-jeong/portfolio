@@ -1,0 +1,71 @@
+{
+  "slug": "nft-fashion-platform-frontend-docs",
+  "repo": "nft-fashion-platform-frontend-docs",
+  "title": "패션 NFT 플랫폼 프런트엔드 구조 문서",
+  "summary": "Next.js 기반 패션 NFT 플랫폼 프런트엔드의 구조와 정적 배포 방식을 정리한 공개 문서 레포",
+  "description": "패션 도메인의 NFT 플랫폼 프런트엔드가 어떤 구조로 이루어져 있는지 정리한 문서 레포입니다. Next.js로 프런트엔드를 구성하고, SSG(정적 사이트 생성) 방식으로 빌드해 out/ 디렉터리로 정적 배포하는 방식을 채택했습니다. TypeScript로 타입 정의를 별도 관리해 프로젝트 전반의 타입 안정성을 확보했습니다. 실제 소스 코드 대신 아키텍처와 구조에 대한 설명만을 공개하는 문서 전용 레포입니다.",
+  "category": "프론트엔드",
+  "role": "패션 NFT 플랫폼 프런트엔드의 구조를 설계하고, Next.js 정적 배포 방식과 타입 정의 체계를 문서로 정리했습니다.",
+  "techStack": [
+    {
+      "name": "Next.js",
+      "category": "framework",
+      "usage": "패션 NFT 플랫폼 프런트엔드의 기본 프레임워크로 사용"
+    },
+    {
+      "name": "TypeScript",
+      "category": "language",
+      "usage": "types/ 디렉터리에서 프로젝트 전반의 타입 정의 관리"
+    },
+    {
+      "name": "Static Site Generation",
+      "category": "infra",
+      "usage": "out/ 디렉터리로 정적 빌드 산출물을 생성해 정적 호스팅 배포"
+    }
+  ],
+  "highlights": [
+    "Next.js를 SSG 모드로 빌드해 out/ 디렉터리에 정적 산출물을 생성",
+    "TypeScript 타입 정의를 별도 디렉터리(types/)로 분리해 관리",
+    "정적 파일 배포 방식을 채택해 서버 없이도 프런트엔드 호스팅 가능"
+  ],
+  "challenges": [],
+  "diagrams": [
+    {
+      "title": "프런트엔드 빌드 및 배포 흐름",
+      "description": "Next.js 소스가 정적 사이트로 빌드되어 배포되기까지의 흐름을 보여줍니다.",
+      "type": "architecture",
+      "mermaid": "flowchart LR\n  A[\"Next.js 소스\"] --> B[\"TypeScript 타입 정의\"]\n  B --> C[\"Next.js 빌드\"]\n  C --> D[\"Static Export out\"]\n  D --> E[\"정적 호스팅 배포\"]"
+    }
+  ],
+  "keywords": [
+    "nextjs",
+    "typescript",
+    "ssg",
+    "static-export",
+    "nft",
+    "fashion",
+    "frontend"
+  ],
+  "links": {
+    "repo": "https://github.com/jiyong-jeong/nft-fashion-platform-frontend-docs",
+    "homepage": null
+  },
+  "metrics": {
+    "stars": 0,
+    "forks": 0,
+    "watchers": 0,
+    "sizeKb": 0,
+    "openIssues": 0,
+    "languages": {},
+    "topics": [],
+    "primaryLanguage": null,
+    "license": null
+  },
+  "dates": {
+    "createdAt": "2026-07-26T05:29:05Z",
+    "updatedAt": "2026-07-26T05:29:37Z",
+    "pushedAt": "2026-07-26T05:29:08Z",
+    "analyzedAt": "2026-07-26T05:49:21.563Z"
+  },
+  "featured": false
+}

@@ -1,0 +1,46 @@
+{
+  "slug": "github-cli",
+  "name": "GitHub CLI",
+  "category": "devops",
+  "tagline": "터미널에서 GitHub 저장소, 이슈, PR, 워크플로우를 다루는 공식 커맨드라인 도구",
+  "definition": "GitHub CLI(gh)는 웹 브라우저를 열지 않고도 터미널에서 GitHub의 주요 기능을 사용할 수 있게 해주는 공식 CLI 도구다. PR 생성·리뷰, 이슈 관리, 저장소 클론, Actions 워크플로우 조회 등 GitHub 웹 UI에서 하던 작업을 명령어로 처리할 수 있다. 반복적인 GitHub 작업을 스크립트나 자동화 파이프라인에 넣기 쉽게 만들기 위해 만들어졌다. 인증 후에는 REST/GraphQL API를 직접 다루지 않고도 GitHub 리소스를 조작할 수 있다.",
+  "concepts": [
+    {
+      "term": "gh auth",
+      "description": "GitHub 계정으로 로그인하고 인증 토큰을 관리하는 명령어 그룹으로, CLI 사용의 첫 단계다."
+    },
+    {
+      "term": "subcommand",
+      "description": "gh pr, gh issue, gh repo처럼 리소스별로 나뉜 명령어 구조로, 각 하위 명령이 해당 리소스의 CRUD 동작을 담당한다."
+    },
+    {
+      "term": "PR workflow",
+      "description": "gh pr create, gh pr merge 등으로 브랜치 push부터 병합까지 PR 생명주기를 명령어로 처리하는 흐름이다."
+    },
+    {
+      "term": "--json / jq 플래그",
+      "description": "명령 결과를 구조화된 JSON으로 출력해 스크립트나 다른 도구와 연계할 수 있게 해준다."
+    },
+    {
+      "term": "GitHub Actions 연동",
+      "description": "gh run, gh workflow 명령으로 CI/CD 워크플로우의 실행 상태를 조회하고 트리거할 수 있다."
+    }
+  ],
+  "whenToUse": [
+    "PR/이슈 생성 같은 반복 작업을 스크립트나 CI 파이프라인에서 자동화하고 싶을 때",
+    "웹 브라우저 전환 없이 터미널 작업 흐름을 유지하고 싶을 때",
+    "여러 저장소에 걸친 PR·이슈 상태를 명령어로 일괄 조회하고 싶을 때"
+  ],
+  "example": {
+    "title": "브랜치 push 후 PR 자동 생성",
+    "language": "bash",
+    "code": "# 인증 (최초 1회)\ngh auth login\n\n# 현재 브랜치를 원격에 push\ngit push origin feature/my-branch\n\n# base 브랜치로 PR 생성\ngh pr create \\\n  --base main \\\n  --head feature/my-branch \\\n  --title \"feat: 새 기능 추가\" \\\n  --body \"작업 내용 설명\"",
+    "description": "로컬 브랜치를 원격에 push한 뒤, gh pr create로 지정한 base 브랜치를 대상으로 PR을 한 번에 생성한다."
+  },
+  "pitfalls": [
+    "gh auth login으로 인증하지 않으면 대부분의 명령이 실패한다는 점을 놓치기 쉽다",
+    "실행 위치의 디렉터리가 어떤 GitHub 저장소와 연결됐는지에 따라 동작 대상이 달라진다",
+    "CI 환경에서는 GH_TOKEN 등 토큰 기반 인증을 별도로 설정해야 한다"
+  ],
+  "generatedAt": "2026-07-26T06:09:03.993Z"
+}

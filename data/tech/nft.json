@@ -1,0 +1,50 @@
+{
+  "slug": "nft",
+  "name": "NFT",
+  "category": "blockchain",
+  "tagline": "블록체인에 소유권과 고유성을 기록해 디지털 자산을 대체 불가능하게 증명하는 토큰 표준",
+  "definition": "NFT(Non-Fungible Token)는 블록체인 상에 하나의 고유한 식별자와 소유자 정보를 기록하는 토큰이다. 비트코인이나 이더 같은 화폐성 토큰이 서로 동등하게 교환 가능한 것과 달리, NFT는 각 토큰이 서로 다른 자산을 가리키므로 대체가 불가능하다. 디지털 이미지, 아이템, 티켓, 인증서처럼 원본과 소유권을 구분하기 어려웠던 디지털 자산에 유일성과 이력 추적성을 부여하기 위해 등장했다. 발행(mint), 전송(transfer), 조회 같은 기본 동작은 스마트 컨트랙트 표준을 통해 정의된다.",
+  "concepts": [
+    {
+      "term": "Token Standard",
+      "description": "ERC-721, ERC-1155처럼 NFT의 발행·전송·조회 방식을 정의한 스마트 컨트랙트 인터페이스 규격이다."
+    },
+    {
+      "term": "Minting",
+      "description": "블록체인 상에 새로운 NFT를 생성하고 소유자를 지정하는 과정이다."
+    },
+    {
+      "term": "Metadata",
+      "description": "NFT가 나타내는 이미지, 이름, 속성 등의 정보로, 온체인 또는 별도 저장소(IPFS 등)에 저장되고 토큰과 연결된다."
+    },
+    {
+      "term": "Smart Contract",
+      "description": "NFT의 발행 규칙과 소유권 이전 로직을 실행하는 블록체인 상의 프로그램이다."
+    },
+    {
+      "term": "Ownership & Transfer",
+      "description": "각 토큰의 소유자가 블록체인 원장에 기록되며, 전송 트랜잭션을 통해 소유권이 이전된다."
+    },
+    {
+      "term": "On-chain / Off-chain",
+      "description": "토큰의 소유권 기록은 온체인에 남지만, 실제 이미지·파일 같은 콘텐츠는 용량 문제로 오프체인에 저장하는 경우가 많다."
+    }
+  ],
+  "whenToUse": [
+    "디지털 자산의 소유권과 진위를 위변조 없이 증명해야 할 때",
+    "한정판 아이템처럼 개별 자산을 구분해 발행·거래해야 할 때",
+    "발행부터 소유권 이전까지의 이력을 투명하게 남겨야 할 때"
+  ],
+  "example": {
+    "title": "ERC-721 기반 최소 NFT 컨트랙트",
+    "language": "solidity",
+    "code": "// SPDX-License-Identifier: MIT\npragma solidity ^0.8.0;\n\nimport \"@openzeppelin/contracts/token/ERC721/ERC721.sol\";\n\ncontract SimpleNFT is ERC721 {\n    uint256 public nextTokenId;\n\n    constructor() ERC721(\"SimpleNFT\", \"SNFT\") {}\n\n    function mint(address to) external returns (uint256) {\n        uint256 tokenId = nextTokenId;\n        _safeMint(to, tokenId);\n        nextTokenId++;\n        return tokenId;\n    }\n}",
+    "description": "ERC-721 표준을 상속받아 누구나 mint 함수를 호출하면 새로운 고유 토큰이 발행되는 최소 예시이다."
+  },
+  "pitfalls": [
+    "NFT가 파일 원본을 담고 있다고 오해하기 쉽지만 대부분 메타데이터 링크만 온체인에 저장된다.",
+    "소유권 증명일 뿐 저작권이나 상업적 이용 권리를 자동으로 보장하지 않는다.",
+    "가스비, 컨트랙트 표준 선택(ERC-721 vs 1155) 등 실제 배포 전 결정 요소가 많다."
+  ],
+  "generatedAt": "2026-07-26T06:09:48.196Z"
+}

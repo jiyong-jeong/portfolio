@@ -1,0 +1,83 @@
+{
+  "slug": "shared-db-schema-docs",
+  "repo": "shared-db-schema-docs",
+  "title": "여러 서비스가 공유하는 DB 스키마 라이브러리",
+  "summary": "다수의 Java 서비스가 공통으로 참조하는 DB 스키마·엔티티를 하나의 라이브러리로 관리하는 프로젝트",
+  "description": "여러 Java 서비스가 동일한 데이터베이스 스키마를 각자 중복 정의하지 않도록, 공통 엔티티와 스키마 정의를 하나의 Maven 라이브러리로 분리해 공유하는 프로젝트입니다. 각 서비스는 이 라이브러리를 의존성으로 추가해 동일한 엔티티 클래스를 사용하며, 스키마 변경 시 라이브러리 버전을 올리는 방식으로 여러 서비스 간 정합성을 맞춥니다. Lombok을 활용해 엔티티 클래스의 보일러플레이트 코드를 줄였고, Jenkins를 통해 빌드 및 배포 파이프라인을 자동화했습니다. 코드 자체는 비공개이며 이 레포지토리는 프로젝트 구조와 활용 방식을 정리한 공개 문서입니다.",
+  "category": "백엔드",
+  "role": "여러 서비스가 공유하는 DB 스키마/엔티티 라이브러리를 설계 및 유지보수하고, Jenkins 기반 빌드 파이프라인을 관리했습니다.",
+  "techStack": [
+    {
+      "name": "Java",
+      "category": "language",
+      "usage": "공유 엔티티 및 스키마 정의 라이브러리 구현 언어"
+    },
+    {
+      "name": "Maven",
+      "category": "tool",
+      "usage": "라이브러리 빌드 및 버전 관리, 의존 서비스에 배포"
+    },
+    {
+      "name": "Lombok",
+      "category": "tool",
+      "usage": "엔티티 클래스의 보일러플레이트 코드 축소"
+    },
+    {
+      "name": "Jenkins",
+      "category": "devops",
+      "usage": "라이브러리 빌드/배포 CI 파이프라인 구성"
+    }
+  ],
+  "highlights": [
+    "여러 서비스가 동일한 DB 스키마를 중복 정의하지 않도록 공통 라이브러리로 분리",
+    "Maven 의존성 형태로 배포되어 서비스별로 버전을 관리하며 참조",
+    "Lombok으로 엔티티 클래스의 반복 코드를 줄여 유지보수성 확보",
+    "Jenkins CI로 라이브러리 빌드 및 배포 과정을 자동화"
+  ],
+  "challenges": [
+    {
+      "problem": "여러 서비스가 각자 DB 엔티티를 중복 관리하면서 스키마 불일치 위험이 존재함",
+      "solution": "공통 스키마/엔티티를 별도 Maven 라이브러리로 분리해 단일 소스로 관리하고 각 서비스가 의존성으로 참조하도록 구조화"
+    }
+  ],
+  "diagrams": [
+    {
+      "title": "공유 스키마 라이브러리 구조",
+      "description": "공유 DB 스키마 라이브러리가 Jenkins를 통해 빌드되어 여러 서비스에 의존성으로 배포되는 흐름을 보여줍니다.",
+      "type": "architecture",
+      "mermaid": "flowchart TD\n  A[\"공유 DB 스키마 라이브러리\"] --> E[\"Jenkins CI\"]\n  E --> F[\"Maven Repository\"]\n  F --> B[\"Service A\"]\n  F --> C[\"Service B\"]\n  F --> D[\"Service C\"]"
+    }
+  ],
+  "keywords": [
+    "shared-library",
+    "database-schema",
+    "java",
+    "maven",
+    "lombok",
+    "jenkins",
+    "entity",
+    "multi-service"
+  ],
+  "links": {
+    "repo": "https://github.com/jiyong-jeong/shared-db-schema-docs",
+    "homepage": null
+  },
+  "metrics": {
+    "stars": 0,
+    "forks": 0,
+    "watchers": 0,
+    "sizeKb": 0,
+    "openIssues": 0,
+    "languages": {},
+    "topics": [],
+    "primaryLanguage": null,
+    "license": null
+  },
+  "dates": {
+    "createdAt": "2026-07-26T05:30:54Z",
+    "updatedAt": "2026-07-26T05:31:01Z",
+    "pushedAt": "2026-07-26T05:30:57Z",
+    "analyzedAt": "2026-07-26T05:42:40.587Z"
+  },
+  "featured": false
+}

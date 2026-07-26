@@ -1,0 +1,65 @@
+{
+  "slug": "nft-collection-cosmos-docs",
+  "repo": "nft-collection-cosmos-docs",
+  "title": "NFT 컬렉션 스마트컨트랙트 문서",
+  "summary": "Solidity와 Hardhat으로 구성한 NFT 컬렉션 컨트랙트 저장소 구조를 정리한 공개 문서입니다.",
+  "description": "NFT 컬렉션을 발행하는 스마트컨트랙트 프로젝트의 저장소 구조를 정리한 공개 문서입니다. Solidity로 작성된 컨트랙트와 Hardhat 기반 개발 환경을 사용하며, 배포 스크립트와 테스트 코드를 포함하는 구성을 갖추고 있습니다. 실제 컨트랙트 소스보다는 프로젝트 구조와 사용 기술을 안내하는 데 초점을 맞춘 문서 저장소입니다.",
+  "category": "Web3",
+  "role": "NFT 컬렉션 스마트컨트랙트의 구조를 설계하고, 배포 스크립트와 테스트 환경을 구성했습니다.",
+  "techStack": [
+    {
+      "name": "Solidity",
+      "category": "language",
+      "usage": "NFT 컬렉션 스마트컨트랙트 작성"
+    },
+    {
+      "name": "Hardhat",
+      "category": "devops",
+      "usage": "컨트랙트 컴파일, 배포, 테스트 환경 구성"
+    }
+  ],
+  "highlights": [
+    "Solidity 기반 NFT 컬렉션 컨트랙트 저장소 구조를 문서화함",
+    "Hardhat을 활용한 배포 스크립트와 테스트 코드 구성을 포함함"
+  ],
+  "challenges": [],
+  "diagrams": [
+    {
+      "title": "NFT 컨트랙트 저장소 구조",
+      "description": "Solidity 컨트랙트, 배포 스크립트, 테스트가 Hardhat 환경에서 어떻게 연결되는지 보여줍니다.",
+      "type": "architecture",
+      "mermaid": "flowchart TD\n  Dev[\"개발자\"] --> Hardhat[\"Hardhat 개발 환경\"]\n  Hardhat --> Contract[\"Solidity NFT 컨트랙트\"]\n  Hardhat --> Deploy[\"배포 스크립트\"]\n  Hardhat --> Test[\"테스트 코드\"]\n  Deploy --> Chain[\"블록체인 네트워크\"]\n  Test --> Contract"
+    }
+  ],
+  "keywords": [
+    "nft",
+    "solidity",
+    "hardhat",
+    "smart-contract",
+    "blockchain",
+    "web3",
+    "ethereum"
+  ],
+  "links": {
+    "repo": "https://github.com/jiyong-jeong/nft-collection-cosmos-docs",
+    "homepage": null
+  },
+  "metrics": {
+    "stars": 0,
+    "forks": 0,
+    "watchers": 0,
+    "sizeKb": 0,
+    "openIssues": 0,
+    "languages": {},
+    "topics": [],
+    "primaryLanguage": null,
+    "license": null
+  },
+  "dates": {
+    "createdAt": "2026-07-26T05:28:44Z",
+    "updatedAt": "2026-07-26T05:28:52Z",
+    "pushedAt": "2026-07-26T05:28:47Z",
+    "analyzedAt": "2026-07-26T05:50:48.234Z"
+  },
+  "featured": false
+}

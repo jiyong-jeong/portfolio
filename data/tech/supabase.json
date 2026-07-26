@@ -1,0 +1,51 @@
+{
+  "slug": "supabase",
+  "name": "Supabase",
+  "category": "backend",
+  "tagline": "PostgreSQL 기반으로 인증·실시간·스토리지까지 묶어 제공하는 오픈소스 백엔드 플랫폼",
+  "definition": "Supabase는 오픈소스 PostgreSQL 데이터베이스를 중심으로 인증, 실시간 구독, 파일 스토리지, 서버리스 함수 등을 함께 제공하는 백엔드 플랫폼이다. Firebase처럼 프론트엔드 개발자가 직접 서버를 구축하지 않고도 앱에 필요한 백엔드 기능을 빠르게 붙일 수 있게 하되, 내부적으로는 표준 관계형 데이터베이스인 PostgreSQL을 그대로 사용해 벤더 종속을 줄이는 것을 목표로 만들어졌다. 테이블을 만들면 REST API와 실시간 구독 채널이 자동으로 생성되어, 별도의 백엔드 코드 없이 클라이언트에서 바로 데이터를 읽고 쓸 수 있다.",
+  "concepts": [
+    {
+      "term": "PostgreSQL",
+      "description": "Supabase의 핵심 데이터 저장소로, 테이블 스키마를 그대로 관계형 DB에 저장하며 SQL 기능을 온전히 활용할 수 있다."
+    },
+    {
+      "term": "Row Level Security (RLS)",
+      "description": "테이블 행 단위로 접근 권한을 제어하는 PostgreSQL 기능으로, 사용자별로 어떤 데이터를 읽고 쓸 수 있는지 DB 레벨에서 정책으로 정의한다."
+    },
+    {
+      "term": "Auto-generated REST API",
+      "description": "테이블을 만들면 별도 서버 코드 없이 CRUD가 가능한 REST 엔드포인트가 자동으로 생성된다."
+    },
+    {
+      "term": "Realtime",
+      "description": "DB의 삽입·수정·삭제 변경 사항을 웹소켓으로 구독해 클라이언트에 실시간으로 전달하는 기능이다."
+    },
+    {
+      "term": "Auth",
+      "description": "이메일/비밀번호, 소셜 로그인 등 사용자 인증과 세션 관리를 제공하며 RLS 정책과 연동해 권한을 제어한다."
+    },
+    {
+      "term": "Storage",
+      "description": "이미지, 파일 등 바이너리 데이터를 버킷 단위로 업로드·관리할 수 있는 파일 저장소 기능이다."
+    }
+  ],
+  "whenToUse": [
+    "별도 백엔드 서버 없이 빠르게 데이터베이스와 API를 갖춘 앱을 만들고 싶을 때",
+    "SQL과 관계형 데이터 모델에 익숙해 PostgreSQL을 그대로 쓰고 싶을 때",
+    "실시간 데이터 갱신(채팅, 라이브 대시보드 등)이 필요한 서비스를 만들 때",
+    "인증·권한·파일 저장까지 하나의 플랫폼에서 통합 관리하고 싶을 때"
+  ],
+  "example": {
+    "title": "Supabase 클라이언트로 테이블 조회하기",
+    "language": "javascript",
+    "code": "import { createClient } from '@supabase/supabase-js'\n\nconst supabase = createClient(\n  'https://xyzcompany.supabase.co',\n  'public-anon-key'\n)\n\n// posts 테이블에서 데이터 조회\nconst { data, error } = await supabase\n  .from('posts')\n  .select('id, title, created_at')\n  .order('created_at', { ascending: false })\n\nif (error) console.error(error)\nelse console.log(data)",
+    "description": "Supabase JS 클라이언트를 초기화한 뒤, 별도 백엔드 코드 없이 posts 테이블 데이터를 직접 조회하는 예시다."
+  },
+  "pitfalls": [
+    "RLS를 켜지 않으면 테이블이 외부에 그대로 노출될 수 있어 초기 설정 시 주의가 필요하다",
+    "anon key는 공개돼도 되는 키이지만 권한 제어는 반드시 RLS 정책으로 별도 처리해야 한다",
+    "실시간 구독은 테이블별로 활성화 설정을 해야 동작하는 경우가 있어 빠뜨리기 쉽다"
+  ],
+  "generatedAt": "2026-07-26T06:08:29.739Z"
+}

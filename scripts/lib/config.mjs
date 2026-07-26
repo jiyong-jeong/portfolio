@@ -7,6 +7,7 @@ const here = dirname(fileURLToPath(import.meta.url));
 export const ROOT = join(here, "..", "..");
 export const DATA_DIR = join(ROOT, "data");
 export const PROJECTS_DIR = join(DATA_DIR, "projects");
+export const TECH_DIR = join(DATA_DIR, "tech");
 export const STATE_FILE = join(DATA_DIR, "state.json");
 export const PROFILE_FILE = join(DATA_DIR, "profile.json");
 export const CONFIG_FILE = join(ROOT, "portfolio.config.json");
@@ -20,6 +21,8 @@ const DEFAULT_ANALYSIS = {
   maxTreeEntries: 250,
   timeoutMs: 300000,
   maxAttempts: 2,
+  // 기술 설명 생성은 서로 독립적이라 동시에 실행한다.
+  techDocConcurrency: 4,
 };
 
 export function loadConfig() {

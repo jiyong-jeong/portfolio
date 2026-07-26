@@ -1,0 +1,64 @@
+{
+  "slug": "java-batch-worker-docs",
+  "repo": "java-batch-worker-docs",
+  "title": "Java 배치 워커 구조 정리 문서",
+  "summary": "Java 기반 배치 워커의 구조를 정리한 공개 문서 저장소",
+  "description": "Java와 Maven으로 구성된 배치 워커 프로젝트의 구조를 설명하는 문서 저장소입니다. 실제 소스 코드 대신 배치 워커의 개념과 구성 방식을 정리해 공유하는 데 목적이 있습니다. 현재는 README를 통해 프로젝트 개요만 제공되며, 세부 아키텍처 문서는 추가될 예정입니다.",
+  "category": "백엔드",
+  "role": "배치 워커 구조를 정리하고 문서화하는 작업을 담당했습니다.",
+  "techStack": [
+    {
+      "name": "Java",
+      "category": "language",
+      "usage": "배치 워커 로직 구현 언어"
+    },
+    {
+      "name": "Maven",
+      "category": "tool",
+      "usage": "프로젝트 빌드 및 의존성 관리"
+    }
+  ],
+  "highlights": [
+    "Java와 Maven 기반의 배치 워커 구조를 문서로 정리",
+    "소스 코드 없이 구조 설명 중심의 공개 문서 저장소로 운영"
+  ],
+  "challenges": [],
+  "diagrams": [
+    {
+      "title": "배치 워커 기본 구조",
+      "description": "Java 배치 워커가 Maven 빌드를 거쳐 실행되는 기본 흐름을 보여줍니다.",
+      "type": "architecture",
+      "mermaid": "flowchart TD\n  SRC[\"Java 소스 코드\"] --> BUILD[\"Maven 빌드\"]\n  BUILD --> ARTIFACT[\"실행 아티팩트\"]\n  ARTIFACT --> WORKER[\"배치 워커 실행\"]\n  WORKER --> JOB[\"배치 작업 처리\"]"
+    }
+  ],
+  "keywords": [
+    "java",
+    "maven",
+    "batch",
+    "worker",
+    "backend",
+    "docs"
+  ],
+  "links": {
+    "repo": "https://github.com/jiyong-jeong/java-batch-worker-docs",
+    "homepage": null
+  },
+  "metrics": {
+    "stars": 0,
+    "forks": 0,
+    "watchers": 0,
+    "sizeKb": 0,
+    "openIssues": 0,
+    "languages": {},
+    "topics": [],
+    "primaryLanguage": null,
+    "license": null
+  },
+  "dates": {
+    "createdAt": "2026-07-26T05:27:49Z",
+    "updatedAt": "2026-07-26T05:28:21Z",
+    "pushedAt": "2026-07-26T05:27:52Z",
+    "analyzedAt": "2026-07-26T05:55:03.994Z"
+  },
+  "featured": false
+}

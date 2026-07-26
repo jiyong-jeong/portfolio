@@ -1,0 +1,51 @@
+{
+  "slug": "jenkins",
+  "name": "Jenkins",
+  "category": "devops",
+  "tagline": "빌드, 테스트, 배포 과정을 자동화하는 오픈소스 CI/CD 자동화 서버",
+  "definition": "Jenkins는 소스 코드 변경을 감지해 빌드, 테스트, 배포를 자동으로 수행해주는 오픈소스 자동화 서버입니다. 사람이 매번 수동으로 빌드하고 서버에 배포하는 반복 작업을 없애고, 코드가 저장소에 올라올 때마다 정해진 절차대로 검증·배포되도록 만들기 위해 등장했습니다. 파이프라인을 코드(Jenkinsfile)로 정의할 수 있어 빌드 절차 자체를 버전 관리할 수 있고, 다양한 플러그인을 통해 Git, Docker, Kubernetes, 클라우드 서비스 등과 쉽게 연동됩니다.",
+  "concepts": [
+    {
+      "term": "Pipeline",
+      "description": "빌드부터 배포까지 이어지는 일련의 작업 단계를 코드로 정의한 것으로, Jenkinsfile이라는 파일에 작성한다."
+    },
+    {
+      "term": "Jenkinsfile",
+      "description": "파이프라인의 각 단계(stage)와 수행할 명령을 텍스트로 기술한 파일로, 저장소에 함께 커밋해 버전 관리가 가능하다."
+    },
+    {
+      "term": "Agent (Node)",
+      "description": "실제 빌드 작업이 실행되는 서버나 컨테이너로, 마스터와 별개의 워커에서 작업을 분산 처리할 수 있다."
+    },
+    {
+      "term": "Stage / Step",
+      "description": "파이프라인을 구성하는 논리적 단위로, Stage는 큰 작업 구간(빌드, 테스트, 배포 등)을, Step은 그 안의 개별 명령을 의미한다."
+    },
+    {
+      "term": "Trigger",
+      "description": "코드 push, PR 생성, 스케줄(cron) 등 파이프라인 실행을 시작시키는 조건을 말한다."
+    },
+    {
+      "term": "Plugin",
+      "description": "Git 연동, Docker 빌드, 알림, 배포 도구 등 기능을 확장하기 위해 설치하는 모듈로, Jenkins 생태계의 핵심 요소다."
+    }
+  ],
+  "whenToUse": [
+    "코드 push마다 빌드·테스트·배포를 자동으로 반복 실행하고 싶을 때",
+    "빌드 절차를 Jenkinsfile로 코드화해 저장소와 함께 버전 관리하고 싶을 때",
+    "다양한 언어, 도구, 인프라(Docker, Kubernetes 등)와 유연하게 연동해야 할 때",
+    "온프레미스 환경에서 자체적으로 CI/CD 서버를 운영하고 세밀하게 제어하고 싶을 때"
+  ],
+  "example": {
+    "title": "기본 Jenkinsfile 예시",
+    "language": "text",
+    "code": "pipeline {\n  agent any\n\n  stages {\n    stage('Build') {\n      steps {\n        sh 'docker build -t myapp:latest .'\n      }\n    }\n    stage('Push') {\n      steps {\n        sh 'docker push myapp:latest'\n      }\n    }\n  }\n}",
+    "description": "코드를 Docker 이미지로 빌드한 뒤 레지스트리에 push하는 두 단계짜리 파이프라인 예시입니다."
+  },
+  "pitfalls": [
+    "Jenkinsfile 문법(Declarative vs Scripted)을 혼용하면 파이프라인 작성이 헷갈릴 수 있다",
+    "플러그인 의존도가 높아 버전 충돌이나 플러그인 관리 부담이 커질 수 있다",
+    "Agent 환경 설정을 소홀히 하면 '내 컴퓨터에선 되는데' 문제가 CI에서도 재현될 수 있다"
+  ],
+  "generatedAt": "2026-07-26T06:06:38.100Z"
+}

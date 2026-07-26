@@ -1,0 +1,84 @@
+{
+  "slug": "nft-marketplace-admin-backend-argocd-deploy-docs",
+  "repo": "nft-marketplace-admin-backend-argocd-deploy-docs",
+  "title": "NFT 마켓플레이스 어드민 백엔드 GitOps 배포 문서",
+  "summary": "체인·환경별 Kustomize 오버레이와 시크릿 구조로 어드민 백엔드를 ArgoCD로 배포하는 GitOps 문서 저장소",
+  "description": "NFT 마켓플레이스 어드민 백엔드 서비스를 여러 체인(chain) 환경에 배포하기 위한 GitOps 매니페스트 구조를 정리한 문서 저장소이다. 체인 이름별 서브디렉터리 아래 Jenkinsfile과 Kustomize 기반의 infra/k8s 디렉터리(base + overlays)를 두어 환경별 배포 설정을 분리 관리한다. secrets 디렉터리는 체인과 환경 조합별 시크릿 매니페스트를 별도로 관리하는 구조를 갖는다. CI에서 이미지를 빌드해 push한 뒤 overlay 커밋을 통해 ArgoCD가 변경 사항을 감지하고 동기화하는 흐름으로 배포가 이루어진다.",
+  "category": "인프라",
+  "role": "어드민 백엔드 서비스의 GitOps 배포 매니페스트 구조(Jenkinsfile, Kustomize overlay, 체인/환경별 시크릿 구성)를 설계하고 문서화함.",
+  "techStack": [
+    {
+      "name": "Kubernetes",
+      "category": "infra",
+      "usage": "어드민 백엔드 서비스 배포 대상 클러스터 환경"
+    },
+    {
+      "name": "Kustomize",
+      "category": "devops",
+      "usage": "base와 overlay 구조로 체인·환경별 배포 설정 관리"
+    },
+    {
+      "name": "ArgoCD",
+      "category": "devops",
+      "usage": "overlay 커밋을 감지해 클러스터에 자동 동기화(GitOps 배포)"
+    },
+    {
+      "name": "Jenkins",
+      "category": "devops",
+      "usage": "체인별 CI 파이프라인(Jenkinsfile)으로 이미지 빌드 및 push 수행"
+    }
+  ],
+  "highlights": [
+    "체인 이름 서브디렉터리 단위로 Jenkinsfile과 Kustomize 설정을 분리해 다중 체인 배포를 구조화",
+    "base/overlays 패턴으로 환경별 배포 설정 중복을 줄이는 Kustomize 구조 채택",
+    "체인 × 환경 조합별로 시크릿 매니페스트 트리를 별도 관리해 민감정보 접근 범위를 분리",
+    "CI 이미지 push부터 overlay 커밋, ArgoCD sync까지 이어지는 GitOps 배포 흐름 문서화"
+  ],
+  "challenges": [],
+  "diagrams": [
+    {
+      "title": "GitOps 배포 흐름",
+      "description": "CI에서 이미지를 push한 뒤 overlay 커밋을 거쳐 ArgoCD가 동기화하는 배포 흐름을 보여준다.",
+      "type": "flow",
+      "mermaid": "flowchart LR\n  CI[\"Jenkins CI\"] --> IMG[\"이미지 Push\"]\n  IMG --> OV[\"Overlay 커밋\"]\n  OV --> ARGO[\"ArgoCD\"]\n  ARGO --> K8S[\"Kubernetes 클러스터\"]"
+    },
+    {
+      "title": "매니페스트 저장소 구조",
+      "description": "체인별 Jenkinsfile 및 Kustomize 설정과 시크릿 트리의 디렉터리 구성을 보여준다.",
+      "type": "architecture",
+      "mermaid": "flowchart TD\n  ROOT[\"저장소 루트\"] --> CHAIN[\"체인 서브디렉터리\"]\n  CHAIN --> JEN[\"Jenkinsfile\"]\n  CHAIN --> K8SDIR[\"infra/k8s\"]\n  K8SDIR --> BASE[\"base\"]\n  K8SDIR --> OVER[\"overlays\"]\n  ROOT --> SEC[\"secrets\"]\n  SEC --> SECCHAIN[\"체인 x 환경별 시크릿\"]"
+    }
+  ],
+  "keywords": [
+    "gitops",
+    "argocd",
+    "kustomize",
+    "kubernetes",
+    "jenkins",
+    "nft-marketplace",
+    "deploy",
+    "infra"
+  ],
+  "links": {
+    "repo": "https://github.com/jiyong-jeong/nft-marketplace-admin-backend-argocd-deploy-docs",
+    "homepage": null
+  },
+  "metrics": {
+    "stars": 0,
+    "forks": 0,
+    "watchers": 0,
+    "sizeKb": 0,
+    "openIssues": 0,
+    "languages": {},
+    "topics": [],
+    "primaryLanguage": null,
+    "license": null
+  },
+  "dates": {
+    "createdAt": "2026-07-26T05:16:12Z",
+    "updatedAt": "2026-07-26T05:16:36Z",
+    "pushedAt": "2026-07-26T05:16:15Z",
+    "analyzedAt": "2026-07-26T06:02:25.345Z"
+  },
+  "featured": false
+}

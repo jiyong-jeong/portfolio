@@ -1,0 +1,79 @@
+{
+  "slug": "nft-fashion-platform-backend-docs",
+  "repo": "nft-fashion-platform-backend-docs",
+  "title": "패션 NFT 플랫폼 백엔드 구조 문서",
+  "summary": "NestJS 기반 패션 NFT 플랫폼 백엔드의 구조와 배포 방식을 정리한 공개 문서",
+  "description": "패션 NFT 플랫폼의 백엔드 시스템 구조를 외부에 공유하기 위해 정리한 공개 문서 레포지토리입니다. NestJS와 TypeORM으로 구성된 백엔드의 마이그레이션 관리 방식, Docker 기반 실행 환경, Jenkins를 통한 CI 파이프라인 구성을 개괄적으로 설명합니다. 실제 소스 코드는 포함하지 않고, 내부 문서 스냅샷(readme/ 폴더)을 바탕으로 구조와 운영 방식만 발췌해 담았습니다.",
+  "category": "백엔드",
+  "role": "패션 NFT 플랫폼 백엔드의 내부 구조와 운영 방식을 정리해 외부 공개용 기술 문서로 작성했습니다.",
+  "techStack": [
+    {
+      "name": "NestJS",
+      "category": "framework",
+      "usage": "백엔드 API 서버 프레임워크로 사용"
+    },
+    {
+      "name": "TypeORM",
+      "category": "database",
+      "usage": "데이터베이스 마이그레이션 및 ORM 계층 관리"
+    },
+    {
+      "name": "Docker",
+      "category": "devops",
+      "usage": "애플리케이션 및 E2E 테스트 환경 컨테이너화"
+    },
+    {
+      "name": "Jenkins",
+      "category": "devops",
+      "usage": "CI 파이프라인 구성 및 자동화 빌드"
+    }
+  ],
+  "highlights": [
+    "TypeORM 마이그레이션과 데이터소스 설정을 분리 관리",
+    "Dockerfile과 Dockerfile.e2e로 운영/테스트 환경을 구분",
+    "docker-compose로 로컬 개발 환경 구성",
+    "Jenkins 기반 CI로 빌드 자동화",
+    "내부 문서 스냅샷을 별도 readme 폴더로 보존"
+  ],
+  "challenges": [],
+  "diagrams": [
+    {
+      "title": "백엔드 구성 개요",
+      "description": "NestJS 백엔드가 TypeORM을 통해 데이터베이스와 연결되고, Docker와 Jenkins로 빌드·배포되는 흐름을 보여줍니다.",
+      "type": "architecture",
+      "mermaid": "flowchart LR\n  A[\"클라이언트\"] --> B[\"NestJS API 서버\"]\n  B --> C[\"TypeORM\"]\n  C --> D[\"데이터베이스\"]\n  E[\"Jenkins CI\"] --> F[\"Docker 이미지 빌드\"]\n  F --> B\n  G[\"docker-compose\"] --> B\n  G --> D"
+    }
+  ],
+  "keywords": [
+    "nestjs",
+    "typeorm",
+    "docker",
+    "jenkins",
+    "nft",
+    "backend",
+    "ci-cd",
+    "documentation"
+  ],
+  "links": {
+    "repo": "https://github.com/jiyong-jeong/nft-fashion-platform-backend-docs",
+    "homepage": null
+  },
+  "metrics": {
+    "stars": 0,
+    "forks": 0,
+    "watchers": 0,
+    "sizeKb": 0,
+    "openIssues": 0,
+    "languages": {},
+    "topics": [],
+    "primaryLanguage": null,
+    "license": null
+  },
+  "dates": {
+    "createdAt": "2026-07-26T05:29:00Z",
+    "updatedAt": "2026-07-26T05:29:15Z",
+    "pushedAt": "2026-07-26T05:29:04Z",
+    "analyzedAt": "2026-07-26T05:49:42.733Z"
+  },
+  "featured": false
+}

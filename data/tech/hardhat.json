@@ -1,0 +1,47 @@
+{
+  "slug": "hardhat",
+  "name": "Hardhat",
+  "category": "devops",
+  "tagline": "이더리움 스마트컨트랙트의 컴파일·테스트·배포를 로컬에서 관리하는 개발 프레임워크",
+  "definition": "Hardhat은 Solidity 스마트컨트랙트를 컴파일하고, 로컬 블록체인에서 테스트하고, 다양한 네트워크에 배포하는 과정을 하나의 워크플로우로 묶어주는 개발 환경이다. 컨트랙트 개발자가 매번 컴파일러와 노드를 수동으로 세팅하지 않고도, 실제 체인과 유사한 환경에서 빠르게 반복 개발할 수 있도록 만들어졌다. 자바스크립트/타입스크립트 기반 설정과 플러그인 구조를 통해 테스트, 디버깅, 배포 스크립트를 유연하게 확장할 수 있다.",
+  "concepts": [
+    {
+      "term": "Hardhat Network",
+      "description": "Hardhat이 내장한 로컬 이더리움 노드로, 실제 배포 없이 컨트랙트를 빠르게 실행하고 테스트할 수 있는 가상 체인이다."
+    },
+    {
+      "term": "task",
+      "description": "compile, test, deploy처럼 CLI에서 실행하는 작업 단위이며, 필요에 따라 커스텀 task를 직접 정의할 수도 있다."
+    },
+    {
+      "term": "plugin",
+      "description": "타입 생성, 검증, 가스 측정 등 부가 기능을 추가하는 확장 모듈로, 필요한 것만 골라 설치해 프레임워크 기능을 확장한다."
+    },
+    {
+      "term": "artifact",
+      "description": "컴파일 결과로 생성되는 ABI와 바이트코드 정보를 담은 파일로, 배포나 프론트엔드 연동 시 이 데이터를 참조한다."
+    },
+    {
+      "term": "hardhat.config",
+      "description": "네트워크 정보, 컴파일러 버전, 플러그인 설정 등 프로젝트 전반의 동작을 정의하는 설정 파일이다."
+    }
+  ],
+  "whenToUse": [
+    "Solidity 컨트랙트를 로컬에서 빠르게 컴파일하고 반복 테스트해야 할 때",
+    "테스트넷·메인넷 등 여러 네트워크에 동일한 배포 스크립트를 재사용하고 싶을 때",
+    "타입 안전한 컨트랙트 인터랙션 코드를 자동 생성해 백엔드/프론트엔드에서 쓰고 싶을 때",
+    "커스텀 스크립트나 플러그인으로 개발 워크플로우를 세밀하게 제어하고 싶을 때"
+  ],
+  "example": {
+    "title": "기본 프로젝트 설정과 컴파일",
+    "language": "javascript",
+    "code": "// hardhat.config.js\nrequire(\"@nomicfoundation/hardhat-toolbox\");\n\nmodule.exports = {\n  solidity: \"0.8.24\",\n  networks: {\n    hardhat: {},\n  },\n};\n\n// 실행 명령\n// npx hardhat compile\n// npx hardhat test\n// npx hardhat run scripts/deploy.js --network hardhat",
+    "description": "Solidity 버전을 지정하고 로컬 네트워크를 설정한 뒤, CLI 명령으로 컴파일·테스트·배포를 실행하는 최소 구성이다."
+  },
+  "pitfalls": [
+    "Hardhat Network는 재시작하면 상태가 초기화되므로 영구 저장이 필요하면 별도 네트워크를 써야 한다",
+    "컨트랙트의 Solidity 버전과 config의 컴파일러 버전이 다르면 컴파일이 실패한다",
+    "실제 네트워크 배포 시 개인키·RPC URL 관리를 소홀히 하면 보안 사고로 이어질 수 있다"
+  ],
+  "generatedAt": "2026-07-26T06:07:18.247Z"
+}

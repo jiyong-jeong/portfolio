@@ -1,0 +1,47 @@
+{
+  "slug": "truffle-assertions",
+  "name": "truffle-assertions",
+  "category": "testing",
+  "tagline": "스마트 컨트랙트 테스트에서 이벤트 발생과 revert 여부를 손쉽게 검증하는 Mocha/Truffle용 assert 확장 라이브러리",
+  "definition": "truffle-assertions는 Truffle이나 Hardhat 같은 이더리움 개발 환경에서 작성하는 JavaScript 테스트에 사용되는 assertion 헬퍼 라이브러리다. 스마트 컨트랙트가 emit한 이벤트를 검증하거나, 특정 조건에서 트랜잭션이 revert되는지를 확인하는 작업은 트랜잭션 영수증(receipt)의 로그를 직접 파싱해야 해서 번거로운데, 이를 간단한 함수 호출 몇 줄로 대체할 수 있게 해준다. 원래는 Truffle 테스트 스위트를 겨냥해 만들어졌지만 트랜잭션 영수증 구조만 호환되면 Hardhat 등 다른 환경에서도 함께 사용할 수 있다.",
+  "concepts": [
+    {
+      "term": "eventEmitted",
+      "description": "트랜잭션 실행 결과 특정 이벤트가 발생했는지, 그리고 이벤트 인자 값이 기대한 조건과 일치하는지를 확인하는 함수다."
+    },
+    {
+      "term": "eventNotEmitted",
+      "description": "특정 이벤트가 발생하지 않았음을 검증할 때 사용하며, 조건 분기에서 이벤트가 발생하지 않아야 정상인 케이스를 테스트한다."
+    },
+    {
+      "term": "reverts / fails",
+      "description": "트랜잭션이 revert되거나 실패하는지, 그리고 원하는 경우 revert 메시지까지 일치하는지를 검증하는 함수 그룹이다."
+    },
+    {
+      "term": "transaction receipt",
+      "description": "트랜잭션 실행 후 반환되는 결과 객체로, truffle-assertions는 이 receipt의 로그를 파싱해 이벤트 검증에 활용한다."
+    },
+    {
+      "term": "filter callback",
+      "description": "eventEmitted 등에서 두 번째 인자로 콜백 함수를 넘겨 이벤트 인자 값에 대한 세부 조건을 직접 검사할 수 있게 해주는 패턴이다."
+    }
+  ],
+  "whenToUse": [
+    "컨트랙트가 발생시킨 이벤트의 존재 여부와 인자 값을 간결하게 검증하고 싶을 때",
+    "특정 상황에서 트랜잭션이 revert되는지, 메시지가 맞는지 확인해야 할 때",
+    "영수증 로그를 수동 파싱하는 반복 코드를 줄이고 테스트 가독성을 높이고 싶을 때",
+    "Truffle 테스트 자산을 유지하면서 Hardhat 등 다른 환경으로 이전할 때"
+  ],
+  "example": {
+    "title": "이벤트 발생 및 revert 검증",
+    "language": "javascript",
+    "code": "const truffleAssert = require('truffle-assertions');\n\nit('should emit Transfer event and revert on invalid amount', async () => {\n  const instance = await MyToken.deployed();\n\n  const result = await instance.transfer(recipient, 100);\n  truffleAssert.eventEmitted(result, 'Transfer', (ev) => {\n    return ev.to === recipient && ev.value.toNumber() === 100;\n  });\n\n  await truffleAssert.reverts(\n    instance.transfer(recipient, 0),\n    'amount must be greater than zero'\n  );\n});",
+    "description": "transfer 호출로 발생한 Transfer 이벤트의 인자를 검증하고, 잘못된 값 호출 시 지정한 메시지로 revert되는지 확인한다."
+  },
+  "pitfalls": [
+    "eventEmitted에 넘기는 트랜잭션 결과는 반드시 await된 receipt 객체여야 한다.",
+    "web3/ethers 버전 차이로 이벤트 인자 타입(BN 등)이 예상과 달라 비교가 실패할 수 있다.",
+    "reverts의 메시지 문자열은 부분 일치가 아니라 정확한 매칭이 요구될 수 있어 오탐이 잦다."
+  ],
+  "generatedAt": "2026-07-26T06:13:16.464Z"
+}

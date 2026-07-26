@@ -1,0 +1,82 @@
+{
+  "slug": "racing-match-backend-argocd-deploy-docs",
+  "repo": "racing-match-backend-argocd-deploy-docs",
+  "title": "레이싱 매치 백엔드 GitOps 배포 문서",
+  "summary": "Jenkins CI와 ArgoCD를 연계한 Kubernetes 배포 매니페스트를 Kustomize로 관리하는 GitOps 저장소",
+  "description": "racing-match-backend 서비스의 Kubernetes 배포 설정을 별도 저장소로 분리해 관리하는 GitOps 문서 레포지토리입니다. Jenkinsfile을 통해 CI 파이프라인에서 컨테이너 이미지를 빌드하고 레지스트리에 push한 뒤, Kustomize 기반의 base/overlays 구조로 환경별 배포 설정을 정의합니다. 이미지 태그 변경 사항이 overlay에 커밋되면 ArgoCD가 이를 감지해 클러스터에 자동으로 동기화(sync)하는 흐름을 갖습니다. 애플리케이션 코드와 배포 설정을 분리함으로써 배포 이력 추적과 롤백을 코드 저장소와 독립적으로 관리할 수 있도록 구성했습니다.",
+  "category": "인프라",
+  "role": "Jenkinsfile 및 Kustomize base/overlays 구조를 설계하고, CI에서 ArgoCD sync까지 이어지는 GitOps 배포 파이프라인을 구축했습니다.",
+  "techStack": [
+    {
+      "name": "Jenkins",
+      "category": "devops",
+      "usage": "이미지 빌드 및 push를 수행하는 CI 파이프라인 정의"
+    },
+    {
+      "name": "ArgoCD",
+      "category": "devops",
+      "usage": "overlay 커밋을 감지해 Kubernetes 클러스터에 자동 동기화"
+    },
+    {
+      "name": "Kubernetes",
+      "category": "infra",
+      "usage": "애플리케이션이 배포되는 컨테이너 오케스트레이션 대상 플랫폼"
+    },
+    {
+      "name": "Kustomize",
+      "category": "devops",
+      "usage": "base/overlays 구조로 환경별 배포 매니페스트 관리"
+    }
+  ],
+  "highlights": [
+    "코드 저장소와 배포 매니페스트 저장소를 분리한 GitOps 구조",
+    "Kustomize base/overlays로 환경별 설정 차이를 최소화",
+    "CI에서 이미지 push 후 overlay 커밋으로 배포를 트리거하는 자동화 흐름"
+  ],
+  "challenges": [
+    {
+      "problem": "환경마다 달라지는 배포 설정을 중복 없이 관리해야 함",
+      "solution": "Kustomize의 base/overlays 구조로 공통 설정과 환경별 설정을 분리"
+    }
+  ],
+  "diagrams": [
+    {
+      "title": "GitOps 배포 흐름",
+      "description": "CI에서 이미지가 push된 후 overlay 커밋을 거쳐 ArgoCD가 클러스터에 동기화하는 전체 흐름을 보여줍니다.",
+      "type": "architecture",
+      "mermaid": "flowchart TD\n  CI[\"Jenkins CI\"] --> IMG[\"이미지 빌드 및 Push\"]\n  IMG --> COMMIT[\"overlay 매니페스트 커밋\"]\n  COMMIT --> REPO[\"배포 매니페스트 저장소\"]\n  REPO --> ARGO[\"ArgoCD Sync\"]\n  ARGO --> K8S[\"Kubernetes 클러스터\"]"
+    }
+  ],
+  "keywords": [
+    "gitops",
+    "argocd",
+    "kubernetes",
+    "kustomize",
+    "jenkins",
+    "ci-cd",
+    "deployment",
+    "manifest"
+  ],
+  "links": {
+    "repo": "https://github.com/jiyong-jeong/racing-match-backend-argocd-deploy-docs",
+    "homepage": null
+  },
+  "metrics": {
+    "stars": 0,
+    "forks": 0,
+    "watchers": 0,
+    "sizeKb": 0,
+    "openIssues": 0,
+    "languages": {},
+    "topics": [],
+    "primaryLanguage": null,
+    "license": null
+  },
+  "dates": {
+    "createdAt": "2026-07-26T05:17:12Z",
+    "updatedAt": "2026-07-26T05:17:35Z",
+    "pushedAt": "2026-07-26T05:17:16Z",
+    "analyzedAt": "2026-07-26T05:58:17.344Z"
+  },
+  "featured": false
+}

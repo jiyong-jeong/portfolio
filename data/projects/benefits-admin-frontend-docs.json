@@ -1,0 +1,89 @@
+{
+  "slug": "benefits-admin-frontend-docs",
+  "repo": "benefits-admin-frontend-docs",
+  "title": "복지 관리 어드민 프런트엔드",
+  "summary": "Next.js 기반 내부 복지 관리 어드민의 구조와 개발 환경을 정리한 문서 프로젝트",
+  "description": "사내에서 사용하는 복지(benefits) 관리용 어드민 프런트엔드의 아키텍처와 개발 환경을 정리한 공개 문서 레포지토리입니다. Next.js를 기반으로 하며, GraphQL 코드젠으로 타입 안전한 API 연동을 구성하고 Cypress E2E 테스트와 Jest 단위 테스트로 품질을 관리합니다. Docker와 infra 디렉터리를 통해 배포 환경을 구성하고, git-hooks로 커밋 전 검증을 자동화한 구조를 설명합니다. 실제 소스 코드는 비공개이며, 프로젝트 구조와 사용 기술 스택만 공개 문서로 정리되어 있습니다.",
+  "category": "프론트엔드",
+  "role": "내부 어드민 프런트엔드의 구조 설계 및 문서화를 담당했으며, 테스트/코드젠/인프라 구성을 정리했습니다.",
+  "techStack": [
+    {
+      "name": "Next.js",
+      "category": "frontend",
+      "usage": "어드민 프런트엔드의 기본 프레임워크로 사용"
+    },
+    {
+      "name": "GraphQL",
+      "category": "backend",
+      "usage": "코드젠을 통한 타입 안전한 API 연동"
+    },
+    {
+      "name": "Cypress",
+      "category": "testing",
+      "usage": "E2E 테스트 작성 및 실행"
+    },
+    {
+      "name": "Jest",
+      "category": "testing",
+      "usage": "단위 테스트 작성 및 실행"
+    },
+    {
+      "name": "Docker",
+      "category": "devops",
+      "usage": "개발 및 배포 환경 컨테이너화"
+    },
+    {
+      "name": "Git Hooks",
+      "category": "tool",
+      "usage": "커밋 전 검증 자동화"
+    }
+  ],
+  "highlights": [
+    "Next.js 기반 어드민 프런트엔드 구조를 문서로 정리",
+    "GraphQL 코드젠으로 API 타입 안전성 확보",
+    "Cypress E2E와 Jest 단위 테스트를 병행하는 테스트 전략",
+    "Docker와 infra 디렉터리를 통한 배포 환경 관리",
+    "git-hooks 기반 커밋 전 자동 검증 체계 구축"
+  ],
+  "challenges": [],
+  "diagrams": [
+    {
+      "title": "어드민 프런트엔드 구조 개요",
+      "description": "Next.js 프런트엔드가 GraphQL 코드젠, 테스트, 인프라 요소와 어떻게 연결되는지 보여주는 개념도입니다.",
+      "type": "architecture",
+      "mermaid": "flowchart TD\n  A[\"Next.js 어드민 프런트엔드\"] --> B[\"GraphQL Codegen\"]\n  B --> C[\"백엔드 GraphQL API\"]\n  A --> D[\"Jest 단위 테스트\"]\n  A --> E[\"Cypress E2E 테스트\"]\n  A --> F[\"Git Hooks 검증\"]\n  A --> G[\"Docker 컨테이너\"]\n  G --> H[\"infra 배포 설정\"]"
+    }
+  ],
+  "keywords": [
+    "nextjs",
+    "graphql",
+    "codegen",
+    "cypress",
+    "jest",
+    "docker",
+    "admin",
+    "frontend"
+  ],
+  "links": {
+    "repo": "https://github.com/jiyong-jeong/benefits-admin-frontend-docs",
+    "homepage": null
+  },
+  "metrics": {
+    "stars": 0,
+    "forks": 0,
+    "watchers": 0,
+    "sizeKb": 0,
+    "openIssues": 0,
+    "languages": {},
+    "topics": [],
+    "primaryLanguage": null,
+    "license": null
+  },
+  "dates": {
+    "createdAt": "2026-07-26T05:27:11Z",
+    "updatedAt": "2026-07-26T05:27:21Z",
+    "pushedAt": "2026-07-26T05:27:14Z",
+    "analyzedAt": "2026-07-26T05:57:53.759Z"
+  },
+  "featured": false
+}

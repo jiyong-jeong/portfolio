@@ -1,0 +1,84 @@
+{
+  "slug": "nft-platform-monorepo-docs",
+  "repo": "nft-platform-monorepo-docs",
+  "title": "NFT 플랫폼 Nx 모노레포 구조 문서",
+  "summary": "NFT 플랫폼의 여러 프런트/백엔드 앱을 Nx 워크스페이스로 통합 관리하는 모노레포 구조 정리 문서",
+  "description": "여러 개의 프런트엔드·백엔드 애플리케이션을 하나의 저장소에서 관리하기 위해 Nx 기반 모노레포로 구성한 프로젝트입니다. apps/와 libs/ 디렉터리로 애플리케이션과 공용 라이브러리를 분리하고, 공용 tsconfig/jest 프리셋으로 각 프로젝트의 설정을 통일했습니다. 서비스 간 통신을 위한 Protobuf 정의를 proto/ 디렉터리에 두고, release.config.base.js와 Makefile로 릴리즈와 반복 작업을 표준화했습니다. CODEOWNERS를 통해 코드 영역별 책임자를 명시해 협업 시 리뷰 흐름을 관리합니다.",
+  "category": "인프라",
+  "role": "NFT 플랫폼의 다수 앱을 관리하는 Nx 모노레포의 워크스페이스 구조를 설계하고, 공용 설정(tsconfig/jest)과 릴리즈/빌드 규칙을 정리했습니다.",
+  "techStack": [
+    {
+      "name": "Nx",
+      "category": "devops",
+      "usage": "여러 앱과 라이브러리를 하나의 워크스페이스에서 관리하는 모노레포 툴체인"
+    },
+    {
+      "name": "TypeScript",
+      "category": "language",
+      "usage": "공용 tsconfig 프리셋을 통한 프로젝트 전반의 타입 설정 통일"
+    },
+    {
+      "name": "Jest",
+      "category": "testing",
+      "usage": "공용 테스트 프리셋으로 각 앱/라이브러리의 테스트 설정 표준화"
+    },
+    {
+      "name": "Protocol Buffers",
+      "category": "tool",
+      "usage": "proto/ 디렉터리에서 서비스 간 통신을 위한 스키마 정의"
+    },
+    {
+      "name": "Make",
+      "category": "devops",
+      "usage": "Makefile 기반의 반복 작업(빌드/릴리즈 등) 태스크 러너"
+    }
+  ],
+  "highlights": [
+    "Nx 워크스페이스로 프런트/백엔드 다수 앱과 공용 라이브러리를 단일 저장소에서 통합 관리",
+    "공용 tsconfig/jest 프리셋으로 프로젝트 간 설정 중복을 줄이고 일관성 확보",
+    "proto/ 디렉터리에 Protobuf 스키마를 두어 서비스 간 인터페이스를 명시적으로 관리",
+    "release.config.base.js와 Makefile로 릴리즈 및 태스크 실행 절차를 표준화",
+    "CODEOWNERS로 코드 영역별 리뷰 책임자를 지정해 협업 프로세스 명확화"
+  ],
+  "challenges": [],
+  "diagrams": [
+    {
+      "title": "모노레포 구조 개요",
+      "description": "Nx 워크스페이스 내 apps, libs, proto 등 주요 디렉터리와 공용 설정 간의 관계를 보여줍니다.",
+      "type": "architecture",
+      "mermaid": "flowchart TD\n  nx[\"nx.json (워크스페이스 설정)\"]\n  apps[\"apps (프런트/백엔드 앱)\"]\n  libs[\"libs (공용 라이브러리)\"]\n  proto[\"proto (Protobuf 정의)\"]\n  cfg[\"공용 tsconfig / jest 프리셋\"]\n  release[\"release.config.base.js\"]\n  make[\"Makefile (태스크 러너)\"]\n  owners[\"CODEOWNERS\"]\n\n  nx --> apps\n  nx --> libs\n  apps --> libs\n  apps --> proto\n  libs --> proto\n  cfg --> apps\n  cfg --> libs\n  make --> release\n  make --> apps\n  owners --> apps\n  owners --> libs"
+    }
+  ],
+  "keywords": [
+    "nx",
+    "monorepo",
+    "nft",
+    "typescript",
+    "protobuf",
+    "jest",
+    "workspace",
+    "codeowners"
+  ],
+  "links": {
+    "repo": "https://github.com/jiyong-jeong/nft-platform-monorepo-docs",
+    "homepage": null
+  },
+  "metrics": {
+    "stars": 0,
+    "forks": 0,
+    "watchers": 0,
+    "sizeKb": 0,
+    "openIssues": 0,
+    "languages": {},
+    "topics": [],
+    "primaryLanguage": null,
+    "license": null
+  },
+  "dates": {
+    "createdAt": "2026-07-26T05:29:58Z",
+    "updatedAt": "2026-07-26T05:30:05Z",
+    "pushedAt": "2026-07-26T05:30:02Z",
+    "analyzedAt": "2026-07-26T05:46:16.224Z"
+  },
+  "featured": false
+}

@@ -1,0 +1,46 @@
+{
+  "slug": "ethers-js",
+  "name": "ethers.js",
+  "category": "blockchain",
+  "tagline": "이더리움과 상호작용할 수 있게 해주는 자바스크립트/타입스크립트 라이브러리",
+  "definition": "ethers.js는 이더리움 블록체인 노드에 RPC로 접속하여 잔액 조회, 트랜잭션 전송, 스마트 컨트랙트 호출 등을 코드로 수행할 수 있게 해주는 라이브러리다. 웹 애플리케이션이나 스크립트에서 개인키 서명, 트랜잭션 생성, ABI 기반 컨트랙트 호출처럼 반복적이고 저수준인 작업을 직접 구현하지 않아도 되도록 표준화된 인터페이스를 제공한다. 프론트엔드에서 지갑과 연동하거나, 백엔드/스크립트에서 노드와 직접 통신하는 두 가지 시나리오 모두를 지원한다.",
+  "concepts": [
+    {
+      "term": "Provider",
+      "description": "블록체인 노드와의 읽기 전용 연결을 추상화한 객체로, 블록 정보 조회나 컨트랙트 상태 읽기 등에 사용된다."
+    },
+    {
+      "term": "Signer",
+      "description": "개인키나 지갑을 이용해 트랜잭션에 서명하고 전송하는 역할을 하는 객체로, 상태를 변경하는 쓰기 작업에 필요하다."
+    },
+    {
+      "term": "Contract",
+      "description": "ABI와 주소를 기반으로 스마트 컨트랙트를 자바스크립트 객체처럼 다룰 수 있게 해주는 추상화로, 메서드 호출을 트랜잭션이나 호출로 변환해준다."
+    },
+    {
+      "term": "ABI (Application Binary Interface)",
+      "description": "컨트랙트의 함수와 이벤트 목록을 정의한 명세로, 이를 통해 라이브러리가 함수 호출 데이터를 인코딩/디코딩할 수 있다."
+    },
+    {
+      "term": "Wei / Ether 단위 변환",
+      "description": "이더리움 값은 최소 단위인 wei로 다뤄지며, 사람이 읽기 쉬운 ether 단위와 상호 변환하는 유틸리티가 제공된다."
+    }
+  ],
+  "whenToUse": [
+    "프론트엔드나 스크립트에서 스마트 컨트랙트와 직접 상호작용해야 할 때",
+    "트랜잭션 서명·전송, 잔액 조회 등 지갑 관련 로직을 직접 구현해야 할 때",
+    "Hardhat 같은 개발 환경에서 로컬 노드나 테스트넷 컨트랙트를 테스트할 때"
+  ],
+  "example": {
+    "title": "잔액 조회와 컨트랙트 호출 기본 예시",
+    "language": "javascript",
+    "code": "const { ethers } = require(\"ethers\");\n\n// 로컬 노드에 연결하는 provider 생성\nconst provider = new ethers.JsonRpcProvider(\"http://127.0.0.1:8545\");\n\nasync function main() {\n  // 계정 잔액 조회\n  const balance = await provider.getBalance(\"0xYourAddress\");\n  console.log(\"balance:\", ethers.formatEther(balance), \"ETH\");\n\n  // ABI와 주소로 컨트랙트 인스턴스 생성 후 함수 호출\n  const abi = [\"function totalSupply() view returns (uint256)\"];\n  const contract = new ethers.Contract(\"0xContractAddress\", abi, provider);\n  const supply = await contract.totalSupply();\n  console.log(\"totalSupply:\", supply.toString());\n}\n\nmain();",
+    "description": "로컬 이더리움 노드에 provider로 연결한 뒤, 계정 잔액과 컨트랙트의 읽기 전용 함수를 호출하는 기본 흐름을 보여준다."
+  },
+  "pitfalls": [
+    "Provider와 Signer의 역할을 혼동해 읽기 전용 호출로 트랜잭션을 보내려다 실패한다.",
+    "값을 wei와 ether 단위로 변환하지 않고 그대로 사용해 금액 계산이 틀린다.",
+    "ABI를 실제 컨트랙트와 다르게 정의해 함수 호출이 조용히 실패하거나 잘못된 값을 반환한다."
+  ],
+  "generatedAt": "2026-07-26T06:15:05.839Z"
+}

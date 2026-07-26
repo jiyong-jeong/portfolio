@@ -1,0 +1,67 @@
+{
+  "slug": "nft-marketplace-contracts-docs",
+  "repo": "nft-marketplace-contracts-docs",
+  "title": "NFT 마켓플레이스 스마트컨트랙트 문서",
+  "summary": "Solidity·Hardhat 기반 NFT 마켓플레이스 컨트랙트의 구조와 배포·테스트 방식을 정리한 공개 문서",
+  "description": "NFT를 발행하고 거래하는 마켓플레이스 스마트컨트랙트 프로젝트의 구조를 정리한 공개 문서 저장소입니다. Solidity로 작성된 컨트랙트를 Hardhat 환경에서 개발·테스트·배포하는 구성을 갖추고 있으며, 배포 스크립트와 테스트 코드, 관련 리소스가 어떻게 구성되는지를 설명합니다. 실제 컨트랙트 소스는 비공개이며, 이 저장소는 프로젝트의 구조와 개발 방식을 외부에 공유하기 위한 목적으로 작성되었습니다.",
+  "category": "Web3",
+  "role": "Solidity 기반 NFT 마켓플레이스 컨트랙트를 설계하고 Hardhat으로 개발·테스트·배포 환경을 구성했으며, 해당 구조를 정리한 공개 문서를 작성했습니다.",
+  "techStack": [
+    {
+      "name": "Solidity",
+      "category": "language",
+      "usage": "NFT 발행 및 마켓플레이스 로직을 구현하는 스마트컨트랙트 언어"
+    },
+    {
+      "name": "Hardhat",
+      "category": "blockchain",
+      "usage": "컨트랙트 컴파일, 테스트, 배포를 위한 개발 프레임워크"
+    }
+  ],
+  "highlights": [
+    "Solidity + Hardhat 조합으로 NFT 마켓플레이스 컨트랙트 개발 환경을 구성",
+    "배포 스크립트와 테스트 코드를 분리하여 컨트랙트 구조를 문서화",
+    "실제 소스 노출 없이 프로젝트 구조와 개발 방식만 공개 문서로 정리"
+  ],
+  "challenges": [],
+  "diagrams": [
+    {
+      "title": "컨트랙트 저장소 구성 흐름",
+      "description": "Solidity 컨트랙트가 Hardhat을 통해 테스트되고 배포 스크립트로 배포되는 기본 흐름을 보여줍니다.",
+      "type": "architecture",
+      "mermaid": "flowchart TD\n  A[\"Solidity 컨트랙트\"] --> B[\"Hardhat 개발 환경\"]\n  B --> C[\"테스트 코드\"]\n  B --> D[\"배포 스크립트\"]\n  D --> E[\"NFT 마켓플레이스 배포\"]\n  C --> B"
+    }
+  ],
+  "keywords": [
+    "nft",
+    "marketplace",
+    "solidity",
+    "hardhat",
+    "smart-contract",
+    "web3",
+    "blockchain",
+    "docs"
+  ],
+  "links": {
+    "repo": "https://github.com/jiyong-jeong/nft-marketplace-contracts-docs",
+    "homepage": null
+  },
+  "metrics": {
+    "stars": 0,
+    "forks": 0,
+    "watchers": 0,
+    "sizeKb": 0,
+    "openIssues": 0,
+    "languages": {},
+    "topics": [],
+    "primaryLanguage": null,
+    "license": null
+  },
+  "dates": {
+    "createdAt": "2026-07-26T05:29:46Z",
+    "updatedAt": "2026-07-26T05:29:57Z",
+    "pushedAt": "2026-07-26T05:29:49Z",
+    "analyzedAt": "2026-07-26T05:46:43.756Z"
+  },
+  "featured": false
+}

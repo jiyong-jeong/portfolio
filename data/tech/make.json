@@ -1,0 +1,50 @@
+{
+  "slug": "make",
+  "name": "Make",
+  "category": "tool",
+  "tagline": "파일 의존성과 규칙을 기반으로 빌드·반복 작업을 자동화하는 태스크 러너",
+  "definition": "Make는 Makefile에 정의된 규칙에 따라 파일 간 의존 관계를 파악하고, 변경된 부분만 다시 처리해 빌드·테스트·배포 같은 반복 작업을 자동화하는 도구다. 원래는 C 프로젝트의 컴파일 순서와 재빌드 범위를 관리하기 위해 만들어졌지만, 지금은 언어나 플랫폼에 상관없이 여러 단계로 이루어진 커맨드를 하나의 명령으로 묶어 실행하는 범용 태스크 러너로도 널리 쓰인다. 모노레포처럼 여러 패키지에서 반복되는 build, test, lint, release 같은 명령을 표준화된 인터페이스로 감싸는 데 자주 사용된다.",
+  "concepts": [
+    {
+      "term": "Makefile",
+      "description": "Make가 읽어들이는 설정 파일로, 어떤 대상을 어떤 규칙으로 만들지 정의한다."
+    },
+    {
+      "term": "target",
+      "description": "실행하고자 하는 작업의 이름으로, 파일명일 수도 있고 build·test처럼 논리적인 이름일 수도 있다."
+    },
+    {
+      "term": "recipe",
+      "description": "target을 만들기 위해 실행되는 실제 셸 명령어들의 목록이다."
+    },
+    {
+      "term": "prerequisite (dependency)",
+      "description": "target을 실행하기 전에 먼저 존재하거나 실행되어야 하는 다른 target이나 파일이다."
+    },
+    {
+      "term": "phony target",
+      "description": "실제 파일을 생성하지 않고 명령 실행 자체가 목적인 target으로, .PHONY로 선언해 파일 존재 여부와 무관하게 항상 실행되게 한다."
+    },
+    {
+      "term": "incremental build",
+      "description": "파일의 수정 시각을 비교해 변경된 대상만 다시 처리함으로써 불필요한 재작업을 줄이는 동작 방식이다."
+    }
+  ],
+  "whenToUse": [
+    "언어·도구가 다른 여러 하위 프로젝트의 명령을 하나의 인터페이스로 통일하고 싶을 때",
+    "빌드·테스트·릴리즈 등 반복되는 커맨드를 짧고 기억하기 쉬운 이름으로 감싸고 싶을 때",
+    "별도 런타임 설치 없이 대부분의 유닉스 계열 환경에 기본 내장된 도구를 쓰고 싶을 때",
+    "파일 변경 여부에 따라 필요한 작업만 선택적으로 재실행하고 싶을 때"
+  ],
+  "example": {
+    "title": "기본 Makefile 예시",
+    "language": "text",
+    "code": ".PHONY: build test clean\n\nbuild:\n\techo \"Building project...\"\n\tgo build -o bin/app ./...\n\ntest: build\n\techo \"Running tests...\"\n\tgo test ./...\n\nclean:\n\trm -rf bin",
+    "description": "make test를 실행하면 build target을 먼저 수행한 뒤 테스트를 실행하며, make clean으로 산출물을 정리할 수 있다."
+  },
+  "pitfalls": [
+    "recipe의 각 명령줄은 스페이스가 아니라 반드시 탭(Tab) 문자로 들여써야 한다.",
+    "파일 이름과 같은 target을 phony로 선언하지 않으면 해당 파일이 존재할 때 명령이 실행되지 않는다."
+  ],
+  "generatedAt": "2026-07-26T06:06:59.589Z"
+}

@@ -1,0 +1,72 @@
+{
+  "slug": "cryptozombies-tutorial-docs",
+  "repo": "cryptozombies-tutorial-docs",
+  "title": "크립토좀비로 배우는 솔리디티 스마트컨트랙트",
+  "summary": "CryptoZombies 튜토리얼을 따라 Solidity와 Hardhat으로 스마트컨트랙트를 학습한 기록 저장소",
+  "description": "Solidity 언어와 스마트컨트랙트 개발 흐름을 익히기 위해 CryptoZombies 튜토리얼을 학습하며 정리한 저장소입니다. Hardhat 개발 환경을 기반으로 튜토리얼에서 다루는 컨트랙트 코드와 테스트를 작성하고, 정적 HTML 데모를 통해 컨트랙트 동작을 확인하는 구조로 진행했습니다. 스마트컨트랙트 배포, 함수 호출, 상태 변경 같은 Web3 개발의 기본 개념을 실습 중심으로 익히는 데 초점을 두었습니다. 상세 소스는 비공개이며, 이 저장소는 학습 과정과 개념을 정리한 공개 문서입니다.",
+  "category": "학습",
+  "role": "튜토리얼을 직접 따라 하며 Solidity 컨트랙트 작성과 Hardhat 테스트 환경을 구성하고, 학습 내용을 문서로 정리했습니다.",
+  "techStack": [
+    {
+      "name": "Solidity",
+      "category": "language",
+      "usage": "튜토리얼 스마트컨트랙트 작성에 사용"
+    },
+    {
+      "name": "Hardhat",
+      "category": "devops",
+      "usage": "컨트랙트 컴파일, 배포, 테스트를 위한 개발 환경"
+    },
+    {
+      "name": "HTML",
+      "category": "frontend",
+      "usage": "컨트랙트 동작 확인용 정적 데모 페이지 구성"
+    }
+  ],
+  "highlights": [
+    "CryptoZombies 튜토리얼을 따라 Solidity 문법과 스마트컨트랙트 구조를 단계별로 학습",
+    "Hardhat 환경에서 컨트랙트 테스트를 작성하며 배포·검증 흐름을 실습",
+    "정적 HTML 데모로 컨트랙트 동작을 눈으로 확인하는 학습용 예제 구성"
+  ],
+  "challenges": [],
+  "diagrams": [
+    {
+      "title": "튜토리얼 학습 및 개발 흐름",
+      "description": "CryptoZombies 튜토리얼을 따라 Solidity 컨트랙트를 작성하고 Hardhat으로 테스트한 뒤 HTML 데모로 확인하는 학습 흐름을 보여줍니다.",
+      "type": "flow",
+      "mermaid": "flowchart TD\n  A[\"CryptoZombies 튜토리얼\"] --> B[\"Solidity 컨트랙트 작성\"]\n  B --> C[\"Hardhat 컴파일\"]\n  C --> D[\"Hardhat 테스트 실행\"]\n  D --> E[\"로컬 배포\"]\n  E --> F[\"정적 HTML 데모 확인\"]\n  F --> G[\"학습 내용 문서화\"]"
+    }
+  ],
+  "keywords": [
+    "solidity",
+    "hardhat",
+    "smart-contract",
+    "blockchain",
+    "ethereum",
+    "web3",
+    "cryptozombies",
+    "tutorial"
+  ],
+  "links": {
+    "repo": "https://github.com/jiyong-jeong/cryptozombies-tutorial-docs",
+    "homepage": null
+  },
+  "metrics": {
+    "stars": 0,
+    "forks": 0,
+    "watchers": 0,
+    "sizeKb": 0,
+    "openIssues": 0,
+    "languages": {},
+    "topics": [],
+    "primaryLanguage": null,
+    "license": null
+  },
+  "dates": {
+    "createdAt": "2026-07-26T05:27:34Z",
+    "updatedAt": "2026-07-26T05:27:40Z",
+    "pushedAt": "2026-07-26T05:27:37Z",
+    "analyzedAt": "2026-07-26T05:56:41.196Z"
+  },
+  "featured": false
+}

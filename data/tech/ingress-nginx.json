@@ -1,0 +1,47 @@
+{
+  "slug": "ingress-nginx",
+  "name": "ingress-nginx",
+  "category": "infra",
+  "tagline": "Kubernetes 클러스터 진입 트래픽을 라우팅하는 NGINX 기반 인그레스 컨트롤러",
+  "definition": "ingress-nginx는 쿠버네티스의 Ingress 리소스를 실제 NGINX 설정으로 변환해 외부 HTTP/HTTPS 트래픽을 클러스터 내부 서비스로 라우팅하는 컨트롤러입니다. 쿠버네티스 자체는 클러스터 진입점에서 도메인·경로 기반으로 트래픽을 분기하는 기능을 제공하지 않기 때문에, 이를 담당할 별도의 컨트롤러가 필요해 만들어졌습니다. Ingress 오브젝트가 생성·수정되면 이를 감지해 NGINX 설정을 동적으로 갱신하고 리로드합니다.",
+  "concepts": [
+    {
+      "term": "Ingress Resource",
+      "description": "도메인, 경로, 대상 서비스 등 라우팅 규칙을 선언하는 쿠버네티스 API 오브젝트입니다."
+    },
+    {
+      "term": "Ingress Controller",
+      "description": "Ingress 리소스를 실제로 해석해 트래픽을 처리하는 컴포넌트로, ingress-nginx는 그 구현체 중 하나입니다."
+    },
+    {
+      "term": "IngressClass",
+      "description": "클러스터에 여러 인그레스 컨트롤러가 있을 때 어떤 Ingress를 어떤 컨트롤러가 처리할지 구분하는 값입니다."
+    },
+    {
+      "term": "Reconciliation Loop",
+      "description": "Ingress 리소스 변경을 지속적으로 감시하여 NGINX 설정 파일을 자동으로 재생성·반영하는 동작 방식입니다."
+    },
+    {
+      "term": "Annotation",
+      "description": "리다이렉트, 타임아웃, rewrite 등 표준 Ingress 스펙에 없는 세부 동작을 Ingress 메타데이터에 지정하는 방식입니다."
+    }
+  ],
+  "whenToUse": [
+    "여러 서비스를 하나의 진입점에서 도메인·경로 기준으로 라우팅해야 할 때",
+    "클러스터 외부에서 HTTPS 종료(TLS termination)를 표준화하고 싶을 때",
+    "클라우드 벤더에 종속되지 않는 범용 인그레스 구현이 필요할 때",
+    "이미 익숙한 NGINX의 설정·동작 방식을 그대로 활용하고 싶을 때"
+  ],
+  "example": {
+    "title": "기본 Ingress 리소스 정의",
+    "language": "yaml",
+    "code": "apiVersion: networking.k8s.io/v1\nkind: Ingress\nmetadata:\n  name: news-ingress\n  annotations:\n    nginx.ingress.kubernetes.io/rewrite-target: /\nspec:\n  ingressClassName: nginx\n  rules:\n    - host: news.example.com\n      http:\n        paths:\n          - path: /\n            pathType: Prefix\n            backend:\n              service:\n                name: news-service\n                port:\n                  number: 80",
+    "description": "news.example.com으로 들어오는 요청을 news-service라는 클러스터 내부 서비스로 전달하는 Ingress 설정입니다."
+  },
+  "pitfalls": [
+    "ingressClassName을 지정하지 않으면 여러 컨트롤러가 있을 때 라우팅이 의도대로 동작하지 않을 수 있습니다.",
+    "annotation은 ingress-nginx 고유 확장이라 다른 컨트롤러로 이전 시 그대로 동작하지 않습니다.",
+    "Ingress 변경 후 반영까지 리로드 지연이 있을 수 있어 즉시 효과를 기대하면 혼란스러울 수 있습니다."
+  ],
+  "generatedAt": "2026-07-26T06:11:23.381Z"
+}

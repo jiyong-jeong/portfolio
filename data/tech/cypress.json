@@ -1,0 +1,46 @@
+{
+  "slug": "cypress",
+  "name": "Cypress",
+  "category": "testing",
+  "tagline": "웹 애플리케이션을 브라우저에서 직접 구동해 E2E 테스트를 작성·실행하는 테스트 프레임워크",
+  "definition": "Cypress는 실제 브라우저 안에서 애플리케이션과 테스트 코드를 함께 실행하여 사용자의 클릭, 입력, 화면 전환 같은 흐름을 자동으로 검증하는 E2E(End-to-End) 테스트 도구입니다. 기존 Selenium 기반 도구들이 겪던 비동기 대기 처리의 번거로움과 불안정한 테스트(flaky test) 문제를 줄이기 위해, 애플리케이션과 같은 실행 컨텍스트에서 동작하며 DOM 상태를 직접 관찰하는 방식을 택했습니다. 테스트 실행 과정을 시각적으로 보여주는 러너와 시간 여행 디버깅 기능을 제공해 실패 원인을 빠르게 파악할 수 있게 합니다.",
+  "concepts": [
+    {
+      "term": "Test Runner",
+      "description": "테스트를 실행하며 각 단계의 DOM 스냅샷과 명령 로그를 시각적으로 보여주는 Cypress 전용 실행 환경입니다."
+    },
+    {
+      "term": "Command Chain",
+      "description": "cy.get, cy.click처럼 요소를 찾고 조작하는 명령을 체이닝 형태로 작성하는 Cypress의 기본 문법 구조입니다."
+    },
+    {
+      "term": "Automatic Waiting",
+      "description": "요소가 화면에 나타나고 조작 가능한 상태가 될 때까지 별도의 sleep 없이 자동으로 재시도하며 기다리는 동작 방식입니다."
+    },
+    {
+      "term": "Fixture",
+      "description": "테스트에서 반복적으로 사용할 목(mock) 데이터를 JSON 파일 형태로 미리 정의해두는 기능입니다."
+    },
+    {
+      "term": "Intercept",
+      "description": "네트워크 요청을 가로채 응답을 확인하거나 원하는 값으로 대체(stub)해 테스트를 격리시키는 기능입니다."
+    }
+  ],
+  "whenToUse": [
+    "회원가입, 로그인, 결제 같은 핵심 사용자 흐름을 자동으로 반복 검증하고 싶을 때",
+    "실패 시점의 화면 상태를 스냅샷과 로그로 바로 확인해 디버깅 시간을 줄이고 싶을 때",
+    "프런트엔드 배포 전 회귀 테스트를 CI 파이프라인에 자동으로 포함시키고 싶을 때"
+  ],
+  "example": {
+    "title": "로그인 페이지 E2E 테스트",
+    "language": "javascript",
+    "code": "describe('로그인', () => {\n  it('올바른 정보로 로그인하면 대시보드로 이동한다', () => {\n    cy.visit('/login')\n    cy.get('input[name=\"email\"]').type('user@example.com')\n    cy.get('input[name=\"password\"]').type('password123')\n    cy.get('button[type=\"submit\"]').click()\n\n    cy.url().should('include', '/dashboard')\n    cy.contains('환영합니다').should('be.visible')\n  })\n})",
+    "description": "로그인 폼에 값을 입력하고 제출한 뒤, URL과 화면 문구로 로그인 성공 여부를 검증하는 기본적인 Cypress 테스트입니다."
+  },
+  "pitfalls": [
+    "일반 async/await처럼 보이지만 명령이 즉시 실행되지 않고 큐에 쌓이는 구조라 혼동하기 쉽다",
+    "테스트 간 상태가 공유되지 않도록 설계돼 있어, 이전 페이지 접근 방식(iframe 전환 등)에 제약이 있다",
+    "네트워크 응답을 실제로 기다리지 않고 임의 대기(cy.wait(ms))에 의존하면 테스트가 불안정해진다"
+  ],
+  "generatedAt": "2026-07-26T06:06:18.775Z"
+}

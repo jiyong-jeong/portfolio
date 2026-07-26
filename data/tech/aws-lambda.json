@@ -1,0 +1,47 @@
+{
+  "slug": "aws-lambda",
+  "name": "AWS Lambda",
+  "category": "infra",
+  "tagline": "서버 관리 없이 이벤트에 반응해 코드만 실행하는 서버리스 컴퓨팅 서비스",
+  "definition": "AWS Lambda는 서버를 직접 프로비저닝하거나 관리하지 않고 코드를 업로드해 실행할 수 있게 해주는 서버리스 컴퓨팅 서비스이다. S3 업로드, SQS 메시지, HTTP 요청 등 다양한 이벤트가 발생할 때 함수가 자동으로 트리거되어 실행되고, 실행이 끝나면 자원이 해제된다. 상시 대기 중인 서버를 두지 않아도 되므로 트래픽이 간헐적이거나 예측하기 어려운 작업에 적합하며, 인프라 운영 부담을 크게 줄이는 것을 목표로 만들어졌다.",
+  "concepts": [
+    {
+      "term": "Event Source",
+      "description": "Lambda 함수를 실행시키는 트리거로, S3 버킷 업로드나 SQS 큐 메시지 등 다양한 AWS 서비스 이벤트가 될 수 있다."
+    },
+    {
+      "term": "Handler",
+      "description": "이벤트가 발생했을 때 실제로 호출되는 함수의 진입점으로, 이벤트 데이터와 실행 컨텍스트를 인자로 받는다."
+    },
+    {
+      "term": "Cold Start",
+      "description": "일정 시간 호출이 없던 함수가 다시 실행될 때 새로운 실행 환경을 초기화하면서 발생하는 지연을 말한다."
+    },
+    {
+      "term": "Concurrency",
+      "description": "동시에 실행될 수 있는 함수 인스턴스의 수로, 트래픽이 몰릴 때 자동으로 늘어나거나 제한을 둘 수 있다."
+    },
+    {
+      "term": "IAM Execution Role",
+      "description": "함수가 다른 AWS 서비스에 접근할 때 사용하는 권한 집합으로, 함수마다 필요한 최소 권한만 부여하는 것이 일반적이다."
+    }
+  ],
+  "whenToUse": [
+    "이벤트 발생 시에만 짧게 실행되는 작업을 상시 서버 없이 처리하고 싶을 때",
+    "트래픽 변동이 커서 자동으로 확장·축소되는 컴퓨트가 필요할 때",
+    "S3, SQS, API Gateway 등 다른 AWS 서비스와 이벤트 기반으로 연동하고 싶을 때",
+    "인프라 운영보다 비즈니스 로직 구현에 집중하고 싶을 때"
+  ],
+  "example": {
+    "title": "간단한 Lambda 핸들러 예시",
+    "language": "javascript",
+    "code": "exports.handler = async (event) => {\n  // event 객체에 트리거된 이벤트 정보가 담겨 있다\n  const message = event.Records\n    ? event.Records[0].body\n    : JSON.stringify(event);\n\n  console.log('received:', message);\n\n  return {\n    statusCode: 200,\n    body: JSON.stringify({ processed: true }),\n  };\n};",
+    "description": "이벤트를 받아 로그로 출력하고 처리 결과를 반환하는 가장 기본적인 Lambda 함수 형태이다."
+  },
+  "pitfalls": [
+    "함수 실행 시간과 메모리에는 제한이 있어 무거운 배치 작업에는 적합하지 않을 수 있다",
+    "콜드 스타트로 인해 첫 호출 지연이 발생할 수 있음을 고려해야 한다",
+    "IAM 권한을 지나치게 넓게 부여해 보안 위험을 키우기 쉽다"
+  ],
+  "generatedAt": "2026-07-26T06:09:30.041Z"
+}

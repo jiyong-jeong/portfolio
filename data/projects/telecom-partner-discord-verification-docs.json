@@ -1,0 +1,81 @@
+{
+  "slug": "telecom-partner-discord-verification-docs",
+  "repo": "telecom-partner-discord-verification-docs",
+  "title": "파트너용 Discord 홀더 인증 시스템 문서",
+  "summary": "NestJS 기반 Discord NFT 홀더 인증 기능을 파트너 컨텍스트로 분기 구성한 프로젝트의 공개 문서",
+  "description": "이 레포는 discord-nft-holder-verification 코드베이스에서 파생된 파트너 전용 변형 프로젝트의 공개 문서입니다. NestJS와 TypeORM을 기반으로 Discord 서버 멤버의 NFT 홀더 여부를 검증하는 기능을 파트너사 요구사항에 맞춰 재구성한 구조를 다룹니다. Heroku 스타일 배포를 위한 Procfile을 포함하고 있어 클라우드 플랫폼 배포를 전제로 설계되었습니다. 소스코드 대신 아키텍처와 구조 개요만 공개하는 문서 전용 레포입니다.",
+  "category": "백엔드",
+  "role": "기존 Discord NFT 홀더 인증 코드베이스를 파트너 요구사항에 맞게 분기하고 문서화함",
+  "techStack": [
+    {
+      "name": "NestJS",
+      "category": "framework",
+      "usage": "Discord 홀더 인증 서버 애플리케이션 프레임워크"
+    },
+    {
+      "name": "TypeScript",
+      "category": "language",
+      "usage": "NestJS 기반 서버 로직 작성 언어"
+    },
+    {
+      "name": "TypeORM",
+      "category": "backend",
+      "usage": "데이터베이스 엔티티 및 쿼리 관리"
+    },
+    {
+      "name": "Discord",
+      "category": "tool",
+      "usage": "홀더 인증 대상 플랫폼 연동"
+    },
+    {
+      "name": "Heroku",
+      "category": "devops",
+      "usage": "Procfile 기반 배포 대상 플랫폼"
+    }
+  ],
+  "highlights": [
+    "기존 NFT 홀더 인증 코드베이스를 파트너 전용 컨텍스트로 분기해 재구성함",
+    "NestJS와 TypeORM 조합으로 서버 구조를 유지하며 파트너 요구에 맞게 변형함",
+    "Heroku 스타일 Procfile을 포함해 배포 환경을 명시적으로 설계함"
+  ],
+  "challenges": [],
+  "diagrams": [
+    {
+      "title": "파트너 홀더 인증 구조 개요",
+      "description": "Discord 사용자 요청이 NestJS 서버를 통해 NFT 홀더 여부를 검증하고 파트너 컨텍스트에 맞게 응답하는 흐름을 보여줍니다.",
+      "type": "architecture",
+      "mermaid": "flowchart TD\n  A[\"Discord 사용자\"] --> B[\"NestJS 인증 서버\"]\n  B --> C[\"TypeORM\"]\n  C --> D[\"데이터베이스\"]\n  B --> E[\"NFT 홀더 검증 로직\"]\n  E --> F[\"파트너 컨텍스트 응답\"]\n  F --> A\n  B --> G[\"Heroku 배포 환경\"]"
+    }
+  ],
+  "keywords": [
+    "nestjs",
+    "typeorm",
+    "discord",
+    "nft",
+    "holder-verification",
+    "heroku",
+    "backend"
+  ],
+  "links": {
+    "repo": "https://github.com/jiyong-jeong/telecom-partner-discord-verification-docs",
+    "homepage": null
+  },
+  "metrics": {
+    "stars": 0,
+    "forks": 0,
+    "watchers": 0,
+    "sizeKb": 0,
+    "openIssues": 0,
+    "languages": {},
+    "topics": [],
+    "primaryLanguage": null,
+    "license": null
+  },
+  "dates": {
+    "createdAt": "2026-07-26T05:31:10Z",
+    "updatedAt": "2026-07-26T05:31:39Z",
+    "pushedAt": "2026-07-26T05:31:14Z",
+    "analyzedAt": "2026-07-26T05:41:21.427Z"
+  },
+  "featured": false
+}

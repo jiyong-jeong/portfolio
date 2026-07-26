@@ -1,0 +1,45 @@
+{
+  "slug": "vite",
+  "name": "Vite",
+  "category": "tool",
+  "tagline": "브라우저 네이티브 ESM을 활용해 빠른 개발 서버와 번들링을 제공하는 프론트엔드 빌드 도구",
+  "definition": "Vite는 개발 중에는 브라우저의 네이티브 ES 모듈 로딩을 이용해 파일을 즉시 서빙하고, 배포용 빌드 시에는 Rollup 기반으로 번들링하는 프론트엔드 빌드 도구다. 기존 번들러 중심 개발 서버가 프로젝트 규모가 커질수록 시작 시간과 갱신 속도가 느려지는 문제를 해결하기 위해 만들어졌다. React, Vue 등 다양한 프레임워크를 플러그인 형태로 지원하며, 별도 설정 없이도 빠르게 프로젝트를 시작할 수 있다는 점이 특징이다.",
+  "concepts": [
+    {
+      "term": "Native ESM",
+      "description": "개발 서버가 파일을 미리 번들링하지 않고 브라우저가 직접 import 문을 해석하도록 넘겨, 요청받은 모듈만 그때그때 변환해 응답한다."
+    },
+    {
+      "term": "Dev Server / HMR",
+      "description": "개발용 서버가 파일 변경을 감지해 변경된 모듈만 즉시 교체(Hot Module Replacement)하므로 전체 새로고침 없이 빠르게 결과를 확인할 수 있다."
+    },
+    {
+      "term": "Pre-bundling",
+      "description": "node_modules에 있는 의존성처럼 자주 바뀌지 않는 라이브러리는 esbuild로 미리 묶어 요청 횟수와 변환 비용을 줄인다."
+    },
+    {
+      "term": "Plugin System",
+      "description": "Rollup 플러그인 인터페이스를 확장한 구조로, 프레임워크 지원(JSX, Vue SFC 등)이나 추가 기능을 플러그인으로 붙여 확장한다."
+    },
+    {
+      "term": "Production Build",
+      "description": "배포 시에는 Rollup을 통해 코드를 번들링하고 압축해, 브라우저 호환성과 로딩 성능을 고려한 정적 파일로 출력한다."
+    }
+  ],
+  "whenToUse": [
+    "React, Vue 등으로 SPA를 빠르게 시작하고 개발 서버 속도를 중시할 때",
+    "프로젝트 규모가 커져도 개발 서버 시작/갱신 속도 저하를 줄이고 싶을 때",
+    "복잡한 설정 없이 기본값만으로 빌드 환경을 구성하고 싶을 때"
+  ],
+  "example": {
+    "title": "Vite 프로젝트 생성 및 개발 서버 실행",
+    "language": "bash",
+    "code": "# 새 프로젝트 생성 (React 템플릿 예시)\nnpm create vite@latest my-app -- --template react\n\ncd my-app\nnpm install\n\n# 개발 서버 실행 (기본 포트 5173)\nnpm run dev\n\n# 배포용 빌드\nnpm run build",
+    "description": "Vite CLI로 템플릿 기반 프로젝트를 생성한 뒤 개발 서버를 띄우고, 최종적으로 정적 파일로 빌드하는 기본 흐름이다."
+  },
+  "pitfalls": [
+    "개발 서버와 프로덕션 빌드의 동작 방식이 달라(ESM vs 번들) 개발 중엔 안 보이던 문제가 빌드 후 드러날 수 있다",
+    "환경변수는 VITE_ 접두사가 붙은 것만 클라이언트 코드에 노출된다는 점을 놓치기 쉽다"
+  ],
+  "generatedAt": "2026-07-26T06:08:24.990Z"
+}

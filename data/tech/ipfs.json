@@ -1,0 +1,47 @@
+{
+  "slug": "ipfs",
+  "name": "IPFS",
+  "category": "blockchain",
+  "tagline": "파일을 콘텐츠 해시로 식별해 분산 네트워크에 저장·공유하는 P2P 파일 시스템",
+  "definition": "IPFS(InterPlanetary File System)는 파일을 특정 서버 주소가 아니라 콘텐츠 자체의 해시값으로 식별하고, 여러 노드에 분산 저장해 P2P로 공유하는 프로토콜이다. 기존 HTTP는 파일이 어느 서버에 있는지(location-based addressing)로 접근하기 때문에 서버가 사라지면 파일도 함께 사라지는 문제가 있는데, IPFS는 콘텐츠 자체를 주소로 삼는 content-addressing 방식으로 이를 해결하려 한다. 같은 내용의 파일은 어느 노드에 저장되어 있든 동일한 해시로 찾을 수 있어, 데이터의 위변조 여부도 해시 비교로 검증할 수 있다.",
+  "concepts": [
+    {
+      "term": "CID (Content Identifier)",
+      "description": "파일 내용을 해시한 값으로 만들어지는 고유 식별자로, 내용이 바뀌면 CID도 함께 바뀐다."
+    },
+    {
+      "term": "Content Addressing",
+      "description": "파일이 저장된 위치가 아니라 내용 자체를 기준으로 데이터를 찾는 방식이다."
+    },
+    {
+      "term": "DHT (Distributed Hash Table)",
+      "description": "어떤 노드가 특정 CID의 데이터를 가지고 있는지 네트워크 전체에서 찾아주는 분산 색인 구조다."
+    },
+    {
+      "term": "Pinning",
+      "description": "저장된 데이터가 자동 삭제(가비지 컬렉션)되지 않도록 노드에 고정해 계속 보관하게 하는 것이다."
+    },
+    {
+      "term": "Gateway",
+      "description": "IPFS 노드를 직접 운영하지 않아도 일반 HTTP 요청으로 IPFS 상의 파일에 접근할 수 있게 해주는 중계 서버다."
+    }
+  ],
+  "whenToUse": [
+    "파일의 위변조 여부를 콘텐츠 해시로 검증해야 할 때",
+    "특정 중앙 서버에 의존하지 않고 데이터를 분산 보관하고 싶을 때",
+    "NFT 메타데이터처럼 한번 기록된 후 변하지 않아야 하는 자산을 저장할 때",
+    "여러 노드가 같은 데이터를 캐시·공유해 가용성을 높이고 싶을 때"
+  ],
+  "example": {
+    "title": "파일 추가 및 CID로 조회",
+    "language": "bash",
+    "code": "# 로컬 IPFS 노드에 파일 추가 → CID 반환\nipfs add metadata.json\n# added QmXo... metadata.json\n\n# CID로 파일 내용 조회\nipfs cat QmXo...\n\n# HTTP 게이트웨이를 통한 접근\ncurl https://ipfs.io/ipfs/QmXo...",
+    "description": "파일을 IPFS에 추가하면 콘텐츠 해시인 CID가 생성되고, 이 CID로 노드나 게이트웨이를 통해 언제든 같은 내용을 조회할 수 있다."
+  },
+  "pitfalls": [
+    "파일을 추가했다고 영구 저장되는 것은 아니며, pinning 하지 않으면 삭제될 수 있다",
+    "파일 내용이 조금만 바뀌어도 CID가 완전히 달라져 기존 링크가 무효화된다",
+    "네트워크에 해당 데이터를 들고 있는 노드가 없으면 조회 속도가 느리거나 실패할 수 있다"
+  ],
+  "generatedAt": "2026-07-26T06:12:57.861Z"
+}

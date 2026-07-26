@@ -1,0 +1,75 @@
+{
+  "slug": "nx-policy-platform-monorepo-docs",
+  "repo": "nx-policy-platform-monorepo-docs",
+  "title": "정책자금 중개 플랫폼 Nx 모노레포 구조",
+  "summary": "정책자금/중개 플랫폼을 위한 Nx 기반 모노레포 구조와 공용 설정 프리셋을 정리한 문서 저장소입니다.",
+  "description": "정책 자금·중개 플랫폼을 여러 패키지로 나누어 관리하기 위한 Nx 워크스페이스 구조를 다룬다. nx.json과 packages 디렉터리를 중심으로 워크스페이스를 구성하고, tsconfig·eslint·jest 설정을 공용 프리셋으로 묶어 패키지 간 개발 환경 일관성을 확보하는 것을 목표로 한다. 이 저장소는 실제 소스 코드가 아닌, 해당 모노레포 구조에 대한 공개 문서만을 담고 있다.",
+  "category": "인프라",
+  "role": "Nx 모노레포 워크스페이스 구조를 설계하고, 여러 패키지가 공유하는 tsconfig/eslint/jest 프리셋을 정리했다.",
+  "techStack": [
+    {
+      "name": "Nx",
+      "category": "devops",
+      "usage": "모노레포 워크스페이스 구성 및 패키지 관리"
+    },
+    {
+      "name": "TypeScript",
+      "category": "language",
+      "usage": "공용 tsconfig 프리셋 기반 타입 설정"
+    },
+    {
+      "name": "ESLint",
+      "category": "tool",
+      "usage": "패키지 전반에 적용되는 공용 린트 규칙"
+    },
+    {
+      "name": "Jest",
+      "category": "testing",
+      "usage": "공용 테스트 프리셋 구성"
+    }
+  ],
+  "highlights": [
+    "Nx 워크스페이스로 정책자금/중개 플랫폼의 여러 패키지를 단일 저장소에서 관리",
+    "tsconfig/eslint/jest를 공용 프리셋으로 분리해 패키지 간 설정 중복을 최소화"
+  ],
+  "challenges": [],
+  "diagrams": [
+    {
+      "title": "Nx 모노레포 구조 개요",
+      "description": "정책자금 플랫폼 모노레포의 워크스페이스 설정과 패키지, 공용 프리셋 간의 관계를 보여준다.",
+      "type": "architecture",
+      "mermaid": "flowchart TD\n  A[\"nx.json 워크스페이스 설정\"] --> B[\"packages 디렉터리\"]\n  A --> C[\"공용 tsconfig 프리셋\"]\n  A --> D[\"공용 eslint 프리셋\"]\n  A --> E[\"공용 jest 프리셋\"]\n  B --> F[\"정책자금 중개 패키지들\"]\n  F --> C\n  F --> D\n  F --> E"
+    }
+  ],
+  "keywords": [
+    "nx",
+    "monorepo",
+    "typescript",
+    "eslint",
+    "jest",
+    "policy-fund",
+    "workspace"
+  ],
+  "links": {
+    "repo": "https://github.com/jiyong-jeong/nx-policy-platform-monorepo-docs",
+    "homepage": null
+  },
+  "metrics": {
+    "stars": 0,
+    "forks": 0,
+    "watchers": 0,
+    "sizeKb": 0,
+    "openIssues": 0,
+    "languages": {},
+    "topics": [],
+    "primaryLanguage": null,
+    "license": null
+  },
+  "dates": {
+    "createdAt": "2026-07-26T05:30:25Z",
+    "updatedAt": "2026-07-26T05:30:35Z",
+    "pushedAt": "2026-07-26T05:30:28Z",
+    "analyzedAt": "2026-07-26T05:44:20.764Z"
+  },
+  "featured": false
+}

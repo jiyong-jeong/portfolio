@@ -1,0 +1,51 @@
+{
+  "slug": "protocol-buffers",
+  "name": "Protocol Buffers",
+  "category": "tool",
+  "tagline": "구조화된 데이터를 언어·플랫폼 독립적으로 직렬화하는 IDL 및 직렬화 도구",
+  "definition": "Protocol Buffers(protobuf)는 구글이 개발한 데이터 직렬화 포맷으로, .proto 파일에 메시지 구조를 정의하면 여러 언어용 코드를 자동 생성해 데이터를 이진 형식으로 주고받을 수 있게 해준다. JSON이나 XML보다 크기가 작고 파싱이 빠르면서도, 스키마를 명시적으로 정의해 서비스 간 데이터 계약을 강제할 수 있다는 점에서 만들어졌다. 주로 마이크로서비스 간 통신, gRPC의 메시지 포맷, 대용량 데이터 저장·전송에 쓰인다.",
+  "concepts": [
+    {
+      "term": "IDL (Interface Definition Language)",
+      "description": ".proto 파일에 메시지 필드와 타입, 서비스 인터페이스를 언어 중립적인 문법으로 정의하는 방식이다."
+    },
+    {
+      "term": "Message",
+      "description": "직렬화 대상이 되는 데이터 구조의 단위로, 필드 이름·타입·번호로 구성된다."
+    },
+    {
+      "term": "Field Number",
+      "description": "각 필드에 부여되는 고유 번호로, 실제 전송 시 필드 이름 대신 사용되어 크기를 줄이고 하위 호환성을 유지한다."
+    },
+    {
+      "term": "Code Generation",
+      "description": "protoc 컴파일러가 .proto 정의를 읽어 여러 언어의 클래스/구조체 코드를 자동 생성해준다."
+    },
+    {
+      "term": "Binary Serialization",
+      "description": "데이터를 사람이 읽기 어려운 압축된 이진 형태로 인코딩해 전송 크기와 파싱 비용을 줄인다."
+    },
+    {
+      "term": "Schema Evolution",
+      "description": "필드를 추가·삭제해도 번호 규칙을 지키면 기존 클라이언트와의 호환성이 깨지지 않도록 설계된 특성이다."
+    }
+  ],
+  "whenToUse": [
+    "서비스 간 통신에서 엄격한 데이터 스키마와 타입 안정성이 필요할 때",
+    "네트워크 대역폭이나 파싱 성능이 중요한 대규모 트래픽 환경일 때",
+    "gRPC 기반 마이크로서비스 아키텍처를 구축할 때",
+    "여러 언어로 작성된 서비스 간 동일한 데이터 계약을 공유해야 할 때"
+  ],
+  "example": {
+    "title": "기본 .proto 메시지 정의",
+    "language": "text",
+    "code": "syntax = \"proto3\";\n\npackage user;\n\nmessage User {\n  int64 id = 1;\n  string name = 2;\n  string email = 3;\n  repeated string roles = 4;\n}\n\nservice UserService {\n  rpc GetUser (UserRequest) returns (User);\n}\n\nmessage UserRequest {\n  int64 id = 1;\n}",
+    "description": "User 메시지와 이를 조회하는 서비스 인터페이스를 정의한 예시로, protoc으로 컴파일하면 각 언어별 코드가 생성된다."
+  },
+  "pitfalls": [
+    "필드 번호를 재사용하거나 변경하면 기존 데이터와의 호환성이 깨진다",
+    "proto3에서는 기본값과 필드 미설정을 구분하기 어려워 로직 오류를 유발할 수 있다",
+    ".proto 파일 변경 후 코드 재생성을 잊으면 클라이언트와 서버 스키마가 어긋난다"
+  ],
+  "generatedAt": "2026-07-26T06:12:38.768Z"
+}

@@ -1,0 +1,89 @@
+{
+  "slug": "racing-game-platform-worker-docs",
+  "repo": "racing-game-platform-worker-docs",
+  "title": "레이싱 게임 워커 서비스 아키텍처 문서",
+  "summary": "레이싱 게임 플랫폼의 NestJS 기반 워커 서비스 구조와 엔티티 빌드 관례를 정리한 공개 기술 문서",
+  "description": "레이싱 게임 플랫폼에서 API 서비스와 분리되어 독립적으로 배포되는 NestJS 워커 서비스의 구조를 설명하는 문서 프로젝트입니다. TypeORM 을 사용해 데이터베이스 스키마와 마이그레이션을 관리하며, entities 디렉터리의 엔티티 소스를 build-entity.js 로 빌드 타임에 사전 처리해 마이그레이션/스키마 sync 를 안정적으로 다루는 관례를 채택했습니다. 빌드와 배포는 Docker 이미지화 후 Jenkins CI 파이프라인을 통해 이루어집니다. 이 레포는 실제 소스 코드 없이 해당 워커 서비스의 구조와 설계 관례만을 공개적으로 정리한 문서입니다.",
+  "category": "백엔드",
+  "role": "레이싱 게임 플랫폼의 워커 서비스를 설계·구현하고, 그 구조와 엔티티 빌드 관례를 정리해 공개 문서로 작성함.",
+  "techStack": [
+    {
+      "name": "TypeScript",
+      "category": "language",
+      "usage": "NestJS 애플리케이션 및 엔티티, ormconfig 작성 언어"
+    },
+    {
+      "name": "NestJS",
+      "category": "backend",
+      "usage": "워커 서비스의 기반 백엔드 프레임워크"
+    },
+    {
+      "name": "TypeORM",
+      "category": "database",
+      "usage": "ormconfig.ts 기반 데이터베이스 스키마 및 마이그레이션 관리"
+    },
+    {
+      "name": "Docker",
+      "category": "infra",
+      "usage": "워커 서비스 컨테이너 이미지 빌드"
+    },
+    {
+      "name": "Jenkins",
+      "category": "devops",
+      "usage": "CI 파이프라인을 통한 빌드/배포 자동화"
+    }
+  ],
+  "highlights": [
+    "build-entity.js 로 엔티티 클래스를 빌드 타임에 사전 처리해 마이그레이션/스키마 sync 안정성 확보",
+    "워커 서비스를 API 서비스와 분리된 독립 배포 단위로 구성",
+    "TypeORM 기반으로 엔티티와 데이터베이스 스키마를 일관되게 관리",
+    "Docker + Jenkins 조합으로 워커 서비스의 CI 빌드/배포 자동화"
+  ],
+  "challenges": [
+    {
+      "problem": "TypeORM 마이그레이션과 스키마 sync 를 안정적으로 다루기 어려운 문제",
+      "solution": "엔티티 클래스를 빌드 타임에 사전 처리하는 build-entity.js 를 도입해 관례화함"
+    }
+  ],
+  "diagrams": [
+    {
+      "title": "워커 서비스 구조",
+      "description": "NestJS 워커 서비스가 API 서비스와 분리되어 배포되며, 엔티티 빌드와 CI/CD를 거쳐 데이터베이스와 연결되는 구조를 보여준다.",
+      "type": "architecture",
+      "mermaid": "flowchart TD\n  A[\"API 서비스\"] --> B[\"공유 데이터베이스\"]\n  C[\"워커 서비스 (NestJS)\"] --> B\n  C --> D[\"build-entity.js\"]\n  D --> E[\"엔티티 빌드 산출물\"]\n  C --> F[\"TypeORM (ormconfig.ts)\"]\n  F --> B\n  G[\"Docker 이미지\"] --> C\n  H[\"Jenkins CI\"] --> G"
+    }
+  ],
+  "keywords": [
+    "nestjs",
+    "typeorm",
+    "worker",
+    "docker",
+    "jenkins",
+    "ci-cd",
+    "backend",
+    "racing-game",
+    "microservice"
+  ],
+  "links": {
+    "repo": "https://github.com/jiyong-jeong/racing-game-platform-worker-docs",
+    "homepage": null
+  },
+  "metrics": {
+    "stars": 0,
+    "forks": 0,
+    "watchers": 0,
+    "sizeKb": 0,
+    "openIssues": 0,
+    "languages": {},
+    "topics": [],
+    "primaryLanguage": null,
+    "license": null
+  },
+  "dates": {
+    "createdAt": "2026-07-26T05:17:06Z",
+    "updatedAt": "2026-07-26T05:17:13Z",
+    "pushedAt": "2026-07-26T05:17:09Z",
+    "analyzedAt": "2026-07-26T05:58:43.975Z"
+  },
+  "featured": false
+}

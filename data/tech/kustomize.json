@@ -1,0 +1,51 @@
+{
+  "slug": "kustomize",
+  "name": "Kustomize",
+  "category": "devops",
+  "tagline": "Kubernetes 매니페스트를 base와 overlay로 나눠 환경별로 재사용·조합하는 설정 관리 도구",
+  "definition": "Kustomize는 Kubernetes 매니페스트 YAML을 템플릿 엔진 없이 순수 선언적 방식으로 커스터마이징하는 도구입니다. 공통 리소스를 base로 정의하고, 환경(dev/qa/prod)이나 대상(체인, 서비스 등)별 차이만 overlay 패치로 덧씌워 중복을 줄이는 것을 목표로 합니다. Helm처럼 변수 치환 템플릿을 쓰는 대신, 완전한 YAML 파일들을 계층적으로 합성(compose)하는 방식을 택해 매니페스트를 그대로 읽고 검증할 수 있게 합니다. kubectl에 내장되어 있어 별도 설치 없이 바로 사용할 수 있습니다.",
+  "concepts": [
+    {
+      "term": "base",
+      "description": "여러 환경에서 공통으로 쓰이는 기본 리소스 정의와 kustomization.yaml이 위치하는 디렉터리입니다."
+    },
+    {
+      "term": "overlay",
+      "description": "base를 참조하면서 환경별로 달라지는 부분만 patch나 추가 리소스로 덧붙이는 디렉터리입니다."
+    },
+    {
+      "term": "kustomization.yaml",
+      "description": "어떤 리소스를 포함하고 어떤 patch를 적용할지 선언하는 설정 파일로, Kustomize 동작의 진입점입니다."
+    },
+    {
+      "term": "strategic merge patch",
+      "description": "원본 YAML과 같은 구조의 부분 YAML을 병합해 필드 단위로 값을 덮어쓰거나 추가하는 패치 방식입니다."
+    },
+    {
+      "term": "JSON 6902 patch",
+      "description": "add/replace/remove 같은 연산을 경로 기반으로 명시하는 표준화된 패치 방식으로, 세밀한 필드 조작에 사용됩니다."
+    },
+    {
+      "term": "generator",
+      "description": "ConfigMap이나 Secret을 파일이나 리터럴 값으로부터 자동 생성하고, 내용이 바뀌면 이름 해시를 갱신해 참조 리소스를 자동 롤아웃시키는 기능입니다."
+    }
+  ],
+  "whenToUse": [
+    "동일한 애플리케이션을 dev/qa/prod 등 여러 환경에 조금씩 다르게 배포해야 할 때",
+    "별도 템플릿 문법 없이 순수 YAML만으로 매니페스트 차이를 관리하고 싶을 때",
+    "ArgoCD 등 GitOps 도구와 함께 선언적 배포 파이프라인을 구성할 때",
+    "체인, 리전, 서비스별로 유사하지만 조금씩 다른 매니페스트를 다수 관리할 때"
+  ],
+  "example": {
+    "title": "base + overlay 기본 구조",
+    "language": "yaml",
+    "code": "# base/kustomization.yaml\nresources:\n  - deployment.yaml\n  - service.yaml\n\n---\n# overlays/prod/kustomization.yaml\nresources:\n  - ../../base\n\npatches:\n  - target:\n      kind: Deployment\n      name: my-app\n    patch: |-\n      - op: replace\n        path: /spec/replicas\n        value: 3",
+    "description": "base 리소스를 overlay가 참조하면서, prod 환경에서는 replicas 값만 JSON 6902 patch로 덮어쓰는 예시입니다."
+  },
+  "pitfalls": [
+    "base 리소스를 직접 apply하면 overlay 설정 없이 배포돼 환경 차이가 반영되지 않는다.",
+    "patch 대상(target)의 kind·name이 base와 정확히 일치하지 않으면 조용히 무시될 수 있다.",
+    "Helm 같은 템플릿 변수 치환으로 오해하기 쉬우나, 값 삽입이 아닌 YAML 병합 방식으로 동작한다."
+  ],
+  "generatedAt": "2026-07-26T06:06:51.099Z"
+}

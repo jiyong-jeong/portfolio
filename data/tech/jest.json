@@ -1,0 +1,51 @@
+{
+  "slug": "jest",
+  "name": "Jest",
+  "category": "testing",
+  "tagline": "JavaScript/TypeScript 코드의 단위·통합·e2e 테스트를 작성하고 실행하는 테스트 프레임워크",
+  "definition": "Jest는 별도의 러너·assertion 라이브러리·모킹 도구를 조합하지 않아도 되도록, 테스트 실행기와 검증(assertion) API, 모킹 기능을 하나로 묶어 제공하는 JavaScript 테스트 프레임워크입니다. 설정 없이 바로 실행되는 기본값(zero-config)을 지향해, 프로젝트를 세팅하자마자 테스트를 작성할 수 있게 하는 것을 목표로 만들어졌습니다. 프런트엔드 컴포넌트부터 백엔드 서비스, Lambda 함수, 모노레포의 여러 패키지까지 폭넓게 적용할 수 있습니다.",
+  "concepts": [
+    {
+      "term": "test runner",
+      "description": "테스트 파일을 찾아 병렬로 실행하고 결과를 취합해 성공/실패를 보고하는 핵심 실행 엔진입니다."
+    },
+    {
+      "term": "matcher",
+      "description": "expect(value).toBe(...)처럼 테스트 결과값이 기대값과 일치하는지 검증하는 assertion 문법입니다."
+    },
+    {
+      "term": "mock function",
+      "description": "함수 호출 여부·인자·반환값을 가로채거나 대체해 외부 의존성 없이 로직만 독립적으로 검증할 수 있게 해줍니다."
+    },
+    {
+      "term": "test suite / test case",
+      "description": "describe로 관련 테스트를 묶고, it 또는 test로 개별 검증 단위를 정의하는 구조입니다."
+    },
+    {
+      "term": "snapshot testing",
+      "description": "컴포넌트나 데이터 구조의 출력 결과를 저장해두고, 이후 실행에서 이전 스냅샷과 비교해 의도치 않은 변경을 감지하는 방식입니다."
+    },
+    {
+      "term": "coverage",
+      "description": "테스트가 소스 코드의 어느 부분을 실행했는지 비율로 보여줘 테스트 사각지대를 파악하게 해줍니다."
+    }
+  ],
+  "whenToUse": [
+    "Node.js 기반 프런트엔드/백엔드 프로젝트에서 별도 조합 없이 테스트 환경을 빠르게 구성할 때",
+    "모노레포에서 여러 패키지에 공통 테스트 설정(프리셋)을 공유하고 싶을 때",
+    "외부 API·DB 등 의존성을 모킹해 로직만 독립적으로 검증하고 싶을 때",
+    "단위 테스트뿐 아니라 e2e 테스트까지 하나의 도구로 다루고 싶을 때"
+  ],
+  "example": {
+    "title": "가장 기본적인 Jest 테스트 작성 예시",
+    "language": "javascript",
+    "code": "// sum.js\nfunction sum(a, b) {\n  return a + b;\n}\nmodule.exports = sum;\n\n// sum.test.js\nconst sum = require('./sum');\n\ndescribe('sum', () => {\n  it('두 수를 더한 값을 반환한다', () => {\n    expect(sum(1, 2)).toBe(3);\n  });\n\n  it('음수도 정상적으로 더한다', () => {\n    expect(sum(-1, -2)).toBe(-3);\n  });\n});",
+    "description": "간단한 함수 하나를 정의하고, describe/it 구조 안에서 expect matcher로 결과를 검증하는 최소 예시입니다."
+  },
+  "pitfalls": [
+    "async 함수 테스트에서 await나 return을 빠뜨리면 실패해도 통과한 것처럼 보일 수 있다",
+    "mock을 테스트마다 초기화하지 않으면 이전 테스트의 호출 기록이 남아 결과가 뒤섞인다",
+    "스냅샷을 이해 없이 무조건 업데이트하는 습관이 생기면 회귀 감지 기능이 무력화된다"
+  ],
+  "generatedAt": "2026-07-26T06:06:19.598Z"
+}

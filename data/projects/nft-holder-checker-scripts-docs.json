@@ -1,0 +1,66 @@
+{
+  "slug": "nft-holder-checker-scripts-docs",
+  "repo": "nft-holder-checker-scripts-docs",
+  "title": "NFT/토큰 홀더 조회 스크립트 문서",
+  "summary": "ERC20·ERC721 토큰 홀더를 조회하는 Node.js 스크립트 모음의 구조와 사용법을 정리한 공개 문서 레포",
+  "description": "이 레포는 ERC20 및 ERC721 토큰의 홀더 목록을 조회하는 Node.js 스크립트 모음에 대한 공개 문서입니다. checkList, data, abi, define, config 등 역할별 디렉터리로 스크립트 구조를 구분해 정리했습니다. ABI 정의와 조회 대상 목록, 설정값을 분리 관리함으로써 여러 컨트랙트에 대해 홀더 조회 작업을 반복 수행할 수 있도록 설계되었습니다. 실제 소스 코드 대신 구조와 개념을 설명하는 문서 전용 레포입니다.",
+  "category": "Web3",
+  "role": "블록체인 토큰 홀더 조회 스크립트의 디렉터리 구조를 설계하고 이를 문서화함",
+  "techStack": [
+    {
+      "name": "Node.js",
+      "category": "language",
+      "usage": "홀더 조회 스크립트 실행 런타임"
+    },
+    {
+      "name": "Ethereum",
+      "category": "blockchain",
+      "usage": "ERC20/ERC721 토큰 컨트랙트 대상 플랫폼"
+    }
+  ],
+  "highlights": [
+    "checkList, data, abi, define, config로 역할을 분리한 스크립트 구조",
+    "ERC20과 ERC721 두 토큰 표준의 홀더 조회를 함께 다룸",
+    "ABI와 설정을 분리 관리해 여러 컨트랙트에 재사용 가능한 구조"
+  ],
+  "challenges": [],
+  "diagrams": [
+    {
+      "title": "홀더 조회 스크립트 구조",
+      "description": "각 디렉터리가 담당하는 역할과 데이터 흐름을 보여줍니다.",
+      "type": "architecture",
+      "mermaid": "flowchart TD\n  config[\"config/ 설정값\"] --> checkList[\"checkList/ 조회 대상\"]\n  abi[\"abi/ ERC20 ERC721 ABI\"] --> define[\"define/ 정의\"]\n  define --> checkList\n  checkList --> script[\"홀더 조회 스크립트\"]\n  script --> data[\"data/ 결과 데이터\"]"
+    }
+  ],
+  "keywords": [
+    "nft",
+    "erc20",
+    "erc721",
+    "holder-checker",
+    "web3",
+    "nodejs",
+    "blockchain"
+  ],
+  "links": {
+    "repo": "https://github.com/jiyong-jeong/nft-holder-checker-scripts-docs",
+    "homepage": null
+  },
+  "metrics": {
+    "stars": 0,
+    "forks": 0,
+    "watchers": 0,
+    "sizeKb": 0,
+    "openIssues": 0,
+    "languages": {},
+    "topics": [],
+    "primaryLanguage": null,
+    "license": null
+  },
+  "dates": {
+    "createdAt": "2026-07-26T05:29:15Z",
+    "updatedAt": "2026-07-26T05:29:47Z",
+    "pushedAt": "2026-07-26T05:29:19Z",
+    "analyzedAt": "2026-07-26T05:48:40.574Z"
+  },
+  "featured": false
+}

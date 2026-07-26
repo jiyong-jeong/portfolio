@@ -1,0 +1,71 @@
+{
+  "slug": "blockchain-indexer-argocd-deploy-docs",
+  "repo": "blockchain-indexer-argocd-deploy-docs",
+  "title": "블록체인 인덱서 ArgoCD GitOps 배포 문서",
+  "summary": "체인별 Kustomize 매니페스트와 ArgoCD 연동 흐름을 정리한 블록체인 인덱서 GitOps 배포 저장소",
+  "description": "블록체인 인덱서 서비스를 여러 체인 환경에 배포하기 위한 GitOps 매니페스트를 관리하는 저장소입니다. configs/kubernetes/<chain>/ 하위에 체인별로 Kustomize base와 overlay를 두어 환경별 배포 설정을 분리 관리합니다. CI 파이프라인에서 이미지를 빌드해 push한 뒤 overlay에 이미지 태그를 커밋하면 ArgoCD가 이를 감지해 클러스터에 자동으로 동기화하는 구조입니다. 코드 저장소와 분리된 공개 문서 저장소로, 배포 흐름과 구조를 외부에 공유하기 위한 목적을 가집니다.",
+  "category": "인프라",
+  "role": "블록체인 인덱서의 GitOps 배포 구조를 설계하고, 체인별 Kustomize base/overlay 구성과 CI-ArgoCD 연동 흐름을 문서화함",
+  "techStack": [
+    {
+      "name": "Kubernetes",
+      "category": "infra",
+      "usage": "인덱서 서비스가 배포되는 컨테이너 오케스트레이션 플랫폼"
+    },
+    {
+      "name": "Kustomize",
+      "category": "devops",
+      "usage": "체인별 base/overlay 구조로 배포 매니페스트를 관리"
+    },
+    {
+      "name": "ArgoCD",
+      "category": "devops",
+      "usage": "Git에 커밋된 매니페스트를 클러스터에 자동 동기화하는 GitOps 도구"
+    }
+  ],
+  "highlights": [
+    "체인별로 Kustomize base와 overlay를 분리해 다중 체인 환경을 일관되게 관리",
+    "CI 이미지 push부터 overlay 커밋, ArgoCD sync까지 이어지는 GitOps 배포 파이프라인 구성",
+    "배포 설정과 실제 코드 저장소를 분리해 배포 흐름만 별도로 공개 문서화"
+  ],
+  "challenges": [],
+  "diagrams": [
+    {
+      "title": "GitOps 배포 흐름",
+      "description": "CI에서 이미지를 push한 뒤 overlay 커밋을 거쳐 ArgoCD가 클러스터에 동기화하는 전체 흐름을 보여줍니다.",
+      "type": "dataflow",
+      "mermaid": "flowchart LR\n  CI[\"CI 파이프라인\"] --> IMG[\"이미지 Push\"]\n  IMG --> OVERLAY[\"Overlay 커밋\"]\n  OVERLAY --> REPO[\"GitOps 매니페스트 저장소\"]\n  REPO --> ARGOCD[\"ArgoCD Sync\"]\n  ARGOCD --> K8S[\"Kubernetes 클러스터\"]\n  subgraph CONFIG[\"configs/kubernetes\"]\n    BASE[\"Chain Base\"] --> OV[\"Chain Overlays\"]\n  end\n  OV --> OVERLAY"
+    }
+  ],
+  "keywords": [
+    "gitops",
+    "argocd",
+    "kustomize",
+    "kubernetes",
+    "blockchain-indexer",
+    "deployment",
+    "ci-cd"
+  ],
+  "links": {
+    "repo": "https://github.com/jiyong-jeong/blockchain-indexer-argocd-deploy-docs",
+    "homepage": null
+  },
+  "metrics": {
+    "stars": 0,
+    "forks": 0,
+    "watchers": 0,
+    "sizeKb": 0,
+    "openIssues": 0,
+    "languages": {},
+    "topics": [],
+    "primaryLanguage": null,
+    "license": null
+  },
+  "dates": {
+    "createdAt": "2026-07-26T05:15:39Z",
+    "updatedAt": "2026-07-26T05:15:48Z",
+    "pushedAt": "2026-07-26T05:15:42Z",
+    "analyzedAt": "2026-07-26T06:05:19.205Z"
+  },
+  "featured": false
+}

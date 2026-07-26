@@ -1,0 +1,87 @@
+{
+  "slug": "nats-event-consumer-docs",
+  "repo": "nats-event-consumer-docs",
+  "title": "NATS 기반 이벤트 컨슈머 서비스",
+  "summary": "NATS 메시지를 구독해 도메인 이벤트로 변환·처리하는 Spring Boot 컨슈머 구조 문서",
+  "description": "NATS 메시지 브로커를 통해 발행되는 이벤트를 구독하여 도메인 이벤트로 처리하는 Spring Boot 기반 컨슈머 프로젝트의 공개 기술 문서입니다. Java와 Maven으로 빌드되며, Docker 이미지로 패키징되어 Jenkins CI 파이프라인을 통해 배포되는 구조를 갖습니다. 소스 코드 대신 프로젝트의 구조와 기술 스택을 정리한 문서만을 공개하는 형태의 레포지토리입니다.",
+  "category": "백엔드",
+  "role": "NATS 메시지 컨슈머와 도메인 이벤트 처리 로직을 설계 및 구현하고, Docker/Jenkins 기반 CI 파이프라인 구성에 참여했습니다.",
+  "techStack": [
+    {
+      "name": "Java",
+      "category": "language",
+      "usage": "컨슈머 애플리케이션의 주 개발 언어"
+    },
+    {
+      "name": "Spring Boot",
+      "category": "framework",
+      "usage": "NATS 컨슈머 및 도메인 이벤트 처리 서비스 프레임워크"
+    },
+    {
+      "name": "NATS",
+      "category": "backend",
+      "usage": "이벤트 메시지 발행/구독을 위한 메시지 브로커"
+    },
+    {
+      "name": "Maven",
+      "category": "tool",
+      "usage": "프로젝트 빌드 및 의존성 관리"
+    },
+    {
+      "name": "Docker",
+      "category": "devops",
+      "usage": "애플리케이션 컨테이너 이미지 빌드"
+    },
+    {
+      "name": "Jenkins",
+      "category": "devops",
+      "usage": "CI 파이프라인을 통한 빌드/배포 자동화"
+    }
+  ],
+  "highlights": [
+    "NATS 메시지 구독 후 도메인 이벤트로 변환하는 컨슈머 구조를 설계함",
+    "Docker 컨테이너화를 통해 배포 환경에 독립적인 실행 단위를 구성함",
+    "Jenkins CI 파이프라인으로 빌드·배포 과정을 자동화함"
+  ],
+  "challenges": [],
+  "diagrams": [
+    {
+      "title": "NATS 이벤트 컨슈머 구조",
+      "description": "NATS 브로커로부터 메시지를 수신해 도메인 이벤트로 처리하는 전체 흐름을 보여줍니다.",
+      "type": "architecture",
+      "mermaid": "flowchart LR\n  producer[\"이벤트 발행자\"] --> nats[\"NATS 브로커\"]\n  nats --> consumer[\"Spring Boot 컨슈머\"]\n  consumer --> domain[\"도메인 이벤트 처리\"]\n  domain --> result[\"처리 결과 저장/전파\"]\n  subgraph ci[\"CI/CD\"]\n    jenkins[\"Jenkins\"] --> docker[\"Docker 이미지\"]\n  end\n  docker --> consumer"
+    }
+  ],
+  "keywords": [
+    "nats",
+    "spring-boot",
+    "event-driven",
+    "message-consumer",
+    "java",
+    "docker",
+    "jenkins",
+    "domain-event"
+  ],
+  "links": {
+    "repo": "https://github.com/jiyong-jeong/nats-event-consumer-docs",
+    "homepage": null
+  },
+  "metrics": {
+    "stars": 0,
+    "forks": 0,
+    "watchers": 0,
+    "sizeKb": 0,
+    "openIssues": 0,
+    "languages": {},
+    "topics": [],
+    "primaryLanguage": null,
+    "license": null
+  },
+  "dates": {
+    "createdAt": "2026-07-26T05:28:21Z",
+    "updatedAt": "2026-07-26T05:28:32Z",
+    "pushedAt": "2026-07-26T05:28:25Z",
+    "analyzedAt": "2026-07-26T05:52:09.351Z"
+  },
+  "featured": false
+}

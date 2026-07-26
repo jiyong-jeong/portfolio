@@ -1,0 +1,61 @@
+{
+  "slug": "nft-refine-sample-docs",
+  "repo": "nft-refine-sample-docs",
+  "title": "NFT API 문서 스캐폴딩 저장소",
+  "summary": "api 디렉터리 하나만 남긴 최소 구성으로, NFT 관련 API 문서를 위한 뼈대를 제공하는 샘플 저장소입니다.",
+  "description": "이 저장소는 nft-refine 프로젝트의 공개 문서를 위한 최소 구성 샘플입니다. README와 api/ 서브디렉터리만으로 이루어진 매우 단순한 구조를 가지고 있으며, 별도의 매니페스트나 소스 파일은 포함되어 있지 않습니다. NFT 관련 API 문서를 체계적으로 정리하기 위한 출발점 혹은 템플릿 성격의 저장소로 보입니다. 실제 구현 코드보다는 문서화 구조 자체에 초점을 맞춘 프로젝트입니다.",
+  "category": "Web3",
+  "role": "저장소의 디렉터리 구조를 설계하고 문서화를 위한 초기 스캐폴딩을 구성했습니다.",
+  "techStack": [
+    {
+      "name": "Markdown",
+      "category": "tool",
+      "usage": "README 등 프로젝트 문서를 작성하는 데 사용"
+    }
+  ],
+  "highlights": [
+    "api/ 디렉터리만 남긴 최소 구성으로 문서 구조를 단순 명확하게 유지함",
+    "매니페스트나 소스 파일 없이 순수 문서 저장소로 설계됨",
+    "향후 API 문서를 확장해 나갈 수 있는 뼈대 구조를 제공함"
+  ],
+  "challenges": [],
+  "diagrams": [
+    {
+      "title": "저장소 구조",
+      "description": "nft-refine-sample-docs 저장소의 최소 디렉터리 구성을 보여줍니다.",
+      "type": "architecture",
+      "mermaid": "flowchart TD\n  Root[\"nft-refine-sample-docs\"] --> Readme[\"README.md\"]\n  Root --> Api[\"api 디렉터리\"]"
+    }
+  ],
+  "keywords": [
+    "nft",
+    "docs",
+    "documentation",
+    "api",
+    "sample",
+    "minimal",
+    "web3"
+  ],
+  "links": {
+    "repo": "https://github.com/jiyong-jeong/nft-refine-sample-docs",
+    "homepage": null
+  },
+  "metrics": {
+    "stars": 0,
+    "forks": 0,
+    "watchers": 0,
+    "sizeKb": 0,
+    "openIssues": 0,
+    "languages": {},
+    "topics": [],
+    "primaryLanguage": null,
+    "license": null
+  },
+  "dates": {
+    "createdAt": "2026-07-26T05:30:14Z",
+    "updatedAt": "2026-07-26T05:30:23Z",
+    "pushedAt": "2026-07-26T05:30:17Z",
+    "analyzedAt": "2026-07-26T05:45:14.855Z"
+  },
+  "featured": false
+}

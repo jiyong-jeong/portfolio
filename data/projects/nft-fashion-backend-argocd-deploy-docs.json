@@ -1,0 +1,84 @@
+{
+  "slug": "nft-fashion-backend-argocd-deploy-docs",
+  "repo": "nft-fashion-backend-argocd-deploy-docs",
+  "title": "패션 NFT 백엔드 ArgoCD 배포 구성 문서",
+  "summary": "Jenkins CI와 ArgoCD를 연계한 패션 NFT 백엔드 서비스의 Kustomize 기반 배포 파이프라인 관찰 문서",
+  "description": "패션 IP와 NFT를 결합한 프로덕트(굿즈, 홀더 인증, 이벤트 등) 백엔드의 배포 구성을 정리한 공개 문서입니다. Jenkins가 백엔드 이미지를 빌드해 push하고, overlay의 이미지 태그를 갱신하는 커밋을 남기면 ArgoCD가 이를 감지해 대상 클러스터에 sync하는 GitOps 흐름을 따릅니다. 인프라는 Kustomize의 base/overlays 구조로 환경별 설정을 분리 관리하며, 마켓플레이스 계열과는 별도의 클러스터 네임스페이스에 배포되는 것으로 관찰됩니다. overlay별 리소스 스펙이 상대적으로 작아 트래픽 볼륨이 크지 않은 프로덕트 라인으로 추정됩니다.",
+  "category": "인프라",
+  "role": "패션 NFT 백엔드 서비스의 배포 구성을 관찰·정리하고, GitOps 기반 배포 흐름과 클러스터 분리 구조를 문서화함",
+  "techStack": [
+    {
+      "name": "Jenkins",
+      "category": "devops",
+      "usage": "백엔드 이미지 빌드 및 컨테이너 레지스트리 push를 담당하는 CI"
+    },
+    {
+      "name": "ArgoCD",
+      "category": "devops",
+      "usage": "Git 커밋 기반으로 대상 클러스터에 배포 상태를 sync하는 GitOps 도구"
+    },
+    {
+      "name": "Kubernetes",
+      "category": "infra",
+      "usage": "패션 NFT 백엔드 서비스가 배포되는 대상 클러스터 환경"
+    },
+    {
+      "name": "Kustomize",
+      "category": "devops",
+      "usage": "base/overlays 구조로 환경별 배포 매니페스트를 관리"
+    }
+  ],
+  "highlights": [
+    "Jenkins → 이미지 태그 커밋 → ArgoCD sync로 이어지는 GitOps 배포 흐름 정리",
+    "Kustomize base/overlays 구조로 환경별 배포 설정을 분리 관리",
+    "마켓플레이스 계열과 분리된 클러스터 네임스페이스에 독립 배포되는 구조 관찰",
+    "트래픽 규모가 작은 프로덕트 라인에 맞춘 상대적으로 소규모의 overlay 리소스 스펙"
+  ],
+  "challenges": [],
+  "diagrams": [
+    {
+      "title": "GitOps 배포 흐름",
+      "description": "Jenkins CI 빌드부터 ArgoCD sync까지 패션 NFT 백엔드의 배포 파이프라인 흐름을 보여줍니다.",
+      "type": "deployment",
+      "mermaid": "flowchart LR\n  DEV[\"개발자 커밋\"] --> CI[\"Jenkins CI 빌드 push\"]\n  CI --> TAG[\"overlay 이미지 태그 갱신 커밋\"]\n  TAG --> ARGOCD[\"ArgoCD sync\"]\n  ARGOCD --> CLUSTER[\"대상 클러스터 네임스페이스\"]\n  CLUSTER --> SVC[\"패션 NFT 백엔드 서비스\"]"
+    },
+    {
+      "title": "Kustomize 구성 구조",
+      "description": "infra 디렉터리 내 base와 환경별 overlay의 관계를 나타냅니다.",
+      "type": "architecture",
+      "mermaid": "flowchart TD\n  INFRA[\"infra k8s\"] --> BASE[\"base 매니페스트\"]\n  INFRA --> OVERLAY[\"overlays 환경별 설정\"]\n  BASE --> OVERLAY\n  OVERLAY --> DEPLOY[\"환경별 배포 결과\"]"
+    }
+  ],
+  "keywords": [
+    "argocd",
+    "gitops",
+    "kustomize",
+    "jenkins",
+    "kubernetes",
+    "nft",
+    "fashion",
+    "deployment"
+  ],
+  "links": {
+    "repo": "https://github.com/jiyong-jeong/nft-fashion-backend-argocd-deploy-docs",
+    "homepage": null
+  },
+  "metrics": {
+    "stars": 0,
+    "forks": 0,
+    "watchers": 0,
+    "sizeKb": 0,
+    "openIssues": 0,
+    "languages": {},
+    "topics": [],
+    "primaryLanguage": null,
+    "license": null
+  },
+  "dates": {
+    "createdAt": "2026-07-26T05:16:07Z",
+    "updatedAt": "2026-07-26T05:16:16Z",
+    "pushedAt": "2026-07-26T05:16:10Z",
+    "analyzedAt": "2026-07-26T06:02:42.838Z"
+  },
+  "featured": false
+}

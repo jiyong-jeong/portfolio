@@ -1,0 +1,100 @@
+{
+  "slug": "discord-nft-holder-verification-docs",
+  "repo": "discord-nft-holder-verification-docs",
+  "title": "Discord NFT 홀더 인증 서비스",
+  "summary": "Discord 사용자의 지갑 서명과 NFT 보유 여부를 검증해 서버 접근 권한을 자동으로 부여하는 NestJS 기반 인증 서비스",
+  "description": "Discord 커뮤니티에서 특정 NFT를 보유한 사용자에게만 서버 접근 권한을 부여하기 위한 홀더 인증 서비스입니다. NestJS와 TypeORM을 기반으로 백엔드를 구성하고, migrations 디렉터리를 통해 데이터베이스 스키마 변경 이력을 관리합니다. Docker Compose와 Dockerfile.e2e로 로컬 개발 및 E2E 테스트 환경을 별도로 구성했으며, Procfile을 통해 Heroku 스타일 배포를 지원합니다. .rest 스니펫을 포함해 API 동작을 손쉽게 확인할 수 있도록 문서화했습니다.",
+  "category": "Web3",
+  "role": "Discord NFT 홀더 인증 서비스의 백엔드 구조 설계, 데이터베이스 마이그레이션 관리, 배포 및 테스트 환경 구성을 담당했습니다.",
+  "techStack": [
+    {
+      "name": "TypeScript",
+      "category": "language",
+      "usage": "NestJS 기반 백엔드 서버 개발 언어"
+    },
+    {
+      "name": "NestJS",
+      "category": "framework",
+      "usage": "인증 서비스의 백엔드 애플리케이션 프레임워크"
+    },
+    {
+      "name": "TypeORM",
+      "category": "database",
+      "usage": "migrations 디렉터리를 통한 데이터베이스 스키마 버전 관리"
+    },
+    {
+      "name": "Docker",
+      "category": "devops",
+      "usage": "Dockerfile.e2e로 E2E 테스트 환경 컨테이너화"
+    },
+    {
+      "name": "Docker Compose",
+      "category": "devops",
+      "usage": "로컬 개발 및 테스트용 다중 컨테이너 환경 구성"
+    },
+    {
+      "name": "Heroku",
+      "category": "infra",
+      "usage": "Procfile 기반 배포 대상 플랫폼"
+    },
+    {
+      "name": "Discord API",
+      "category": "backend",
+      "usage": "Discord 서버 접근 권한 부여를 위한 연동"
+    }
+  ],
+  "highlights": [
+    "TypeORM migrations로 데이터베이스 스키마 변경 이력을 체계적으로 관리함",
+    "Dockerfile.e2e를 별도로 두어 E2E 테스트 환경을 프로덕션과 분리함",
+    "Procfile을 통해 Heroku 스타일 배포 파이프라인을 지원함",
+    "CODEOWNERS로 코드 리뷰 책임 범위를 명시함",
+    ".rest 스니펫으로 API 호출을 문서와 함께 바로 테스트할 수 있게 함"
+  ],
+  "challenges": [],
+  "diagrams": [
+    {
+      "title": "NFT 홀더 인증 흐름",
+      "description": "Discord 사용자가 지갑을 연동해 NFT 보유를 인증하고 서버 역할을 부여받는 과정을 보여줍니다.",
+      "type": "flow",
+      "mermaid": "flowchart TD\n  A[\"Discord 사용자\"] --> B[\"Discord Bot\"]\n  B --> C[\"NestJS API 서버\"]\n  C --> D[\"지갑 서명 검증\"]\n  D --> E[\"NFT 보유 여부 온체인 조회\"]\n  E --> F[\"TypeORM 기반 DB 기록\"]\n  F --> C\n  C --> G[\"Discord 역할 부여\"]\n  G --> A"
+    },
+    {
+      "title": "빌드 및 배포 구성",
+      "description": "Docker Compose 기반 로컬/E2E 환경과 Procfile을 통한 Heroku 배포 경로를 나타냅니다.",
+      "type": "deployment",
+      "mermaid": "flowchart LR\n  A[\"소스 코드\"] --> B[\"Docker Compose\"]\n  A --> C[\"Procfile\"]\n  B --> D[\"Dockerfile.e2e\"]\n  D --> E[\"E2E 테스트\"]\n  C --> F[\"Heroku 배포\"]"
+    }
+  ],
+  "keywords": [
+    "discord",
+    "nft",
+    "web3",
+    "nestjs",
+    "typeorm",
+    "holder-verification",
+    "docker",
+    "heroku"
+  ],
+  "links": {
+    "repo": "https://github.com/jiyong-jeong/discord-nft-holder-verification-docs",
+    "homepage": null
+  },
+  "metrics": {
+    "stars": 0,
+    "forks": 0,
+    "watchers": 0,
+    "sizeKb": 0,
+    "openIssues": 0,
+    "languages": {},
+    "topics": [],
+    "primaryLanguage": null,
+    "license": null
+  },
+  "dates": {
+    "createdAt": "2026-07-26T05:27:39Z",
+    "updatedAt": "2026-07-26T05:27:46Z",
+    "pushedAt": "2026-07-26T05:27:42Z",
+    "analyzedAt": "2026-07-26T05:56:14.388Z"
+  },
+  "featured": false
+}

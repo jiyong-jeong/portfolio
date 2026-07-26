@@ -1,0 +1,115 @@
+{
+  "slug": "nft-marketplace-worker-argocd-deploy-docs",
+  "repo": "nft-marketplace-worker-argocd-deploy-docs",
+  "title": "멀티체인 NFT 워커 GitOps 배포 문서",
+  "summary": "NFT 마켓플레이스 워커 서비스를 체인별(Polygon/Klaytn/Ethereum)로 Kustomize와 ArgoCD로 배포하는 구조를 정리한 문서",
+  "description": "NFT 마켓플레이스의 백그라운드 이벤트 컨슈머(워커) 서비스를 여러 블록체인 네트워크 환경에 배포하기 위한 구성을 관찰하고 정리한 문서 레포지토리입니다. 체인 이름을 딴 서브디렉터리 아래 Jenkinsfile과 Kustomize base/overlays 구조로 배포 매니페스트를 관리하며, Jenkins CI가 이미지를 빌드·push하면 오버레이 값 갱신 커밋을 거쳐 ArgoCD가 대상 체인 클러스터에 sync하는 흐름으로 동작합니다. 워커는 API 서버와 달리 스파이키한 리소스 소비 패턴을 보이기 때문에 체인별 오버레이 레벨에서 HPA 임계값과 큐 컨슈머 concurrency를 다르게 설정하는 점이 특징입니다. 또한 시크릿 매니페스트는 체인×환경 조합별로 별도 디렉터리 트리에 저장해 애플리케이션 코드 배포 이력과 분리 관리합니다.",
+  "category": "인프라",
+  "role": "워커 서비스의 배포 구조를 분석하고 체인/환경별 Kustomize 구성, ArgoCD 배포 흐름, 시크릿 관리 방식을 문서화함",
+  "techStack": [
+    {
+      "name": "Jenkins",
+      "category": "devops",
+      "usage": "워커 컨테이너 이미지를 빌드하고 push하는 CI 파이프라인"
+    },
+    {
+      "name": "ArgoCD",
+      "category": "devops",
+      "usage": "GitOps 방식으로 오버레이 변경을 감지해 대상 클러스터에 sync"
+    },
+    {
+      "name": "Kubernetes",
+      "category": "infra",
+      "usage": "체인별 워커 워크로드를 실행하는 오케스트레이션 플랫폼"
+    },
+    {
+      "name": "Kustomize",
+      "category": "infra",
+      "usage": "base/overlays 구조로 dev/qa/prod 환경별 매니페스트 관리"
+    },
+    {
+      "name": "Docker",
+      "category": "devops",
+      "usage": "워커 서비스 컨테이너 이미지 빌드"
+    },
+    {
+      "name": "Polygon",
+      "category": "blockchain",
+      "usage": "워커가 이벤트를 처리하는 대상 체인 중 하나"
+    },
+    {
+      "name": "Klaytn",
+      "category": "blockchain",
+      "usage": "워커가 이벤트를 처리하는 대상 체인 중 하나"
+    },
+    {
+      "name": "Ethereum",
+      "category": "blockchain",
+      "usage": "워커가 이벤트를 처리하는 대상 체인 중 하나"
+    }
+  ],
+  "highlights": [
+    "체인별(Polygon/Klaytn/Ethereum) 서브디렉터리로 Jenkinsfile과 배포 구성을 분리 관리",
+    "Kustomize base/overlays 구조로 dev/qa/prod 환경 설정을 재사용 가능하게 구성",
+    "워커의 스파이키한 리소스 패턴에 맞춰 체인별 HPA 임계값·컨슈머 concurrency를 개별 조정",
+    "시크릿 매니페스트 트리를 코드 트리와 분리해 회전 이력이 배포 히스토리에 섞이지 않도록 설계"
+  ],
+  "challenges": [
+    {
+      "problem": "워커는 API 서버보다 리소스 소비가 스파이키해 단일 설정으로는 체인별 부하 특성에 대응하기 어려움",
+      "solution": "Kustomize 오버레이 레벨에서 체인마다 HPA 임계값과 큐 컨슈머 concurrency를 다르게 정의"
+    },
+    {
+      "problem": "시크릿 회전 이벤트가 애플리케이션 배포 히스토리와 섞이면 변경 이력 추적이 어려움",
+      "solution": "secrets 디렉터리를 체인×환경 조합으로 별도 트리에 두어 코드 배포 이력과 분리"
+    }
+  ],
+  "diagrams": [
+    {
+      "title": "CI/CD 배포 흐름",
+      "description": "Jenkins가 이미지를 빌드해 push하고, 오버레이 값 갱신 커밋을 거쳐 ArgoCD가 체인별 클러스터에 동기화하는 흐름을 보여줍니다.",
+      "type": "dataflow",
+      "mermaid": "flowchart TD\n  A[\"Jenkins CI\"] --> B[\"워커 이미지 빌드 및 Push\"]\n  B --> C[\"이미지 태그 및 오버레이 값 커밋\"]\n  C --> D[\"ArgoCD\"]\n  D --> E[\"Polygon 클러스터\"]\n  D --> F[\"Klaytn 클러스터\"]\n  D --> G[\"Ethereum 클러스터\"]"
+    },
+    {
+      "title": "매니페스트 디렉터리 구조",
+      "description": "Kustomize base/overlays 구조와 체인·환경별로 분리된 secrets 트리의 관계를 나타냅니다.",
+      "type": "architecture",
+      "mermaid": "flowchart TD\n  subgraph K8S[\"infra/k8s\"]\n    BASE[\"base\"]\n    OV_DEV[\"overlays dev\"]\n    OV_QA[\"overlays qa\"]\n    OV_PROD[\"overlays prod\"]\n  end\n  BASE --> OV_DEV\n  BASE --> OV_QA\n  BASE --> OV_PROD\n  subgraph SEC[\"secrets\"]\n    S_POLY[\"polygon\"]\n    S_KLAY[\"klaytn\"]\n    S_ETH[\"ethereum\"]\n  end\n  OV_DEV -.-> S_POLY\n  OV_QA -.-> S_KLAY\n  OV_PROD -.-> S_ETH"
+    }
+  ],
+  "keywords": [
+    "nft",
+    "marketplace",
+    "worker",
+    "kubernetes",
+    "kustomize",
+    "argocd",
+    "gitops",
+    "jenkins",
+    "multi-chain",
+    "polygon"
+  ],
+  "links": {
+    "repo": "https://github.com/jiyong-jeong/nft-marketplace-worker-argocd-deploy-docs",
+    "homepage": null
+  },
+  "metrics": {
+    "stars": 0,
+    "forks": 0,
+    "watchers": 0,
+    "sizeKb": 0,
+    "openIssues": 0,
+    "languages": {},
+    "topics": [],
+    "primaryLanguage": null,
+    "license": null
+  },
+  "dates": {
+    "createdAt": "2026-07-26T05:16:39Z",
+    "updatedAt": "2026-07-26T05:16:49Z",
+    "pushedAt": "2026-07-26T05:16:42Z",
+    "analyzedAt": "2026-07-26T06:00:45.246Z"
+  },
+  "featured": false
+}

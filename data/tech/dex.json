@@ -1,0 +1,51 @@
+{
+  "slug": "dex",
+  "name": "DEX",
+  "category": "blockchain",
+  "tagline": "중개기관 없이 스마트 컨트랙트로 자산을 교환하는 탈중앙화 거래소 기술",
+  "definition": "DEX(Decentralized Exchange)는 중앙화된 운영 주체나 주문 매칭 서버 없이, 블록체인 위의 스마트 컨트랙트가 자산 교환과 정산을 직접 처리하는 거래소 구조입니다. 기존 중앙화 거래소(CEX)가 사용자 자산을 커스터디로 보관하고 내부 장부로 매칭하는 것과 달리, DEX는 사용자가 자신의 지갑에서 자산을 직접 통제하면서 컨트랙트와 상호작용해 거래를 체결합니다. 단일 실패 지점과 자금 커스터디 리스크를 줄이고, 거래 규칙과 자금 흐름을 코드로 투명하게 공개하려는 목적에서 발전했습니다. 초기의 온체인 오더북 방식에서 유동성 문제를 해결하기 위해 AMM(자동화 마켓 메이커) 구조가 널리 쓰이게 되었습니다.",
+  "concepts": [
+    {
+      "term": "AMM (Automated Market Maker)",
+      "description": "오더북 없이 수학 공식(예: x*y=k)으로 자산 가격을 자동 결정하고 즉시 체결하는 방식입니다."
+    },
+    {
+      "term": "Liquidity Pool",
+      "description": "사용자들이 예치한 두 종류 이상의 토큰 자산 풀로, 거래 상대방 역할을 대신하며 거래가 이루어지는 곳입니다."
+    },
+    {
+      "term": "Smart Contract",
+      "description": "거래 조건과 정산 로직을 코드로 구현해 블록체인에 배포한 프로그램으로, DEX의 모든 거래 실행을 담당합니다."
+    },
+    {
+      "term": "Slippage",
+      "description": "거래 요청 시점과 실제 체결 시점 사이 가격 변동으로 발생하는 예상 가격과 실제 가격의 차이입니다."
+    },
+    {
+      "term": "Impermanent Loss",
+      "description": "유동성 공급자가 풀에 자산을 예치한 후 가격 변동으로 인해 단순 보유 대비 발생할 수 있는 손실을 뜻합니다."
+    },
+    {
+      "term": "Non-custodial",
+      "description": "거래소가 사용자 자산을 보관하지 않고, 각 사용자가 자신의 지갑 키로 자산을 직접 통제하는 구조를 의미합니다."
+    }
+  ],
+  "whenToUse": [
+    "자산 커스터디 없이 무허가(permissionless)로 토큰 거래를 지원하고 싶을 때",
+    "특정 운영 주체 없이도 지속 가능한 유동성 공급 구조가 필요할 때",
+    "거래 및 정산 로직을 투명하게 온체인에 공개하고 싶을 때",
+    "신규 토큰의 상장 심사 없이 누구나 유동성 풀을 만들 수 있게 하고 싶을 때"
+  ],
+  "example": {
+    "title": "간단한 AMM 스왑 함수 예시",
+    "language": "solidity",
+    "code": "// x * y = k 공식을 사용하는 단순화된 스왑 로직\nfunction swap(uint256 amountIn, address tokenIn) external {\n    require(amountIn > 0, \"amount must be > 0\");\n\n    (uint256 reserveIn, uint256 reserveOut) = getReserves(tokenIn);\n\n    // 수수료 반영 (0.3% 예시)\n    uint256 amountInWithFee = amountIn * 997;\n    uint256 amountOut =\n        (amountInWithFee * reserveOut) /\n        (reserveIn * 1000 + amountInWithFee);\n\n    _transferIn(tokenIn, amountIn);\n    _transferOut(tokenIn, amountOut);\n}",
+    "description": "사용자가 토큰을 예치하면 풀의 잔고 비율(x*y=k)에 따라 다른 토큰을 계산해 즉시 지급하는 AMM 스왑의 핵심 로직입니다."
+  },
+  "pitfalls": [
+    "오더북 거래소와 달리 가격이 유동성 풀 비율로 결정되어 대량 거래 시 슬리피지가 커질 수 있습니다",
+    "유동성 공급이 곧 무위험 이자가 아니며 impermanent loss로 손실이 발생할 수 있습니다",
+    "스마트 컨트랙트 코드 자체의 버그나 악용 가능성이 곧 자금 손실 리스크로 이어집니다"
+  ],
+  "generatedAt": "2026-07-26T06:09:56.498Z"
+}

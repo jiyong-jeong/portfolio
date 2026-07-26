@@ -1,0 +1,77 @@
+{
+  "slug": "nft-marketplace-worker-runtime-docs",
+  "repo": "nft-marketplace-worker-runtime-docs",
+  "title": "NFT 마켓플레이스 백그라운드 워커 서비스",
+  "summary": "NestJS 기반으로 독립 배포되는 NFT 마켓플레이스 백그라운드 워커 서비스의 구조를 정리한 문서",
+  "description": "NFT 마켓플레이스 시스템에서 메인 API 서버와 분리되어 독립적으로 배포되는 백그라운드 워커 서비스의 구조를 다루는 공개 문서 레포지토리입니다. NestJS와 TypeORM을 기반으로 하며, Docker로 컨테이너화되고 Jenkins CI를 통해 빌드 및 배포 파이프라인이 구성되어 있습니다. 실제 소스 코드 대신 워커 서비스의 구조와 배포 방식을 설명하는 문서 성격의 레포입니다.",
+  "category": "백엔드",
+  "role": "NestJS 기반 백그라운드 워커 서비스의 구조 설계 및 CI/CD 파이프라인 구성",
+  "techStack": [
+    {
+      "name": "NestJS",
+      "category": "framework",
+      "usage": "백그라운드 워커 서비스의 기본 애플리케이션 프레임워크"
+    },
+    {
+      "name": "TypeORM",
+      "category": "backend",
+      "usage": "데이터베이스 엔티티 매핑 및 쿼리 처리"
+    },
+    {
+      "name": "Docker",
+      "category": "devops",
+      "usage": "워커 서비스 컨테이너화 및 실행 환경 구성"
+    },
+    {
+      "name": "Jenkins",
+      "category": "devops",
+      "usage": "CI 파이프라인을 통한 빌드 및 배포 자동화"
+    }
+  ],
+  "highlights": [
+    "메인 API 서버와 분리된 독립 배포 구조로 워커 서비스만 별도 확장/배포 가능",
+    "NestJS + TypeORM 조합으로 백엔드 서비스와 동일한 구조적 일관성 유지",
+    "Docker 기반 컨테이너 환경과 Jenkins CI로 배포 자동화 파이프라인 구성"
+  ],
+  "challenges": [],
+  "diagrams": [
+    {
+      "title": "워커 서비스 배포 구조",
+      "description": "NestJS 워커 서비스가 메인 서버와 분리되어 Docker와 Jenkins를 통해 독립적으로 빌드 및 배포되는 흐름을 보여줍니다.",
+      "type": "deployment",
+      "mermaid": "flowchart LR\n  DEV[\"개발자 커밋\"] --> JENKINS[\"Jenkins CI\"]\n  JENKINS --> BUILD[\"Docker 이미지 빌드\"]\n  BUILD --> DEPLOY[\"워커 컨테이너 배포\"]\n  DEPLOY --> WORKER[\"NestJS 워커 서비스\"]\n  WORKER --> DB[\"TypeORM 데이터베이스\"]\n  API[\"메인 API 서버\"] -.-> DB"
+    }
+  ],
+  "keywords": [
+    "nestjs",
+    "typeorm",
+    "docker",
+    "jenkins",
+    "worker",
+    "nft-marketplace",
+    "backend",
+    "ci-cd"
+  ],
+  "links": {
+    "repo": "https://github.com/jiyong-jeong/nft-marketplace-worker-runtime-docs",
+    "homepage": null
+  },
+  "metrics": {
+    "stars": 0,
+    "forks": 0,
+    "watchers": 0,
+    "sizeKb": 0,
+    "openIssues": 0,
+    "languages": {},
+    "topics": [],
+    "primaryLanguage": null,
+    "license": null
+  },
+  "dates": {
+    "createdAt": "2026-07-26T05:16:44Z",
+    "updatedAt": "2026-07-26T05:16:54Z",
+    "pushedAt": "2026-07-26T05:16:48Z",
+    "analyzedAt": "2026-07-26T05:59:58.450Z"
+  },
+  "featured": false
+}

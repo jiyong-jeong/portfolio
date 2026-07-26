@@ -1,0 +1,76 @@
+{
+  "slug": "nft-launchpad-frontend-app-docs",
+  "repo": "nft-launchpad-frontend-app-docs",
+  "title": "NFT 런치패드 프런트엔드 구조 문서",
+  "summary": "NFT 런치패드 프런트엔드 프로젝트의 구조와 개발 환경 설정을 정리한 공개 기술 문서 레포지토리",
+  "description": "React 기반으로 구축된 NFT 런치패드 프런트엔드 애플리케이션의 구조를 설명하는 공개 문서 레포지토리입니다. react-app-rewired 를 통해 CRA(Create React App)의 빌드 설정을 커스터마이징(config-overrides.js)하며, 로컬 개발 환경을 빠르게 구성할 수 있도록 setup.sh 부트스트랩 스크립트와 git-hooks 설정을 함께 제공합니다. 실제 소스 코드는 비공개로 두고, 프로젝트의 기술적 구조와 개발 환경만을 공유하기 위한 목적의 문서 저장소입니다.",
+  "category": "프론트엔드",
+  "role": "NFT 런치패드 프런트엔드의 구조를 설계하고, 빌드 설정 커스터마이징 및 로컬 개발 환경 자동화(git-hooks, 부트스트랩 스크립트)를 구성했습니다.",
+  "techStack": [
+    {
+      "name": "React",
+      "category": "frontend",
+      "usage": "NFT 런치패드 프런트엔드 UI 구현"
+    },
+    {
+      "name": "react-app-rewired",
+      "category": "tool",
+      "usage": "CRA 빌드 설정을 config-overrides.js 로 커스터마이징"
+    },
+    {
+      "name": "Git Hooks",
+      "category": "devops",
+      "usage": "로컬 커밋/푸시 시점의 자동 검증 및 규칙 적용"
+    },
+    {
+      "name": "Shell Script",
+      "category": "tool",
+      "usage": "setup.sh 로 로컬 개발 환경 부트스트랩 자동화"
+    }
+  ],
+  "highlights": [
+    "react-app-rewired 로 CRA eject 없이 웹팩 빌드 설정을 커스터마이징함",
+    "setup.sh 스크립트로 로컬 개발 환경 초기 세팅을 자동화함",
+    "git-hooks 를 통해 개발 프로세스의 일관성을 관리함"
+  ],
+  "challenges": [],
+  "diagrams": [
+    {
+      "title": "프로젝트 구조 개요",
+      "description": "NFT 런치패드 프런트엔드의 개발 환경 구성 요소와 관계를 개략적으로 보여줍니다.",
+      "type": "architecture",
+      "mermaid": "flowchart TD\n    Dev[\"개발자\"] --> Setup[\"setup.sh 부트스트랩\"]\n    Setup --> Hooks[\"git-hooks 설정\"]\n    Setup --> App[\"React 프런트엔드 앱\"]\n    App --> Overrides[\"config-overrides.js\"]\n    Overrides --> Build[\"react-app-rewired 빌드\"]\n    Hooks --> Repo[\"저장소 커밋 규칙 적용\"]"
+    }
+  ],
+  "keywords": [
+    "nft",
+    "launchpad",
+    "react",
+    "frontend",
+    "react-app-rewired",
+    "git-hooks",
+    "web3"
+  ],
+  "links": {
+    "repo": "https://github.com/jiyong-jeong/nft-launchpad-frontend-app-docs",
+    "homepage": null
+  },
+  "metrics": {
+    "stars": 0,
+    "forks": 0,
+    "watchers": 0,
+    "sizeKb": 0,
+    "openIssues": 0,
+    "languages": {},
+    "topics": [],
+    "primaryLanguage": null,
+    "license": null
+  },
+  "dates": {
+    "createdAt": "2026-07-26T05:29:32Z",
+    "updatedAt": "2026-07-26T05:29:41Z",
+    "pushedAt": "2026-07-26T05:29:35Z",
+    "analyzedAt": "2026-07-26T05:47:20.477Z"
+  },
+  "featured": false
+}

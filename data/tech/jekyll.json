@@ -1,0 +1,47 @@
+{
+  "slug": "jekyll",
+  "name": "Jekyll",
+  "category": "framework",
+  "tagline": "마크다운과 템플릿을 정적 HTML로 변환해 배포하는 정적 사이트 생성기",
+  "definition": "Jekyll은 마크다운 파일과 레이아웃 템플릿을 조합해 서버 사이드 언어나 데이터베이스 없이 순수 HTML로 이루어진 정적 사이트를 만들어주는 도구다. 매 요청마다 페이지를 동적으로 생성하는 CMS 방식 대신, 콘텐츠를 미리 빌드해두는 방식으로 속도와 보안 부담을 줄이는 것을 목표로 만들어졌다. Ruby로 작성되어 있으며, 저장소를 그대로 정적 파일 호스팅 서비스에 올려두면 자동으로 사이트를 빌드해주는 환경과 함께 널리 쓰인다.",
+  "concepts": [
+    {
+      "term": "_config.yml",
+      "description": "사이트 전역 설정을 담는 파일로 사이트 제목, URL, 플러그인, 빌드 옵션 등을 정의한다."
+    },
+    {
+      "term": "Front Matter",
+      "description": "마크다운 파일 맨 위에 YAML 형식으로 넣는 메타데이터 블록으로, 레이아웃 지정이나 변수 값을 페이지별로 설정한다."
+    },
+    {
+      "term": "Layout",
+      "description": "여러 페이지가 공유하는 HTML 뼈대 템플릿으로, 본문 콘텐츠가 삽입될 위치를 정의한다."
+    },
+    {
+      "term": "Liquid",
+      "description": "레이아웃과 페이지 안에서 변수 출력이나 반복·조건 처리를 가능하게 하는 템플릿 문법이다."
+    },
+    {
+      "term": "Static Site Generation",
+      "description": "요청 시점이 아니라 빌드 시점에 모든 페이지를 미리 HTML로 만들어두는 방식으로, 서버 부하 없이 정적 파일만으로 사이트를 서비스한다."
+    }
+  ],
+  "whenToUse": [
+    "블로그나 문서, 정책 페이지처럼 콘텐츠가 자주 바뀌지 않는 사이트를 만들 때",
+    "데이터베이스나 서버 사이드 로직 없이 가볍고 빠른 정적 페이지가 필요할 때",
+    "마크다운으로 콘텐츠를 작성하고 버전 관리로 이력을 남기고 싶을 때",
+    "정적 파일 호스팅과 연계해 별도 서버 운영 없이 사이트를 배포하고 싶을 때"
+  ],
+  "example": {
+    "title": "기본 Jekyll 설정과 페이지",
+    "language": "yaml",
+    "code": "# _config.yml\ntitle: My Site\ndescription: A simple Jekyll site\nbaseurl: \"\"\nurl: \"https://example.com\"\nmarkdown: kramdown\ntheme: minima\n\n---\n# index.md\n---\nlayout: default\ntitle: Home\n---\n# Welcome\n\nThis page is written in **Markdown**\nand rendered as static HTML by Jekyll.",
+    "description": "_config.yml로 사이트 전역 설정을 정의하고, Front Matter가 있는 마크다운 페이지를 작성하면 Jekyll이 이를 HTML로 빌드한다."
+  },
+  "pitfalls": [
+    "Front Matter를 빠뜨리면 해당 파일이 일반 텍스트로 취급되어 레이아웃이 적용되지 않는다",
+    "설정이나 레이아웃을 바꿔도 로컬 서버가 자동 반영되지 않아 재시작이 필요한 경우가 있다",
+    "플러그인이나 Ruby 버전 차이로 로컬 빌드와 배포 환경 결과물이 달라질 수 있다"
+  ],
+  "generatedAt": "2026-07-26T06:07:29.290Z"
+}

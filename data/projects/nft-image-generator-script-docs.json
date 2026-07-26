@@ -1,0 +1,71 @@
+{
+  "slug": "nft-image-generator-script-docs",
+  "repo": "nft-image-generator-script-docs",
+  "title": "NFT 레이어 합성 이미지 자동 생성기",
+  "summary": "JSON 템플릿에 정의된 레이어 조합으로 NFT 이미지를 자동 생성하는 Node.js 스크립트 문서",
+  "description": "NFT 컬렉션 제작 시 필요한 다수의 이미지를 레이어 조합 방식으로 자동 생성하기 위한 Node.js 스크립트 구조를 정리한 문서입니다. generate.js와 index.js가 실행 로직을 담당하고, jsontemplate.js와 json/ 디렉터리의 템플릿이 이미지 속성(trait) 조합 규칙을 정의합니다. 생성된 결과는 cached/ 디렉터리에 캐싱되어 재생성 시 중복 작업을 줄이는 구조로 되어 있습니다. 이 레포는 실제 소스 대신 프로젝트 구조와 흐름을 정리한 공개 문서 형태로 제공됩니다.",
+  "category": "Web3",
+  "role": "NFT 이미지 생성 스크립트의 구조를 분석하고, 외부에 공개 가능한 형태로 프로젝트 구조 문서를 작성함",
+  "techStack": [
+    {
+      "name": "Node.js",
+      "category": "backend",
+      "usage": "generate.js, index.js 등 이미지 생성 스크립트 실행 환경"
+    },
+    {
+      "name": "JavaScript",
+      "category": "language",
+      "usage": "생성 로직 및 템플릿 정의 코드 작성"
+    },
+    {
+      "name": "JSON",
+      "category": "data",
+      "usage": "jsontemplate.js 및 json/ 디렉터리에서 이미지 속성 조합 템플릿 정의"
+    }
+  ],
+  "highlights": [
+    "JSON 템플릿 기반으로 이미지 속성(trait) 조합 규칙을 분리 관리",
+    "생성 결과를 cached/ 디렉터리에 캐싱하여 재생성 비용 절감",
+    "generate.js와 index.js로 생성 로직과 실행 진입점을 분리한 구조"
+  ],
+  "challenges": [],
+  "diagrams": [
+    {
+      "title": "NFT 이미지 생성 흐름",
+      "description": "JSON 템플릿을 입력으로 받아 이미지 레이어를 조합하고 결과를 캐싱하는 전체 흐름을 보여줍니다.",
+      "type": "architecture",
+      "mermaid": "flowchart TD\n  A[\"json 템플릿 (jsontemplate.js, json/)\"] --> B[\"index.js 실행 진입점\"]\n  B --> C[\"generate.js 생성 로직\"]\n  C --> D[\"레이어 조합 처리\"]\n  D --> E[\"cached/ 결과 캐시\"]\n  D --> F[\"예시 이미지 출력\"]"
+    }
+  ],
+  "keywords": [
+    "nft",
+    "image-generator",
+    "nodejs",
+    "json-template",
+    "layered-image",
+    "trait",
+    "generative-art"
+  ],
+  "links": {
+    "repo": "https://github.com/jiyong-jeong/nft-image-generator-script-docs",
+    "homepage": null
+  },
+  "metrics": {
+    "stars": 0,
+    "forks": 0,
+    "watchers": 0,
+    "sizeKb": 0,
+    "openIssues": 0,
+    "languages": {},
+    "topics": [],
+    "primaryLanguage": null,
+    "license": null
+  },
+  "dates": {
+    "createdAt": "2026-07-26T05:29:20Z",
+    "updatedAt": "2026-07-26T05:29:55Z",
+    "pushedAt": "2026-07-26T05:29:25Z",
+    "analyzedAt": "2026-07-26T05:48:26.281Z"
+  },
+  "featured": false
+}

@@ -96,6 +96,29 @@ export interface Project {
   degraded?: boolean;
 }
 
+/** 기술 자체를 학습할 수 있도록 자동 생성한 설명 (레포 내용과 무관한 일반 지식) */
+export interface TechDoc {
+  slug: string;
+  name: string;
+  category: string;
+  /** 한 문장 정의 */
+  tagline: string;
+  /** 무엇이고 어떤 문제를 푸는지 2~4문장 */
+  definition: string;
+  concepts: { term: string; description: string }[];
+  /** 언제/왜 선택하는지 */
+  whenToUse: string[];
+  example: {
+    title: string;
+    language: string;
+    code: string;
+    description: string;
+  } | null;
+  /** 처음 쓸 때 흔한 함정 */
+  pitfalls: string[];
+  generatedAt: string;
+}
+
 export interface Profile {
   name: string;
   role: string;

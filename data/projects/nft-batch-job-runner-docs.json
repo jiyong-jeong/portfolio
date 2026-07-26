@@ -1,0 +1,71 @@
+{
+  "slug": "nft-batch-job-runner-docs",
+  "repo": "nft-batch-job-runner-docs",
+  "title": "NestJS 기반 NFT 배치 잡 러너",
+  "summary": "NestJS와 TypeORM으로 구성한 NFT 관련 배치 작업 실행기 구조를 정리한 문서 프로젝트입니다.",
+  "description": "NFT 도메인의 반복 작업을 배치 잡 형태로 처리하기 위한 러너 구조를 다루는 프로젝트입니다. NestJS의 모듈 구조를 기반으로 배치 잡을 등록하고 실행하며, TypeORM을 통해 데이터베이스와 연동되는 것으로 확인됩니다. 이 레포지토리는 소스 코드 대신 프로젝트의 구조와 개념을 정리한 공개 문서로 구성되어 있습니다. 상세 구현 내용보다는 배치 잡 러너라는 아키텍처 패턴 자체에 초점을 맞추고 있습니다.",
+  "category": "백엔드",
+  "role": "NestJS와 TypeORM을 활용해 NFT 관련 배치 작업을 처리하는 잡 러너 구조를 설계하고 문서화했습니다.",
+  "techStack": [
+    {
+      "name": "NestJS",
+      "category": "framework",
+      "usage": "배치 잡 러너의 모듈 및 실행 구조를 구성하는 백엔드 프레임워크"
+    },
+    {
+      "name": "TypeORM",
+      "category": "database",
+      "usage": "배치 작업 데이터를 데이터베이스와 연동하기 위한 ORM"
+    },
+    {
+      "name": "TypeScript",
+      "category": "language",
+      "usage": "NestJS 기반 프로젝트의 개발 언어"
+    }
+  ],
+  "highlights": [
+    "NestJS 모듈 구조 위에서 배치 잡 실행 로직을 구성",
+    "TypeORM을 통한 데이터베이스 연동으로 배치 처리 결과 관리",
+    "소스 코드 대신 구조/개념 중심의 공개 문서로 정리"
+  ],
+  "challenges": [],
+  "diagrams": [
+    {
+      "title": "NFT 배치 잡 러너 구조",
+      "description": "NestJS 기반 배치 잡 러너가 작업을 실행하고 TypeORM을 통해 데이터베이스와 연동되는 전체 흐름을 보여줍니다.",
+      "type": "architecture",
+      "mermaid": "flowchart TD\n  scheduler[\"스케줄러/트리거\"] --> runner[\"NestJS 배치 잡 러너\"]\n  runner --> jobmodule[\"배치 잡 모듈\"]\n  jobmodule --> service[\"잡 실행 서비스\"]\n  service --> orm[\"TypeORM\"]\n  orm --> db[(\"데이터베이스\")]\n  service --> log[\"실행 결과 기록\"]"
+    }
+  ],
+  "keywords": [
+    "nestjs",
+    "typeorm",
+    "batch-job",
+    "nft",
+    "job-runner",
+    "backend",
+    "typescript"
+  ],
+  "links": {
+    "repo": "https://github.com/jiyong-jeong/nft-batch-job-runner-docs",
+    "homepage": null
+  },
+  "metrics": {
+    "stars": 0,
+    "forks": 0,
+    "watchers": 0,
+    "sizeKb": 0,
+    "openIssues": 0,
+    "languages": {},
+    "topics": [],
+    "primaryLanguage": null,
+    "license": null
+  },
+  "dates": {
+    "createdAt": "2026-07-26T05:28:39Z",
+    "updatedAt": "2026-07-26T05:29:09Z",
+    "pushedAt": "2026-07-26T05:28:42Z",
+    "analyzedAt": "2026-07-26T05:51:04.542Z"
+  },
+  "featured": false
+}

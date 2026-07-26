@@ -1,0 +1,51 @@
+{
+  "slug": "aws-ssm-parameter-store",
+  "name": "AWS SSM Parameter Store",
+  "category": "infra",
+  "tagline": "설정 값과 시크릿을 계층 구조 경로로 저장하고 조회하는 AWS 관리형 저장소",
+  "definition": "AWS SSM Parameter Store는 애플리케이션 설정 값이나 시크릿을 키-값 형태로 저장하고, 필요할 때 API나 CLI로 조회할 수 있게 해주는 서비스이다. 환경변수나 설정 파일에 값을 직접 하드코딩하지 않고 중앙 저장소에서 관리함으로써, 코드와 설정을 분리하고 배포 환경마다 다른 값을 안전하게 주입할 수 있도록 만들어졌다. 접근 권한을 IAM으로 세밀하게 제어할 수 있고, 값 변경 시 코드를 다시 배포하지 않아도 되는 것이 특징이다.",
+  "concepts": [
+    {
+      "term": "Parameter",
+      "description": "저장되는 개별 값의 단위로, 슬래시(/)로 구분되는 경로 형태의 이름을 가진다."
+    },
+    {
+      "term": "Parameter Type",
+      "description": "String, StringList, SecureString 세 가지 유형이 있으며 SecureString은 값을 암호화하여 저장한다."
+    },
+    {
+      "term": "Hierarchy",
+      "description": "경로 기반 네이밍으로 파라미터를 계층화하여 서비스나 환경별로 그룹화할 수 있다."
+    },
+    {
+      "term": "KMS Encryption",
+      "description": "SecureString 타입 파라미터는 AWS KMS 키로 암호화되어 저장 및 조회 시 복호화 권한이 필요하다."
+    },
+    {
+      "term": "IAM Policy",
+      "description": "파라미터별 또는 경로별로 조회·수정 권한을 세밀하게 제어하는 접근 제어 수단이다."
+    },
+    {
+      "term": "Versioning",
+      "description": "파라미터 값이 변경될 때마다 이전 버전이 유지되어 특정 시점의 값을 다시 조회할 수 있다."
+    }
+  ],
+  "whenToUse": [
+    "환경변수나 설정 파일에 시크릿을 직접 넣지 않고 중앙에서 안전하게 관리하고 싶을 때",
+    "배포 파이프라인에서 환경별(dev/staging/prod)로 다른 설정 값을 참조해야 할 때",
+    "별도 유료 시크릿 관리 서비스 없이 AWS 환경 안에서 가볍게 설정을 관리하고 싶을 때",
+    "설정 값 변경 이력과 접근 권한을 IAM 기준으로 추적하고 통제하고 싶을 때"
+  ],
+  "example": {
+    "title": "SecureString 파라미터 생성 및 조회",
+    "language": "bash",
+    "code": "# 시크릿 값을 암호화하여 저장\naws ssm put-parameter \\\n  --name \"/myapp/prod/db-password\" \\\n  --value \"s3cr3tValue\" \\\n  --type \"SecureString\"\n\n# 저장된 값을 복호화하여 조회\naws ssm get-parameter \\\n  --name \"/myapp/prod/db-password\" \\\n  --with-decryption",
+    "description": "경로 기반 이름으로 시크릿을 SecureString 타입으로 저장하고, 조회 시 복호화 옵션을 붙여 실제 값을 가져오는 예시이다."
+  },
+  "pitfalls": [
+    "SecureString 조회 시 --with-decryption을 빼먹으면 암호화된 값이 그대로 반환된다",
+    "파라미터 개수와 처리량에 제한이 있어 대규모 시크릿 관리에는 별도 서비스가 필요할 수 있다",
+    "IAM 정책을 경로 단위로 세밀하게 설정하지 않으면 과도한 조회 권한이 부여되기 쉽다"
+  ],
+  "generatedAt": "2026-07-26T06:10:37.144Z"
+}

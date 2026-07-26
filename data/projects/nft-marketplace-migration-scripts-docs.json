@@ -1,0 +1,65 @@
+{
+  "slug": "nft-marketplace-migration-scripts-docs",
+  "repo": "nft-marketplace-migration-scripts-docs",
+  "title": "NFT 마켓플레이스 데이터 마이그레이션 스크립트 모음",
+  "summary": "NFT 마켓플레이스 데이터를 배치 단위로 이관하는 TypeScript 마이그레이션 스크립트 문서 정리",
+  "description": "NFT 마켓플레이스의 데이터를 이관하기 위한 다수의 마이그레이션 스크립트를 구조화한 프로젝트입니다. src, common, data 디렉터리로 로직과 공통 유틸, 데이터를 분리하고, index.ts부터 index5.js까지 여러 개의 원샷 진입점을 두어 각 진입점이 특정 마이그레이션 배치를 담당하도록 설계했습니다. 이를 통해 대규모 데이터 이관 작업을 배치 단위로 나누어 순차적으로 실행하고 관리할 수 있습니다. 본 레포는 실제 소스 코드 대신 프로젝트 구조와 개념을 정리한 공개 문서입니다.",
+  "category": "데이터",
+  "role": "마이그레이션 스크립트의 구조 설계 및 배치별 진입점 작성을 담당했습니다.",
+  "techStack": [
+    {
+      "name": "TypeScript",
+      "category": "language",
+      "usage": "마이그레이션 스크립트의 주 구현 언어"
+    },
+    {
+      "name": "Node.js",
+      "category": "backend",
+      "usage": "마이그레이션 스크립트 실행 런타임"
+    }
+  ],
+  "highlights": [
+    "여러 개의 원샷 진입점(index.ts~index5.js)으로 마이그레이션 배치를 분리 관리",
+    "src, common, data 디렉터리로 로직/공통 유틸/데이터를 분리한 구조",
+    "각 배치별 독립 실행이 가능하도록 설계해 장애 발생 시 영향 범위를 최소화"
+  ],
+  "challenges": [],
+  "diagrams": [
+    {
+      "title": "마이그레이션 스크립트 구조",
+      "description": "여러 진입점이 공통 모듈과 데이터를 참조하여 각각의 배치 마이그레이션을 수행하는 구조를 보여줍니다.",
+      "type": "architecture",
+      "mermaid": "flowchart TD\n  idx1[\"index.ts\"] --> common[\"common/\"]\n  idx2[\"index2.js\"] --> common\n  idx3[\"index3.js\"] --> common\n  idx4[\"index4.js\"] --> common\n  idx5[\"index5.js\"] --> common\n  common --> src[\"src/\"]\n  src --> data[\"data/\"]\n  idx1 --> data\n  idx2 --> data"
+    }
+  ],
+  "keywords": [
+    "nft",
+    "marketplace",
+    "migration",
+    "typescript",
+    "data-migration",
+    "batch-script"
+  ],
+  "links": {
+    "repo": "https://github.com/jiyong-jeong/nft-marketplace-migration-scripts-docs",
+    "homepage": null
+  },
+  "metrics": {
+    "stars": 0,
+    "forks": 0,
+    "watchers": 0,
+    "sizeKb": 0,
+    "openIssues": 0,
+    "languages": {},
+    "topics": [],
+    "primaryLanguage": null,
+    "license": null
+  },
+  "dates": {
+    "createdAt": "2026-07-26T05:29:51Z",
+    "updatedAt": "2026-07-26T05:30:14Z",
+    "pushedAt": "2026-07-26T05:29:54Z",
+    "analyzedAt": "2026-07-26T05:46:29.877Z"
+  },
+  "featured": false
+}
