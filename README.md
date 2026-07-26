@@ -152,6 +152,7 @@ GitHub Actions 가 Pages 미러를 다시 배포하고, `out/` 재빌드는 로�
 | `~/.cloudflared/<UUID>.json` | 터널 자격증명 |
 | `~/.cloudflared/cert.pem` | `cloudflared tunnel login` 으로 받은 계정 인증서 |
 | Cloudflare DNS | 루트와 `www` 가 터널을 가리키는 CNAME |
+| Cloudflare Redirect Rules | `www` → 루트 301 (엣지에서 처리) |
 
 `~/.cloudflared/` 는 이 레포 밖에 있고 **자격증명이라 커밋하지 않습니다.**
 다른 기기에서 재현하려면 아래 최초 설정을 다시 거쳐야 합니다.
@@ -209,10 +210,13 @@ credentials-file: /Users/<사용자>/.cloudflared/<UUID>.json
 ingress:
   - hostname: <도메인>
     service: http://localhost:3100
-  - hostname: www.<도메인>
-    service: http://localhost:3100
   - service: http_status:404
 ```
+
+6. `www` 리다이렉트 — 대시보드 **Rules → Redirect Rules → Create rule** 에서
+   `Redirect from WWW to root` **템플릿**을 쓰면 됩니다. 폼을 직접 채우면
+   `action is required for action parameters` 에러가 나기 쉽습니다.
+   배포 후 엣지 전파까지 몇 초 걸려, 직후 한 번은 301 대신 200 이 올 수 있습니다.
 
 ### 알아둘 점
 
@@ -226,9 +230,11 @@ ingress:
   잠자기를 억제합니다. 시스템 전원 설정을 영구히 바꾸지 않고, 에이전트를 내리면
   원래대로 돌아옵니다. 다만 **뚜껑을 닫으면(clamshell) 막을 수 없고**, 배터리가
   떨어지면 내려갑니다. 상시 운영하려면 전원 어댑터를 연결해 두세요.
-- **`www` 는 현재 리다이렉트가 아니라 같은 내용을 서빙합니다.** 터널 ingress 에는
-  리다이렉트 기능이 없습니다. 루트로 301 을 보내려면 Cloudflare 대시보드의
-  **Rules → Redirect Rules** 를 쓰고, `config.yml` 의 www ingress 블록을 지웁니다.
+- **`www` 는 엣지에서 301 로 루트에 넘깁니다.** 터널 ingress 에는 리다이렉트 기능이
+  없어서, Cloudflare 대시보드의 **Rules → Redirect Rules** 에 `Redirect from WWW to
+  root` 템플릿으로 규칙을 만들어 뒀습니다. 경로와 쿼리스트링이 유지됩니다.
+  엣지에서 끝나므로 `config.yml` 에는 www ingress 가 없지만, **DNS 의 www CNAME 은
+  남겨둬야 합니다.** 지우면 엣지가 요청 자체를 받지 못해 리다이렉트도 동작하지 않습니다.
 - **가용성은 집 네트워크에 달려 있습니다.** 정전·인터넷 장애·재부팅이 그대로
   다운타임입니다. 그래서 GitHub Pages 미러를 함께 유지합니다.
 
