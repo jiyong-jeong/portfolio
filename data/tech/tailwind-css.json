@@ -1,0 +1,47 @@
+{
+  "slug": "tailwind-css",
+  "name": "Tailwind CSS",
+  "category": "frontend",
+  "tagline": "HTML 안에서 유틸리티 클래스 조합만으로 스타일을 완성하는 CSS 프레임워크",
+  "definition": "Tailwind CSS는 색상, 여백, 폰트 크기 같은 CSS 속성 하나하나에 대응하는 작은 유틸리티 클래스를 미리 정의해 두고, 이를 HTML 요소에 조합해서 스타일을 만드는 CSS 프레임워크입니다. 별도의 CSS 파일을 오가며 클래스 이름을 짓고 스타일 규칙을 작성하는 대신, 마크업 안에서 바로 디자인을 완성할 수 있도록 만들어졌습니다. 부트스트랩 같은 컴포넌트 기반 프레임워크와 달리 미리 만들어진 버튼이나 카드 디자인을 제공하지 않고, 더 작은 단위의 조합 가능한 클래스를 제공해 자유도를 높이는 것을 목표로 합니다.",
+  "concepts": [
+    {
+      "term": "Utility-First",
+      "description": "레이아웃, 색상, 간격 등 각 CSS 속성 단위로 쪼갠 클래스를 조합해서 스타일을 만드는 접근 방식입니다."
+    },
+    {
+      "term": "Configuration File",
+      "description": "색상 팔레트, 폰트, 브레이크포인트 같은 디자인 값을 프로젝트에 맞게 정의하고 커스터마이징하는 설정 파일입니다."
+    },
+    {
+      "term": "Responsive Prefix",
+      "description": "sm, md, lg 같은 접두사를 클래스 앞에 붙여 화면 크기별로 다른 스타일을 적용하는 방식입니다."
+    },
+    {
+      "term": "State Variant",
+      "description": "hover, focus, dark 등 접두사를 붙여 특정 상태나 조건에서만 적용되는 스타일을 지정하는 방식입니다."
+    },
+    {
+      "term": "Purge / Content Scanning",
+      "description": "실제 코드에서 사용된 클래스만 추려 최종 CSS 결과물의 용량을 최소화하는 빌드 과정입니다."
+    }
+  ],
+  "whenToUse": [
+    "CSS 파일과 마크업을 오가지 않고 빠르게 UI를 스타일링하고 싶을 때",
+    "디자인 시스템의 값(색상, 간격 등)을 일관되게 강제하고 싶을 때",
+    "클래스 이름을 고민하는 데 드는 시간을 줄이고 싶을 때",
+    "다크모드나 반응형 스타일을 별도 미디어쿼리 없이 다루고 싶을 때"
+  ],
+  "example": {
+    "title": "기본 유틸리티 클래스 사용 예시",
+    "language": "text",
+    "code": "<div class=\"flex items-center gap-4 p-6 rounded-lg bg-white dark:bg-gray-800\">\n  <img class=\"w-12 h-12 rounded-full\" src=\"avatar.png\" alt=\"avatar\" />\n  <div>\n    <p class=\"text-lg font-semibold text-gray-900 dark:text-white\">\n      홍길동\n    </p>\n    <p class=\"text-sm text-gray-500 dark:text-gray-400\">\n      프론트엔드 개발자\n    </p>\n  </div>\n</div>",
+    "description": "레이아웃, 여백, 색상, 다크모드 스타일을 별도 CSS 없이 클래스 조합만으로 카드 UI를 만드는 예시입니다."
+  },
+  "pitfalls": [
+    "클래스가 길게 나열되어 마크업 가독성이 떨어질 수 있다",
+    "설정 파일에서 콘텐츠 경로를 잘못 지정하면 클래스가 스타일에서 누락된다",
+    "기존 CSS 지식과 접근 방식이 달라 초반에 사고방식 전환이 필요하다"
+  ],
+  "generatedAt": "2026-07-26T06:27:56.250Z"
+}

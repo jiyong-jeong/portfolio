@@ -73,8 +73,13 @@ export async function collectRepoContext(owner, repo, analysis) {
     getTree(owner, repo.name, branch).catch(() => ({ paths: [], truncated: false })),
   ]);
 
-  const manifestPaths = pickManifests(tree.paths);
-  const docPaths = pickDocs(tree.paths, analysis.maxDocFiles);
+  // 의존성·빌드 산출물·자동 생성 데이터는 트리에서 걸러낸다.
+  // (포트폴리오 레포 자신처럼 생성물이 많은 경우 실제 소스가 묻히기 때문)
+  const excludePaths = analysis.excludePaths ?? [];
+  const paths = tree.paths.filter((p) => !excludePaths.some((prefix) => p.startsWith(prefix)));
+
+  const manifestPaths = pickManifests(paths);
+  const docPaths = pickDocs(paths, analysis.maxDocFiles);
 
   const files = [];
   for (const path of [...manifestPaths, ...docPaths]) {
@@ -112,8 +117,8 @@ export async function collectRepoContext(owner, repo, analysis) {
     languages,
     tree: {
       truncated: tree.truncated,
-      total: tree.paths.length,
-      paths: tree.paths.slice(0, analysis.maxTreeEntries),
+      total: paths.length,
+      paths: paths.slice(0, analysis.maxTreeEntries),
     },
     readme: truncate(readme ?? "", analysis.maxReadmeChars, "README 생략"),
     files,

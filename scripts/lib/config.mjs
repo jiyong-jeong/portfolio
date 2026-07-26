@@ -19,6 +19,8 @@ const DEFAULT_ANALYSIS = {
   maxDocFiles: 6,
   maxManifestChars: 4000,
   maxTreeEntries: 250,
+  // 분석에 도움이 되지 않는 생성물·의존성 경로는 파일 트리에서 제외한다.
+  excludePaths: ["node_modules/", ".next/", "out/", "dist/", "build/"],
   timeoutMs: 300000,
   maxAttempts: 2,
   // 기술 설명 생성은 서로 독립적이라 동시에 실행한다.
@@ -36,6 +38,7 @@ export function loadConfig() {
     exclude: raw.exclude ?? [],
     includeForks: raw.includeForks ?? false,
     includeArchived: raw.includeArchived ?? true,
+    syncBotName: raw.syncBotName ?? "portfolio-sync",
     analysis: { ...DEFAULT_ANALYSIS, ...(raw.analysis ?? {}) },
   };
 }

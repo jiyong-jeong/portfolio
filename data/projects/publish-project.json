@@ -1,0 +1,94 @@
+{
+  "slug": "publish-project",
+  "repo": "publish-project",
+  "title": "코드 비공개 + 문서 공개 자동 배포 도구",
+  "summary": "로컬 프로젝트를 Claude Code로 익명화 README 생성 후 private 소스/public 문서 레포 쌍으로 자동 배포하는 CLI",
+  "description": "여러 개인/사이드 프로젝트를 GitHub에 정리해 올릴 때 반복되는 수작업을 자동화하는 셸 스크립트다. 로컬 Claude Code CLI를 헤드리스로 호출해 소스 코드를 관찰만 하는 방식으로 한국어 README를 자동 생성하고, 회사명·제품명 등 고유명사가 노출되지 않도록 금지 키워드 셀프체크를 거친다. 이후 gh CLI를 이용해 실제 소스가 담긴 private content 레포와 익명화된 문서만 담긴 public docs 레포를 한 쌍으로 생성·푸시한다. 이미 존재하는 레포는 건너뛰어 반복 실행해도 안전하도록(idempotent) 설계되었고, credential 패턴 러프 탐지 등 안전장치도 포함한다.",
+  "category": "자동화",
+  "role": "1인 개발로 요구사항 정의부터 셸 스크립트 설계·구현, 안전장치(금지어 체크, credential 스니핑) 설계까지 전체를 담당.",
+  "techStack": [
+    {
+      "name": "Shell",
+      "category": "language",
+      "usage": "전체 배포 로직을 구현한 Bash 스크립트 작성"
+    },
+    {
+      "name": "Git",
+      "category": "tool",
+      "usage": "소스 디렉터리 초기화, 커밋, 원격 저장소 push"
+    },
+    {
+      "name": "GitHub CLI",
+      "category": "devops",
+      "usage": "gh api로 레포 존재 확인, gh repo create로 레포 생성 및 push"
+    },
+    {
+      "name": "Claude Code CLI",
+      "category": "tool",
+      "usage": "헤드리스 모드(claude -p)로 소스를 읽어 익명화된 한국어 README 자동 생성"
+    }
+  ],
+  "highlights": [
+    "Read/Bash(ls|cat|head|find|grep|wc|file) 외 도구를 차단해 Claude가 소스를 관찰만 하고 수정·네트워크 접근은 못하게 제한",
+    "생성된 README에 금지 키워드가 하나라도 있으면 push를 중단하는 self-check 안전장치",
+    "AWS 키, PEM, Slack 토큰, GitHub PAT 패턴을 러프 탐지해 확인을 요구하는 credential 스니핑",
+    "이미 존재하는 레포는 skip하는 idempotent 설계로 반복 실행 안전성 확보",
+    "content(private)/docs(public) 레포를 옵션으로 분리 제어(--docs-only, --content-only, visibility 지정)"
+  ],
+  "challenges": [
+    {
+      "problem": "회사/파트너/제품명 등 고유명사가 자동 생성 문서에 노출될 위험",
+      "solution": "내장 및 커스텀 금지 키워드 리스트로 생성된 README를 셀프체크해 hit 시 push 중단"
+    },
+    {
+      "problem": "소스에 credential이 실수로 포함된 채 push될 위험",
+      "solution": "AWS 액세스 키, PEM, Slack 토큰, GitHub PAT 패턴을 러프 스니핑해 사용자 확인을 요구"
+    },
+    {
+      "problem": "동일 프로젝트를 재실행할 때 중복 레포 생성 문제",
+      "solution": "gh api로 레포 존재 여부를 먼저 확인해 이미 있으면 skip하는 idempotent 로직 구현"
+    }
+  ],
+  "diagrams": [
+    {
+      "title": "publish-project 처리 흐름",
+      "description": "소스 디렉터리 하나를 입력받아 docs 레포와 content 레포를 각각 생성하기까지의 처리 단계를 보여준다.",
+      "type": "flow",
+      "mermaid": "flowchart TD\n  A[\"소스 디렉터리\"] --> B[\"gh api로 레포 존재 확인\"]\n  B --> C[\"docs 레포 없음\"]\n  B --> D[\"content 레포 없음\"]\n  C --> E[\"claude -p 헤드리스 README 생성\"]\n  E --> F[\"금지 키워드 셀프체크\"]\n  F --> G[\"gh repo create push docs public\"]\n  D --> H[\"credential 러프 스니핑 확인\"]\n  H --> I[\"git init commit\"]\n  I --> J[\"gh repo create push content private\"]"
+    }
+  ],
+  "keywords": [
+    "shell-script",
+    "github-cli",
+    "claude-code",
+    "automation",
+    "readme-generation",
+    "anonymization",
+    "devops-tooling",
+    "idempotent"
+  ],
+  "links": {
+    "repo": "https://github.com/jiyong-jeong/publish-project",
+    "homepage": null
+  },
+  "metrics": {
+    "stars": 0,
+    "forks": 0,
+    "watchers": 0,
+    "sizeKb": 0,
+    "openIssues": 0,
+    "languages": {
+      "Shell": 13761
+    },
+    "topics": [],
+    "primaryLanguage": "Shell",
+    "license": "MIT"
+  },
+  "dates": {
+    "createdAt": "2026-07-26T05:58:33Z",
+    "updatedAt": "2026-07-26T05:58:40Z",
+    "pushedAt": "2026-07-26T05:58:36Z",
+    "analyzedAt": "2026-07-26T06:27:38.354Z"
+  },
+  "featured": false
+}

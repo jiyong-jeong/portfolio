@@ -23,7 +23,7 @@ import {
   TECH_DIR,
   loadConfig,
 } from "./lib/config.mjs";
-import { listRepos, resolveToken } from "./lib/github.mjs";
+import { getLastHumanCommitDate, listRepos, resolveToken } from "./lib/github.mjs";
 import { collectRepoContext } from "./lib/context.mjs";
 import { analyzeRepo } from "./lib/analyze.mjs";
 import { generateTechDoc } from "./lib/tech-doc.mjs";
@@ -258,7 +258,6 @@ async function main() {
   const allRepos = await listRepos(config.owner);
 
   const targets = allRepos.filter((r) => {
-    if (r.name === config.selfRepo) return false;
     if (config.exclude.includes(r.name)) return false;
     if (r.fork && !config.includeForks) return false;
     if (r.archived && !config.includeArchived) return false;
@@ -267,6 +266,21 @@ async function main() {
   });
 
   log(`▶ 전체 ${allRepos.length}개 중 대상 ${targets.length}개\n`);
+
+  // 포트폴리오 레포 자신은 스케줄러가 데이터를 push 할 때마다 pushed_at 이 바뀐다.
+  // 봇 커밋을 제외한 마지막 커밋 시각을 기준으로 삼아 자기 참조 루프를 끊는다.
+  const self = targets.find((r) => r.name === config.selfRepo);
+  if (self) {
+    const humanDate = await getLastHumanCommitDate(
+      config.owner,
+      self.name,
+      config.syncBotName,
+    ).catch(() => null);
+    if (humanDate) {
+      log(`▶ ${self.name}: 봇 커밋 제외한 마지막 변경 시각 ${humanDate} 기준으로 판단\n`);
+      self.pushed_at = humanDate;
+    }
+  }
 
   const plan = targets.map((repo) => ({ repo, ...shouldAnalyze(repo, state, args.force) }));
   const todo = plan.filter((p) => p.yes).slice(0, args.limit);

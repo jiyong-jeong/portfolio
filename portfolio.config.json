@@ -6,6 +6,7 @@
   "exclude": [],
   "includeForks": false,
   "includeArchived": true,
+  "syncBotName": "portfolio-sync",
   "analysis": {
     "model": "sonnet",
     "maxReadmeChars": 24000,
@@ -14,7 +15,16 @@
     "maxManifestChars": 4000,
     "maxTreeEntries": 250,
     "timeoutMs": 300000,
-    "maxAttempts": 2
+    "maxAttempts": 2,
+    "excludePaths": [
+      "node_modules/",
+      ".next/",
+      "out/",
+      "dist/",
+      "build/",
+      "data/projects/",
+      "data/tech/"
+    ]
   },
   "profile": {
     "name": "정지용",

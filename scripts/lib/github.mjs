@@ -112,6 +112,28 @@ export async function getTree(owner, repo, branch) {
   return { paths, truncated: Boolean(data.truncated) };
 }
 
+/**
+ * 동기화 봇이 만든 커밋을 건너뛰고, 사람이 마지막으로 커밋한 시각을 찾는다.
+ *
+ * 포트폴리오 레포 자신을 분석 대상에 포함하면, 스케줄러가 데이터를 push 할 때마다
+ * pushed_at 이 갱신되어 다음 실행에서 또 "변경됨"으로 판정되는 자기 참조 루프가 생긴다.
+ * 봇 커밋을 제외한 시각을 기준으로 삼으면 루프가 끊긴다.
+ */
+export async function getLastHumanCommitDate(owner, repo, botName) {
+  const commits = await request(`${API}/repos/${owner}/${repo}/commits?per_page=50`, {
+    allow404: true,
+  });
+  if (!Array.isArray(commits)) return null;
+
+  for (const c of commits) {
+    const author = c.commit?.author?.name ?? "";
+    const committer = c.commit?.committer?.name ?? "";
+    if (author === botName || committer === botName) continue;
+    return c.commit?.committer?.date ?? c.commit?.author?.date ?? null;
+  }
+  return null;
+}
+
 export async function getFileContent(owner, repo, path, ref) {
   const url = `${API}/repos/${owner}/${repo}/contents/${path
     .split("/")
