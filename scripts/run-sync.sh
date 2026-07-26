@@ -3,7 +3,8 @@
 #
 #  1. git pull 로 원격 변경분을 먼저 반영
 #  2. scripts/sync.mjs 실행 — 새 레포/변경된 레포만 Claude 로 분석
-#  3. data/ 에 변경이 생기면 커밋하고 push
+#  3. out/ 재빌드 — 로컬 상시 호스팅(scripts/install-hosting.sh)이 설치된 경우에만
+#  4. data/ 에 변경이 생기면 커밋하고 push
 #     (push 되면 GitHub Actions 가 사이트를 다시 빌드·배포한다)
 #
 # launchd 에서 호출되며, 수동으로는 `npm run scheduler:run` 으로 실행할 수 있다.
@@ -71,7 +72,27 @@ log "sync.mjs 종료 코드: $SYNC_EXIT"
 # 다이어그램 문법 검사 (실패해도 배포는 막지 않는다 — 사이트에 폴백 UI 가 있다)
 node scripts/validate-diagrams.mjs || log "⚠ 일부 다이어그램이 파싱되지 않습니다"
 
-# 3. 변경분 커밋 & push
+# 3. 로컬 상시 호스팅용 정적 빌드 갱신
+#
+# git pull 로 코드가 바뀌었을 수도, sync.mjs 로 데이터가 바뀌었을 수도 있으므로
+# 조건을 따지지 않고 항상 다시 만든다. (하루 한 번이라 비용보다 신선함이 중요하다)
+# serve 는 요청마다 디스크를 읽으므로 에이전트를 재시작할 필요는 없다.
+#
+# NEXT_PUBLIC_BASE_PATH 는 반드시 비운다.
+# GitHub Pages 용 /portfolio 가 붙으면 커스텀 도메인에서 경로가 전부 깨진다.
+if [[ -f "$HOME/Library/LaunchAgents/com.jiyong-jeong.portfolio-serve.plist" ]]; then
+  log "로컬 호스팅용 정적 빌드를 갱신합니다"
+  if NEXT_PUBLIC_BASE_PATH= npm run build; then
+    log "✓ out/ 갱신 완료"
+  else
+    # 빌드가 깨져도 이전 out/ 이 계속 서빙되므로 사이트가 내려가지는 않는다.
+    log "⚠ 빌드 실패 — 직전 out/ 이 그대로 서빙됩니다"
+  fi
+else
+  log "로컬 호스팅 에이전트가 없어 정적 빌드를 건너뜁니다"
+fi
+
+# 4. 변경분 커밋 & push
 if [[ -z "$(git status --porcelain data)" ]]; then
   log "데이터 변경 없음 — 커밋할 내용이 없습니다"
   log "════════ 동기화 종료 ════════"

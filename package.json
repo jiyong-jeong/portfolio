@@ -14,7 +14,11 @@
     "validate": "node scripts/validate-diagrams.mjs",
     "scheduler:install": "bash scripts/install-scheduler.sh",
     "scheduler:uninstall": "bash scripts/uninstall-scheduler.sh",
-    "scheduler:run": "bash scripts/run-sync.sh"
+    "scheduler:run": "bash scripts/run-sync.sh",
+    "hosting:install": "bash scripts/install-hosting.sh",
+    "hosting:uninstall": "bash scripts/uninstall-hosting.sh",
+    "hosting:serve": "bash scripts/run-serve.sh",
+    "hosting:tunnel": "bash scripts/run-tunnel.sh"
   },
   "dependencies": {
     "mermaid": "^11.16.0",
@@ -30,6 +34,7 @@
     "eslint": "^9",
     "eslint-config-next": "16.2.12",
     "jsdom": "^25.0.1",
+    "serve": "^14.2.6",
     "tailwindcss": "^4",
     "typescript": "^5"
   }
