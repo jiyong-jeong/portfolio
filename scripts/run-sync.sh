@@ -29,10 +29,14 @@ log() { echo "[$(date '+%Y-%m-%d %H:%M:%S')] $*"; }
 log "════════ 동기화 시작 ════════"
 
 # launchd 는 로그인 셸의 PATH 를 물려받지 않으므로 직접 보강한다.
-export PATH="/opt/homebrew/bin:/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin:$PATH"
-if [[ -s "$HOME/.nvm/nvm.sh" ]]; then
-  # shellcheck disable=SC1091
-  . "$HOME/.nvm/nvm.sh" >/dev/null 2>&1 || true
+# claude 는 보통 ~/.local/bin 에 설치된다.
+export PATH="$HOME/.local/bin:/opt/homebrew/bin:/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin:$PATH"
+
+# nvm 을 쓰는 환경이면 설치된 node 중 가장 최신 버전을 고른다.
+# (nvm.sh 를 source 하면 default 로 지정된 낮은 버전이 잡힐 수 있어 직접 선택한다.)
+NVM_NODE_BIN="$(find "$HOME/.nvm/versions/node" -maxdepth 2 -type d -name bin 2>/dev/null | sort -V | tail -1)"
+if [[ -n "$NVM_NODE_BIN" ]]; then
+  export PATH="$NVM_NODE_BIN:$PATH"
 fi
 
 for cmd in node git claude; do

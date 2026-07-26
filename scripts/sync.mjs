@@ -14,7 +14,7 @@
 import { existsSync, mkdirSync, readFileSync, readdirSync, rmSync, writeFileSync } from "node:fs";
 import { join } from "node:path";
 
-import { DATA_DIR, PROFILE_FILE, PROJECTS_DIR, STATE_FILE, loadConfig } from "./lib/config.mjs";
+import { DATA_DIR, PROFILE_FILE, PROJECTS_DIR, ROOT, STATE_FILE, loadConfig } from "./lib/config.mjs";
 import { listRepos, resolveToken } from "./lib/github.mjs";
 import { collectRepoContext } from "./lib/context.mjs";
 import { analyzeRepo } from "./lib/analyze.mjs";
@@ -38,18 +38,26 @@ function parseArgs(argv) {
 }
 
 function loadState() {
-  if (!existsSync(STATE_FILE)) return { version: 1, lastRunAt: null, repos: {} };
+  if (!existsSync(STATE_FILE)) return { version: 1, repos: {} };
   try {
     const s = JSON.parse(readFileSync(STATE_FILE, "utf8"));
-    return { version: 1, lastRunAt: null, repos: {}, ...s };
+    return { version: 1, repos: {}, ...s };
   } catch {
     log("⚠️  state.json 을 읽을 수 없어 새로 시작합니다.");
-    return { version: 1, lastRunAt: null, repos: {} };
+    return { version: 1, repos: {} };
   }
 }
 
+/**
+ * 내용이 실제로 달라졌을 때만 파일을 쓴다.
+ * 매 실행마다 타임스탬프만 바뀌어 git diff 가 생기면 스케줄러가 빈 커밋을 만들고
+ * 사이트가 불필요하게 재배포되기 때문이다.
+ */
 function writeJson(path, value) {
-  writeFileSync(path, `${JSON.stringify(value, null, 2)}\n`, "utf8");
+  const next = `${JSON.stringify(value, null, 2)}\n`;
+  if (existsSync(path) && readFileSync(path, "utf8") === next) return false;
+  writeFileSync(path, next, "utf8");
+  return true;
 }
 
 function shouldAnalyze(repo, state, force) {
@@ -238,15 +246,36 @@ async function main() {
       }
     }
 
-    state.lastRunAt = new Date().toISOString();
     writeJson(STATE_FILE, state);
     writeJson(PROFILE_FILE, config.profile);
+
+    // generatedAt 은 "실행 시각"이 아니라 "데이터가 마지막으로 바뀐 시각"이다.
+    // 실행할 때마다 값이 바뀌면 변경이 없어도 커밋·재배포가 발생한다.
+    const projectFiles = readdirSync(PROJECTS_DIR).filter((f) => f.endsWith(".json"));
+    const lastChangedAt = Object.values(state.repos)
+      .map((r) => r.analyzedAt)
+      .filter(Boolean)
+      .sort()
+      .at(-1);
+
     writeJson(join(DATA_DIR, "meta.json"), {
       owner: config.owner,
       siteUrl: config.siteUrl,
-      generatedAt: state.lastRunAt,
-      totalProjects: readdirSync(PROJECTS_DIR).filter((f) => f.endsWith(".json")).length,
+      generatedAt: lastChangedAt ?? null,
+      totalProjects: projectFiles.length,
     });
+
+    // 스케줄러 실행 기록은 사이트 데이터가 아니므로 커밋 대상 밖(.logs)에 남긴다.
+    try {
+      mkdirSync(join(ROOT, ".logs"), { recursive: true });
+      writeFileSync(
+        join(ROOT, ".logs", "last-run.json"),
+        `${JSON.stringify({ lastRunAt: new Date().toISOString(), ...result }, null, 2)}\n`,
+        "utf8",
+      );
+    } catch {
+      // 로그 기록 실패는 동기화 결과에 영향을 주지 않는다.
+    }
   }
 
   log("── 요약 ──");

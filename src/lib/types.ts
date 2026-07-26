@@ -119,6 +119,5 @@ export interface SyncStateEntry {
 
 export interface SyncState {
   version: number;
-  lastRunAt: string | null;
   repos: Record<string, SyncStateEntry>;
 }
