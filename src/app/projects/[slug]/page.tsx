@@ -5,7 +5,7 @@ import { notFound } from "next/navigation";
 import LanguageBar from "@/components/LanguageBar";
 import Mermaid from "@/components/Mermaid";
 import { getProject, getProjects } from "@/lib/data";
-import { projectCategoryStyle, techCategoryLabel, techStyle } from "@/lib/tech";
+import { projectCategoryStyle, techCategoryLabel, techSlug, techStyle } from "@/lib/tech";
 
 type Params = { slug: string };
 
@@ -177,11 +177,13 @@ export default async function ProjectPage({ params }: { params: Promise<Params> 
                       key={tech.name}
                       className="flex flex-col gap-1.5 rounded-lg border border-line bg-elevated px-3.5 py-3 sm:flex-row sm:items-baseline sm:gap-3"
                     >
-                      <span
-                        className={`inline-flex w-fit shrink-0 items-center rounded-md border px-2 py-0.5 text-xs font-medium ${techStyle(tech.category)}`}
+                      <Link
+                        href={`/tech/${techSlug(tech.name)}`}
+                        title={`${tech.name} 활용 사례 보기`}
+                        className={`inline-flex w-fit shrink-0 items-center rounded-md border px-2 py-0.5 text-xs font-medium transition hover:opacity-80 ${techStyle(tech.category)}`}
                       >
                         {tech.name}
-                      </span>
+                      </Link>
                       <span className="text-sm leading-relaxed text-muted">{tech.usage}</span>
                     </li>
                   ))}

@@ -29,6 +29,16 @@ const CATEGORY_LABEL: Record<TechCategory, string> = {
   tool: "도구",
 };
 
+/** 기술명을 URL slug 로 바꾼다. (예: "Node.js" → "node-js") */
+export function techSlug(name: string): string {
+  const slug = name
+    .toLowerCase()
+    .replace(/[^a-z0-9]+/g, "-")
+    .replace(/^-+|-+$/g, "");
+  // 영문/숫자가 하나도 없는 이름을 위한 대비책
+  return slug || encodeURIComponent(name.trim().toLowerCase());
+}
+
 export function techStyle(category: string): string {
   return CATEGORY_STYLE[category as TechCategory] ?? CATEGORY_STYLE.tool;
 }

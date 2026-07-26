@@ -1,6 +1,7 @@
 import { existsSync, readFileSync, readdirSync } from "node:fs";
 import { join } from "node:path";
 
+import { techSlug } from "./tech";
 import type { Profile, Project } from "./types";
 
 const DATA_DIR = join(process.cwd(), "data");
@@ -56,6 +57,7 @@ export function getMeta(): { generatedAt: string | null; owner: string; siteUrl:
 
 export interface TechSummary {
   name: string;
+  slug: string;
   count: number;
   category: string;
   projects: string[];
@@ -75,6 +77,7 @@ export function getTechSummary(projects: Project[]): TechSummary[] {
       } else {
         map.set(key, {
           name: tech.name,
+          slug: techSlug(tech.name),
           category: tech.category,
           count: 1,
           projects: [project.slug],
@@ -84,6 +87,77 @@ export function getTechSummary(projects: Project[]): TechSummary[] {
   }
 
   return [...map.values()].sort((a, b) => b.count - a.count || a.name.localeCompare(b.name));
+}
+
+/** 한 프로젝트에서 특정 기술을 어떻게 썼는지 */
+export interface TechUsage {
+  project: Project;
+  usage: string;
+}
+
+export interface TechDetail {
+  slug: string;
+  name: string;
+  category: string;
+  count: number;
+  /** 프로젝트별 활용 방식 (홈 화면과 같은 순서) */
+  usages: TechUsage[];
+  /** 같은 프로젝트에서 함께 쓰인 기술 */
+  related: { name: string; slug: string; category: string; count: number }[];
+}
+
+export function getTechDetails(): TechDetail[] {
+  const projects = getProjects();
+  const map = new Map<string, TechDetail>();
+
+  for (const project of projects) {
+    for (const tech of project.techStack) {
+      const key = tech.name.toLowerCase();
+      const entry = map.get(key);
+      if (entry) {
+        entry.count += 1;
+        entry.usages.push({ project, usage: tech.usage });
+      } else {
+        map.set(key, {
+          slug: techSlug(tech.name),
+          name: tech.name,
+          category: tech.category,
+          count: 1,
+          usages: [{ project, usage: tech.usage }],
+          related: [],
+        });
+      }
+    }
+  }
+
+  // 함께 쓰인 기술 집계
+  for (const detail of map.values()) {
+    const co = new Map<string, { name: string; slug: string; category: string; count: number }>();
+    for (const { project } of detail.usages) {
+      for (const tech of project.techStack) {
+        if (tech.name.toLowerCase() === detail.name.toLowerCase()) continue;
+        const key = tech.name.toLowerCase();
+        const hit = co.get(key);
+        if (hit) hit.count += 1;
+        else
+          co.set(key, {
+            name: tech.name,
+            slug: techSlug(tech.name),
+            category: tech.category,
+            count: 1,
+          });
+      }
+    }
+    detail.related = [...co.values()]
+      .sort((a, b) => b.count - a.count || a.name.localeCompare(b.name))
+      .slice(0, 12);
+  }
+
+  return [...map.values()].sort((a, b) => b.count - a.count || a.name.localeCompare(b.name));
+}
+
+export function getTechDetail(slug: string): TechDetail | undefined {
+  return getTechDetails().find((t) => t.slug === slug);
 }
 
 export function getCategories(projects: Project[]): { name: string; count: number }[] {

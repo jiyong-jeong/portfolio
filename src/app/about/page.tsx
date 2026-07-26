@@ -79,14 +79,15 @@ export default function AboutPage() {
         <h2 className="text-xl font-bold tracking-tight">주요 기술</h2>
         <div className="mt-4 flex flex-wrap gap-1.5">
           {topTechs.map((tech) => (
-            <span
+            <Link
               key={tech.name}
-              title={`${techCategoryLabel(tech.category)} · ${tech.count}개 프로젝트`}
-              className={`inline-flex items-center gap-1.5 rounded-md border px-2.5 py-1 text-sm font-medium ${techStyle(tech.category)}`}
+              href={`/tech/${tech.slug}`}
+              title={`${techCategoryLabel(tech.category)} · ${tech.count}개 프로젝트에서의 활용 방식 보기`}
+              className={`inline-flex items-center gap-1.5 rounded-md border px-2.5 py-1 text-sm font-medium transition hover:opacity-80 ${techStyle(tech.category)}`}
             >
               {tech.name}
               <span className="text-xs opacity-60">{tech.count}</span>
-            </span>
+            </Link>
           ))}
         </div>
       </section>

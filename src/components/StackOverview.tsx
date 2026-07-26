@@ -16,19 +16,24 @@ export default function StackOverview({ techs }: { techs: TechSummary[] }) {
     <div className="grid gap-8 lg:grid-cols-5">
       <div className="lg:col-span-2">
         <h3 className="text-sm font-semibold text-muted">가장 많이 쓴 기술</h3>
-        <ul className="mt-4 space-y-2.5">
+        <ul className="mt-4 space-y-1">
           {top.map((tech) => (
-            <li key={tech.name} className="grid grid-cols-[minmax(0,7rem)_1fr_auto] items-center gap-3">
-              <span className="truncate text-sm" title={tech.name}>
-                {tech.name}
-              </span>
-              <span className="h-2 overflow-hidden rounded-full bg-subtle" aria-hidden>
-                <span
-                  className="block h-full rounded-full bg-accent/70"
-                  style={{ width: `${Math.max(8, (tech.count / max) * 100)}%` }}
-                />
-              </span>
-              <span className="text-xs tabular-nums text-faint">{tech.count}개</span>
+            <li key={tech.name}>
+              <Link
+                href={`/tech/${tech.slug}`}
+                className="grid grid-cols-[minmax(0,7rem)_1fr_auto] items-center gap-3 rounded-lg px-2 py-1.5 transition hover:bg-subtle"
+              >
+                <span className="truncate text-sm" title={tech.name}>
+                  {tech.name}
+                </span>
+                <span className="h-2 overflow-hidden rounded-full bg-subtle" aria-hidden>
+                  <span
+                    className="block h-full rounded-full bg-accent/70"
+                    style={{ width: `${Math.max(8, (tech.count / max) * 100)}%` }}
+                  />
+                </span>
+                <span className="text-xs tabular-nums text-faint">{tech.count}개</span>
+              </Link>
             </li>
           ))}
         </ul>
@@ -36,6 +41,9 @@ export default function StackOverview({ techs }: { techs: TechSummary[] }) {
 
       <div className="lg:col-span-3">
         <h3 className="text-sm font-semibold text-muted">분야별 기술스택</h3>
+        <p className="mt-1 text-xs text-faint">
+          기술을 누르면 각 프로젝트에서 어떻게 활용했는지 볼 수 있습니다.
+        </p>
         <div className="mt-4 space-y-4">
           {grouped.map((group) => (
             <div key={group.category} className="grid gap-2 sm:grid-cols-[6rem_1fr] sm:gap-4">
@@ -46,8 +54,8 @@ export default function StackOverview({ techs }: { techs: TechSummary[] }) {
                 {group.items.map((tech) => (
                   <Link
                     key={tech.name}
-                    href={`/projects/${tech.projects[0]}`}
-                    title={`${tech.name} — ${tech.count}개 프로젝트에서 사용`}
+                    href={`/tech/${tech.slug}`}
+                    title={`${tech.name} — ${tech.count}개 프로젝트에서의 활용 방식 보기`}
                     className={`inline-flex items-center gap-1.5 rounded-md border px-2 py-0.5 text-xs font-medium transition hover:opacity-80 ${techStyle(tech.category)}`}
                   >
                     {tech.name}
