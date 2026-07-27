@@ -1,0 +1,51 @@
+{
+  "slug": "launchd",
+  "name": "launchd",
+  "category": "devops",
+  "tagline": "macOS와 iOS에서 데몬, 에이전트, 프로세스를 관리하는 시스템 초기화 및 서비스 관리자",
+  "definition": "launchd는 Apple이 macOS와 iOS에서 사용하는 init 시스템이자 서비스 관리자입니다. 시스템 부팅 시 첫 번째로 실행되어 다른 모든 프로세스를 시작하고, 백그라운드 데몬과 사용자 에이전트를 관리하며, 스케줄링된 작업을 실행합니다. Linux의 systemd나 cron, rc.d를 대체하는 통합 솔루션으로, plist 형식의 설정 파일을 통해 프로세스의 실행 조건, 재시작 정책, 환경 변수 등을 선언적으로 정의할 수 있습니다.",
+  "concepts": [
+    {
+      "term": "LaunchDaemon",
+      "description": "시스템 전체에 영향을 미치는 백그라운드 서비스로, 사용자 로그인 여부와 관계없이 시스템 부팅 시 실행됩니다. /Library/LaunchDaemons 또는 /System/Library/LaunchDaemons에 위치하며 root 권한으로 동작합니다."
+    },
+    {
+      "term": "LaunchAgent",
+      "description": "특정 사용자 세션에 종속된 프로세스로, 사용자가 로그인할 때 시작됩니다. ~/Library/LaunchAgents 또는 /Library/LaunchAgents에 위치하며 사용자 권한으로 실행되고 GUI에 접근할 수 있습니다."
+    },
+    {
+      "term": "plist",
+      "description": "Property List의 약자로, launchd 작업을 정의하는 XML 또는 바이너리 형식의 설정 파일입니다. Label, ProgramArguments, RunAtLoad, KeepAlive 같은 키를 통해 프로세스 실행 방식을 선언합니다."
+    },
+    {
+      "term": "Label",
+      "description": "launchd 작업을 식별하는 고유한 역도메인 형식의 문자열입니다. launchctl 명령으로 작업을 제어할 때 이 레이블을 사용하며, plist 파일명과 일치시키는 것이 관례입니다."
+    },
+    {
+      "term": "StartCalendarInterval",
+      "description": "cron과 유사하게 특정 시간에 작업을 실행하도록 스케줄링하는 키입니다. 시, 분, 요일 등을 지정할 수 있으며, 시스템이 꺼져 있던 시간의 작업은 실행되지 않습니다."
+    },
+    {
+      "term": "KeepAlive",
+      "description": "프로세스가 종료되었을 때 자동으로 재시작할지 결정하는 설정입니다. boolean 값이나 조건부 딕셔너리를 사용해 특정 경로가 존재하거나 네트워크가 연결된 경우에만 실행되도록 제어할 수 있습니다."
+    }
+  ],
+  "whenToUse": [
+    "macOS에서 백그라운드 서비스나 데몬을 시스템 부팅 시 자동으로 시작해야 할 때",
+    "사용자 로그인 시 자동으로 실행되어야 하는 프로그램을 등록할 때",
+    "특정 시간마다 반복 실행되는 작업을 스케줄링할 때",
+    "프로세스가 비정상 종료되면 자동으로 재시작되어야 할 때"
+  ],
+  "example": {
+    "title": "매일 오전 2시에 백업 스크립트를 실행하는 LaunchDaemon",
+    "language": "text",
+    "code": "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n<!DOCTYPE plist PUBLIC \"-//Apple//DTD PLIST 1.0//EN\" \"http://www.apple.com/DTDs/PropertyList-1.0.dtd\">\n<plist version=\"1.0\">\n<dict>\n    <key>Label</key>\n    <string>com.example.backup</string>\n    <key>ProgramArguments</key>\n    <array>\n        <string>/usr/local/bin/backup.sh</string>\n    </array>\n    <key>StartCalendarInterval</key>\n    <dict>\n        <key>Hour</key>\n        <integer>2</integer>\n        <key>Minute</key>\n        <integer>0</integer>\n    </dict>\n    <key>StandardOutPath</key>\n    <string>/var/log/backup.log</string>\n    <key>StandardErrorPath</key>\n    <string>/var/log/backup.err</string>\n</dict>\n</plist>",
+    "description": "이 plist를 /Library/LaunchDaemons/com.example.backup.plist에 저장하고 launchctl load 명령으로 등록하면, 매일 오전 2시에 백업 스크립트가 자동 실행됩니다."
+  },
+  "pitfalls": [
+    "plist 파일의 권한과 소유자가 잘못되면 launchd가 로드를 거부합니다. Daemon은 root:wheel, Agent는 사용자 소유여야 합니다.",
+    "환경 변수가 일반 셸과 다릅니다. PATH나 HOME을 명시적으로 설정하거나 EnvironmentVariables 키를 사용해야 합니다.",
+    "RunAtLoad를 true로 설정하지 않으면 plist를 로드해도 즉시 실행되지 않고 다음 트리거를 기다립니다."
+  ],
+  "generatedAt": "2026-07-27T00:02:07.339Z"
+}

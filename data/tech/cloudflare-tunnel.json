@@ -1,0 +1,47 @@
+{
+  "slug": "cloudflare-tunnel",
+  "name": "Cloudflare Tunnel",
+  "category": "infra",
+  "tagline": "로컬 서버를 공인 IP나 포트 포워딩 없이 인터넷에 안전하게 노출하는 터널 서비스",
+  "definition": "Cloudflare Tunnel은 방화벽 안쪽의 로컬 서버를 Cloudflare 네트워크를 통해 인터넷에 공개할 수 있게 하는 역방향 프록시 서비스입니다. 공인 IP 할당이나 라우터 포트 포워딩 없이도 로컬 애플리케이션을 커스텀 도메인으로 서빙할 수 있습니다. 인바운드 포트를 열 필요 없이 아웃바운드 연결만으로 동작하므로 보안 위험을 줄이면서 개발 환경이나 사설 네트워크의 서비스를 외부에 노출할 수 있습니다.",
+  "concepts": [
+    {
+      "term": "cloudflared",
+      "description": "로컬 머신에서 실행되는 경량 데몬 프로세스로, Cloudflare 엣지와 로컬 서비스 사이에 암호화된 터널을 생성합니다."
+    },
+    {
+      "term": "Tunnel",
+      "description": "로컬 네트워크와 Cloudflare 네트워크를 연결하는 논리적 통로. 하나의 터널에 여러 호스트명을 라우팅할 수 있습니다."
+    },
+    {
+      "term": "Public Hostname",
+      "description": "외부에서 접근할 도메인 이름. Cloudflare DNS에 CNAME 레코드로 등록되며, 요청을 터널로 라우팅합니다."
+    },
+    {
+      "term": "Ingress Rules",
+      "description": "들어오는 요청을 어느 로컬 서비스(호스트:포트)로 전달할지 정의하는 라우팅 규칙입니다."
+    },
+    {
+      "term": "Zero Trust",
+      "description": "Cloudflare Access와 통합해 터널을 통해 노출된 서비스에 인증·인가 정책을 적용할 수 있는 보안 레이어입니다."
+    }
+  ],
+  "whenToUse": [
+    "고정 IP 없이 홈 서버나 개발 머신의 서비스를 도메인으로 공개하고 싶을 때",
+    "방화벽 인바운드 포트를 열지 않고도 사내 애플리케이션을 외부에 안전하게 노출해야 할 때",
+    "ngrok 같은 서비스 대신 자체 도메인과 Cloudflare CDN/보안 기능을 함께 활용하려 할 때",
+    "임시 데모나 웹훅 수신용 엔드포인트를 빠르게 만들어야 할 때"
+  ],
+  "example": {
+    "title": "로컬 웹 서버를 터널로 공개하기",
+    "language": "bash",
+    "code": "# 1. cloudflared 설치 후 로그인\ncloudflared tunnel login\n\n# 2. 터널 생성\ncloudflared tunnel create my-tunnel\n\n# 3. DNS 레코드 등록\ncloudflared tunnel route dns my-tunnel app.example.com\n\n# 4. 터널 실행 (localhost:8080을 app.example.com으로 연결)\ncloudflared tunnel run --url http://localhost:8080 my-tunnel",
+    "description": "로컬 8080 포트에서 실행 중인 서비스를 app.example.com 도메인으로 외부에 공개합니다. 공인 IP나 포트 포워딩 설정 없이 즉시 접근 가능합니다."
+  },
+  "pitfalls": [
+    "터널 실행 중에만 도메인 접근이 가능하므로, 프로덕션 용도라면 데몬으로 등록해야 함",
+    "Cloudflare DNS를 사용하는 도메인만 Public Hostname으로 등록 가능",
+    "무료 플랜에서는 동시 연결 수나 대역폭 제한이 있을 수 있으므로 트래픽이 많은 서비스는 주의"
+  ],
+  "generatedAt": "2026-07-27T00:02:05.036Z"
+}

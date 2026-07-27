@@ -1,0 +1,43 @@
+{
+  "slug": "serve",
+  "name": "serve",
+  "category": "tool",
+  "tagline": "빌드된 정적 파일을 간단하게 HTTP 서버로 제공하는 CLI 도구",
+  "definition": "serve는 Node.js 기반의 경량 정적 파일 서버입니다. 빌드된 HTML, CSS, JS 파일을 별도의 서버 설정 없이 즉시 로컬에서 테스트하거나 배포 환경에서 서빙할 수 있도록 만들어졌습니다. 개발 중 빌드 결과물을 빠르게 확인하거나, 프로덕션에서 정적 사이트를 간단히 호스팅하는 용도로 사용됩니다.",
+  "concepts": [
+    {
+      "term": "Static File Server",
+      "description": "미리 생성된 파일들을 그대로 HTTP 응답으로 반환하는 서버. 동적 처리 없이 파일 시스템의 내용을 브라우저에 전달합니다."
+    },
+    {
+      "term": "Single Page Application (SPA) Support",
+      "description": "클라이언트 라우팅을 사용하는 앱에서 모든 경로를 index.html로 리다이렉트하는 기능. React, Vue 등의 프레임워크 빌드 결과물 서빙에 필수입니다."
+    },
+    {
+      "term": "CORS",
+      "description": "다른 도메인에서 실행되는 클라이언트가 이 서버의 리소스에 접근할 수 있도록 허용하는 HTTP 헤더 설정입니다."
+    },
+    {
+      "term": "Port Binding",
+      "description": "서버가 특정 네트워크 포트 번호로 HTTP 요청을 수신하도록 설정하는 것. serve는 기본 3000번 포트를 사용하며 옵션으로 변경 가능합니다."
+    }
+  ],
+  "whenToUse": [
+    "프론트엔드 빌드 결과물을 로컬에서 빠르게 확인하고 싶을 때",
+    "nginx나 Apache 없이 간단한 정적 사이트를 배포해야 할 때",
+    "개발 서버 대신 프로덕션과 유사한 환경에서 테스트하고 싶을 때",
+    "Docker 컨테이너에서 빌드된 파일만 서빙하는 가벼운 이미지를 만들 때"
+  ],
+  "example": {
+    "title": "빌드 폴더를 특정 포트로 서빙",
+    "language": "bash",
+    "code": "# npx로 즉시 실행\nnpx serve -s build -p 3100\n\n# 또는 전역 설치 후 사용\nnpm install -g serve\nserve -s build -p 3100\n\n# -s 옵션: SPA 모드 (모든 라우트를 index.html로)\n# -p 옵션: 포트 지정\n# build: 서빙할 디렉토리",
+    "description": "build 폴더의 정적 파일들을 3100번 포트에서 SPA 모드로 서빙합니다. 별도 설정 파일 없이 즉시 실행 가능합니다."
+  },
+  "pitfalls": [
+    "SPA 라우팅을 사용하는데 -s 옵션을 빼면 새로고침 시 404 에러가 발생합니다",
+    "로컬에서만 접근 가능하게 하려면 -l 또는 --listen 옵션으로 주소를 명시해야 합니다",
+    "프로덕션에서는 캐싱, 압축 등 추가 최적화가 필요할 수 있습니다"
+  ],
+  "generatedAt": "2026-07-27T00:01:59.401Z"
+}
