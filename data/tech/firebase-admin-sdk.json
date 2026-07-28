@@ -1,0 +1,43 @@
+{
+  "slug": "firebase-admin-sdk",
+  "name": "Firebase Admin SDK",
+  "category": "backend",
+  "tagline": "Firebase 서비스를 서버 환경에서 관리하고 제어할 수 있는 공식 백엔드 SDK",
+  "definition": "Firebase Admin SDK는 Firebase의 각종 서비스를 서버 측에서 특권(privileged) 권한으로 접근·제어하기 위한 라이브러리입니다. 클라이언트 SDK와 달리 인증 규칙을 우회하고, 사용자 관리·데이터베이스 조작·푸시 알림 전송 등을 백엔드에서 안전하게 수행할 수 있습니다. Node.js, Python, Go, Java 등 주요 서버 언어를 지원하며, 서비스 계정 키를 통해 인증합니다.",
+  "concepts": [
+    {
+      "term": "Service Account",
+      "description": "Firebase 프로젝트에 접근할 수 있는 서버 전용 인증 계정. JSON 키 파일 형태로 발급되며, 이 파일을 통해 Admin SDK가 Firebase 서비스에 인증됩니다."
+    },
+    {
+      "term": "Firebase Cloud Messaging (FCM)",
+      "description": "모바일·웹 클라이언트에게 푸시 알림을 전송하는 Firebase 서비스. Admin SDK를 통해 서버에서 특정 기기나 토픽에 메시지를 발송할 수 있습니다."
+    },
+    {
+      "term": "Admin Privilege",
+      "description": "Admin SDK는 Firestore나 Realtime Database의 보안 규칙을 무시하고 모든 데이터를 읽고 쓸 수 있는 특권을 가집니다. 신뢰할 수 있는 서버 환경에서만 사용해야 합니다."
+    },
+    {
+      "term": "Authentication Management",
+      "description": "사용자 계정 생성·삭제·수정, 커스텀 토큰 발급, 이메일 인증 링크 생성 등 Firebase Authentication을 서버에서 프로그래밍 방식으로 관리하는 기능입니다."
+    }
+  ],
+  "whenToUse": [
+    "서버에서 Firebase 데이터베이스에 보안 규칙 없이 직접 접근해야 할 때",
+    "백엔드 로직에서 모바일·웹 앱에 푸시 알림을 전송해야 할 때",
+    "관리자 도구나 배치 작업으로 사용자 계정을 일괄 생성·수정해야 할 때",
+    "서버 환경에서 커스텀 인증 토큰을 발급하여 클라이언트에 제공해야 할 때"
+  ],
+  "example": {
+    "title": "FCM 푸시 알림 전송 (Node.js)",
+    "language": "javascript",
+    "code": "const admin = require('firebase-admin');\n\n// 서비스 계정 키로 초기화\nadmin.initializeApp({\n  credential: admin.credential.cert('./serviceAccountKey.json')\n});\n\n// 특정 디바이스로 푸시 알림 전송\nconst message = {\n  notification: {\n    title: '화재 경보',\n    body: '1층 복도에서 연기가 감지되었습니다.'\n  },\n  token: 'DEVICE_FCM_TOKEN'\n};\n\nadmin.messaging().send(message)\n  .then(response => console.log('전송 성공:', response))\n  .catch(error => console.error('전송 실패:', error));",
+    "description": "서비스 계정 키로 Admin SDK를 초기화한 뒤, FCM을 통해 특정 디바이스에 푸시 알림을 전송하는 기본 예시입니다."
+  },
+  "pitfalls": [
+    "서비스 계정 JSON 키 파일이 외부에 노출되면 프로젝트 전체가 탈취될 수 있음",
+    "클라이언트(브라우저·앱)에서 Admin SDK를 사용하면 안 됨. 반드시 서버 환경에서만 실행",
+    "Admin SDK는 보안 규칙을 우회하므로, 입력 검증과 권한 검사를 직접 구현해야 함"
+  ],
+  "generatedAt": "2026-07-28T07:05:27.737Z"
+}

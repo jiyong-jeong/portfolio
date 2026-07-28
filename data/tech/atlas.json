@@ -1,0 +1,47 @@
+{
+  "slug": "atlas",
+  "name": "Atlas",
+  "category": "tool",
+  "tagline": "데이터베이스 스키마를 코드로 관리하고 마이그레이션을 자동화하는 오픈소스 도구",
+  "definition": "Atlas는 데이터베이스 스키마를 선언적으로 정의하고, 변경 사항을 안전하게 적용할 수 있도록 돕는 스키마 마이그레이션 도구입니다. HCL이나 SQL로 원하는 스키마 상태를 선언하면, Atlas가 현재 데이터베이스와 비교해 필요한 마이그레이션 SQL을 자동으로 생성합니다. Terraform처럼 infrastructure-as-code 철학을 데이터베이스 스키마 관리에 적용한 도구로, 스키마 변경의 버전 관리와 배포 자동화를 지원합니다.",
+  "concepts": [
+    {
+      "term": "Declarative Schema",
+      "description": "최종 스키마 상태를 HCL이나 SQL로 선언하면, Atlas가 현재 상태와 비교해 필요한 변경 작업을 자동으로 계산합니다."
+    },
+    {
+      "term": "Schema Inspection",
+      "description": "실행 중인 데이터베이스에 연결해 현재 스키마 구조를 읽어오고 분석하는 기능입니다."
+    },
+    {
+      "term": "Migration Directory",
+      "description": "스키마 변경 히스토리를 순서대로 담은 마이그레이션 파일들의 모음으로, 버전 관리 시스템에 커밋해 변경 이력을 추적합니다."
+    },
+    {
+      "term": "Diff & Apply",
+      "description": "선언한 스키마와 실제 데이터베이스를 비교(diff)해 차이를 파악하고, 그 차이를 반영(apply)하는 핵심 워크플로우입니다."
+    },
+    {
+      "term": "HCL Schema",
+      "description": "Atlas가 제공하는 HCL 기반 스키마 정의 언어로, 테이블·컬럼·인덱스·제약 조건 등을 구조적으로 표현할 수 있습니다."
+    }
+  ],
+  "whenToUse": [
+    "여러 환경에 걸쳐 데이터베이스 스키마를 일관되게 배포하고 싶을 때",
+    "스키마 변경 사항을 코드 리뷰와 버전 관리 대상으로 만들고 싶을 때",
+    "수동 ALTER 문 작성 실수를 줄이고 마이그레이션을 자동화하고 싶을 때",
+    "CI/CD 파이프라인에서 스키마 변경을 자동으로 검증하고 적용하고 싶을 때"
+  ],
+  "example": {
+    "title": "HCL로 스키마 정의 후 마이그레이션 생성",
+    "language": "hcl",
+    "code": "# schema.hcl\ntable \"users\" {\n  schema = schema.public\n  column \"id\" {\n    type = int\n    auto_increment = true\n  }\n  column \"email\" {\n    type = varchar(255)\n    null = false\n  }\n  primary_key {\n    columns = [column.id]\n  }\n  index \"email_idx\" {\n    columns = [column.email]\n    unique = true\n  }\n}\n\n# 마이그레이션 생성\n# atlas migrate diff --env local",
+    "description": "HCL로 users 테이블 구조를 선언하고, atlas migrate diff 명령으로 현재 DB와 비교해 마이그레이션 SQL 파일을 자동 생성합니다."
+  },
+  "pitfalls": [
+    "선언적 방식과 마이그레이션 파일 방식을 혼용하면 상태 충돌이 발생할 수 있습니다",
+    "프로덕션 적용 전 dry-run으로 생성될 SQL을 반드시 검토해야 합니다",
+    "데이터 손실 가능성이 있는 변경(컬럼 삭제 등)은 자동 생성된 SQL을 신중히 확인해야 합니다"
+  ],
+  "generatedAt": "2026-07-28T07:08:23.865Z"
+}

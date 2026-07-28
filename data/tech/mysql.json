@@ -1,0 +1,47 @@
+{
+  "slug": "mysql",
+  "name": "MySQL",
+  "category": "database",
+  "tagline": "세계에서 가장 널리 쓰이는 오픈소스 관계형 데이터베이스 관리 시스템",
+  "definition": "MySQL은 SQL을 기반으로 데이터를 테이블 형태로 저장하고 조회할 수 있는 RDBMS입니다. 웹 애플리케이션의 백엔드 데이터 저장소로 오랫동안 사용되어 왔으며, 설치와 운영이 비교적 간단하고 성능이 우수해 소규모부터 대규모 서비스까지 폭넓게 채택되고 있습니다. Oracle이 인수한 이후에도 오픈소스 라이선스를 유지하며, MariaDB 등 여러 파생 프로젝트의 기반이 되었습니다.",
+  "concepts": [
+    {
+      "term": "Table",
+      "description": "데이터를 행과 열로 구조화해 저장하는 단위. 각 열은 정해진 데이터 타입을 가지며, 행은 실제 레코드를 의미합니다."
+    },
+    {
+      "term": "Storage Engine",
+      "description": "실제로 데이터를 디스크에 저장하고 읽는 방식을 담당하는 플러그인 구조. InnoDB, MyISAM 등이 있으며, 트랜잭션 지원 여부와 성능 특성이 다릅니다."
+    },
+    {
+      "term": "Index",
+      "description": "특정 컬럼의 값을 빠르게 찾기 위해 별도로 유지하는 자료구조. B-Tree 형태로 저장되어 검색 속도를 크게 향상시킵니다."
+    },
+    {
+      "term": "Transaction",
+      "description": "여러 쿼리를 하나의 논리적 작업 단위로 묶어, 전부 성공하거나 전부 실패하도록 보장하는 기능. ACID 속성을 지원합니다."
+    },
+    {
+      "term": "Primary Key",
+      "description": "테이블 내에서 각 행을 고유하게 식별하는 컬럼. 중복되거나 NULL이 될 수 없으며, 자동으로 인덱스가 생성됩니다."
+    }
+  ],
+  "whenToUse": [
+    "웹 애플리케이션에서 사용자, 게시글 등 정형화된 데이터를 안정적으로 관리해야 할 때",
+    "SQL 표준 문법으로 복잡한 조인과 집계 쿼리를 작성해야 할 때",
+    "트랜잭션과 외래 키 제약으로 데이터 무결성을 보장해야 할 때",
+    "오픈소스 생태계와 풍부한 레퍼런스를 활용하고 싶을 때"
+  ],
+  "example": {
+    "title": "테이블 생성 및 기본 CRUD",
+    "language": "sql",
+    "code": "-- 테이블 생성\nCREATE TABLE users (\n  id INT AUTO_INCREMENT PRIMARY KEY,\n  email VARCHAR(255) NOT NULL UNIQUE,\n  name VARCHAR(100),\n  created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP\n);\n\n-- 데이터 삽입\nINSERT INTO users (email, name) VALUES ('user@example.com', 'Alice');\n\n-- 조회\nSELECT * FROM users WHERE email = 'user@example.com';\n\n-- 수정\nUPDATE users SET name = 'Bob' WHERE id = 1;\n\n-- 삭제\nDELETE FROM users WHERE id = 1;",
+    "description": "사용자 정보를 저장하는 테이블을 만들고, 기본적인 생성·조회·수정·삭제 작업을 수행하는 예시입니다."
+  },
+  "pitfalls": [
+    "VARCHAR 길이를 충분히 설정하지 않아 데이터가 잘리거나 INSERT 실패",
+    "인덱스 없이 WHERE 절을 사용해 전체 테이블 스캔이 발생하고 성능 저하",
+    "트랜잭션을 명시하지 않아 중간에 실패했을 때 일부 데이터만 반영되는 문제"
+  ],
+  "generatedAt": "2026-07-28T07:08:20.238Z"
+}

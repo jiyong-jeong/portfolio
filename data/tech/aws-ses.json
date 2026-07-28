@@ -1,0 +1,47 @@
+{
+  "slug": "aws-ses",
+  "name": "AWS SES",
+  "category": "infra",
+  "tagline": "AWS가 제공하는 대량 이메일 발송 및 수신 관리 서비스",
+  "definition": "Amazon Simple Email Service(SES)는 AWS에서 제공하는 클라우드 기반 이메일 플랫폼입니다. 트랜잭션 이메일, 마케팅 메시지, 대량 알림 등을 안정적으로 발송하고, 수신한 이메일을 처리하는 기능을 제공합니다. SMTP 인터페이스와 API를 모두 지원하여 기존 애플리케이션에 쉽게 통합할 수 있으며, 발송량에 따라 과금되는 종량제 방식으로 비용 효율적입니다.",
+  "concepts": [
+    {
+      "term": "Verified Identity",
+      "description": "이메일을 발송하기 전에 도메인이나 이메일 주소의 소유권을 증명하는 과정입니다. DNS 레코드 또는 확인 링크를 통해 인증하며, 스팸 방지를 위해 필수입니다."
+    },
+    {
+      "term": "Sandbox",
+      "description": "새로운 SES 계정이 시작되는 제한된 환경으로, 검증된 주소로만 이메일을 보낼 수 있고 일일 발송량이 제한됩니다. 프로덕션 사용을 위해서는 AWS에 요청하여 해제해야 합니다."
+    },
+    {
+      "term": "Configuration Set",
+      "description": "이메일 발송 시 적용할 규칙과 추적 설정을 그룹화한 객체입니다. 발송 성공, 반송, 열람, 클릭 등의 이벤트를 CloudWatch, SNS, Kinesis로 전송하여 모니터링할 수 있습니다."
+    },
+    {
+      "term": "Bounce와 Complaint",
+      "description": "Bounce는 수신 서버가 이메일을 거부하거나 주소가 존재하지 않을 때 발생하고, Complaint는 수신자가 스팸으로 신고할 때 발생합니다. 이 비율이 높으면 발송 권한이 제한될 수 있습니다."
+    },
+    {
+      "term": "Template",
+      "description": "HTML과 텍스트 형식의 이메일 본문을 미리 정의하고 변수를 삽입할 수 있는 기능입니다. 동일한 구조의 이메일을 여러 수신자에게 개인화하여 보낼 때 유용합니다."
+    }
+  ],
+  "whenToUse": [
+    "애플리케이션에서 회원가입 확인, 비밀번호 재설정 등 트랜잭션 이메일을 발송할 때",
+    "대량의 마케팅 이메일이나 뉴스레터를 비용 효율적으로 발송해야 할 때",
+    "발송 성공률, 반송률, 열람률 등을 추적하고 모니터링해야 할 때",
+    "이미 AWS 인프라를 사용 중이며 이메일 발송 기능을 통합하고 싶을 때"
+  ],
+  "example": {
+    "title": "AWS SDK를 이용한 HTML 이메일 발송",
+    "language": "javascript",
+    "code": "const { SESClient, SendEmailCommand } = require('@aws-sdk/client-ses');\n\nconst sesClient = new SESClient({ region: 'us-east-1' });\n\nconst params = {\n  Source: 'sender@example.com', // 검증된 발신 주소\n  Destination: {\n    ToAddresses: ['recipient@example.com']\n  },\n  Message: {\n    Subject: { Data: '회원가입을 환영합니다' },\n    Body: {\n      Html: {\n        Data: '<h1>환영합니다!</h1><p>가입이 완료되었습니다.</p>'\n      },\n      Text: { Data: '환영합니다! 가입이 완료되었습니다.' }\n    }\n  }\n};\n\nawait sesClient.send(new SendEmailCommand(params));",
+    "description": "검증된 이메일 주소에서 HTML과 텍스트 형식을 포함한 이메일을 한 명의 수신자에게 발송하는 기본 예시입니다."
+  },
+  "pitfalls": [
+    "Sandbox 모드에서는 검증된 주소로만 발송 가능하므로, 실제 사용자에게 보내려면 프로덕션 액세스를 신청해야 합니다",
+    "Bounce와 Complaint 비율이 일정 수준을 넘으면 계정이 일시 정지될 수 있으므로 반드시 모니터링해야 합니다",
+    "리전별로 Verified Identity를 따로 설정해야 하며, 일부 기능은 특정 리전에서만 사용 가능합니다"
+  ],
+  "generatedAt": "2026-07-28T07:08:48.687Z"
+}

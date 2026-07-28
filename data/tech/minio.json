@@ -1,0 +1,47 @@
+{
+  "slug": "minio",
+  "name": "MinIO",
+  "category": "infra",
+  "tagline": "온프레미스 환경에서 S3 호환 API를 제공하는 오픈소스 객체 스토리지 서버",
+  "definition": "MinIO는 AWS S3와 호환되는 API를 제공하는 고성능 분산 객체 스토리지 시스템입니다. 클라우드 종속 없이 자체 인프라에서 S3와 동일한 방식으로 파일을 저장하고 관리할 수 있도록 설계되었습니다. 컨테이너 환경에 최적화되어 있으며, 단일 바이너리로 배포 가능해 Kubernetes 같은 오케스트레이션 환경에서도 쉽게 운영할 수 있습니다.",
+  "concepts": [
+    {
+      "term": "S3 Compatible API",
+      "description": "AWS S3와 동일한 HTTP REST API를 지원하여, S3용으로 작성된 기존 클라이언트 라이브러리와 도구를 그대로 사용할 수 있습니다."
+    },
+    {
+      "term": "Bucket",
+      "description": "객체를 담는 최상위 컨테이너 단위로, S3와 동일하게 네임스페이스를 구성하는 논리적 저장소입니다."
+    },
+    {
+      "term": "Object",
+      "description": "실제 파일 데이터와 메타데이터를 포함하는 저장 단위로, 키(경로)를 통해 접근합니다."
+    },
+    {
+      "term": "Erasure Coding",
+      "description": "데이터를 여러 드라이브에 분산 저장하면서 일부 드라이브 장애에도 복구 가능하도록 패리티 정보를 함께 저장하는 방식입니다."
+    },
+    {
+      "term": "Access Key & Secret Key",
+      "description": "MinIO 서버에 인증하기 위한 자격 증명 쌍으로, AWS IAM 사용자의 액세스 키와 동일한 역할을 합니다."
+    }
+  ],
+  "whenToUse": [
+    "클라우드 스토리지 비용을 절감하고 데이터 주권을 유지하고 싶을 때",
+    "AWS S3 API에 의존하는 애플리케이션을 온프레미스에서 실행해야 할 때",
+    "머신러닝 학습 데이터나 백업처럼 대용량 파일을 로컬에 저장해야 할 때",
+    "Kubernetes 환경에서 Pod에 영구 객체 스토리지를 제공하고 싶을 때"
+  ],
+  "example": {
+    "title": "Docker로 단일 노드 MinIO 서버 실행",
+    "language": "bash",
+    "code": "# MinIO 서버 실행 (9000: API, 9001: Console)\ndocker run -d \\\n  -p 9000:9000 -p 9001:9001 \\\n  -e MINIO_ROOT_USER=admin \\\n  -e MINIO_ROOT_PASSWORD=password123 \\\n  -v /mnt/data:/data \\\n  minio/minio server /data --console-address \":9001\"\n\n# AWS CLI로 버킷 생성 및 파일 업로드\nexport AWS_ACCESS_KEY_ID=admin\nexport AWS_SECRET_ACCESS_KEY=password123\n\naws --endpoint-url http://localhost:9000 s3 mb s3://my-bucket\naws --endpoint-url http://localhost:9000 s3 cp image.jpg s3://my-bucket/",
+    "description": "MinIO 서버를 Docker로 실행하고, AWS CLI를 이용해 버킷을 만들고 파일을 업로드하는 기본 흐름입니다."
+  },
+  "pitfalls": [
+    "erasure coding을 위해서는 최소 4개 이상의 드라이브가 필요하며, 단일 디스크로는 복원력이 없습니다",
+    "MINIO_ROOT_USER/PASSWORD는 초기 설정 시에만 적용되며, 이후 변경은 mc admin 명령으로 해야 합니다",
+    "S3 API 호환이지만 일부 고급 기능(Glacier, CloudFront 등)은 지원하지 않습니다"
+  ],
+  "generatedAt": "2026-07-28T07:07:05.601Z"
+}

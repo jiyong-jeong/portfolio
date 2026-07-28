@@ -1,0 +1,51 @@
+{
+  "slug": "grafana",
+  "name": "Grafana",
+  "category": "infra",
+  "tagline": "시계열 데이터를 시각화하고 모니터링 대시보드를 구성하는 오픈소스 플랫폼",
+  "definition": "Grafana는 다양한 데이터 소스로부터 메트릭과 로그를 수집해 시각화하는 대시보드 플랫폼입니다. Prometheus, InfluxDB, Elasticsearch 등 여러 시계열 데이터베이스와 연동하여 실시간 모니터링 환경을 구축할 수 있습니다. 시스템 성능, 애플리케이션 상태, 비즈니스 지표를 한눈에 파악하고 알림을 설정하는 데 널리 사용됩니다.",
+  "concepts": [
+    {
+      "term": "Data Source",
+      "description": "Grafana가 데이터를 가져올 외부 저장소를 의미합니다. Prometheus, MySQL, CloudWatch 등 50가지 이상의 데이터 소스를 지원하며, 하나의 대시보드에서 여러 소스를 함께 조회할 수 있습니다."
+    },
+    {
+      "term": "Dashboard",
+      "description": "여러 개의 패널을 배치하여 구성한 시각화 화면입니다. JSON 형식으로 저장되어 버전 관리가 가능하고, 다른 환경으로 쉽게 이동하거나 공유할 수 있습니다."
+    },
+    {
+      "term": "Panel",
+      "description": "대시보드를 구성하는 개별 차트나 그래프 단위입니다. 시계열 그래프, 게이지, 테이블, 히트맵 등 다양한 시각화 타입을 선택할 수 있으며, 각각 쿼리와 표시 옵션을 독립적으로 설정합니다."
+    },
+    {
+      "term": "Query",
+      "description": "데이터 소스에 전달할 질의문입니다. 각 데이터 소스의 고유 쿼리 언어를 사용하며, Grafana는 이를 변환 없이 그대로 전달합니다."
+    },
+    {
+      "term": "Alert",
+      "description": "특정 메트릭이 임계값을 초과하거나 조건을 만족할 때 알림을 발생시키는 규칙입니다. 이메일, Slack, PagerDuty 등 여러 채널로 통지할 수 있습니다."
+    },
+    {
+      "term": "Variable",
+      "description": "대시보드 내에서 동적으로 값을 변경할 수 있는 파라미터입니다. 서버 이름, 환경, 시간 범위 등을 드롭다운으로 선택하면 모든 패널의 쿼리에 자동 반영됩니다."
+    }
+  ],
+  "whenToUse": [
+    "Prometheus, InfluxDB 등 시계열 데이터베이스의 메트릭을 시각화하고 싶을 때",
+    "여러 데이터 소스를 하나의 대시보드에서 통합 모니터링해야 할 때",
+    "실시간 시스템 상태를 직관적인 그래프로 팀과 공유하고 싶을 때",
+    "특정 임계값 초과 시 자동 알림을 받아 장애에 빠르게 대응하고 싶을 때"
+  ],
+  "example": {
+    "title": "Prometheus 데이터 소스와 간단한 대시보드 설정",
+    "language": "yaml",
+    "code": "# provisioning/datasources/prometheus.yml\napiVersion: 1\ndatasources:\n  - name: Prometheus\n    type: prometheus\n    access: proxy\n    url: http://localhost:9090\n    isDefault: true\n\n# provisioning/dashboards/dashboard.yml\napiVersion: 1\nproviders:\n  - name: 'default'\n    folder: ''\n    type: file\n    options:\n      path: /etc/grafana/dashboards\n\n# docker-compose.yml에서 Grafana 실행\nservices:\n  grafana:\n    image: grafana/grafana\n    ports:\n      - \"3000:3000\"\n    volumes:\n      - ./provisioning:/etc/grafana/provisioning",
+    "description": "Prometheus를 데이터 소스로 등록하고, Grafana를 컨테이너로 실행하는 기본 설정입니다. 3000번 포트로 접속하면 웹 UI에서 대시보드를 구성할 수 있습니다."
+  },
+  "pitfalls": [
+    "데이터 소스의 쿼리 언어를 Grafana가 추상화하지 않으므로 각 소스별 문법을 별도로 학습해야 함",
+    "대시보드를 UI에서만 수정하면 변경 이력 추적이 어려우므로 JSON을 버전 관리하는 것이 좋음",
+    "알림 규칙이 패널과 분리되어 있어, 대시보드 삭제 시 알림이 남아 있을 수 있음"
+  ],
+  "generatedAt": "2026-07-28T07:07:17.449Z"
+}

@@ -1,0 +1,47 @@
+{
+  "slug": "swagger",
+  "name": "Swagger",
+  "category": "tool",
+  "tagline": "REST API 명세를 작성하고 대화형 문서를 자동 생성해주는 오픈소스 도구 모음",
+  "definition": "Swagger는 RESTful API를 설계, 문서화, 테스트할 수 있도록 돕는 도구 세트입니다. 코드에 어노테이션을 추가하거나 별도 명세 파일을 작성하면, API 엔드포인트·파라미터·응답 구조를 시각화한 대화형 문서를 자동으로 생성합니다. 현재는 OpenAPI Specification이라는 표준 명세로 발전했으며, Swagger UI와 Swagger Editor 등의 도구가 이 명세를 기반으로 동작합니다. 백엔드 개발자가 API를 구현하면서 동시에 최신 문서를 유지할 수 있어, 프론트엔드 개발자나 외부 연동 팀과의 협업 비용을 크게 줄여줍니다.",
+  "concepts": [
+    {
+      "term": "OpenAPI Specification",
+      "description": "REST API의 구조를 기술하는 표준 JSON/YAML 형식입니다. 엔드포인트, HTTP 메서드, 요청/응답 스키마, 인증 방식 등을 선언적으로 정의합니다."
+    },
+    {
+      "term": "Swagger UI",
+      "description": "OpenAPI 명세 파일을 읽어 브라우저에서 탐색 가능한 API 문서를 렌더링하고, 각 엔드포인트를 직접 호출해볼 수 있는 인터페이스를 제공하는 도구입니다."
+    },
+    {
+      "term": "Swagger Editor",
+      "description": "OpenAPI 명세를 작성하고 실시간으로 검증·미리보기할 수 있는 웹 기반 편집기입니다."
+    },
+    {
+      "term": "springdoc-openapi",
+      "description": "Spring Boot 애플리케이션의 컨트롤러 어노테이션을 분석해 OpenAPI 명세를 자동 생성하는 라이브러리입니다."
+    },
+    {
+      "term": "Schema",
+      "description": "API 요청 본문이나 응답 본문의 데이터 구조를 정의하는 부분으로, 필드 이름, 타입, 필수 여부 등을 명시합니다."
+    }
+  ],
+  "whenToUse": [
+    "REST API를 개발하면서 코드와 문서를 자동으로 동기화하고 싶을 때",
+    "프론트엔드 개발자나 외부 파트너에게 실행 가능한 API 문서를 제공해야 할 때",
+    "API 설계를 먼저 확정하고 구현을 나중에 진행하는 Contract-First 개발을 할 때",
+    "여러 마이크로서비스의 API 명세를 표준화된 형식으로 관리하고 싶을 때"
+  ],
+  "example": {
+    "title": "Spring Boot에서 springdoc-openapi 기본 설정",
+    "language": "java",
+    "code": "// build.gradle\nimplementation 'org.springdoc:springdoc-openapi-starter-webmvc-ui:2.0.2'\n\n// Controller 예시\n@RestController\n@RequestMapping(\"/api/users\")\npublic class UserController {\n\n    @GetMapping(\"/{id}\")\n    @Operation(summary = \"사용자 조회\", description = \"ID로 사용자 정보를 조회합니다\")\n    public User getUser(@PathVariable Long id) {\n        return userService.findById(id);\n    }\n}\n\n// 애플리케이션 실행 후 http://localhost:8080/swagger-ui.html 접속",
+    "description": "Spring Boot 프로젝트에 springdoc-openapi 의존성을 추가하고 컨트롤러에 어노테이션을 붙이면, 자동으로 OpenAPI 명세와 Swagger UI가 생성됩니다."
+  },
+  "pitfalls": [
+    "어노테이션을 과도하게 추가하면 코드 가독성이 떨어질 수 있으므로, 필수 설명만 작성하는 것이 좋습니다",
+    "운영 환경에서 Swagger UI를 공개하면 API 구조가 노출되므로, 프로필별로 접근 제어를 설정해야 합니다",
+    "명세 파일만 있고 실제 구현과 동기화되지 않으면 오히려 혼란을 주므로, 자동 생성 방식을 우선 고려하세요"
+  ],
+  "generatedAt": "2026-07-28T07:03:18.831Z"
+}

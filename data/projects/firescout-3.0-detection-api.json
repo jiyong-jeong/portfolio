@@ -1,0 +1,143 @@
+{
+  "slug": "firescout-3.0-detection-api",
+  "repo": "firescout-3.0-detection-api",
+  "title": "FastAPI 기반 화재·연기 실시간 탐지 및 비식별화 API",
+  "summary": "YOLO 모델을 활용한 화재·연기 탐지와 동시에 사람·차량 번호판을 자동 비식별화하는 FastAPI 기반 추론 서버",
+  "description": "CCTV 영상에서 화재와 연기를 실시간으로 탐지하고, 탐지된 이미지 내 개인정보(사람 얼굴, 차량 번호판)를 자동으로 모자이크 처리하는 API 서버입니다. YOLOv8 기반 화재/연기 탐지 모델과 YOLOv3 계열 비식별화 모델을 조합하여 동기·비동기 추론 파이프라인을 제공하며, 어안 렌즈 왜곡 보정과 이미지 분할·회전 전처리를 지원합니다. 멀티워커 환경에서 Shared Memory 기반 메트릭 수집, 외부 클라우드 API 연동(서킷 브레이커 적용), Docker 멀티스테이지 빌드 및 소스 난독화를 통해 프로덕션 환경에 배포됩니다.",
+  "category": "백엔드",
+  "role": "화재 탐지 AI 모델 서빙 API 전체 설계 및 구현. 비동기 추론 파이프라인, 멀티워커 메트릭 수집, 비식별화 로직, Docker 보안 강화를 담당했습니다.",
+  "techStack": [
+    {
+      "name": "Python",
+      "category": "language",
+      "usage": "전체 서비스 로직 및 추론 파이프라인 구현"
+    },
+    {
+      "name": "FastAPI",
+      "category": "framework",
+      "usage": "RESTful API 서버 프레임워크, 동기·비동기 엔드포인트 제공"
+    },
+    {
+      "name": "Uvicorn",
+      "category": "backend",
+      "usage": "ASGI 서버로 멀티워커 프로세스 실행"
+    },
+    {
+      "name": "PyTorch",
+      "category": "backend",
+      "usage": "YOLO 모델 추론 및 GPU 가속"
+    },
+    {
+      "name": "ONNX Runtime",
+      "category": "backend",
+      "usage": "크로스 플랫폼 모델 추론 최적화"
+    },
+    {
+      "name": "OpenCV",
+      "category": "backend",
+      "usage": "이미지 전처리, 어안 렌즈 왜곡 보정, 모자이크 처리"
+    },
+    {
+      "name": "Docker",
+      "category": "infra",
+      "usage": "멀티스테이지 빌드, 보안 강화 컨테이너 배포"
+    },
+    {
+      "name": "PyArmor",
+      "category": "tool",
+      "usage": "Python 소스 코드 난독화"
+    },
+    {
+      "name": "Multiprocessing",
+      "category": "backend",
+      "usage": "Shared Memory 기반 워커 간 메트릭 공유"
+    },
+    {
+      "name": "Asyncio",
+      "category": "backend",
+      "usage": "비동기 이미지 처리 및 외부 API 호출"
+    }
+  ],
+  "highlights": [
+    "YOLO 모델 풀링과 비동기 파이프라인으로 동시 요청 처리 성능 최적화 (배치 처리 시 요청당 평균 167ms)",
+    "Shared Memory와 fcntl 파일락을 활용한 멀티워커 환경 메트릭 수집 시스템 구현 (외부 Redis 의존성 제거)",
+    "화재 탐지와 비식별화를 병렬 처리하여 전체 응답 시간 33% 단축 (600ms → 400ms)",
+    "어안 렌즈 왜곡 보정(dewarp) 및 이미지 분할·회전 전처리 로직 구현",
+    "Docker 컨테이너 내 위험 명령어 제거, PyArmor 난독화 적용으로 배포 보안 강화",
+    "외부 클라우드 API 연동 시 서킷 브레이커 패턴 적용으로 장애 전파 방지"
+  ],
+  "challenges": [
+    {
+      "problem": "단일 YOLO 모델 인스턴스로 인한 동시 요청 블로킹 문제 (300ms 이상 대기)",
+      "solution": "모델 풀링(Model Pooling)과 ThreadPoolExecutor 기반 비동기 전처리로 병렬 처리 파이프라인 구축, 처리량 3배 향상"
+    },
+    {
+      "problem": "멀티워커 환경에서 메트릭 집계 시 Redis 같은 외부 의존성 추가 부담",
+      "solution": "multiprocessing.shared_memory와 fcntl 파일락을 활용해 프로세스 간 데이터 공유 및 동시성 제어 구현"
+    },
+    {
+      "problem": "화재 탐지와 비식별화를 순차 처리하여 총 응답 시간이 600ms 소요",
+      "solution": "asyncio.gather로 두 모델 추론을 병렬 실행하여 400ms로 단축, I/O 대기 시간 최소화"
+    }
+  ],
+  "diagrams": [
+    {
+      "title": "전체 시스템 아키텍처",
+      "description": "클라이언트 요청부터 화재 탐지, 비식별화, 클라우드 전송까지의 전체 데이터 흐름과 주요 컴포넌트 구성을 보여줍니다.",
+      "type": "architecture",
+      "mermaid": "flowchart TD\n    Client[\"클라이언트\"] --> API[\"FastAPI 서버\"]\n    API --> Process[\"/process 엔드포인트\"]\n    Process --> Preprocess[\"이미지 전처리\"]\n    Preprocess --> Dewarp[\"어안 렌즈 보정\"]\n    Preprocess --> Split[\"이미지 분할/회전\"]\n    Dewarp --> Parallel{\"병렬 처리\"}\n    Split --> Parallel\n    Parallel --> Fire[\"화재/연기 탐지 (YOLOv8)\"]\n    Parallel --> Anon[\"비식별화 (YOLOv3)\"]\n    Fire --> Merge[\"결과 병합\"]\n    Anon --> Merge\n    Merge --> Cloud[\"클라우드 API 전송\"]\n    Merge --> Metrics[\"메트릭 기록\"]\n    Metrics --> SHM[\"Shared Memory\"]\n    Cloud --> Response[\"응답 반환\"]\n    Response --> Client"
+    },
+    {
+      "title": "비동기 추론 파이프라인",
+      "description": "모델 풀링과 비동기 처리를 통해 동시 요청을 병렬로 처리하는 최적화된 추론 흐름입니다.",
+      "type": "dataflow",
+      "mermaid": "flowchart LR\n    Req1[\"요청 1\"] --> Queue[\"요청 큐\"]\n    Req2[\"요청 2\"] --> Queue\n    Req3[\"요청 3\"] --> Queue\n    Queue --> Pool[\"모델 풀\"]\n    Pool --> M1[\"모델 인스턴스 1\"]\n    Pool --> M2[\"모델 인스턴스 2\"]\n    Pool --> M3[\"모델 인스턴스 3\"]\n    M1 --> Batch[\"배치 추론\"]\n    M2 --> Batch\n    M3 --> Batch\n    Batch --> Result[\"결과 분배\"]\n    Result --> Res1[\"응답 1\"]\n    Result --> Res2[\"응답 2\"]\n    Result --> Res3[\"응답 3\"]"
+    },
+    {
+      "title": "멀티워커 메트릭 수집 구조",
+      "description": "Shared Memory와 파일락을 사용한 멀티워커 환경의 메트릭 수집 및 주기적 집계 메커니즘입니다.",
+      "type": "architecture",
+      "mermaid": "flowchart TD\n    W1[\"Worker 1\"] --> Lock[\"fcntl 파일락\"]\n    W2[\"Worker 2\"] --> Lock\n    W3[\"Worker 3\"] --> Lock\n    Lock --> SHM[\"Shared Memory\"]\n    SHM --> Header[\"헤더 (24B)\"]\n    SHM --> Prev[\"이전 주기 슬롯 (1792B)\"]\n    SHM --> Curr[\"현재 주기 슬롯 (1792B)\"]\n    Curr --> Slot1[\"Slot 0: Worker 1 메트릭\"]\n    Curr --> Slot2[\"Slot 1: Worker 2 메트릭\"]\n    Curr --> Slot3[\"Slot 2: Worker 3 메트릭\"]\n    Rotate[\"주기적 Rotate\"] --> Move[\"현재 -> 이전\"]\n    Move --> Reset[\"현재 초기화\"]\n    Reset --> Curr"
+    }
+  ],
+  "keywords": [
+    "fastapi",
+    "yolo",
+    "fire-detection",
+    "smoke-detection",
+    "anonymization",
+    "pytorch",
+    "onnx",
+    "opencv",
+    "async",
+    "docker",
+    "multiprocessing",
+    "shared-memory"
+  ],
+  "links": {
+    "repo": "https://github.com/jiyong-jeong/firescout-3.0-detection-api",
+    "homepage": null
+  },
+  "metrics": {
+    "stars": 0,
+    "forks": 0,
+    "watchers": 0,
+    "sizeKb": 110,
+    "openIssues": 0,
+    "languages": {
+      "Python": 340781,
+      "Shell": 5229,
+      "Dockerfile": 3047
+    },
+    "topics": [],
+    "primaryLanguage": "Python",
+    "license": null
+  },
+  "dates": {
+    "createdAt": "2026-07-27T01:00:24Z",
+    "updatedAt": "2026-07-27T01:00:37Z",
+    "pushedAt": "2026-07-27T01:00:28Z",
+    "analyzedAt": "2026-07-28T06:58:22.100Z"
+  },
+  "featured": true
+}

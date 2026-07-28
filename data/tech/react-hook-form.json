@@ -1,0 +1,51 @@
+{
+  "slug": "react-hook-form",
+  "name": "React Hook Form",
+  "category": "frontend",
+  "tagline": "React에서 폼 상태와 유효성 검증을 선언적으로 관리하는 경량 라이브러리",
+  "definition": "React Hook Form은 React 애플리케이션에서 폼 입력, 유효성 검사, 에러 처리를 효율적으로 다루기 위한 Hook 기반 라이브러리입니다. 기존 제어 컴포넌트 방식의 불필요한 리렌더링 문제를 해결하고자 비제어 컴포넌트와 ref를 활용해 성능을 최적화했습니다. 복잡한 폼 로직을 적은 코드로 구현하면서도 타입 안정성과 확장성을 제공합니다.",
+  "concepts": [
+    {
+      "term": "useForm",
+      "description": "폼 전체를 관리하는 메인 Hook으로, register, handleSubmit, formState 등 폼 제어에 필요한 메서드와 상태를 반환합니다."
+    },
+    {
+      "term": "register",
+      "description": "input 요소를 폼에 등록하는 함수로, ref와 이벤트 핸들러를 자동으로 연결해 값 변경과 유효성 검증을 추적합니다."
+    },
+    {
+      "term": "handleSubmit",
+      "description": "폼 제출 시 유효성 검증을 먼저 수행하고, 통과한 경우에만 전달받은 콜백 함수를 실행하는 래퍼 함수입니다."
+    },
+    {
+      "term": "formState",
+      "description": "폼의 현재 상태를 담고 있는 객체로, errors, isDirty, isValid, isSubmitting 등의 정보를 제공합니다."
+    },
+    {
+      "term": "Controller",
+      "description": "외부 UI 라이브러리나 제어 컴포넌트를 React Hook Form과 통합하기 위한 래퍼 컴포넌트입니다."
+    },
+    {
+      "term": "resolver",
+      "description": "Yup, Zod 같은 외부 스키마 검증 라이브러리를 연결해 복잡한 유효성 규칙을 선언적으로 정의할 수 있게 하는 어댑터입니다."
+    }
+  ],
+  "whenToUse": [
+    "로그인, 회원가입, 설정 페이지 등 입력 필드가 많고 유효성 검증이 필요한 폼을 만들 때",
+    "폼 입력마다 리렌더링이 발생해 성능 저하가 우려되는 경우",
+    "타입스크립트 환경에서 폼 데이터의 타입 안정성을 확보하고 싶을 때",
+    "Zod, Yup 같은 스키마 검증 라이브러리와 통합해 복잡한 검증 로직을 관리하고 싶을 때"
+  ],
+  "example": {
+    "title": "기본 로그인 폼 구현",
+    "language": "typescript",
+    "code": "import { useForm } from 'react-hook-form';\n\ntype LoginForm = {\n  email: string;\n  password: string;\n};\n\nfunction LoginPage() {\n  const { register, handleSubmit, formState: { errors } } = useForm<LoginForm>();\n\n  const onSubmit = (data: LoginForm) => {\n    console.log(data); // { email: '...', password: '...' }\n  };\n\n  return (\n    <form onSubmit={handleSubmit(onSubmit)}>\n      <input\n        {...register('email', { required: '이메일을 입력하세요' })}\n        placeholder=\"이메일\"\n      />\n      {errors.email && <span>{errors.email.message}</span>}\n\n      <input\n        type=\"password\"\n        {...register('password', { minLength: { value: 6, message: '최소 6자 이상' } })}\n        placeholder=\"비밀번호\"\n      />\n      {errors.password && <span>{errors.password.message}</span>}\n\n      <button type=\"submit\">로그인</button>\n    </form>\n  );\n}",
+    "description": "useForm으로 폼을 초기화하고, register로 입력 필드를 등록하며, handleSubmit으로 제출 시 유효성 검증 후 데이터를 처리하는 기본 패턴을 보여줍니다."
+  },
+  "pitfalls": [
+    "register를 사용하면 비제어 컴포넌트가 되므로, value나 onChange를 직접 사용하면 충돌이 발생합니다",
+    "외부 UI 라이브러리(MUI, Ant Design 등)와 사용 시 register 대신 Controller를 써야 합니다",
+    "formState는 구독 기반이므로, 사용하지 않는 속성까지 접근하면 불필요한 리렌더링이 발생할 수 있습니다"
+  ],
+  "generatedAt": "2026-07-28T07:06:16.563Z"
+}

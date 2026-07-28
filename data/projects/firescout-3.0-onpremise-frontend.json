@@ -1,0 +1,150 @@
+{
+  "slug": "firescout-3.0-onpremise-frontend",
+  "repo": "firescout-3.0-onpremise-frontend",
+  "title": "FireScout 3.0 실내 화재 감지 시스템 프론트엔드",
+  "summary": "실시간 화재 감지 알림과 카메라 관리를 제공하는 온프레미스 화재 안전 모니터링 웹 애플리케이션",
+  "description": "FireScout 3.0은 실내 화재를 실시간으로 감지하고 관리하는 Front Office 프론트엔드입니다. SSE와 Firebase를 통해 실시간 화재 이벤트 알림을 받고, 카메라 목록 및 상세 정보를 관리하며, 이벤트 로그를 조회할 수 있습니다. 시스템 상태를 시각화하여 모니터링하고, 온프레미스 환경에서 Docker로 배포됩니다. React 19와 TypeScript 기반으로 구축되었으며, Nginx 컨테이너로 서빙됩니다.",
+  "category": "프론트엔드",
+  "role": "React 기반 SPA 프론트엔드 개발. SSE와 Firebase를 이용한 실시간 알림 구현, 카메라 및 이벤트 로그 관리 UI 설계, Docker 멀티 스테이지 빌드 및 Nginx 배포 구성을 담당했습니다.",
+  "techStack": [
+    {
+      "name": "TypeScript",
+      "category": "language",
+      "usage": "전체 애플리케이션 타입 안전성 확보 및 주요 로직 구현"
+    },
+    {
+      "name": "React",
+      "category": "frontend",
+      "usage": "UI 컴포넌트 구성 및 상태 관리 (v19)"
+    },
+    {
+      "name": "Vite",
+      "category": "frontend",
+      "usage": "개발 서버 및 프로덕션 빌드 도구"
+    },
+    {
+      "name": "React Query",
+      "category": "frontend",
+      "usage": "서버 상태 관리 및 API 캐싱"
+    },
+    {
+      "name": "Zustand",
+      "category": "frontend",
+      "usage": "클라이언트 전역 상태 관리 (토큰, Firebase 상태 등)"
+    },
+    {
+      "name": "Firebase",
+      "category": "backend",
+      "usage": "실시간 푸시 알림 및 메시징 (FCM)"
+    },
+    {
+      "name": "Axios",
+      "category": "frontend",
+      "usage": "HTTP 클라이언트 및 API 인터셉터 구성"
+    },
+    {
+      "name": "React Hook Form",
+      "category": "frontend",
+      "usage": "로그인 및 폼 입력 유효성 검사"
+    },
+    {
+      "name": "SCSS",
+      "category": "frontend",
+      "usage": "컴포넌트 스타일링 및 테마 관리"
+    },
+    {
+      "name": "Docker",
+      "category": "devops",
+      "usage": "멀티 스테이지 빌드 및 컨테이너 이미지 생성"
+    },
+    {
+      "name": "Nginx",
+      "category": "infra",
+      "usage": "정적 파일 서빙 및 프록시 설정"
+    },
+    {
+      "name": "MSW",
+      "category": "testing",
+      "usage": "개발 환경 API 모킹 및 테스트"
+    }
+  ],
+  "highlights": [
+    "SSE(Server-Sent Events)와 Firebase Cloud Messaging을 결합하여 실시간 화재 이벤트 알림 구현",
+    "React 19와 TypeScript 5.7로 타입 안전성을 확보하고 최신 React 훅 패턴 적용",
+    "Docker 멀티 스테이지 빌드로 dev/qa/prod 환경별 빌드 자동화 및 이미지 경량화",
+    "카메라 상세, 이벤트 로그, 시스템 상태를 사이드바와 테이블로 직관적으로 시각화",
+    "Lottie 애니메이션을 활용한 화재 알림 UI와 사운드 알림 통합"
+  ],
+  "challenges": [
+    {
+      "problem": "실시간 화재 알림을 놓치지 않고 사용자에게 즉시 전달해야 하는 요구사항",
+      "solution": "SSE로 서버 이벤트를 구독하고, Firebase FCM으로 백그라운드 푸시를 병행하여 이중화된 알림 체계 구축"
+    },
+    {
+      "problem": "온프레미스 환경에서 dev/qa/prod 별로 다른 API 엔드포인트와 설정 관리 필요",
+      "solution": "Vite 환경 변수(.env.dev, .env.qa, .env.prod)와 Dockerfile ARG/ENV를 조합해 빌드 시점에 환경별 설정 주입"
+    }
+  ],
+  "diagrams": [
+    {
+      "title": "FireScout 3.0 프론트엔드 아키텍처",
+      "description": "사용자 브라우저에서 Nginx 정적 서빙, API 서버 통신, SSE 실시간 이벤트 구독, Firebase FCM 알림 흐름을 보여줍니다.",
+      "type": "architecture",
+      "mermaid": "flowchart TD\n    User[\"사용자 브라우저\"]\n    Nginx[\"Nginx 컨테이너\"]\n    App[\"React App\"]\n    API[\"API 서버\"]\n    SSE[\"SSE 이벤트 스트림\"]\n    FCM[\"Firebase Cloud Messaging\"]\n    User --> Nginx\n    Nginx --> App\n    App --> API\n    API -.-> SSE\n    SSE -.-> App\n    FCM -.-> App\n    App --> User"
+    },
+    {
+      "title": "실시간 화재 알림 흐름",
+      "description": "화재 감지 이벤트가 발생했을 때 SSE와 FCM을 통해 프론트엔드로 전달되고 알림이 표시되는 시퀀스입니다.",
+      "type": "sequence",
+      "mermaid": "sequenceDiagram\n    participant Camera as 카메라\n    participant API as API 서버\n    participant SSE as SSE 채널\n    participant App as React App\n    participant FCM as Firebase FCM\n    Camera->>API: 화재 감지 이벤트\n    API->>SSE: 이벤트 발행\n    SSE-->>App: 실시간 이벤트 수신\n    API->>FCM: 푸시 메시지 전송\n    FCM-->>App: 백그라운드 알림\n    App->>App: Lottie 애니메이션 + 사운드 재생"
+    },
+    {
+      "title": "Docker 배포 플로우",
+      "description": "멀티 스테이지 빌드로 Node 빌드 후 Nginx 이미지로 정적 파일을 서빙하는 배포 구조입니다.",
+      "type": "deployment",
+      "mermaid": "flowchart LR\n    Source[\"소스 코드\"]\n    Builder[\"Node 20 Builder\"]\n    Dist[\"빌드 결과 dist\"]\n    NginxImg[\"Nginx 이미지\"]\n    Container[\"배포 컨테이너\"]\n    Source --> Builder\n    Builder --> Dist\n    Dist --> NginxImg\n    NginxImg --> Container"
+    }
+  ],
+  "keywords": [
+    "react",
+    "typescript",
+    "firebase",
+    "sse",
+    "realtime",
+    "fire-detection",
+    "docker",
+    "nginx",
+    "vite",
+    "zustand",
+    "react-query"
+  ],
+  "links": {
+    "repo": "https://github.com/jiyong-jeong/firescout-3.0-onpremise-frontend",
+    "homepage": null
+  },
+  "metrics": {
+    "stars": 0,
+    "forks": 0,
+    "watchers": 0,
+    "sizeKb": 7219,
+    "openIssues": 0,
+    "languages": {
+      "TypeScript": 236641,
+      "SCSS": 38067,
+      "JavaScript": 13510,
+      "Dockerfile": 985,
+      "HTML": 761,
+      "Shell": 356
+    },
+    "topics": [],
+    "primaryLanguage": "TypeScript",
+    "license": null
+  },
+  "dates": {
+    "createdAt": "2026-07-27T01:22:53Z",
+    "updatedAt": "2026-07-27T01:23:03Z",
+    "pushedAt": "2026-07-27T01:22:58Z",
+    "analyzedAt": "2026-07-28T06:55:41.554Z"
+  },
+  "featured": true
+}

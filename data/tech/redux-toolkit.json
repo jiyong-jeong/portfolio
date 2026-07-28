@@ -1,0 +1,47 @@
+{
+  "slug": "redux-toolkit",
+  "name": "Redux Toolkit",
+  "category": "frontend",
+  "tagline": "Redux를 더 쉽고 효율적으로 사용하기 위한 공식 도구 모음 라이브러리",
+  "definition": "Redux Toolkit은 Redux 팀이 만든 공식 라이브러리로, 기존 Redux의 복잡한 설정과 보일러플레이트 코드를 대폭 줄여줍니다. 스토어 설정, 리듀서 작성, 불변성 관리, 비동기 로직 처리 등 Redux 사용 시 반복되는 패턴을 간결한 API로 제공합니다. 현재 Redux 공식 문서에서 권장하는 표준 방식입니다.",
+  "concepts": [
+    {
+      "term": "Slice",
+      "description": "특정 기능 영역의 상태와 리듀서를 하나로 묶은 단위입니다. createSlice 함수로 만들며, 액션 생성자와 리듀서를 자동으로 생성해줍니다."
+    },
+    {
+      "term": "configureStore",
+      "description": "Redux 스토어를 생성하는 함수로, 개발자 도구와 미들웨어를 기본으로 포함하여 별도 설정 없이 바로 사용할 수 있습니다."
+    },
+    {
+      "term": "createAsyncThunk",
+      "description": "비동기 작업(API 호출 등)을 처리하는 thunk를 만드는 함수입니다. pending, fulfilled, rejected 액션을 자동으로 생성합니다."
+    },
+    {
+      "term": "Immer",
+      "description": "Redux Toolkit에 내장된 라이브러리로, 리듀서 안에서 불변성을 신경 쓰지 않고 일반 객체처럼 상태를 수정할 수 있게 해줍니다."
+    },
+    {
+      "term": "RTK Query",
+      "description": "서버 데이터 fetching과 캐싱을 자동화하는 선택적 기능입니다. API 엔드포인트를 정의하면 훅을 자동 생성해줍니다."
+    }
+  ],
+  "whenToUse": [
+    "React 앱에서 여러 컴포넌트가 공유하는 복잡한 전역 상태를 관리할 때",
+    "기존 Redux의 보일러플레이트 코드를 줄이고 개발 생산성을 높이고 싶을 때",
+    "비동기 데이터 fetching과 상태 관리를 표준화된 패턴으로 처리하고 싶을 때",
+    "TypeScript와 함께 사용하여 타입 안전성을 확보하고 싶을 때"
+  ],
+  "example": {
+    "title": "간단한 카운터 Slice 생성",
+    "language": "typescript",
+    "code": "import { configureStore, createSlice } from '@reduxjs/toolkit';\n\n// Slice 생성 - 상태, 리듀서, 액션을 한 번에 정의\nconst counterSlice = createSlice({\n  name: 'counter',\n  initialState: { value: 0 },\n  reducers: {\n    increment: (state) => {\n      state.value += 1; // Immer 덕분에 직접 수정 가능\n    },\n    decrement: (state) => {\n      state.value -= 1;\n    },\n  },\n});\n\n// 스토어 생성\nconst store = configureStore({\n  reducer: {\n    counter: counterSlice.reducer,\n  },\n});\n\n// 자동 생성된 액션 사용\nstore.dispatch(counterSlice.actions.increment());",
+    "description": "createSlice로 상태와 리듀서를 정의하고, configureStore로 스토어를 만드는 가장 기본적인 패턴입니다. 액션 타입과 액션 생성자가 자동으로 만들어집니다."
+  },
+  "pitfalls": [
+    "Slice 밖에서는 상태를 직접 수정하면 안 됩니다. Immer는 리듀서 내부에서만 동작합니다.",
+    "createAsyncThunk의 pending/fulfilled/rejected 케이스를 extraReducers에서 처리해야 합니다.",
+    "RTK Query를 쓸 때 일반 상태 관리와 혼용하면 데이터 흐름이 복잡해질 수 있습니다."
+  ],
+  "generatedAt": "2026-07-28T07:08:57.160Z"
+}

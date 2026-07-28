@@ -1,0 +1,157 @@
+{
+  "slug": "kyb-api",
+  "repo": "kyb-api",
+  "title": "KYB 기업심사 REST API",
+  "summary": "Go + Echo 기반 멀티테넌트 KYB(Know Your Business) 심사 플랫폼. 기업 등록부터 3단계 심사, WLF 스크리닝, 재제출 워크플로까지 지원.",
+  "description": "PG사·금융기관이 기업 고객을 심사하기 위한 백엔드 API입니다. 신청자는 7단계에 걸쳐 법인 정보·실소유주·이사진·첨부파일을 등록하고, 심사자는 First/Second/Third 3단계 심사를 수행합니다. WLF API를 통한 제재리스트 스크리닝, Common API 연동, S3 암호화 업로드, SES 이메일 발송, 카카오 알림톡 등을 지원하며, PostgreSQL 기반 멀티테넌트 아키텍처로 설계되었습니다. Atlas를 이용한 스키마 마이그레이션과 Testcontainers 기반 통합 테스트 인프라를 갖추고 있습니다.",
+  "category": "백엔드",
+  "role": "Go 기반 백엔드 API 설계 및 구현. 멀티테넌트 아키텍처 설계, 상태머신 기반 심사 워크플로 구현, WLF/Common API 연동, 7단계 등록 프로세스 개발, Testcontainers 통합 테스트 환경 구축.",
+  "techStack": [
+    {
+      "name": "Go",
+      "category": "language",
+      "usage": "메인 백엔드 언어 (Go 1.26.1)"
+    },
+    {
+      "name": "Echo",
+      "category": "framework",
+      "usage": "HTTP 라우팅 및 미들웨어 프레임워크 (v4)"
+    },
+    {
+      "name": "PostgreSQL",
+      "category": "database",
+      "usage": "메인 데이터베이스, 멀티테넌트 스키마 분리"
+    },
+    {
+      "name": "MySQL",
+      "category": "database",
+      "usage": "SQLC 코드 생성용 보조 DB"
+    },
+    {
+      "name": "Atlas",
+      "category": "tool",
+      "usage": "스키마 마이그레이션 관리 (HCL 기반)"
+    },
+    {
+      "name": "SQLC",
+      "category": "tool",
+      "usage": "타입 안전 SQL 쿼리 코드 생성"
+    },
+    {
+      "name": "AWS S3",
+      "category": "infra",
+      "usage": "첨부파일 저장소 (AES-CBC 암호화 업로드)"
+    },
+    {
+      "name": "AWS SES",
+      "category": "infra",
+      "usage": "HTML 템플릿 이메일 발송"
+    },
+    {
+      "name": "Docker",
+      "category": "devops",
+      "usage": "로컬 개발 환경 및 배포 컨테이너화"
+    },
+    {
+      "name": "Testcontainers",
+      "category": "testing",
+      "usage": "PostgreSQL 통합 테스트 환경"
+    },
+    {
+      "name": "Swagger",
+      "category": "tool",
+      "usage": "OpenAPI 스펙 문서 자동 생성"
+    },
+    {
+      "name": "Sentry",
+      "category": "infra",
+      "usage": "에러 추적 및 모니터링"
+    }
+  ],
+  "highlights": [
+    "멀티테넌트 아키텍처: 모든 저장소 메서드가 customerId 파라미터를 받아 고객사별 데이터 격리",
+    "상태머신 기반 워크플로: 심사 상태 전이를 statemachine 패키지로 관리하며, 14개 API 응답 상태를 매핑",
+    "7단계 기업 등록 프로세스: 토큰 생성 → 약관 동의 → 기본 정보 → 상세 정보 → 실소유자 → 이사진 → KYC 최종 등록",
+    "외부 서비스 연동: WLF 제재리스트 스크리닝, Common API, AWS S3/SES, 카카오 알림톡 통합",
+    "도메인별 모듈 분리: apps/{applicant,public,reviewer,root} 구조로 각 역할별 컨텍스트 격리"
+  ],
+  "challenges": [
+    {
+      "problem": "PostgreSQL enum 타입 변경 시 마이그레이션 복잡도 증가",
+      "solution": "enum 대신 text + CHECK 제약조건 사용. 값 추가/삭제 시 ALTER TABLE만으로 처리"
+    },
+    {
+      "problem": "멀티테넌트 환경에서 데이터 격리 보장",
+      "solution": "모든 저장소 메서드에 customerId 파라미터를 명시적으로 전달하고, 미들웨어에서 JWT 토큰으로 추출한 테넌트 정보 주입"
+    },
+    {
+      "problem": "복잡한 심사 상태 전이 로직 관리",
+      "solution": "상태머신 패키지로 전이 규칙을 중앙화하고, docs/domain/review-status-transitions.md에 단일 진실 소스 문서화"
+    }
+  ],
+  "diagrams": [
+    {
+      "title": "전체 아키텍처 및 외부 연동",
+      "description": "KYB API의 계층 구조와 외부 서비스(WLF, Common API, AWS S3/SES) 연동 관계를 보여줍니다.",
+      "type": "architecture",
+      "mermaid": "flowchart TD\n    Client[\"클라이언트\"]\n    Echo[\"Echo 서버\"]\n    Router[\"Router + 미들웨어\"]\n    Applicant[\"Applicant 도메인\"]\n    Reviewer[\"Reviewer 도메인\"]\n    Root[\"Root 도메인\"]\n    Public[\"Public 도메인\"]\n    PG[(\"PostgreSQL\")]\n    S3[\"AWS S3\"]\n    SES[\"AWS SES\"]\n    WLF[\"WLF API\"]\n    Common[\"Common API\"]\n    Alimtalk[\"카카오 알림톡\"]\n\n    Client --> Echo\n    Echo --> Router\n    Router --> Applicant\n    Router --> Reviewer\n    Router --> Root\n    Router --> Public\n    Applicant --> PG\n    Reviewer --> PG\n    Root --> PG\n    Public --> PG\n    Applicant --> S3\n    Reviewer --> S3\n    Applicant --> SES\n    Reviewer --> WLF\n    Applicant --> Common\n    Reviewer --> Common\n    Applicant --> Alimtalk"
+    },
+    {
+      "title": "7단계 기업 등록 프로세스",
+      "description": "신청자가 기업 정보를 등록하는 전체 워크플로를 순서도로 나타냅니다.",
+      "type": "flow",
+      "mermaid": "flowchart TD\n    Start[\"시작\"]\n    Token[\"토큰 생성\"]\n    Terms[\"약관 동의\"]\n    Basic[\"기본 정보\"]\n    Detail[\"상세 정보 (정관/고유번호증)\"]\n    UBO[\"실소유자 (주주명부)\"]\n    Directors[\"이사진 (사진)\"]\n    KYC[\"KYC/최종 등록\"]\n    Screening[\"WLF 스크리닝\"]\n    Complete[\"등록 완료\"]\n\n    Start --> Token\n    Token --> Terms\n    Terms --> Basic\n    Basic --> Detail\n    Detail --> UBO\n    UBO --> Directors\n    Directors --> KYC\n    KYC --> Screening\n    Screening --> Complete"
+    },
+    {
+      "title": "3단계 심사 워크플로 상태 전이",
+      "description": "First/Second/Third 심사 단계와 승인/반려/재제출 상태 전이를 나타냅니다.",
+      "type": "state",
+      "mermaid": "stateDiagram-v2\n    [*] --> Pending\n    Pending --> FirstReview\n    FirstReview --> SecondReview: 승인\n    FirstReview --> Rejected: 반려\n    FirstReview --> Resubmission: 재제출 요청\n    SecondReview --> ThirdReview: 승인\n    SecondReview --> Rejected: 반려\n    SecondReview --> Resubmission: 재제출 요청\n    ThirdReview --> Approved: 승인\n    ThirdReview --> Rejected: 반려\n    ThirdReview --> Resubmission: 재제출 요청\n    Resubmission --> FirstReview: 재제출 완료\n    Approved --> [*]\n    Rejected --> [*]"
+    }
+  ],
+  "keywords": [
+    "go",
+    "echo",
+    "postgresql",
+    "kyb",
+    "multi-tenant",
+    "state-machine",
+    "rest-api",
+    "aws-s3",
+    "aws-ses",
+    "testcontainers",
+    "atlas",
+    "sqlc"
+  ],
+  "links": {
+    "repo": "https://github.com/jiyong-jeong/kyb-api",
+    "homepage": null
+  },
+  "metrics": {
+    "stars": 0,
+    "forks": 0,
+    "watchers": 0,
+    "sizeKb": 2776,
+    "openIssues": 0,
+    "languages": {
+      "Go": 1681355,
+      "Python": 152309,
+      "Shell": 67689,
+      "HCL": 57736,
+      "PLpgSQL": 51034,
+      "HTML": 24877,
+      "Makefile": 8082,
+      "Dockerfile": 566
+    },
+    "topics": [],
+    "primaryLanguage": "Go",
+    "license": null
+  },
+  "dates": {
+    "createdAt": "2026-07-27T01:43:47Z",
+    "updatedAt": "2026-07-27T01:43:57Z",
+    "pushedAt": "2026-07-27T01:43:52Z",
+    "analyzedAt": "2026-07-28T06:51:31.217Z"
+  },
+  "featured": true
+}

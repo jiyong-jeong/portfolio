@@ -1,0 +1,51 @@
+{
+  "slug": "go",
+  "name": "Go",
+  "category": "language",
+  "tagline": "Google이 개발한 정적 타입, 컴파일 언어로 동시성과 단순함을 강조하는 범용 프로그래밍 언어",
+  "definition": "Go(또는 Golang)는 2009년 Google에서 공개한 오픈소스 프로그래밍 언어입니다. C 언어의 성능과 Python의 간결함을 결합하여, 대규모 서버 애플리케이션과 분산 시스템을 쉽게 만들 수 있도록 설계되었습니다. 빠른 컴파일 속도, 내장 동시성 모델(goroutine), 가비지 컬렉션, 간결한 문법을 특징으로 하며, 단일 바이너리로 배포할 수 있어 운영 환경에서의 편의성이 높습니다.",
+  "concepts": [
+    {
+      "term": "goroutine",
+      "description": "Go 런타임이 관리하는 경량 스레드로, 수천 개를 동시에 실행해도 적은 메모리만 사용합니다. 'go' 키워드로 함수 앞에 붙이기만 하면 비동기 실행됩니다."
+    },
+    {
+      "term": "channel",
+      "description": "goroutine 간 안전하게 데이터를 주고받기 위한 통신 파이프입니다. 'make(chan Type)' 으로 생성하며, <- 연산자로 송수신합니다."
+    },
+    {
+      "term": "interface",
+      "description": "메서드 집합을 정의하는 타입으로, 명시적 선언 없이 구조체가 해당 메서드를 구현하면 자동으로 인터페이스를 만족합니다(덕 타이핑)."
+    },
+    {
+      "term": "package",
+      "description": "코드를 구성하는 기본 단위로, 같은 디렉터리 안의 .go 파일들이 하나의 패키지를 이룹니다. main 패키지는 실행 가능한 프로그램의 진입점입니다."
+    },
+    {
+      "term": "defer",
+      "description": "함수가 종료될 때 실행될 코드를 예약하는 키워드입니다. 파일 닫기, 락 해제 등 정리 작업을 보장하는 데 자주 쓰입니다."
+    },
+    {
+      "term": "error",
+      "description": "Go는 예외(exception) 대신 error 타입을 반환값으로 사용합니다. 함수 호출 후 반환된 error가 nil인지 검사하는 패턴이 일반적입니다."
+    }
+  ],
+  "whenToUse": [
+    "REST API, gRPC 서버 등 네트워크 서비스를 빠르게 구축하고 높은 동시성을 처리해야 할 때",
+    "Docker, Kubernetes처럼 단일 바이너리 배포가 중요한 CLI 도구나 인프라 소프트웨어를 만들 때",
+    "팀 내 코드 스타일 통일과 빠른 온보딩이 중요하며, 언어 자체의 러닝 커브를 낮추고 싶을 때",
+    "마이크로서비스 아키텍처에서 가볍고 빠르게 시작되는 서비스가 필요할 때"
+  ],
+  "example": {
+    "title": "간단한 HTTP 서버와 goroutine",
+    "language": "go",
+    "code": "package main\n\nimport (\n\t\"fmt\"\n\t\"net/http\"\n\t\"time\"\n)\n\nfunc main() {\n\thttp.HandleFunc(\"/\", handler)\n\tfmt.Println(\"Server running on :8080\")\n\thttp.ListenAndServe(\":8080\", nil)\n}\n\nfunc handler(w http.ResponseWriter, r *http.Request) {\n\t// goroutine으로 비동기 작업 실행\n\tgo logRequest(r.URL.Path)\n\tfmt.Fprintf(w, \"Hello, Go!\")\n}\n\nfunc logRequest(path string) {\n\ttime.Sleep(100 * time.Millisecond)\n\tfmt.Println(\"Logged:\", path)\n}",
+    "description": "포트 8080에서 HTTP 요청을 받아 응답하며, 각 요청마다 goroutine을 생성해 비동기로 로그를 남기는 예시입니다."
+  },
+  "pitfalls": [
+    "nil 포인터, 닫힌 채널 접근 등은 panic을 일으키므로, 방어 코드나 recover()가 필요할 수 있습니다.",
+    "for 루프 안에서 goroutine을 생성할 때 반복 변수를 캡처하면 의도와 다른 값이 사용될 수 있습니다.",
+    "채널을 닫지 않거나, 이미 닫힌 채널에 쓰기를 시도하면 런타임 에러가 발생합니다."
+  ],
+  "generatedAt": "2026-07-28T07:08:05.534Z"
+}

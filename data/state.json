@@ -2,8 +2,8 @@
   "version": 1,
   "repos": {
     "jira_auto_pilot": {
-      "pushedAt": "2026-07-22T01:52:57Z",
-      "analyzedAt": "2026-07-26T04:53:57.541Z",
+      "pushedAt": "2026-07-27T05:47:20Z",
+      "analyzedAt": "2026-07-28T06:49:18.409Z",
       "status": "ok",
       "failures": 0
     },
@@ -506,14 +506,80 @@
       "failures": 0
     },
     "publish-project": {
-      "pushedAt": "2026-07-26T05:58:36Z",
-      "analyzedAt": "2026-07-26T06:27:38.354Z",
+      "pushedAt": "2026-07-27T00:33:06Z",
+      "analyzedAt": "2026-07-28T06:59:50.950Z",
       "status": "ok",
       "failures": 0
     },
     "cover-letter-tool": {
       "pushedAt": "2026-07-26T06:53:17Z",
       "analyzedAt": "2026-07-26T06:53:53.184Z",
+      "status": "ok",
+      "failures": 0
+    },
+    "kyb-client": {
+      "pushedAt": "2026-07-27T01:44:42Z",
+      "analyzedAt": "2026-07-28T06:50:36.738Z",
+      "status": "ok",
+      "failures": 0
+    },
+    "kyb-api": {
+      "pushedAt": "2026-07-27T01:43:52Z",
+      "analyzedAt": "2026-07-28T06:51:31.217Z",
+      "status": "ok",
+      "failures": 0
+    },
+    "indoor-fire-backend-server": {
+      "pushedAt": "2026-07-27T01:43:43Z",
+      "analyzedAt": "2026-07-28T06:52:49.444Z",
+      "status": "ok",
+      "failures": 0
+    },
+    "firescout-3.0-onpremise-backend": {
+      "pushedAt": "2026-07-27T01:27:47Z",
+      "analyzedAt": "2026-07-28T06:53:52.595Z",
+      "status": "ok",
+      "failures": 0
+    },
+    "firescout-3.0-onpremise-back-frontend": {
+      "pushedAt": "2026-07-27T01:23:05Z",
+      "analyzedAt": "2026-07-28T06:54:51.342Z",
+      "status": "ok",
+      "failures": 0
+    },
+    "firescout-3.0-onpremise-frontend": {
+      "pushedAt": "2026-07-27T01:22:58Z",
+      "analyzedAt": "2026-07-28T06:55:41.554Z",
+      "status": "ok",
+      "failures": 0
+    },
+    "firescout-3.0-hitl-frontend": {
+      "pushedAt": "2026-07-27T01:18:48Z",
+      "analyzedAt": "2026-07-28T06:56:36.601Z",
+      "status": "ok",
+      "failures": 0
+    },
+    "firescout-3.0-hitl-backend": {
+      "pushedAt": "2026-07-27T01:18:39Z",
+      "analyzedAt": "2026-07-28T06:57:25.624Z",
+      "status": "ok",
+      "failures": 0
+    },
+    "firescout-3.0-detection-api": {
+      "pushedAt": "2026-07-27T01:00:28Z",
+      "analyzedAt": "2026-07-28T06:58:22.100Z",
+      "status": "ok",
+      "failures": 0
+    },
+    "face-api": {
+      "pushedAt": "2026-07-27T00:42:37Z",
+      "analyzedAt": "2026-07-28T06:59:13.590Z",
+      "status": "ok",
+      "failures": 0
+    },
+    "deploy-server-backend": {
+      "pushedAt": "2026-07-27T00:20:59Z",
+      "analyzedAt": "2026-07-28T07:01:47.670Z",
       "status": "ok",
       "failures": 0
     }

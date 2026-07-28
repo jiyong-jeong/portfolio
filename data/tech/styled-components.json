@@ -1,0 +1,47 @@
+{
+  "slug": "styled-components",
+  "name": "styled-components",
+  "category": "frontend",
+  "tagline": "React 컴포넌트 안에 CSS를 JavaScript로 작성할 수 있게 해주는 CSS-in-JS 라이브러리",
+  "definition": "styled-components는 JavaScript 파일 안에서 CSS를 작성하고, 그 스타일이 적용된 React 컴포넌트를 생성하는 라이브러리입니다. 별도의 CSS 파일 없이 컴포넌트와 스타일을 한 곳에서 관리할 수 있으며, props를 기반으로 동적 스타일링이 가능합니다. 전역 네임스페이스 오염 없이 컴포넌트 단위로 스타일을 캡슐화하고, 사용되지 않는 스타일은 자동으로 제거됩니다.",
+  "concepts": [
+    {
+      "term": "Tagged Template Literal",
+      "description": "ES6의 템플릿 리터럴을 활용해 styled.div`...` 형태로 스타일을 정의하는 문법입니다. 백틱 안에 일반 CSS 문법을 그대로 작성할 수 있습니다."
+    },
+    {
+      "term": "Automatic Critical CSS",
+      "description": "페이지에 렌더링된 컴포넌트의 스타일만 자동으로 추출해 DOM에 주입합니다. 사용하지 않는 스타일은 번들에 포함되지 않습니다."
+    },
+    {
+      "term": "Dynamic Styling",
+      "description": "컴포넌트의 props나 theme 값을 기반으로 스타일을 조건부로 변경할 수 있습니다. JavaScript 표현식을 사용해 런타임에 스타일을 계산합니다."
+    },
+    {
+      "term": "ThemeProvider",
+      "description": "애플리케이션 전체에 공통 디자인 토큰(색상, 폰트 등)을 제공하는 Context 기반 컴포넌트입니다. 하위 모든 styled 컴포넌트에서 theme 객체로 접근할 수 있습니다."
+    },
+    {
+      "term": "Unique Class Name",
+      "description": "각 styled 컴포넌트마다 고유한 해시 기반 클래스명이 자동 생성되어 스타일 충돌을 방지합니다."
+    }
+  ],
+  "whenToUse": [
+    "컴포넌트와 스타일을 한 파일에서 관리해 응집도를 높이고 싶을 때",
+    "props에 따라 스타일이 동적으로 변해야 하는 UI를 만들 때",
+    "CSS 클래스명 충돌 걱정 없이 컴포넌트를 재사용하고 싶을 때",
+    "TypeScript로 props와 theme의 타입 안정성을 확보하고 싶을 때"
+  ],
+  "example": {
+    "title": "기본 사용 예시",
+    "language": "javascript",
+    "code": "import styled from 'styled-components';\n\n// 스타일이 적용된 컴포넌트 생성\nconst Button = styled.button`\n  background: ${props => props.primary ? '#007bff' : '#6c757d'};\n  color: white;\n  padding: 10px 20px;\n  border: none;\n  border-radius: 4px;\n  cursor: pointer;\n\n  &:hover {\n    opacity: 0.8;\n  }\n`;\n\n// 사용\nfunction App() {\n  return (\n    <div>\n      <Button>기본 버튼</Button>\n      <Button primary>주요 버튼</Button>\n    </div>\n  );\n}",
+    "description": "props.primary 값에 따라 배경색이 달라지는 버튼 컴포넌트를 정의하고 사용하는 예시입니다. CSS 파일 없이 컴포넌트 파일 안에서 모든 스타일을 처리합니다."
+  },
+  "pitfalls": [
+    "컴포넌트를 렌더 함수 안에서 정의하면 매번 새로운 클래스가 생성되어 성능 저하 발생",
+    "과도하게 중첩된 스타일은 CSS 특이성 문제와 가독성 저하를 유발할 수 있음",
+    "SSR 환경에서는 ServerStyleSheet을 사용한 별도 설정이 필요함"
+  ],
+  "generatedAt": "2026-07-28T07:09:00.230Z"
+}

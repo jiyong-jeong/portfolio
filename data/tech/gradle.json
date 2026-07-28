@@ -1,0 +1,47 @@
+{
+  "slug": "gradle",
+  "name": "Gradle",
+  "category": "tool",
+  "tagline": "JVM 기반 프로젝트의 빌드와 의존성을 자동화하는 빌드 도구",
+  "definition": "Gradle은 Java, Kotlin 등 JVM 언어로 작성된 프로젝트를 빌드하고 의존성을 관리하는 오픈소스 빌드 자동화 시스템입니다. Ant와 Maven의 한계를 극복하기 위해 설계되었으며, Groovy 또는 Kotlin DSL로 빌드 스크립트를 작성할 수 있습니다. 멀티 프로젝트 빌드, 증분 빌드, 빌드 캐시 등을 통해 대규모 프로젝트에서도 빠른 빌드 속도를 제공합니다.",
+  "concepts": [
+    {
+      "term": "build.gradle",
+      "description": "프로젝트의 빌드 설정을 정의하는 스크립트 파일입니다. 의존성, 플러그인, 태스크 등을 선언하며 Groovy 또는 Kotlin 문법으로 작성합니다."
+    },
+    {
+      "term": "Task",
+      "description": "빌드 과정에서 실행되는 작업 단위입니다. 컴파일, 테스트, 패키징 등이 각각 태스크로 정의되며, 태스크 간 의존 관계를 설정할 수 있습니다."
+    },
+    {
+      "term": "Plugin",
+      "description": "특정 기능을 프로젝트에 추가하는 확장 모듈입니다. java, spring-boot, kotlin 등의 플러그인을 적용하면 해당 기술 스택에 필요한 태스크와 설정이 자동으로 구성됩니다."
+    },
+    {
+      "term": "Dependency",
+      "description": "프로젝트가 사용하는 외부 라이브러리를 선언하는 방식입니다. Maven Central 등의 저장소에서 자동으로 다운로드하며, implementation, testImplementation 등의 구성으로 의존성 범위를 지정합니다."
+    },
+    {
+      "term": "Gradle Wrapper",
+      "description": "프로젝트에 포함된 gradlew 스크립트로, Gradle을 별도 설치 없이 실행할 수 있게 합니다. 팀원 간 동일한 Gradle 버전을 보장하여 빌드 환경을 통일합니다."
+    }
+  ],
+  "whenToUse": [
+    "Spring Boot, Android 등 Java/Kotlin 기반 프로젝트를 빌드할 때",
+    "멀티 모듈 구조로 여러 하위 프로젝트를 함께 관리해야 할 때",
+    "빌드 스크립트를 프로그래밍 방식으로 유연하게 작성하고 싶을 때",
+    "증분 빌드와 캐싱을 통해 반복 빌드 시간을 단축하고 싶을 때"
+  ],
+  "example": {
+    "title": "Spring Boot 프로젝트의 기본 build.gradle",
+    "language": "text",
+    "code": "plugins {\n    id 'java'\n    id 'org.springframework.boot' version '3.1.0'\n}\n\ngroup = 'com.example'\nversion = '1.0.0'\nsourceCompatibility = '17'\n\nrepositories {\n    mavenCentral()  // 의존성을 다운로드할 저장소\n}\n\ndependencies {\n    implementation 'org.springframework.boot:spring-boot-starter-web'\n    testImplementation 'org.springframework.boot:spring-boot-starter-test'\n}\n\ntest {\n    useJUnitPlatform()  // JUnit 5 사용\n}",
+    "description": "Java 17 기반 Spring Boot 웹 애플리케이션을 빌드하는 기본 설정입니다. 플러그인 적용, 의존성 선언, 테스트 프레임워크 설정이 포함되어 있습니다."
+  },
+  "pitfalls": [
+    "Groovy DSL과 Kotlin DSL의 문법이 다르므로 예제 복사 시 확장자를 확인해야 함",
+    "의존성 구성을 compile 대신 implementation으로 써야 최신 권장 방식임",
+    "Gradle Wrapper 없이 로컬 Gradle을 쓰면 팀원마다 버전이 달라 빌드가 깨질 수 있음"
+  ],
+  "generatedAt": "2026-07-28T07:03:16.210Z"
+}

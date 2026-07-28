@@ -1,0 +1,47 @@
+{
+  "slug": "sqlc",
+  "name": "SQLC",
+  "category": "tool",
+  "tagline": "SQL 쿼리 파일로부터 타입 안전한 데이터베이스 접근 코드를 자동 생성하는 도구",
+  "definition": "SQLC는 개발자가 작성한 SQL 쿼리 파일을 분석해 타입 안전한 Go 코드를 자동으로 생성하는 컴파일러입니다. ORM을 사용하지 않고도 SQL을 직접 작성하면서 컴파일 타임에 타입 체크를 받을 수 있어, SQL의 성능과 명확성을 유지하면서도 런타임 오류를 줄일 수 있습니다. 데이터베이스 스키마와 쿼리를 분석해 필요한 구조체와 함수를 자동 생성하므로 보일러플레이트 코드 작성 부담이 줄어듭니다.",
+  "concepts": [
+    {
+      "term": "Query File",
+      "description": "개발자가 작성하는 .sql 파일로, 실제 실행할 SQL 쿼리와 함께 SQLC 전용 주석(annotation)을 포함합니다. 이 주석으로 생성할 함수 이름과 동작 방식을 지정합니다."
+    },
+    {
+      "term": "Schema File",
+      "description": "데이터베이스 테이블 구조를 정의한 DDL 파일입니다. SQLC는 이 스키마를 분석해 각 테이블에 대응하는 Go 구조체를 생성합니다."
+    },
+    {
+      "term": "Code Generation",
+      "description": "SQLC가 SQL 파일과 스키마를 분석해 Go 코드를 자동 생성하는 과정입니다. 쿼리 파라미터와 결과를 타입 안전하게 다룰 수 있는 함수와 구조체가 만들어집니다."
+    },
+    {
+      "term": "sqlc.yaml",
+      "description": "SQLC 설정 파일로, 어떤 SQL 파일을 읽을지, 어느 디렉토리에 코드를 생성할지, 어떤 데이터베이스 엔진을 사용할지 등을 명시합니다."
+    },
+    {
+      "term": "Query Annotation",
+      "description": "SQL 주석으로 작성하는 SQLC 메타데이터입니다. -- name: GetUser :one 같은 형태로 생성할 함수 이름과 반환 타입(one, many, exec 등)을 지정합니다."
+    }
+  ],
+  "whenToUse": [
+    "ORM 추상화 없이 직접 SQL을 작성하면서도 타입 안전성이 필요할 때",
+    "복잡한 쿼리나 성능 최적화가 중요해 raw SQL 제어가 필요한 경우",
+    "Go 언어로 데이터베이스 레이어를 구축하며 보일러플레이트를 줄이고 싶을 때",
+    "데이터베이스 스키마 변경 시 컴파일 타임에 쿼리 오류를 미리 잡고 싶을 때"
+  ],
+  "example": {
+    "title": "SQLC 기본 설정 및 쿼리 예시",
+    "language": "yaml",
+    "code": "# sqlc.yaml\nversion: \"2\"\nsql:\n  - schema: \"schema.sql\"\n    queries: \"query.sql\"\n    engine: \"postgresql\"\n    gen:\n      go:\n        out: \"db\"\n\n# schema.sql\nCREATE TABLE users (\n  id SERIAL PRIMARY KEY,\n  name TEXT NOT NULL\n);\n\n# query.sql\n-- name: GetUser :one\nSELECT * FROM users WHERE id = $1;\n\n-- name: ListUsers :many\nSELECT * FROM users;",
+    "description": "설정 파일과 스키마, 쿼리를 작성한 뒤 sqlc generate 명령을 실행하면 GetUser, ListUsers 함수와 User 구조체가 Go 코드로 생성됩니다."
+  },
+  "pitfalls": [
+    "쿼리 주석 형식을 정확히 지키지 않으면 코드 생성이 실패하거나 의도와 다른 함수가 만들어집니다",
+    "스키마 파일과 실제 DB 스키마가 불일치하면 런타임에 오류가 발생할 수 있습니다",
+    "생성된 코드를 직접 수정하면 다음 generate 시 덮어씌워지므로 커스텀 로직은 별도 레이어에 작성해야 합니다"
+  ],
+  "generatedAt": "2026-07-28T07:08:39.831Z"
+}

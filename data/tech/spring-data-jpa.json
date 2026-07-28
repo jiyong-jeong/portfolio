@@ -1,0 +1,47 @@
+{
+  "slug": "spring-data-jpa",
+  "name": "Spring Data JPA",
+  "category": "backend",
+  "tagline": "Spring 애플리케이션에서 JPA 기반 데이터 접근 계층을 선언적으로 구현하는 프레임워크",
+  "definition": "Spring Data JPA는 JPA(Java Persistence API)를 사용하는 데이터 접근 계층을 간결하게 작성할 수 있도록 돕는 Spring 프로젝트입니다. 반복적인 CRUD 코드와 쿼리 메서드를 자동으로 생성해주며, 개발자는 인터페이스만 정의하면 런타임에 구현체가 자동으로 제공됩니다. JPA 구현체(주로 Hibernate)를 추상화하여 객체 지향적으로 데이터베이스를 다룰 수 있게 합니다.",
+  "concepts": [
+    {
+      "term": "Entity",
+      "description": "데이터베이스 테이블과 매핑되는 Java 클래스입니다. @Entity 어노테이션을 붙이고 필드에 @Id, @Column 등으로 매핑 정보를 명시합니다."
+    },
+    {
+      "term": "Repository",
+      "description": "데이터 접근 로직을 담당하는 인터페이스입니다. JpaRepository를 상속하면 기본 CRUD 메서드가 자동으로 제공되고, 메서드 이름 규칙으로 쿼리를 선언할 수 있습니다."
+    },
+    {
+      "term": "Query Method",
+      "description": "메서드 이름을 분석해 자동으로 쿼리를 생성하는 기능입니다. findByName, existsByEmail 같은 패턴으로 작성하면 SQL을 직접 작성하지 않아도 됩니다."
+    },
+    {
+      "term": "@Query",
+      "description": "복잡한 조회 로직을 JPQL이나 네이티브 SQL로 직접 작성할 수 있는 어노테이션입니다. Query Method로 표현하기 어려운 조건이나 조인을 처리할 때 사용합니다."
+    },
+    {
+      "term": "EntityManager",
+      "description": "JPA의 핵심 인터페이스로, 엔티티의 생명주기를 관리하고 영속성 컨텍스트를 통해 변경 감지와 트랜잭션을 처리합니다. Spring Data JPA가 내부적으로 사용합니다."
+    }
+  ],
+  "whenToUse": [
+    "관계형 데이터베이스를 객체 지향적으로 다루고 싶을 때",
+    "반복적인 CRUD 코드를 줄이고 비즈니스 로직에 집중하고 싶을 때",
+    "엔티티 간 연관관계를 코드로 명확히 표현하고 관리하고 싶을 때",
+    "Spring Boot 환경에서 빠르게 데이터 접근 계층을 구축해야 할 때"
+  ],
+  "example": {
+    "title": "Entity와 Repository 정의",
+    "language": "java",
+    "code": "@Entity\npublic class User {\n    @Id\n    @GeneratedValue(strategy = GenerationType.IDENTITY)\n    private Long id;\n    \n    private String email;\n    private String name;\n    \n    // getter, setter 생략\n}\n\npublic interface UserRepository extends JpaRepository<User, Long> {\n    // 메서드 이름으로 쿼리 자동 생성\n    Optional<User> findByEmail(String email);\n    \n    // JPQL로 직접 작성\n    @Query(\"SELECT u FROM User u WHERE u.name LIKE %:keyword%\")\n    List<User> searchByName(@Param(\"keyword\") String keyword);\n}",
+    "description": "User 엔티티를 정의하고, UserRepository 인터페이스만 선언하면 기본 CRUD와 커스텀 쿼리 메서드가 자동으로 구현됩니다."
+  },
+  "pitfalls": [
+    "N+1 문제: 연관 엔티티를 Lazy Loading으로 조회할 때 쿼리가 반복 실행될 수 있음",
+    "영속성 컨텍스트 생명주기를 이해하지 못하면 예상치 못한 UPDATE 쿼리가 발생할 수 있음",
+    "Query Method 이름이 너무 길어지면 가독성이 떨어지므로 @Query 사용을 고려해야 함"
+  ],
+  "generatedAt": "2026-07-28T07:04:04.579Z"
+}

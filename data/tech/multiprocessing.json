@@ -1,0 +1,47 @@
+{
+  "slug": "multiprocessing",
+  "name": "Multiprocessing",
+  "category": "backend",
+  "tagline": "여러 프로세스를 동시에 실행해 CPU 병렬 처리를 가능하게 하는 Python 표준 라이브러리",
+  "definition": "Multiprocessing은 Python의 GIL(Global Interpreter Lock) 제약을 우회해 CPU 코어를 최대한 활용할 수 있도록 여러 프로세스를 생성하고 관리하는 모듈입니다. threading과 달리 각 프로세스가 독립된 메모리 공간을 가지므로 CPU 바운드 작업을 진정한 병렬로 처리할 수 있습니다. 프로세스 간 데이터 공유를 위해 Queue, Pipe, Shared Memory 등 다양한 IPC 메커니즘을 제공합니다.",
+  "concepts": [
+    {
+      "term": "Process",
+      "description": "독립된 메모리 공간을 가진 실행 단위. 각 프로세스는 별도의 Python 인터프리터를 실행하므로 GIL 없이 병렬 실행됩니다."
+    },
+    {
+      "term": "Pool",
+      "description": "미리 정해진 개수의 워커 프로세스를 생성해 작업을 분배하는 패턴. map, apply 등의 메서드로 간편하게 병렬 처리를 구현할 수 있습니다."
+    },
+    {
+      "term": "Queue",
+      "description": "프로세스 간 데이터를 안전하게 주고받기 위한 FIFO 자료구조. 내부적으로 Pipe와 Lock을 사용해 동기화를 보장합니다."
+    },
+    {
+      "term": "Shared Memory",
+      "description": "여러 프로세스가 동일한 메모리 영역을 공유해 빠르게 데이터를 읽고 쓸 수 있는 IPC 방식. Value, Array, SharedMemory 등으로 구현됩니다."
+    },
+    {
+      "term": "Lock",
+      "description": "여러 프로세스가 동시에 공유 자원에 접근할 때 발생하는 경쟁 상태를 방지하기 위한 동기화 도구입니다."
+    }
+  ],
+  "whenToUse": [
+    "이미지 처리, 데이터 변환 등 CPU 집약적 작업을 병렬로 처리해야 할 때",
+    "GIL로 인해 threading으로는 성능 향상이 없는 연산 중심 작업",
+    "여러 워커 프로세스 간 메트릭이나 상태를 공유해야 하는 서버 환경",
+    "대량의 데이터를 독립적으로 처리할 수 있는 맵리듀스 형태의 작업"
+  ],
+  "example": {
+    "title": "Pool을 이용한 병렬 연산",
+    "language": "python",
+    "code": "from multiprocessing import Pool\n\ndef square(x):\n    return x * x\n\nif __name__ == '__main__':\n    # CPU 코어 수만큼 워커 프로세스 생성\n    with Pool() as pool:\n        # 0~9 숫자를 각 프로세스에 분배해 제곱 계산\n        results = pool.map(square, range(10))\n    \n    print(results)  # [0, 1, 4, 9, 16, 25, 36, 49, 64, 81]",
+    "description": "Pool의 map 메서드로 리스트의 각 원소를 병렬로 처리하고 결과를 순서대로 받아옵니다. if __name__ == '__main__' 가드는 프로세스 생성 시 무한 재귀를 방지합니다."
+  },
+  "pitfalls": [
+    "if __name__ == '__main__' 가드 없이 실행하면 자식 프로세스가 무한 생성될 수 있음",
+    "프로세스 간 데이터 전달 시 pickle 직렬화가 필요해 큰 객체는 오버헤드가 큼",
+    "Shared Memory 사용 시 명시적인 Lock 없이 동시 쓰기하면 데이터 손상 발생"
+  ],
+  "generatedAt": "2026-07-28T07:05:17.729Z"
+}

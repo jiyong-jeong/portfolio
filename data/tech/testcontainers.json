@@ -1,0 +1,47 @@
+{
+  "slug": "testcontainers",
+  "name": "Testcontainers",
+  "category": "testing",
+  "tagline": "Docker 컨테이너를 테스트 코드 안에서 프로그래밍 방식으로 실행하는 라이브러리",
+  "definition": "Testcontainers는 JUnit, pytest 등 테스트 프레임워크 안에서 데이터베이스, 메시지 큐, 웹 브라우저 같은 외부 의존성을 실제 Docker 컨테이너로 띄워 테스트하는 라이브러리입니다. 테스트 실행 시 컨테이너를 자동으로 시작하고, 테스트가 끝나면 정리해 격리된 환경을 보장합니다. 인메모리 DB나 Mock 객체 대신 실제 환경과 동일한 소프트웨어를 사용해 통합 테스트의 신뢰도를 높입니다.",
+  "concepts": [
+    {
+      "term": "Container",
+      "description": "테스트에 필요한 PostgreSQL, Redis, Kafka 같은 서비스를 담은 Docker 컨테이너. Testcontainers가 테스트 시작 시 자동으로 띄우고 종료 시 제거합니다."
+    },
+    {
+      "term": "GenericContainer",
+      "description": "임의의 Docker 이미지를 실행할 수 있는 기본 컨테이너 클래스. 포트, 환경변수, 볼륨 등을 코드로 설정할 수 있습니다."
+    },
+    {
+      "term": "Module",
+      "description": "특정 기술 스택에 최적화된 사전 구성 컨테이너. PostgreSQLContainer, MySQLContainer처럼 JDBC URL, 드라이버 등을 자동으로 설정해줍니다."
+    },
+    {
+      "term": "Lifecycle",
+      "description": "컨테이너의 시작과 종료 시점을 테스트 생명주기에 맞춰 관리하는 메커니즘. 테스트 클래스 단위 또는 메서드 단위로 컨테이너를 재사용하거나 격리할 수 있습니다."
+    },
+    {
+      "term": "Wait Strategy",
+      "description": "컨테이너가 실제로 사용 가능한 상태가 될 때까지 기다리는 전략. 특정 포트 개방, 로그 메시지 출력, HTTP 응답 등을 조건으로 설정합니다."
+    }
+  ],
+  "whenToUse": [
+    "인메모리 DB로는 재현할 수 없는 실제 DB의 고유 기능(트리거, 프로시저, 확장)을 테스트할 때",
+    "Mock 객체 대신 실제 Kafka, Redis, Elasticsearch 같은 외부 시스템과의 통합을 검증하고 싶을 때",
+    "CI 환경에서도 별도 인프라 설정 없이 독립적으로 실행 가능한 테스트가 필요할 때",
+    "팀원마다 로컬 환경이 달라도 동일한 테스트 환경을 보장하고 싶을 때"
+  ],
+  "example": {
+    "title": "PostgreSQL 컨테이너를 사용한 JUnit 5 테스트",
+    "language": "java",
+    "code": "@Testcontainers\nclass UserRepositoryTest {\n\n    @Container\n    static PostgreSQLContainer<?> postgres = new PostgreSQLContainer<>(\"postgres:15-alpine\")\n        .withDatabaseName(\"testdb\")\n        .withUsername(\"test\")\n        .withPassword(\"test\");\n\n    @Test\n    void shouldSaveAndFindUser() {\n        String jdbcUrl = postgres.getJdbcUrl();\n        // jdbcUrl로 실제 PostgreSQL에 연결해 테스트 수행\n        // 테스트 종료 후 컨테이너는 자동으로 제거됨\n    }\n}",
+    "description": "테스트 클래스 실행 시 PostgreSQL 컨테이너를 시작하고, JDBC URL을 받아 실제 DB에 연결해 테스트합니다. 모든 테스트가 끝나면 컨테이너는 자동으로 정리됩니다."
+  },
+  "pitfalls": [
+    "Docker 데몬이 실행 중이어야 하므로, CI 환경에서 Docker-in-Docker 또는 DinD 설정이 필요할 수 있음",
+    "컨테이너 시작 시간 때문에 단위 테스트보다 느리므로, 빠른 피드백이 필요한 경우 Mock과 혼용해야 함",
+    "테스트마다 컨테이너를 새로 띄우면 매우 느려지므로, 클래스 레벨 static 컨테이너로 재사용하는 것이 일반적"
+  ],
+  "generatedAt": "2026-07-28T07:07:23.819Z"
+}

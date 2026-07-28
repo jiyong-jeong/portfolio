@@ -1,0 +1,153 @@
+{
+  "slug": "indoor-fire-backend-server",
+  "repo": "indoor-fire-backend-server",
+  "title": "실내 화재 감지 시스템 백엔드 서버 (FireScout 3.0)",
+  "summary": "AI Box와 연동하여 RTSP 카메라 영상에서 실시간 화재·연기를 탐지하고, VLM 추론·알림·관제 기능을 제공하는 Spring Boot 백엔드 시스템",
+  "description": "현장에 설치된 AI Box가 RTSP 카메라 영상을 분석하여 화재·연기를 1차 탐지하면, 백엔드 서버가 이를 수집·검증하고 VLM(Vision-Language Model) 추론 서버를 호출해 최종 확정합니다. 확정된 이벤트는 PostgreSQL(+pgvector)에 저장되고, Firebase·이메일·Slack을 통해 실시간 알림이 전송됩니다. 관리자는 내부 API를 통해 카메라·디바이스·사용자를 관리하며, CSV 대량 업로드로 수백 대 규모의 카메라를 일괄 등록할 수 있습니다. 검출 영역 필터링(1% 미만 자동 제외)과 HITL(Human-In-The-Loop) 검수 파이프라인으로 오탐을 최소화합니다.",
+  "category": "백엔드",
+  "role": "Spring Boot 기반 백엔드 서버 전체 아키텍처 설계 및 구현. 디바이스 동기화·이벤트 파이프라인·VLM 추론 연동·알림 시스템·배치 스케줄러·E2E 테스트 구축을 담당했습니다.",
+  "techStack": [
+    {
+      "name": "Java",
+      "category": "language",
+      "usage": "백엔드 서버 주요 언어 (JDK 17)"
+    },
+    {
+      "name": "Spring Boot",
+      "category": "framework",
+      "usage": "REST API·보안·데이터 접근·비동기 처리 프레임워크 (3.2.12)"
+    },
+    {
+      "name": "Spring Security",
+      "category": "backend",
+      "usage": "JWT 기반 인증·인가 및 디바이스 토큰 검증"
+    },
+    {
+      "name": "Spring Data JPA",
+      "category": "backend",
+      "usage": "PostgreSQL ORM 및 복잡한 쿼리 매핑 (Hibernate)"
+    },
+    {
+      "name": "PostgreSQL",
+      "category": "database",
+      "usage": "메인 데이터베이스 (pgvector 확장으로 벡터 임베딩 저장)"
+    },
+    {
+      "name": "Flyway",
+      "category": "database",
+      "usage": "DB 스키마 마이그레이션 자동화"
+    },
+    {
+      "name": "Docker",
+      "category": "infra",
+      "usage": "서버·DB 컨테이너화 및 docker-compose 배포"
+    },
+    {
+      "name": "AWS S3",
+      "category": "infra",
+      "usage": "화재 이벤트 이미지·카메라 스냅샷 저장"
+    },
+    {
+      "name": "Firebase Admin SDK",
+      "category": "backend",
+      "usage": "사용자 앱·웹으로 실시간 Push 알림 전송"
+    },
+    {
+      "name": "Testcontainers",
+      "category": "testing",
+      "usage": "PostgreSQL 컨테이너 기반 E2E 테스트 격리 환경"
+    },
+    {
+      "name": "JUnit 5",
+      "category": "testing",
+      "usage": "단위·통합 테스트 프레임워크 (JaCoCo 커버리지)"
+    },
+    {
+      "name": "Prometheus",
+      "category": "devops",
+      "usage": "JVM·Tomcat 메트릭 수집 및 Grafana 연동"
+    }
+  ],
+  "highlights": [
+    "AI Box가 보낸 화재 검출 영역을 이미지 면적 대비 1% 임계값으로 사전 필터링해 불필요한 VLM 추론 호출과 오탐을 원천 차단",
+    "디바이스 동기화(heartbeat) API로 AI Box의 연결 상태·설정·카메라 처리 시각을 실시간 추적하고, 24시간 이상 stale 카메라를 자동 비활성화",
+    "HITL(Human-In-The-Loop) 검수 파이프라인으로 1차 탐지 결과를 사람이 재확인한 뒤 최종 이벤트로 승격, 오탐률 최소화",
+    "CSV 파일 대량 업로드로 클라이언트·디바이스·카메라 수백 건을 일괄 등록, 현장 구축 시간 단축",
+    "Testcontainers 기반 E2E 테스트로 인증~DB까지 전 구간을 PostgreSQL 독립 컨테이너에서 격리 검증, 로컬 DB 오염 방지"
+  ],
+  "challenges": [
+    {
+      "problem": "운영 중 시연용 실시간 업로드 옵션이 켜진 채 방치되어 불필요한 이미지 업로드가 누적되고 서버 부하가 발생",
+      "solution": "매일 09:00(KST) 자동 감사 스케줄러가 실시간 업로드 ON 디바이스 목록을 Slack으로 알림하고, 시연 종료 체크리스트 문서를 제공해 재발 방지"
+    },
+    {
+      "problem": "다중 프록시 환경(ALB·내부 LB)에서 Tomcat access log의 %a가 내부 프록시 IP로 기록되어 장애 시 진원지 확정 지연",
+      "solution": "RemoteIpValve로 X-Forwarded-For 헤더를 처리하고, access log에 XFF 컬럼을 명시 추가해 진원지 IP를 최초(left-most) 값으로 확정하는 가이드 문서 작성"
+    },
+    {
+      "problem": "카메라 감지 토글(is_inference) off 시 AI Box sync gap 동안 불필요한 이벤트·알림이 생성될 수 있음",
+      "solution": "서버측 최종 게이트(shouldCreateEvent)로 off 카메라의 이벤트·푸시·Slack 알람을 차단하고, stale 자동 비활성화 배치·캐시 갱신에서도 is_inference=true 조건으로 게이트"
+    }
+  ],
+  "diagrams": [
+    {
+      "title": "전체 시스템 아키텍처",
+      "description": "RTSP 카메라부터 AI Box, 백엔드 서버, 외부 서비스(VLM·S3·Firebase·Slack), 사용자 앱까지의 데이터 흐름을 보여줍니다.",
+      "type": "architecture",
+      "mermaid": "flowchart TD\n    Camera[\"RTSP 카메라\"]\n    AIBox[\"AI Box (디바이스)\"]\n    Backend[\"FireScout 백엔드<br/>(Spring Boot)\"]\n    DB[\"PostgreSQL<br/>(+pgvector)\"]\n    VLM[\"VLM 추론 서버<br/>(외부 HTTP)\"]\n    S3[\"AWS S3<br/>(이미지 저장)\"]\n    FCM[\"Firebase<br/>(Push 알림)\"]\n    Slack[\"Slack<br/>(관리자 알림)\"]\n    App[\"사용자 앱/웹\"]\n    Admin[\"관리자 콘솔<br/>(Internal API)\"]\n\n    Camera -->|\"RTSP 스트림\"| AIBox\n    AIBox -->|\"POST /events<br/>(화재 검출 + 이미지)\"| Backend\n    AIBox -->|\"POST /devices/config<br/>(heartbeat)\"| Backend\n    Backend -->|\"추론 요청\"| VLM\n    VLM -->|\"추론 결과\"| Backend\n    Backend -->|\"이벤트·카메라·사용자 저장\"| DB\n    Backend -->|\"이미지 업로드\"| S3\n    Backend -->|\"실시간 알림\"| FCM\n    Backend -->|\"관리자 알림\"| Slack\n    App -->|\"GET /events<br/>GET /cameras\"| Backend\n    Admin -->|\"POST /admin/cameras/file/csv<br/>PUT /admin/devices\"| Backend"
+    },
+    {
+      "title": "이벤트 생성 파이프라인",
+      "description": "AI Box가 화재를 탐지한 후 백엔드가 검증·추론·저장·알림을 순차 처리하는 흐름입니다.",
+      "type": "dataflow",
+      "mermaid": "flowchart TD\n    Start[\"AI Box: 화재 검출\"]\n    Upload[\"POST /events<br/>(이미지 + 검출 영역)\"]\n    Filter[\"검출 영역 필터링<br/>(1% 미만 제외)\"]\n    Gate[\"서버측 게이트<br/>(is_inference=false 차단)\"]\n    VLM[\"VLM 추론 서버 호출\"]\n    Save[\"Event·InferenceLog 저장\"]\n    S3[\"S3 이미지 업로드\"]\n    Notify[\"알림 전송<br/>(FCM·Slack·메일)\"]\n    End[\"사용자 앱 수신\"]\n\n    Start --> Upload\n    Upload --> Filter\n    Filter -->|\"면적 >= 1%\"| Gate\n    Filter -->|\"면적 < 1%\"| Log[\"추론 로그만 기록\n(이벤트 생성 중단)\"]\n    Gate -->|\"is_inference=true\"| VLM\n    Gate -->|\"is_inference=false\"| Log\n    VLM --> Save\n    Save --> S3\n    S3 --> Notify\n    Notify --> End"
+    },
+    {
+      "title": "디바이스 동기화 및 상태 관리",
+      "description": "AI Box가 주기적으로 설정을 동기화하고, 백엔드가 연결 상태와 카메라 처리 시각을 추적하는 시퀀스입니다.",
+      "type": "sequence",
+      "mermaid": "sequenceDiagram\n    participant AIBox as AI Box\n    participant API as Backend API\n    participant DB as PostgreSQL\n    participant Batch as 배치 스케줄러\n\n    AIBox->>API: GET /devices/config (주기적)\n    API->>DB: Device·Camera 조회<br/>(is_inference=true만)\n    DB-->>API: 활성 카메라 목록\n    API-->>AIBox: {cameras: [{uuid, rtsp_url, type}]}\n\n    AIBox->>API: POST /devices/config<br/>(cameras: [{cameraId, processedTime}])\n    API->>DB: connectionStatus=CONNECTED<br/>lastProcessedAt 갱신\n    DB-->>API: 저장 완료\n    API-->>AIBox: 200 OK\n\n    Note over Batch: 매 10분 실행\n    Batch->>DB: lastProcessedAt < 24시간 AND<br/>is_inference=true 조회\n    DB-->>Batch: stale 카메라 목록\n    Batch->>DB: status=false 일괄 갱신<br/>(자동 비활성화)\n    Batch->>API: Slack 알림"
+    }
+  ],
+  "keywords": [
+    "spring-boot",
+    "postgresql",
+    "firebase",
+    "computer-vision",
+    "real-time",
+    "iot",
+    "rest-api",
+    "docker",
+    "testcontainers",
+    "jwt",
+    "jpa",
+    "flyway"
+  ],
+  "links": {
+    "repo": "https://github.com/jiyong-jeong/indoor-fire-backend-server",
+    "homepage": null
+  },
+  "metrics": {
+    "stars": 0,
+    "forks": 0,
+    "watchers": 0,
+    "sizeKb": 2087,
+    "openIssues": 0,
+    "languages": {
+      "Java": 1210338,
+      "HTML": 259318,
+      "PLpgSQL": 11014,
+      "Shell": 6311
+    },
+    "topics": [],
+    "primaryLanguage": "Java",
+    "license": null
+  },
+  "dates": {
+    "createdAt": "2026-07-27T01:43:38Z",
+    "updatedAt": "2026-07-27T01:43:48Z",
+    "pushedAt": "2026-07-27T01:43:43Z",
+    "analyzedAt": "2026-07-28T06:52:49.444Z"
+  },
+  "featured": true
+}

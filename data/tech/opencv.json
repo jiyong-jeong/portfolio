@@ -1,0 +1,47 @@
+{
+  "slug": "opencv",
+  "name": "OpenCV",
+  "category": "backend",
+  "tagline": "컴퓨터 비전 작업을 위한 오픈소스 이미지·영상 처리 라이브러리",
+  "definition": "OpenCV(Open Source Computer Vision Library)는 실시간 컴퓨터 비전 애플리케이션을 개발하기 위한 오픈소스 라이브러리입니다. 이미지 필터링, 객체 감지, 얼굴 인식, 영상 분석 등 2,500개 이상의 최적화된 알고리즘을 제공하며, C++, Python, Java 등 여러 언어를 지원합니다. 인텔이 주도하여 개발했으며, 학술 연구와 상용 제품 모두에서 컴퓨터 비전의 사실상 표준 도구로 자리잡았습니다.",
+  "concepts": [
+    {
+      "term": "Mat",
+      "description": "OpenCV에서 이미지와 행렬 데이터를 담는 핵심 자료구조입니다. 픽셀 데이터, 채널 수, 데이터 타입 정보를 함께 관리하며 자동 메모리 관리를 지원합니다."
+    },
+    {
+      "term": "Color Space",
+      "description": "이미지의 색상 표현 방식으로, BGR, RGB, HSV, Grayscale 등 다양한 형식 간 변환 기능을 제공합니다. OpenCV는 기본적으로 BGR 순서를 사용합니다."
+    },
+    {
+      "term": "Image Processing",
+      "description": "필터링, 블러, 엣지 검출, 모폴로지 연산 등 이미지 자체를 변형하거나 특징을 추출하는 작업을 의미합니다."
+    },
+    {
+      "term": "Camera Calibration",
+      "description": "카메라 렌즈의 왜곡을 보정하고 실제 3D 좌표와 이미지 좌표 간 관계를 계산하는 과정입니다. 어안 렌즈나 광각 렌즈의 왜곡 제거에 사용됩니다."
+    },
+    {
+      "term": "ROI (Region of Interest)",
+      "description": "이미지에서 특정 영역만 선택하여 처리하는 개념입니다. 배열 슬라이싱을 통해 효율적으로 부분 이미지를 다룰 수 있습니다."
+    }
+  ],
+  "whenToUse": [
+    "실시간 영상에서 객체를 감지하거나 추적해야 할 때",
+    "이미지 전처리, 필터링, 왜곡 보정 등 기본적인 이미지 조작이 필요할 때",
+    "얼굴 인식, 문자 인식(OCR), 동작 감지 등 컴퓨터 비전 기능을 구현할 때",
+    "카메라 입력을 처리하거나 영상 파일을 분석해야 할 때"
+  ],
+  "example": {
+    "title": "이미지 읽기, 그레이스케일 변환, 저장",
+    "language": "python",
+    "code": "import cv2\n\n# 이미지 파일 읽기\nimg = cv2.imread('input.jpg')\n\n# BGR을 그레이스케일로 변환\ngray = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)\n\n# 가우시안 블러 적용 (노이즈 제거)\nblurred = cv2.GaussianBlur(gray, (5, 5), 0)\n\n# 결과 저장\ncv2.imwrite('output.jpg', blurred)\n\n# 화면에 표시 (GUI 환경)\ncv2.imshow('Result', blurred)\ncv2.waitKey(0)\ncv2.destroyAllWindows()",
+    "description": "이미지를 읽어 그레이스케일로 변환하고 블러 처리를 적용한 뒤 저장하는 기본 파이프라인입니다. OpenCV의 가장 일반적인 사용 패턴을 보여줍니다."
+  },
+  "pitfalls": [
+    "OpenCV는 BGR 순서를 사용하므로, RGB를 기대하는 라이브러리와 함께 쓸 때 색상이 뒤바뀔 수 있습니다",
+    "imread()는 파일이 없어도 예외를 던지지 않고 None을 반환하므로, 반드시 결과를 확인해야 합니다",
+    "GUI 함수(imshow 등)는 헤드리스 환경이나 서버에서 동작하지 않으므로, 프로덕션에서는 파일 저장이나 스트리밍을 사용해야 합니다"
+  ],
+  "generatedAt": "2026-07-28T07:04:56.431Z"
+}

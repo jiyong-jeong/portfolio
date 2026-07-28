@@ -1,104 +1,112 @@
 {
   "slug": "jira_auto_pilot",
   "repo": "jira_auto_pilot",
-  "title": "Jira 카드 자동 개발-PR 파이프라인",
-  "summary": "Jira 카드를 탐지해 Claude가 질문→개발→PR→완료처리까지 수행하는 루프 자동화 도구와 제어용 로컬 대시보드",
-  "description": "Jira에 claude-work 라벨이 붙은 카드를 주기적으로 탐지해, plan 단계에서 Claude가 카드를 검토하고 구현 전 질문을 코멘트로 남기며, 담당자 답변 후 build 단계에서 실제 코드를 작성해 브랜치·커밋·PR 생성과 카드 완료 처리까지 자동으로 수행한다. 라벨과 상태를 이용한 상태 머신(plan 완료 → 답변 대기 → build 진입 → 완료/실패)으로 사람 개입 지점을 명확히 분리했고, 실패 시 재시도·격리, 중복 브랜치/PR 방지 등 운영 안정성을 위한 가드를 갖췄다. 특정 repo나 Jira 프로젝트에 종속되지 않고 설정만으로 재사용 가능하며, 여러 프로젝트를 동시에 등록해 한 루프가 순회하는 멀티 프로젝트 구조를 지원한다. React+Express 기반 로컬 대시보드에서 자격증명·설정·루프 제어·카드 상태·처리 이력·실행 로그를 한 곳에서 관리할 수 있다.",
+  "title": "Jira 카드 자동화 개발 에이전트",
+  "summary": "Jira 카드를 자동 탐지해 Claude로 개발·PR 생성·완료처리까지 반자동 수행하는 멀티 프로젝트 루프 자동화 시스템",
+  "description": "Jira 카드를 주기적으로 탐지해 plan(질문)과 build(개발·PR·완료) 두 단계로 처리하는 자동화 도구입니다. Claude Code CLI를 활용해 카드 내용을 분석하고 코드를 작성하며, GitHub PR 생성과 Jira 상태 전환을 자동화합니다. 로컬 웹 대시보드로 여러 프로젝트를 동시에 관리하고, 각 프로젝트는 독립된 repo·Jira·자격증명을 가집니다. 병렬 처리, 실패 재시도, Slack 알림, 실시간 로그 모니터링을 지원하며, 특정 repo에 묶이지 않는 범용 설계로 어떤 GitHub/Jira 프로젝트에도 재사용할 수 있습니다.",
   "category": "자동화",
-  "role": "Jira-Claude 자동화 루프 전체(상태 머신 설계, 셸 스크립트, 실패 처리·멱등성 가드)와 React+Express 기반 제어/모니터링 대시보드를 설계·구현했다.",
+  "role": "전체 시스템 설계 및 구현. Bash 기반 루프 오케스트레이션, Claude Code 헤드리스 실행 통합, React + Express 대시보드 개발, Jira REST API 및 Atlassian MCP 연동, 멱등성·병렬성·실패 복구 로직 구현",
   "techStack": [
     {
       "name": "JavaScript",
       "category": "language",
-      "usage": "대시보드 백엔드/프론트엔드 및 유틸리티 스크립트 작성"
+      "usage": "대시보드 백엔드/프론트엔드 및 스트림 렌더러 구현"
     },
     {
-      "name": "Node.js",
-      "category": "backend",
-      "usage": "대시보드 서버와 CLI 유틸리티(render-claude-stream, run-cycle 등) 실행 환경"
-    },
-    {
-      "name": "Express",
-      "category": "framework",
-      "usage": "설정/자격증명 저장, 루프 제어, Jira REST 카드 조회 등 REST API 백엔드"
+      "name": "Shell",
+      "category": "tool",
+      "usage": "루프 오케스트레이션 및 git/gh 작업 자동화"
     },
     {
       "name": "React",
       "category": "frontend",
-      "usage": "카드 등록·상태·로그·이력을 다루는 대시보드 UI 구성"
+      "usage": "대시보드 UI (standalone Babel transpile)"
     },
     {
-      "name": "Shell Script",
+      "name": "Express",
+      "category": "backend",
+      "usage": "대시보드 백엔드 REST API 서버"
+    },
+    {
+      "name": "Claude Code",
       "category": "tool",
-      "usage": "카드 탐지, 카드 처리(clone/개발/PR), 주기 실행 루프 오케스트레이션"
+      "usage": "카드 분석·개발·Jira 상호작용 LLM 엔진"
+    },
+    {
+      "name": "Atlassian MCP",
+      "category": "tool",
+      "usage": "Claude의 Jira 조회·업데이트 도구 제공"
     },
     {
       "name": "GitHub CLI",
-      "category": "devops",
-      "usage": "브랜치 push 후 base 브랜치로 PR을 자동 생성"
+      "category": "tool",
+      "usage": "PR 생성 및 repo 작업"
     },
     {
       "name": "Jira REST API",
-      "category": "tool",
-      "usage": "카드 조회, 상태/라벨 관리, plan/build 대상 카드 탐지"
+      "category": "backend",
+      "usage": "카드 탐지·조회·등록·답변 (저비용 우선 경로)"
     },
     {
-      "name": "Claude Code CLI",
-      "category": "tool",
-      "usage": "카드 검토·질문 작성·실제 코드 구현을 헤드리스로 수행하는 실행 엔진"
-    },
-    {
-      "name": "node:test",
-      "category": "testing",
-      "usage": "대시보드 순수 로직(lib.js) 및 프로젝트 스토어에 대한 무설치 단위 테스트"
+      "name": "Node.js",
+      "category": "backend",
+      "usage": "대시보드 서버 및 테스트 런타임"
     }
   ],
   "highlights": [
-    "Jira 라벨·상태 기반 plan→답변→build 상태 머신으로 사람 개입 지점을 명확히 분리",
-    "멱등성 가드로 재시도 시 중복 브랜치/PR 생성을 방지하고 실패는 라벨로 격리",
-    "Jira REST 우선 탐지 + Claude MCP 폴백으로 카드 탐지 비용과 지연을 절감",
-    "여러 GitHub repo·Jira 프로젝트를 동시에 등록해 한 루프가 순회하는 멀티 프로젝트 구조",
-    "React+Express 로컬 대시보드로 설정·토큰·루프 제어·실행 로그·처리 이력을 한 곳에서 관리"
+    "멀티 프로젝트 동시 운용: 각 프로젝트가 독립 repo·Jira·자격증명을 가지며 한 루프가 전체를 순회",
+    "이중 게이트 설계: 라벨(탐지)과 실제 답변(실행) 두 단계로 build 진입을 제어해 오작동 방지",
+    "멱등성 보장: 중복 PR/브랜치·락 기반 병렬 제어·실패 재시도 카운터로 중복 처리 차단",
+    "REST 우선 폴백: Jira 카드 탐지를 결정적 REST API로 수행하고 실패 시에만 LLM+MCP 폴백",
+    "실시간 대시보드: 루프 제어·카드 상태·엔진 로그(도구 호출/메시지)·처리 이력을 웹 UI에서 통합 관리"
   ],
   "challenges": [
     {
-      "problem": "build 중간 실패 후 재시도 시 동일 이슈에 중복 브랜치/PR이 생성될 위험",
-      "solution": "build 시작 전 해당 이슈 키의 원격 브랜치·PR 존재 여부를 점검해 이미 처리된 경우 스킵하는 멱등성 가드를 도입"
+      "problem": "중간 실패 시 동일 카드에 중복 브랜치/PR이 생성되는 문제",
+      "solution": "build 시작 전 원격 브랜치와 기존 PR을 점검해 존재하면 SKIP 처리하는 멱등성 가드 추가"
     },
     {
-      "problem": "담당자 답변 여부를 Claude 판단에만 의존하면 오탐 가능",
-      "solution": "claude-answered 라벨(탐지 게이트)과 실제 답변 코멘트 존재(실행 게이트)를 모두 확인하는 이중 게이트로 build 진입을 제어"
+      "problem": "담당자 답변 여부를 LLM 판단에만 의존해 오탐 가능",
+      "solution": "claude-answered 라벨(탐지 게이트)과 실제 답변 코멘트(실행 게이트) 이중 검증으로 build 진입 조건 강화"
     },
     {
-      "problem": "실패한 카드가 매 주기 무한 재시도되는 문제",
-      "solution": "카드별 실패 카운터와 MAX_RETRIES 초과 시 claude-failed 라벨로 격리하고 실패 사유를 코멘트로 기록해 탐지에서 제외"
+      "problem": "매 주기 LLM 호출로 탐지 비용 부담 및 비결정성",
+      "solution": "Jira REST API로 JQL 탐지를 우선 수행하고 실패 시에만 Claude+MCP로 폴백하는 계층 구조 도입"
     }
   ],
   "diagrams": [
     {
-      "title": "전체 아키텍처",
-      "description": "대시보드가 루프 프로세스를 제어하고, 셸 루프가 카드를 탐지해 run-jira-agent.sh가 Claude와 git/gh를 통해 실제 개발과 PR을 수행하는 구조.",
+      "title": "시스템 아키텍처",
+      "description": "대시보드, 셸 루프, Claude Code, GitHub/Jira 간 상호작용과 데이터 흐름을 보여주는 전체 구조도",
       "type": "architecture",
-      "mermaid": "flowchart TD\n  UI[\"React 대시보드\"] --> API[\"Express 백엔드\"]\n  API --> LOOP[\"loop-plan.sh / loop-build.sh\"]\n  LOOP --> DETECT[\"detect-cards.sh\"]\n  DETECT --> AGENT[\"run-jira-agent.sh\"]\n  AGENT --> CLAUDE[\"Claude Code CLI\"]\n  AGENT --> GIT[\"git / gh\"]\n  CLAUDE --> JIRA[\"Jira REST / Atlassian MCP\"]\n  GIT --> GITHUB[\"GitHub repo\"]"
+      "mermaid": "flowchart TD\n    UI[\"대시보드 UI<br/>(React)\"] --> BE[\"백엔드<br/>(Express)\"]\n    BE --> |\"spawn\"| LOOP[\"루프 프로세스<br/>(plan/build)\"]\n    BE --> |\"REST API\"| JIRA[\"Jira\"]\n    LOOP --> DETECT[\"detect-cards.sh\"]\n    DETECT --> |\"REST 우선\"| BE\n    DETECT --> |\"폴백\"| CLAUDE[\"Claude + MCP\"]\n    LOOP --> AGENT[\"run-jira-agent.sh\"]\n    AGENT --> |\"clone/checkout\"| GIT[\"Git Repo\"]\n    AGENT --> |\"개발/PR\"| CLAUDE\n    CLAUDE --> |\"Jira 조작\"| JIRA\n    CLAUDE --> |\"코드 작성\"| GIT\n    AGENT --> |\"PR 생성\"| GH[\"GitHub CLI\"]\n    BE --> |\"로그 tail\"| LOG[\"loop-*.log\"]\n    BE --> |\"이력\"| HIST[\"history.jsonl\"]"
     },
     {
-      "title": "카드 상태 머신",
-      "description": "Jira 카드가 라벨과 상태 변화를 통해 plan-답변-build-완료 단계를 거치는 흐름.",
+      "title": "카드 처리 상태 머신",
+      "description": "Jira 카드가 신규 상태에서 plan·build 단계를 거쳐 완료되기까지의 전환 흐름과 라벨 기반 게이트",
       "type": "state",
-      "mermaid": "stateDiagram-v2\n  [*] --> New\n  New --> Planned: plan 루프 질문 코멘트\n  Planned --> Answered: 담당자 답변 + claude_answered\n  Answered --> Done: build 개발/PR/완료\n  Planned --> Failed: 실패 N회 초과\n  Answered --> Failed: 실패 N회 초과\n  Done --> [*]\n  Failed --> [*]"
+      "mermaid": "stateDiagram-v2\n    [*] --> New: 카드 생성\n    New --> PlanReady: claude-work 라벨 추가\n    PlanReady --> Planned: plan 루프 처리<br/>질문 코멘트 + claude-planned\n    Planned --> AnswerWait: 대기\n    AnswerWait --> BuildReady: 답변 + claude-answered\n    BuildReady --> Building: build 진입 게이트 통과\n    Building --> Done: 개발·PR·상태 전환\n    Building --> Failed: 최대 재시도 초과<br/>claude-failed\n    Failed --> [*]\n    Done --> [*]"
+    },
+    {
+      "title": "대시보드 데이터 흐름",
+      "description": "사용자 입력이 config/credentials로 저장되고, 루프 실행 시 환경변수로 주입되어 각 스크립트로 전달되는 과정",
+      "type": "dataflow",
+      "mermaid": "flowchart LR\n    USER[\"사용자 입력\"] --> CFG[\"config.json<br/>credentials.json\"]\n    CFG --> ENV[\"환경변수\"] \n    ENV --> SPAWN[\"루프 spawn\"]\n    SPAWN --> LOOP[\"loop-plan/build.sh\"]\n    LOOP --> DETECT[\"detect-cards.sh\"]\n    LOOP --> RUN[\"run-jira-agent.sh\"]\n    RUN --> WENV[\"work.env 복사\"]\n    WENV --> CLONE[\"repos/<name>-<key>\"]\n    CLONE --> CLAUDE[\"claude 실행\"]\n    CLAUDE --> RESULT[\"history.jsonl\"]"
     }
   ],
   "keywords": [
     "jira",
     "automation",
-    "claude-code",
-    "github",
-    "dashboard",
-    "react",
-    "express",
-    "shell-script",
+    "claude",
     "ai-agent",
-    "devops"
+    "devops",
+    "github",
+    "pr-automation",
+    "webhook",
+    "loop",
+    "dashboard",
+    "mcp",
+    "bash"
   ],
   "links": {
     "repo": "https://github.com/jiyong-jeong/jira_auto_pilot",
@@ -108,11 +116,11 @@
     "stars": 0,
     "forks": 0,
     "watchers": 0,
-    "sizeKb": 895,
+    "sizeKb": 990,
     "openIssues": 0,
     "languages": {
-      "JavaScript": 126956,
-      "HTML": 113268,
+      "JavaScript": 128278,
+      "HTML": 117547,
       "Shell": 64679
     },
     "topics": [],
@@ -121,9 +129,9 @@
   },
   "dates": {
     "createdAt": "2026-06-29T00:33:24Z",
-    "updatedAt": "2026-07-22T01:53:01Z",
-    "pushedAt": "2026-07-22T01:52:57Z",
-    "analyzedAt": "2026-07-26T04:53:57.541Z"
+    "updatedAt": "2026-07-27T05:48:01Z",
+    "pushedAt": "2026-07-27T05:47:20Z",
+    "analyzedAt": "2026-07-28T06:49:18.409Z"
   },
   "featured": true
 }

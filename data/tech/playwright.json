@@ -1,0 +1,47 @@
+{
+  "slug": "playwright",
+  "name": "Playwright",
+  "category": "testing",
+  "tagline": "Chromium, Firefox, WebKit 기반 브라우저를 자동화하고 E2E 테스트를 작성하는 Node.js 라이브러리",
+  "definition": "Playwright는 Microsoft가 개발한 브라우저 자동화 및 E2E 테스트 도구입니다. Chromium, Firefox, WebKit 세 가지 브라우저 엔진을 모두 지원하며, 하나의 API로 크로스 브라우저 테스트를 작성할 수 있습니다. 실제 사용자 행동을 시뮬레이션하여 로그인, 폼 입력, 네비게이션 등 복잡한 시나리오를 자동화하고 검증하는 데 사용됩니다.",
+  "concepts": [
+    {
+      "term": "Browser Context",
+      "description": "독립된 브라우저 세션 환경으로, 쿠키와 로컬 스토리지가 격리됩니다. 하나의 브라우저 인스턴스에서 여러 Context를 생성해 병렬 테스트를 효율적으로 실행할 수 있습니다."
+    },
+    {
+      "term": "Page",
+      "description": "브라우저 탭 하나를 나타내는 객체로, 모든 자동화 작업의 기본 단위입니다. 페이지 내에서 요소 선택, 클릭, 입력 등의 액션을 수행합니다."
+    },
+    {
+      "term": "Locator",
+      "description": "DOM 요소를 찾기 위한 선택자로, 실제 액션 수행 시점까지 요소 탐색을 지연시켜 동적 콘텐츠에 안정적으로 대응합니다."
+    },
+    {
+      "term": "Auto-waiting",
+      "description": "Playwright가 자동으로 요소가 준비될 때까지 기다리는 기능입니다. 클릭 전 요소가 보이고 활성화될 때까지, 입력 전 요소가 편집 가능할 때까지 대기하여 불안정한 테스트를 방지합니다."
+    },
+    {
+      "term": "Headless Mode",
+      "description": "브라우저 UI 없이 백그라운드에서 실행하는 모드로, CI/CD 환경에서 빠르게 테스트를 수행할 때 사용합니다. 디버깅 시에는 headed 모드로 실제 브라우저 창을 띄울 수 있습니다."
+    }
+  ],
+  "whenToUse": [
+    "여러 브라우저(Chrome, Firefox, Safari)에서 동일한 테스트를 실행해야 할 때",
+    "로그인, 결제 등 사용자 플로우가 복잡한 웹 애플리케이션의 E2E 테스트가 필요할 때",
+    "SPA나 동적 콘텐츠가 많은 프론트엔드를 자동화 테스트하고 싶을 때",
+    "웹 스크래핑이나 반복적인 브라우저 작업을 자동화해야 할 때"
+  ],
+  "example": {
+    "title": "로그인 시나리오 E2E 테스트",
+    "language": "javascript",
+    "code": "const { test, expect } = require('@playwright/test');\n\ntest('사용자 로그인 테스트', async ({ page }) => {\n  // 로그인 페이지로 이동\n  await page.goto('https://example.com/login');\n  \n  // 이메일과 비밀번호 입력\n  await page.fill('input[name=\"email\"]', 'user@example.com');\n  await page.fill('input[name=\"password\"]', 'password123');\n  \n  // 로그인 버튼 클릭\n  await page.click('button[type=\"submit\"]');\n  \n  // 대시보드로 리다이렉트 되었는지 확인\n  await expect(page).toHaveURL(/.*dashboard/);\n  await expect(page.locator('h1')).toContainText('환영합니다');\n});",
+    "description": "로그인 페이지에서 폼을 작성하고 제출한 뒤, 성공적으로 대시보드로 이동하는지 검증하는 기본적인 E2E 테스트 예시입니다."
+  },
+  "pitfalls": [
+    "page.click() 후 즉시 검증하면 페이지 로딩 전에 실패할 수 있음. waitForLoadState나 locator 기반 assertion 사용 필요",
+    "CSS 선택자가 너무 구체적이면 UI 변경 시 테스트가 깨지기 쉬움. data-testid 같은 안정적인 속성 활용 권장",
+    "headless 모드와 headed 모드에서 타이밍이나 렌더링이 다를 수 있어 양쪽에서 모두 테스트 확인 필요"
+  ],
+  "generatedAt": "2026-07-28T07:09:13.443Z"
+}

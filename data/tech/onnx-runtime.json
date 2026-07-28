@@ -1,0 +1,47 @@
+{
+  "slug": "onnx-runtime",
+  "name": "ONNX Runtime",
+  "category": "backend",
+  "tagline": "다양한 플랫폼에서 머신러닝 모델을 고속으로 실행하는 크로스 플랫폼 추론 엔진",
+  "definition": "ONNX Runtime은 ONNX(Open Neural Network Exchange) 형식으로 저장된 머신러닝 모델을 효율적으로 실행하기 위한 추론 엔진입니다. PyTorch, TensorFlow 등 다양한 프레임워크에서 학습한 모델을 ONNX로 변환하면, 프로덕션 환경에서 프레임워크 의존성 없이 빠르게 추론할 수 있습니다. CPU, GPU, Edge 디바이스 등 다양한 하드웨어에서 최적화된 성능을 제공하여, 학습과 배포를 분리하고자 하는 MLOps 파이프라인에서 널리 사용됩니다.",
+  "concepts": [
+    {
+      "term": "ONNX",
+      "description": "서로 다른 머신러닝 프레임워크 간에 모델을 교환할 수 있도록 설계된 표준 모델 포맷입니다. 학습 프레임워크와 추론 환경을 분리할 수 있게 해줍니다."
+    },
+    {
+      "term": "Inference Session",
+      "description": "ONNX 모델을 메모리에 로드하고 추론을 수행하는 실행 컨텍스트입니다. 세션을 생성할 때 실행 프로바이더와 최적화 옵션을 지정합니다."
+    },
+    {
+      "term": "Execution Provider",
+      "description": "추론을 실행할 하드웨어 백엔드를 지정하는 플러그인입니다. CPU, CUDA, TensorRT, DirectML 등 다양한 프로바이더를 선택해 성능을 최적화할 수 있습니다."
+    },
+    {
+      "term": "Graph Optimization",
+      "description": "모델 그래프를 분석하여 불필요한 연산을 제거하거나 연산을 융합해 추론 속도를 높이는 최적화 단계입니다. ONNX Runtime은 여러 수준의 자동 최적화를 제공합니다."
+    },
+    {
+      "term": "Quantization",
+      "description": "모델의 가중치와 연산을 낮은 정밀도로 변환하여 메모리 사용량을 줄이고 추론 속도를 높이는 기법입니다. ONNX Runtime은 동적 및 정적 양자화를 지원합니다."
+    }
+  ],
+  "whenToUse": [
+    "학습한 모델을 프레임워크 의존성 없이 다양한 환경에 배포하고 싶을 때",
+    "CPU, GPU, 엣지 디바이스 등 여러 하드웨어에서 일관된 추론 API를 유지하고 싶을 때",
+    "프로덕션 환경에서 추론 속도와 메모리 효율을 최대화해야 할 때",
+    "학습 파이프라인과 서빙 인프라를 독립적으로 관리하고 싶을 때"
+  ],
+  "example": {
+    "title": "ONNX 모델 로드 및 추론",
+    "language": "python",
+    "code": "import onnxruntime as ort\nimport numpy as np\n\n# Inference Session 생성 (CPU 실행)\nsession = ort.InferenceSession(\"model.onnx\")\n\n# 입력 데이터 준비\ninput_name = session.get_inputs()[0].name\ninput_data = np.random.randn(1, 3, 224, 224).astype(np.float32)\n\n# 추론 실행\noutputs = session.run(None, {input_name: input_data})\n\n# GPU를 사용하려면 Execution Provider 지정\n# session = ort.InferenceSession(\"model.onnx\", providers=['CUDAExecutionProvider'])",
+    "description": "ONNX 모델을 로드하고 입력 텐서를 전달해 추론 결과를 얻는 기본 흐름입니다. providers 옵션으로 실행 백엔드를 변경할 수 있습니다."
+  },
+  "pitfalls": [
+    "PyTorch/TensorFlow 모델을 ONNX로 변환할 때 지원되지 않는 연산자가 있을 수 있음",
+    "Execution Provider 우선순위를 잘못 설정하면 의도한 하드웨어가 아닌 CPU로 실행될 수 있음",
+    "동적 shape 입력을 지원하지 않는 최적화 옵션을 사용하면 런타임 에러가 발생할 수 있음"
+  ],
+  "generatedAt": "2026-07-28T07:04:50.521Z"
+}

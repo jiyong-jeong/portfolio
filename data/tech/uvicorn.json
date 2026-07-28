@@ -1,0 +1,43 @@
+{
+  "slug": "uvicorn",
+  "name": "Uvicorn",
+  "category": "backend",
+  "tagline": "Python ASGI 애플리케이션을 실행하는 고성능 비동기 웹 서버",
+  "definition": "Uvicorn은 uvloop와 httptools를 기반으로 만들어진 빠른 ASGI 서버입니다. FastAPI, Starlette 같은 비동기 Python 웹 프레임워크를 프로덕션 환경에서 실행할 수 있도록 설계되었습니다. WSGI 방식의 동기 서버와 달리, 비동기 I/O를 활용해 동시 연결을 효율적으로 처리합니다.",
+  "concepts": [
+    {
+      "term": "ASGI",
+      "description": "Asynchronous Server Gateway Interface의 약자로, Python 비동기 웹 애플리케이션과 서버 사이의 표준 인터페이스입니다. WSGI의 비동기 버전이라고 볼 수 있습니다."
+    },
+    {
+      "term": "uvloop",
+      "description": "Python의 기본 asyncio 이벤트 루프를 대체하는 고성능 구현체입니다. Uvicorn은 이를 사용해 더 빠른 비동기 처리를 제공합니다."
+    },
+    {
+      "term": "Worker",
+      "description": "Uvicorn이 실행하는 독립적인 프로세스 단위입니다. 멀티 워커로 실행하면 CPU 코어를 여러 개 활용해 동시 처리 성능을 높일 수 있습니다."
+    },
+    {
+      "term": "Lifespan",
+      "description": "애플리케이션 시작과 종료 시점에 실행되는 이벤트 훅입니다. 데이터베이스 연결 초기화나 리소스 정리 같은 작업을 처리할 때 사용합니다."
+    }
+  ],
+  "whenToUse": [
+    "FastAPI, Starlette 같은 ASGI 프레임워크를 프로덕션에서 실행할 때",
+    "비동기 I/O가 많은 API 서버에서 높은 동시 처리 성능이 필요할 때",
+    "WebSocket이나 Server-Sent Events 같은 실시간 통신을 지원해야 할 때",
+    "가벼우면서도 안정적인 Python 웹 서버가 필요할 때"
+  ],
+  "example": {
+    "title": "FastAPI 앱을 Uvicorn으로 실행",
+    "language": "bash",
+    "code": "# 기본 실행 (개발 환경)\nuvicorn main:app --reload\n\n# 프로덕션 실행 (멀티 워커, 특정 호스트/포트)\nuvicorn main:app --host 0.0.0.0 --port 8000 --workers 4\n\n# Python 코드에서 직접 실행\n# main.py\nimport uvicorn\nfrom fastapi import FastAPI\n\napp = FastAPI()\n\n@app.get(\"/\")\nasync def root():\n    return {\"message\": \"Hello World\"}\n\nif __name__ == \"__main__\":\n    uvicorn.run(app, host=\"0.0.0.0\", port=8000)",
+    "description": "main.py 파일의 app 객체를 ASGI 애플리케이션으로 실행합니다. --reload 옵션은 코드 변경 시 자동 재시작, --workers는 멀티 프로세스 실행을 의미합니다."
+  },
+  "pitfalls": [
+    "개발 시 --reload 옵션은 편리하지만, 프로덕션에서는 사용하지 말아야 합니다",
+    "멀티 워커는 메모리를 워커 수만큼 배로 사용하므로, 서버 리소스를 고려해 설정해야 합니다",
+    "Windows에서는 멀티 워커가 제대로 동작하지 않을 수 있어, 리눅스 환경 사용이 권장됩니다"
+  ],
+  "generatedAt": "2026-07-28T07:04:43.313Z"
+}

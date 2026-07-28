@@ -1,0 +1,47 @@
+{
+  "slug": "webflux",
+  "name": "WebFlux",
+  "category": "backend",
+  "tagline": "Spring 생태계에서 비동기·논블로킹 방식으로 동작하는 리액티브 웹 프레임워크",
+  "definition": "Spring WebFlux는 Spring 5부터 도입된 리액티브 프로그래밍 기반의 웹 프레임워크입니다. 기존 Spring MVC가 서블릿 API 위에서 동기·블로킹 방식으로 동작하는 것과 달리, WebFlux는 Reactor 라이브러리를 기반으로 비동기·논블로킹 I/O를 지원하여 적은 수의 스레드로도 높은 동시성을 처리할 수 있습니다. 많은 외부 API 호출이나 I/O 대기 시간이 긴 환경에서 리소스 효율을 극대화하려는 목적으로 설계되었습니다.",
+  "concepts": [
+    {
+      "term": "Reactive Streams",
+      "description": "비동기 스트림 처리를 위한 표준 명세로, Publisher·Subscriber·Subscription·Processor 인터페이스를 정의합니다. WebFlux는 이 표준을 구현한 Reactor 라이브러리를 기반으로 동작합니다."
+    },
+    {
+      "term": "Mono / Flux",
+      "description": "Reactor가 제공하는 두 가지 핵심 타입입니다. Mono는 0개 또는 1개의 결과를, Flux는 0개 이상의 여러 결과를 비동기로 발행하는 Publisher입니다."
+    },
+    {
+      "term": "WebClient",
+      "description": "WebFlux와 함께 제공되는 논블로킹 HTTP 클라이언트로, 외부 API 호출 시 스레드를 블로킹하지 않고 비동기로 응답을 처리할 수 있습니다."
+    },
+    {
+      "term": "Backpressure",
+      "description": "데이터를 생산하는 속도가 소비 속도보다 빠를 때, 소비자가 생산자에게 흐름 제어를 요청하는 메커니즘입니다. Reactive Streams의 핵심 기능 중 하나입니다."
+    },
+    {
+      "term": "Router Function",
+      "description": "어노테이션 기반 컨트롤러 대신 함수형 스타일로 라우팅과 핸들러를 정의하는 방식입니다. WebFlux는 두 가지 프로그래밍 모델을 모두 지원합니다."
+    }
+  ],
+  "whenToUse": [
+    "외부 API나 데이터베이스 호출이 많아 I/O 대기 시간이 긴 경우",
+    "적은 스레드로 높은 동시 요청을 처리해야 하는 환경",
+    "SSE나 WebSocket 등 스트리밍 응답이 필요한 경우",
+    "이미 리액티브 드라이버(R2DBC, Reactive Redis 등)를 사용 중인 환경"
+  ],
+  "example": {
+    "title": "WebClient로 외부 API 호출",
+    "language": "java",
+    "code": "@Service\npublic class UserService {\n    private final WebClient webClient;\n\n    public UserService(WebClient.Builder builder) {\n        this.webClient = builder.baseUrl(\"https://api.example.com\").build();\n    }\n\n    public Mono<User> getUser(String id) {\n        return webClient.get()\n                .uri(\"/users/{id}\", id)\n                .retrieve()\n                .bodyToMono(User.class);\n    }\n}",
+    "description": "WebClient를 사용해 외부 API를 논블로킹 방식으로 호출하고, 결과를 Mono로 받아 반환하는 예시입니다."
+  },
+  "pitfalls": [
+    "블로킹 라이브러리(JDBC 등)를 리액티브 코드 안에서 호출하면 논블로킹 이점이 사라짐",
+    "디버깅과 스택 트레이스가 동기 코드보다 복잡해 러닝 커브가 높음",
+    "CPU 집약적 작업에는 오히려 오버헤드가 커서 Spring MVC가 더 적합할 수 있음"
+  ],
+  "generatedAt": "2026-07-28T07:04:09.165Z"
+}

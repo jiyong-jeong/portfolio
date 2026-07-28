@@ -1,0 +1,51 @@
+{
+  "slug": "react-i18next",
+  "name": "react-i18next",
+  "category": "frontend",
+  "tagline": "React 애플리케이션에 다국어(i18n) 지원을 추가하는 라이브러리",
+  "definition": "react-i18next는 i18next 프레임워크를 React에서 사용할 수 있도록 만든 국제화(internationalization) 라이브러리입니다. 컴포넌트 내부에서 Hook이나 HOC를 통해 번역 문자열을 불러오고, 사용자 언어에 따라 동적으로 UI 텍스트를 전환할 수 있게 해줍니다. 복수형 처리, 컨텍스트 기반 번역, 네임스페이스 분리 등 복잡한 번역 요구사항을 체계적으로 관리할 수 있습니다.",
+  "concepts": [
+    {
+      "term": "i18next",
+      "description": "JavaScript 생태계에서 가장 널리 쓰이는 국제화 프레임워크로, react-i18next는 이를 React 환경에 통합한 래퍼입니다."
+    },
+    {
+      "term": "Translation resource",
+      "description": "언어별로 키-값 쌍으로 정의된 번역 데이터. JSON 파일이나 객체 형태로 작성하며, 각 언어마다 별도 파일로 분리하는 것이 일반적입니다."
+    },
+    {
+      "term": "useTranslation Hook",
+      "description": "함수형 컴포넌트에서 번역 함수 t와 i18n 인스턴스를 가져오는 훅. 가장 기본적이고 자주 사용하는 API입니다."
+    },
+    {
+      "term": "Namespace",
+      "description": "번역 리소스를 논리적으로 분할하는 단위. 화면별, 기능별로 번역 파일을 나누어 관리하고 필요한 것만 로드할 수 있습니다."
+    },
+    {
+      "term": "Interpolation",
+      "description": "번역 문자열 내부에 변수를 삽입하는 기능. 동적인 값(이름, 숫자 등)을 포함한 문장을 번역할 때 사용합니다."
+    },
+    {
+      "term": "Language detector",
+      "description": "브라우저 설정, URL 파라미터, 로컬 스토리지 등에서 사용자 언어를 자동으로 감지하는 플러그인 메커니즘입니다."
+    }
+  ],
+  "whenToUse": [
+    "여러 언어를 지원하는 글로벌 서비스를 개발할 때",
+    "번역 문자열을 컴포넌트 코드와 분리해 관리하고 싶을 때",
+    "복수형, 성별, 날짜 포맷 등 언어별 규칙을 자동 처리해야 할 때",
+    "번역 파일을 외부에서 관리하거나 지연 로딩해야 할 때"
+  ],
+  "example": {
+    "title": "기본 설정 및 사용",
+    "language": "javascript",
+    "code": "// i18n.js\nimport i18n from 'i18next';\nimport { initReactI18next } from 'react-i18next';\n\nconst resources = {\n  en: { translation: { welcome: 'Welcome', greeting: 'Hello, {{name}}!' } },\n  ko: { translation: { welcome: '환영합니다', greeting: '안녕하세요, {{name}}님!' } }\n};\n\ni18n.use(initReactI18next).init({\n  resources,\n  lng: 'ko',\n  fallbackLng: 'en'\n});\n\n// App.jsx\nimport { useTranslation } from 'react-i18next';\n\nfunction App() {\n  const { t, i18n } = useTranslation();\n  return (\n    <div>\n      <h1>{t('welcome')}</h1>\n      <p>{t('greeting', { name: '철수' })}</p>\n      <button onClick={() => i18n.changeLanguage('en')}>English</button>\n    </div>\n  );\n}",
+    "description": "i18next 인스턴스를 초기화하고, useTranslation 훅으로 번역 함수를 가져와 UI 텍스트를 다국어로 표시하는 기본 예시입니다."
+  },
+  "pitfalls": [
+    "번역 키를 하드코딩하면 오타 추적이 어려움. TypeScript 타입 정의나 린터 활용 권장",
+    "초기 언어 설정 시 비동기 리소스 로딩을 고려하지 않으면 깜빡임 발생 가능",
+    "Suspense를 사용하지 않으면 번역 파일 로딩 중 fallback UI가 없어 빈 화면이 보일 수 있음"
+  ],
+  "generatedAt": "2026-07-28T07:09:19.441Z"
+}

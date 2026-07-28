@@ -1,0 +1,157 @@
+{
+  "slug": "kyb-client",
+  "repo": "kyb-client",
+  "title": "금융권 자금세탁방지(AML) KYB 인증 플랫폼 프론트엔드",
+  "summary": "법인 고객 신원확인(KYB)과 본인인증(eKYC)을 통합한 금융규제 준수 솔루션의 React 기반 웹 클라이언트",
+  "description": "자금세탁방지 규제(RegTech/AML)를 준수하기 위한 법인 고객 신원확인 시스템의 프론트엔드입니다. 가입자, 심사자, 관리자 3개 역할별 라우팅과 다단계 KYB 절차(법인정보 입력 → 실소유자 구조도 작성 → 임직원 등록 → eKYC 본인인증 → 증빙 제출)를 지원합니다. useb eKYC 연동을 공식 표준 흐름(iframe + postMessage)으로 마이그레이션하여 환경 간 정합성 문제를 해결했으며, TypeScript 기반 API 레이어와 React Query를 통해 타입 안전성을 확보했습니다.",
+  "category": "프론트엔드",
+  "role": "법인 KYB 절차 UI 구현, eKYC iframe 연동 표준화, Docker 기반 런타임 환경설정 주입 아키텍처 설계 및 배포 파이프라인 구축",
+  "techStack": [
+    {
+      "name": "TypeScript",
+      "category": "language",
+      "usage": "전체 소스코드 타입 안전성 확보 및 API 인터페이스 정의"
+    },
+    {
+      "name": "React",
+      "category": "frontend",
+      "usage": "UI 컴포넌트 라이브러리 및 라우팅 기반 SPA 구현"
+    },
+    {
+      "name": "Vite",
+      "category": "tool",
+      "usage": "개발 서버 및 프로덕션 빌드 도구"
+    },
+    {
+      "name": "React Query",
+      "category": "frontend",
+      "usage": "서버 상태 캐싱 및 GET/POST/PUT 요청 추상화"
+    },
+    {
+      "name": "Redux Toolkit",
+      "category": "frontend",
+      "usage": "글로벌 상태 관리(에러, 심사자 목록, 공지사항)"
+    },
+    {
+      "name": "React Hook Form",
+      "category": "frontend",
+      "usage": "폼 상태 관리 및 유효성 검증"
+    },
+    {
+      "name": "SCSS",
+      "category": "frontend",
+      "usage": "컴포넌트 스타일링 및 유틸리티 믹스인"
+    },
+    {
+      "name": "styled-components",
+      "category": "frontend",
+      "usage": "usebeauty 커스텀 컴포넌트 라이브러리 스타일링"
+    },
+    {
+      "name": "Docker",
+      "category": "infra",
+      "usage": "환경별 런타임 config.js 주입 및 nginx 기반 멀티스테이지 빌드"
+    },
+    {
+      "name": "Playwright",
+      "category": "testing",
+      "usage": "E2E 테스트 자동화(로그인, 회원가입 시나리오)"
+    },
+    {
+      "name": "react-i18next",
+      "category": "frontend",
+      "usage": "한국어/영어 다국어 지원"
+    },
+    {
+      "name": "Axios",
+      "category": "frontend",
+      "usage": "HTTP 클라이언트 및 인터셉터 기반 인증 처리"
+    }
+  ],
+  "highlights": [
+    "TypeScript namespace 기반 API 타입 시스템 구축 — GET/POST/PUT 요청별 Request/Response 인터페이스 선언으로 타입 안전성 확보",
+    "useb eKYC 비공식 커스텀 통합(WebSocket + room_key)을 공식 표준 흐름(iframe postMessage)으로 마이그레이션하여 환경 전환 시 발생하던 결과 라우팅 실패 해소",
+    "Docker 엔트리포인트에서 envsubst로 런타임 환경변수를 /config.js로 주입, 동일 이미지로 dev/stg/prd 배포 지원",
+    "3개 역할(가입자/심사자/관리자)별 라우팅 및 인증 가드 구현 — localStorage 토큰 기반 역할별 API 인증",
+    "react-d3-tree로 법인 실소유자 계층 구조(OwnerHierarchy) 시각화 및 CRUD 인터페이스 제공"
+  ],
+  "challenges": [
+    {
+      "problem": "eKYC 연동에서 환경별 customer 자격증명 불일치로 fkr1 전환 시 모달이 닫히지 않는 사고 발생",
+      "solution": "비공식 WebSocket push 방식을 폐기하고 useb 공식 iframe + postMessage 흐름으로 전환, cross-device QR도 useb iframe이 자체 제공하도록 변경"
+    },
+    {
+      "problem": "Vite 빌드 산출물에 환경변수가 하드코딩되어 환경마다 별도 이미지 빌드 필요",
+      "solution": "public/config.js를 런타임 템플릿화하고 Docker 엔트리포인트에서 envsubst로 주입, nginx Cache-Control: no-store로 브라우저 캐싱 방지"
+    },
+    {
+      "problem": "API 응답 envelope이 { data: { kyc_token_param } }와 { kyc_token_param } 두 가지로 혼재",
+      "solution": "BE와 협의하여 { data: { ... } } 단일 구조로 표준화하고 FE 분기 로직 제거"
+    }
+  ],
+  "diagrams": [
+    {
+      "title": "KYB 시스템 전체 아키텍처",
+      "description": "가입자/심사자/관리자 3개 역할별 라우팅, API 레이어, eKYC 연동, 상태 관리 구조를 보여주는 다이어그램",
+      "type": "architecture",
+      "mermaid": "flowchart TD\n  User[\"사용자 브라우저\"]\n  FE[\"KYB Client (React + Vite)\"]\n  API[\"KYB API 서버\"]\n  EKYC[\"useb eKYC iframe\"]\n  \n  User --> FE\n  \n  subgraph Frontend[\"프론트엔드 레이어\"]\n    Router[\"역할별 라우팅<br/>/applicant, /reviewer, /admin\"]\n    RQ[\"React Query<br/>(API 캐싱)\"]\n    Redux[\"Redux Toolkit<br/>(글로벌 상태)\"]\n    Context[\"React Context<br/>(절차 상태)\"]\n  end\n  \n  FE --> Router\n  Router --> RQ\n  RQ --> Redux\n  RQ --> Context\n  \n  subgraph APILayer[\"API 타입 레이어\"]\n    Types[\"interface/GET.ts<br/>POST.ts, PUT.ts\"]\n    Query[\"userQuery/<br/>(GET 래퍼)\"]\n    Mutation[\"useMutation/<br/>(POST/PUT 래퍼)\"]\n  end\n  \n  RQ --> Types\n  Types --> Query\n  Types --> Mutation\n  Query --> API\n  Mutation --> API\n  \n  subgraph KYCFlow[\"eKYC 본인인증\"]\n    Modal[\"KycIframeModal\"]\n    PM[\"postMessage<br/>(success/failed/complete/close)\"]\n  end\n  \n  FE --> Modal\n  Modal --> EKYC\n  EKYC --> PM\n  PM --> Modal\n  \n  API --> FE"
+    },
+    {
+      "title": "eKYC 표준 흐름 시퀀스",
+      "description": "useb eKYC 공식 표준 흐름으로 전환한 후의 본인인증 프로세스 — iframe postMessage 기반 2단계 메시지 수신",
+      "type": "sequence",
+      "mermaid": "sequenceDiagram\n  participant U as 사용자\n  participant FE as KYB Client\n  participant BE as KYB API\n  participant EKYC as useb eKYC\n  \n  U->>FE: 모바일로 진행 클릭\n  FE->>BE: POST /v2/applicants/kyc-qr-url\n  BE->>EKYC: customer 인증\n  EKYC-->>BE: 토큰 발급\n  BE-->>FE: kyc_token_param (base64)\n  FE->>FE: KycIframeModal 표시\n  FE->>EKYC: iframe.contentWindow.postMessage(token)\n  EKYC-->>EKYC: cross-device QR 표시\n  U->>EKYC: 모바일 QR 스캔 + 신분증 촬영\n  EKYC-->>FE: postMessage(success, review_result)\n  FE->>FE: 결과 저장 (pendingRef)\n  EKYC-->>FE: postMessage(complete)\n  FE->>BE: POST /attachments/v2 (신분증 이미지)\n  BE-->>FE: attachment ID\n  FE->>FE: kyc_completed = true\n  FE-->>U: 다음 단계 활성화"
+    },
+    {
+      "title": "Docker 런타임 환경설정 주입 흐름",
+      "description": "동일 이미지로 dev/stg/prd 배포를 지원하기 위한 런타임 config.js 주입 메커니즘",
+      "type": "deployment",
+      "mermaid": "flowchart LR\n  Build[\"docker build<br/>(환경 비종속)\"]\n  Image[\"alcheradev/kyb-client:TAG\"]\n  Run[\"docker run<br/>-e KYB_API_URL=...\"]\n  Entry[\"entrypoint.sh\"]\n  Envsubst[\"envsubst<br/>(템플릿 → config.js)\"]\n  Nginx[\"nginx 시작<br/>(Cache-Control: no-store)\"]\n  Browser[\"브라우저\"]\n  \n  Build --> Image\n  Image --> Run\n  Run --> Entry\n  Entry --> Envsubst\n  Envsubst --> Nginx\n  Nginx --> Browser\n  \n  subgraph Runtime[\"런타임 주입\"]\n    Envsubst\n    Nginx\n  end"
+    }
+  ],
+  "keywords": [
+    "react",
+    "typescript",
+    "vite",
+    "react-query",
+    "redux-toolkit",
+    "ekyc",
+    "kyb",
+    "aml",
+    "regtech",
+    "docker",
+    "nginx",
+    "playwright"
+  ],
+  "links": {
+    "repo": "https://github.com/jiyong-jeong/kyb-client",
+    "homepage": null
+  },
+  "metrics": {
+    "stars": 0,
+    "forks": 0,
+    "watchers": 0,
+    "sizeKb": 15943,
+    "openIssues": 0,
+    "languages": {
+      "TypeScript": 2398108,
+      "SCSS": 474048,
+      "JavaScript": 22798,
+      "Python": 21861,
+      "HTML": 10993,
+      "CSS": 5836,
+      "Shell": 3000,
+      "Dockerfile": 2996
+    },
+    "topics": [],
+    "primaryLanguage": "TypeScript",
+    "license": null
+  },
+  "dates": {
+    "createdAt": "2026-07-27T01:44:35Z",
+    "updatedAt": "2026-07-27T01:44:48Z",
+    "pushedAt": "2026-07-27T01:44:42Z",
+    "analyzedAt": "2026-07-28T06:50:36.738Z"
+  },
+  "featured": true
+}
