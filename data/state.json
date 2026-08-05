@@ -4,8 +4,9 @@
     "jira_auto_pilot": {
       "pushedAt": "2026-07-27T05:47:20Z",
       "analyzedAt": "2026-07-28T06:49:18.409Z",
-      "status": "ok",
-      "failures": 0
+      "status": "failed",
+      "failures": 1,
+      "error": "claude 종료 코드 1\n"
     },
     "racing-platform-backend-api-argocd-deploy-docs": {
       "pushedAt": "2026-05-13T21:07:56Z",
