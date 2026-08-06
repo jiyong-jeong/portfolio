@@ -5,7 +5,7 @@
       "pushedAt": "2026-07-27T05:47:20Z",
       "analyzedAt": "2026-07-28T06:49:18.409Z",
       "status": "failed",
-      "failures": 1,
+      "failures": 2,
       "error": "claude 종료 코드 1\n"
     },
     "racing-platform-backend-api-argocd-deploy-docs": {
