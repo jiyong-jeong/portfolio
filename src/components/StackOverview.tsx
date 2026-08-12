@@ -1,6 +1,7 @@
 import Link from "next/link";
+import type { CSSProperties } from "react";
 
-import { TECH_CATEGORY_ORDER, techCategoryLabel, techStyle } from "@/lib/tech";
+import { TECH_CATEGORY_ORDER, techCategoryLabel, techIntensity, techStyle } from "@/lib/tech";
 import type { TechSummary } from "@/lib/data";
 
 export default function StackOverview({ techs }: { techs: TechSummary[] }) {
@@ -42,7 +43,8 @@ export default function StackOverview({ techs }: { techs: TechSummary[] }) {
       <div className="lg:col-span-3">
         <h3 className="text-sm font-semibold text-muted">분야별 기술스택</h3>
         <p className="mt-1 text-xs text-faint">
-          기술을 누르면 각 프로젝트에서 어떻게 활용했는지 볼 수 있습니다.
+          진하게 보일수록 여러 프로젝트에서 사용한 기술입니다. 누르면 각 프로젝트에서 어떻게
+          활용했는지 볼 수 있습니다.
         </p>
         <div className="mt-4 space-y-4">
           {grouped.map((group) => (
@@ -51,17 +53,22 @@ export default function StackOverview({ techs }: { techs: TechSummary[] }) {
                 {techCategoryLabel(group.category)}
               </p>
               <div className="flex flex-wrap gap-1.5">
-                {group.items.map((tech) => (
-                  <Link
-                    key={tech.name}
-                    href={`/tech/${tech.slug}`}
-                    title={`${tech.name} — ${tech.count}개 프로젝트에서의 활용 방식 보기`}
-                    className={`inline-flex items-center gap-1.5 rounded-md border px-2 py-0.5 text-xs font-medium transition hover:opacity-80 ${techStyle(tech.category)}`}
-                  >
-                    {tech.name}
-                    {tech.count > 1 && <span className="opacity-60">{tech.count}</span>}
-                  </Link>
-                ))}
+                {group.items.map((tech) => {
+                  const { opacity, weightClass } = techIntensity(tech.count, max);
+
+                  return (
+                    <Link
+                      key={tech.name}
+                      href={`/tech/${tech.slug}`}
+                      title={`${tech.name} — ${tech.count}개 프로젝트에서의 활용 방식 보기`}
+                      style={{ "--tech-intensity": opacity } as CSSProperties}
+                      className={`tech-chip inline-flex items-center gap-1.5 rounded-md border px-2 py-0.5 text-xs transition ${weightClass} ${techStyle(tech.category)}`}
+                    >
+                      {tech.name}
+                      {tech.count > 1 && <span className="opacity-60">{tech.count}</span>}
+                    </Link>
+                  );
+                })}
               </div>
             </div>
           ))}

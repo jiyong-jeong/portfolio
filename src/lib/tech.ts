@@ -43,6 +43,23 @@ export function techStyle(category: string): string {
   return CATEGORY_STYLE[category as TechCategory] ?? CATEGORY_STYLE.tool;
 }
 
+const MIN_OPACITY = 0.45;
+
+/**
+ * 사용 횟수를 배지 강약(투명도·굵기)으로 환산한다.
+ *
+ * 1회짜리 기술이 전체의 절반을 넘는 롱테일 분포라 선형 스케일은 대부분을 최저값으로
+ * 뭉갠다. 로그로 정규화하고 하한선을 둬서 적게 쓴 기술도 읽히게 유지한다.
+ */
+export function techIntensity(count: number, max: number) {
+  const ratio = max > 1 ? Math.log(count) / Math.log(max) : 1;
+
+  return {
+    opacity: Number((MIN_OPACITY + (1 - MIN_OPACITY) * ratio).toFixed(2)),
+    weightClass: ratio >= 0.75 ? "font-semibold" : ratio >= 0.4 ? "font-medium" : "font-normal",
+  };
+}
+
 export function techCategoryLabel(category: string): string {
   return CATEGORY_LABEL[category as TechCategory] ?? "기타";
 }

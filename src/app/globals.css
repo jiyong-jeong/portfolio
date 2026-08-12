@@ -101,6 +101,16 @@
     background-size: 56px 56px;
     mask-image: radial-gradient(ellipse 75% 55% at 50% 0%, #000 35%, transparent 100%);
   }
+
+  /* 사용 빈도에 따른 배지 강약. --tech-intensity 는 컴포넌트에서 주입한다. */
+  .tech-chip {
+    opacity: var(--tech-intensity, 1);
+  }
+
+  .tech-chip:hover,
+  .tech-chip:focus-visible {
+    opacity: 1;
+  }
 }
 
 @media (prefers-reduced-motion: reduce) {
