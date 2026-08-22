@@ -1,0 +1,37 @@
+{
+  "slug": "physical-ai-agentsystem-overview",
+  "repo": "physical-ai-agentsystem-overview",
+  "title": "physical-ai-agentsystem-overview",
+  "summary": "로봇 원격시연 데이터 수집·학습·평가 루프 시스템의 설계 개요 (문서 전용)",
+  "description": "로봇 원격시연 데이터 수집·학습·평가 루프 시스템의 설계 개요 (문서 전용)",
+  "category": "기타",
+  "role": "",
+  "techStack": [],
+  "highlights": [],
+  "challenges": [],
+  "diagrams": [],
+  "keywords": [],
+  "links": {
+    "repo": "https://github.com/jiyong-jeong/physical-ai-agentsystem-overview",
+    "homepage": null
+  },
+  "metrics": {
+    "stars": 0,
+    "forks": 0,
+    "watchers": 0,
+    "sizeKb": 8,
+    "openIssues": 0,
+    "languages": {},
+    "topics": [],
+    "primaryLanguage": null,
+    "license": null
+  },
+  "dates": {
+    "createdAt": "2026-08-21T05:15:15Z",
+    "updatedAt": "2026-08-21T05:15:58Z",
+    "pushedAt": "2026-08-21T05:15:19Z",
+    "analyzedAt": "2026-08-22T00:00:24.239Z"
+  },
+  "featured": false,
+  "degraded": true
+}
