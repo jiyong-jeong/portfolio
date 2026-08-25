@@ -5,7 +5,7 @@
       "pushedAt": "2026-07-27T05:47:20Z",
       "analyzedAt": "2026-07-28T06:49:18.409Z",
       "status": "failed",
-      "failures": 20,
+      "failures": 21,
       "error": "claude 종료 코드 1\n"
     },
     "racing-platform-backend-api-argocd-deploy-docs": {
@@ -504,7 +504,7 @@
       "pushedAt": "2026-07-26T08:03:48Z",
       "analyzedAt": "2026-07-27T00:01:13.715Z",
       "status": "failed",
-      "failures": 12,
+      "failures": 13,
       "error": "claude 종료 코드 1\n"
     },
     "publish-project": {
@@ -589,7 +589,7 @@
       "pushedAt": "1970-01-01T00:00:00Z",
       "analyzedAt": "2026-08-22T00:00:24.254Z",
       "status": "failed",
-      "failures": 3,
+      "failures": 4,
       "error": "claude 종료 코드 1\n"
     }
   }
