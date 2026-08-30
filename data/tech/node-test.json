@@ -1,0 +1,51 @@
+{
+  "slug": "node-test",
+  "name": "node:test",
+  "category": "testing",
+  "tagline": "Node.js에 내장된 테스트 러너로 별도 설치 없이 단위 테스트를 작성·실행하는 모듈",
+  "definition": "node:test는 Node.js 런타임에 기본 내장된 테스트 러너 모듈로, Jest나 Mocha 같은 외부 프레임워크를 설치하지 않아도 테스트 코드를 작성하고 실행할 수 있게 해준다. 순수 함수나 모듈 단위 로직을 빠르게 검증하려는 목적에서 만들어졌으며, describe/it 스타일의 테스트 정의, 훅, assert 모듈과의 연동을 기본 제공한다. 외부 의존성을 최소화하면서도 CI 환경에서 바로 동작하는 테스트 실행 환경을 갖추는 데 초점이 맞춰져 있다.",
+  "concepts": [
+    {
+      "term": "test()",
+      "description": "개별 테스트 케이스를 정의하는 함수로, 콜백 안에서 검증 로직을 작성한다."
+    },
+    {
+      "term": "describe/it",
+      "description": "테스트를 그룹화하고 계층적으로 구조화할 수 있는 스타일로, 관련 테스트를 묶어 가독성을 높인다."
+    },
+    {
+      "term": "assert",
+      "description": "Node.js의 내장 assert 모듈과 함께 사용해 값의 기대 결과를 검증하는 방식이다."
+    },
+    {
+      "term": "test runner CLI",
+      "description": "node --test 명령으로 프로젝트 내 테스트 파일들을 찾아 자동으로 실행해주는 실행기이다."
+    },
+    {
+      "term": "hooks (before/after)",
+      "description": "테스트 실행 전후에 공통 준비·정리 작업을 수행할 수 있는 생명주기 함수들이다."
+    },
+    {
+      "term": "mocking",
+      "description": "함수나 모듈의 동작을 대체해 외부 의존성 없이 로직만 독립적으로 검증할 수 있게 하는 기능이다."
+    }
+  ],
+  "whenToUse": [
+    "외부 테스트 프레임워크 설치 없이 가볍게 단위 테스트를 도입하고 싶을 때",
+    "순수 로직 함수나 데이터 스토어처럼 의존성이 적은 모듈을 검증할 때",
+    "Node.js 버전만으로 CI 환경을 구성해 빌드 의존성을 줄이고 싶을 때",
+    "간단한 프로젝트에서 별도 설정 파일 없이 빠르게 테스트를 시작하고 싶을 때"
+  ],
+  "example": {
+    "title": "기본 단위 테스트 작성 예시",
+    "language": "javascript",
+    "code": "const test = require('node:test');\nconst assert = require('node:assert');\nconst { sum } = require('./lib.js');\n\ntest('sum은 두 숫자를 더한다', () => {\n  assert.strictEqual(sum(1, 2), 3);\n});\n\ntest('sum은 음수도 처리한다', () => {\n  assert.strictEqual(sum(-1, -2), -3);\n});",
+    "description": "lib.js의 sum 함수를 두 가지 케이스로 검증하는 간단한 테스트 파일이며, node --test 명령으로 실행한다."
+  },
+  "pitfalls": [
+    "외부 프레임워크의 풍부한 matcher가 없어 assert 문법에 익숙해져야 한다",
+    "비동기 테스트에서 콜백을 await하지 않으면 결과 확인 전에 종료될 수 있다",
+    "테스트 파일 이름 규칙(예: *.test.js)을 지키지 않으면 러너가 인식하지 못한다"
+  ],
+  "generatedAt": "2026-08-30T07:20:31.657Z"
+}

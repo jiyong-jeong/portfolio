@@ -1,0 +1,47 @@
+{
+  "slug": "sqlite",
+  "name": "SQLite",
+  "category": "database",
+  "tagline": "서버 프로세스 없이 애플리케이션 안에서 파일 하나로 동작하는 관계형 데이터베이스 엔진",
+  "definition": "SQLite는 별도의 데이터베이스 서버를 실행하지 않고, 라이브러리 형태로 애플리케이션 프로세스에 내장되어 동작하는 관계형 데이터베이스 엔진이다. 전체 데이터베이스가 디스크상의 단일 파일로 관리되어 설치나 설정 없이 바로 사용할 수 있다는 점에서, 클라이언트-서버 구조의 데이터베이스가 요구하는 운영 부담을 줄이기 위해 만들어졌다. 표준 SQL 문법과 트랜잭션을 지원하면서도 가볍고 이식성이 높아, 로컬 저장소나 임베디드 환경에서 널리 쓰인다.",
+  "concepts": [
+    {
+      "term": "Serverless architecture",
+      "description": "별도의 DB 서버 프로세스 없이 애플리케이션이 라이브러리를 통해 데이터베이스 파일을 직접 읽고 쓰는 구조를 말한다."
+    },
+    {
+      "term": "Single-file database",
+      "description": "테이블, 인덱스, 스키마 등 데이터베이스 전체가 하나의 파일에 저장되어 복사나 이동만으로 백업·이전이 가능하다."
+    },
+    {
+      "term": "ACID transaction",
+      "description": "여러 쓰기 작업을 하나의 단위로 묶어 도중에 실패해도 데이터가 일관된 상태로 유지되도록 보장하는 성질이다."
+    },
+    {
+      "term": "Embedded database",
+      "description": "애플리케이션 프로세스 안에서 라이브러리 형태로 실행되어, 네트워크 통신 없이 함수 호출만으로 데이터에 접근한다."
+    },
+    {
+      "term": "Journal / WAL mode",
+      "description": "쓰기 도중 장애가 발생해도 파일이 손상되지 않도록 변경 내역을 별도 로그에 먼저 기록하는 방식이다."
+    }
+  ],
+  "whenToUse": [
+    "네트워크 연결 없이 로컬에서 구조화된 데이터를 저장·조회해야 할 때",
+    "설치나 운영 부담 없이 SQL 기반 저장소를 빠르게 도입하고 싶을 때",
+    "엣지 기기나 데스크톱 앱처럼 자원이 제한된 환경에 데이터베이스를 내장할 때",
+    "여러 프로세스의 동시 대량 쓰기보다는 단일 애플리케이션의 로컬 데이터 처리가 중심일 때"
+  ],
+  "example": {
+    "title": "큐 테이블 생성과 기본 조작",
+    "language": "sql",
+    "code": "-- 업로드 대기 항목을 저장할 테이블 생성\nCREATE TABLE upload_queue (\n  id INTEGER PRIMARY KEY AUTOINCREMENT,\n  file_path TEXT NOT NULL,\n  status TEXT NOT NULL DEFAULT 'pending',\n  created_at TEXT DEFAULT (datetime('now'))\n);\n\n-- 항목 추가\nINSERT INTO upload_queue (file_path) VALUES ('/data/episode_001.mp4');\n\n-- 처리 대기 중인 항목 조회\nSELECT * FROM upload_queue WHERE status = 'pending';\n\n-- 처리 완료로 상태 갱신\nUPDATE upload_queue SET status = 'done' WHERE id = 1;",
+    "description": "단일 파일 데이터베이스에 테이블을 만들고 레코드를 추가·조회·갱신하는 기본 흐름을 보여준다."
+  },
+  "pitfalls": [
+    "여러 프로세스가 동시에 쓰기를 시도하면 잠금 경합이 발생해 대기가 생길 수 있다",
+    "대규모 동시 접속이 필요한 서버형 서비스에는 적합하지 않다",
+    "파일 하나로 관리되므로 파일 손상·삭제가 곧 데이터 전체 손실로 이어질 수 있다"
+  ],
+  "generatedAt": "2026-08-30T07:20:48.916Z"
+}

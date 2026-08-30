@@ -2,11 +2,10 @@
   "version": 1,
   "repos": {
     "jira_auto_pilot": {
-      "pushedAt": "2026-07-27T05:47:20Z",
-      "analyzedAt": "2026-07-28T06:49:18.409Z",
-      "status": "failed",
-      "failures": 26,
-      "error": "claude 종료 코드 1\n"
+      "pushedAt": "2026-08-28T03:53:25Z",
+      "analyzedAt": "2026-08-30T07:19:35.852Z",
+      "status": "ok",
+      "failures": 0
     },
     "racing-platform-backend-api-argocd-deploy-docs": {
       "pushedAt": "2026-05-13T21:07:56Z",
@@ -501,11 +500,10 @@
       "failures": 0
     },
     "portfolio": {
-      "pushedAt": "2026-07-26T08:03:48Z",
-      "analyzedAt": "2026-07-27T00:01:13.715Z",
-      "status": "failed",
-      "failures": 18,
-      "error": "claude 종료 코드 1\n"
+      "pushedAt": "2026-08-12T01:37:44Z",
+      "analyzedAt": "2026-08-30T07:19:02.937Z",
+      "status": "ok",
+      "failures": 0
     },
     "publish-project": {
       "pushedAt": "2026-07-27T00:33:06Z",
@@ -586,11 +584,10 @@
       "failures": 0
     },
     "physical-ai-agentsystem-overview": {
-      "pushedAt": "1970-01-01T00:00:00Z",
-      "analyzedAt": "2026-08-22T00:00:24.254Z",
-      "status": "failed",
-      "failures": 9,
-      "error": "claude 종료 코드 1\n"
+      "pushedAt": "2026-08-21T05:15:19Z",
+      "analyzedAt": "2026-08-30T07:20:14.053Z",
+      "status": "ok",
+      "failures": 0
     }
   }
 }

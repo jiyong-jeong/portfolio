@@ -1,0 +1,47 @@
+{
+  "slug": "pyarrow",
+  "name": "PyArrow",
+  "category": "data",
+  "tagline": "컬럼형 인메모리 포맷인 Apache Arrow를 파이썬에서 다루는 데이터 처리 라이브러리",
+  "definition": "PyArrow는 Apache Arrow 프로젝트의 파이썬 바인딩으로, 언어와 시스템에 상관없이 동일한 방식으로 데이터를 메모리에 올려두는 컬럼형(columnar) 포맷을 다룰 수 있게 해준다. 서로 다른 도구나 프로세스 간에 데이터를 주고받을 때 매번 직렬화/역직렬화 비용을 치르는 문제를 줄이기 위해 만들어졌으며, Parquet 같은 파일 포맷의 읽기·쓰기와 메타데이터 조회를 빠르게 처리하는 데 널리 쓰인다. pandas, Spark, DuckDB 등 여러 데이터 도구가 내부적으로 Arrow 포맷을 채택하면서 도구 간 데이터 교환의 공통 언어 역할을 한다.",
+  "concepts": [
+    {
+      "term": "Columnar format",
+      "description": "데이터를 행이 아닌 열 단위로 메모리에 배치하는 방식으로, 특정 컬럼만 읽거나 집계할 때 훨씬 효율적이다."
+    },
+    {
+      "term": "Table / RecordBatch",
+      "description": "PyArrow에서 데이터를 표현하는 기본 단위로, 여러 컬럼(Array)의 묶음과 스키마 정보를 함께 가진다."
+    },
+    {
+      "term": "Zero-copy",
+      "description": "데이터를 복사하지 않고 메모리 상의 동일한 버퍼를 여러 프로세스나 언어가 그대로 공유해 참조할 수 있는 특성이다."
+    },
+    {
+      "term": "Schema",
+      "description": "각 컬럼의 이름과 타입을 정의한 구조 정보로, 파일이나 데이터셋을 읽기 전에 구조를 미리 파악하는 데 쓰인다."
+    },
+    {
+      "term": "Parquet 연동",
+      "description": "PyArrow는 컬럼형 저장 포맷인 Parquet 파일을 읽고 쓰는 표준 구현을 제공하며, 파일 전체를 로드하지 않고 메타데이터(행 수, 스키마 등)만 조회할 수 있다."
+    }
+  ],
+  "whenToUse": [
+    "대용량 Parquet 파일을 전체 로드 없이 스키마나 행 수 같은 메타데이터만 빠르게 확인하고 싶을 때",
+    "pandas, Spark, DuckDB 등 서로 다른 데이터 도구 사이에서 포맷 변환 없이 데이터를 주고받고 싶을 때",
+    "행 단위가 아닌 열 단위 집계·필터링 성능이 중요한 데이터 처리 파이프라인을 구성할 때",
+    "데이터 무결성 검증처럼 파일을 열지 않고 메타데이터만으로 선언값과 실제 값을 대조하고 싶을 때"
+  ],
+  "example": {
+    "title": "Parquet 파일의 메타데이터로 행 수 확인",
+    "language": "python",
+    "code": "import pyarrow.parquet as pq\n\n# 파일 전체를 메모리에 올리지 않고 메타데이터만 읽는다\nmetadata = pq.read_metadata(\"episodes.parquet\")\n\nactual_rows = metadata.num_rows\ndeclared_rows = 1000  # 별도 메타 정보에 선언된 값이라고 가정\n\nif actual_rows != declared_rows:\n    raise ValueError(\n        f\"행 수 불일치: 선언값={declared_rows}, 실제={actual_rows}\"\n    )",
+    "description": "Parquet 파일을 통째로 읽지 않고 메타데이터만 조회해 실제 행 수를 확인한 뒤, 별도로 관리되는 선언값과 대조하는 예시다."
+  },
+  "pitfalls": [
+    "Table을 pandas DataFrame으로 변환하면 zero-copy 이점이 사라지고 메모리 복사가 발생할 수 있다.",
+    "스키마 타입이 pandas나 다른 도구의 타입 체계와 정확히 1:1로 매핑되지 않아 변환 시 타입이 바뀔 수 있다.",
+    "메타데이터만으로 알 수 있는 정보(행 수, 스키마)와 실제 데이터 값 검증은 별개이므로 혼동하지 말아야 한다."
+  ],
+  "generatedAt": "2026-08-30T07:20:38.638Z"
+}

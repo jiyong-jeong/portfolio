@@ -1,0 +1,47 @@
+{
+  "slug": "httpx",
+  "name": "httpx",
+  "category": "tool",
+  "tagline": "동기와 비동기 방식을 모두 지원하는 파이썬용 차세대 HTTP 클라이언트 라이브러리",
+  "definition": "httpx는 파이썬에서 HTTP 요청을 보내기 위한 라이브러리로, requests와 비슷한 익숙한 API를 제공하면서도 asyncio 기반 비동기 호출과 HTTP/2를 함께 지원한다. 기존 requests가 비동기 프로그래밍을 지원하지 않는 한계를 보완하기 위해 만들어졌으며, 동기 코드와 비동기 코드에서 동일한 인터페이스를 사용할 수 있게 한다. 타입 힌트, 커넥션 풀링, 타임아웃 제어 등 실무에서 필요한 기능을 기본으로 갖추고 있다.",
+  "concepts": [
+    {
+      "term": "Client",
+      "description": "커넥션 풀과 설정(타임아웃, 헤더, 인증 등)을 재사용하기 위한 객체로, 여러 요청을 보낼 때 매번 새 연결을 맺지 않도록 해준다."
+    },
+    {
+      "term": "AsyncClient",
+      "description": "비동기 환경에서 사용하는 클라이언트로, async/await 문법으로 여러 요청을 동시에 처리할 수 있게 해준다."
+    },
+    {
+      "term": "Timeout",
+      "description": "연결, 읽기, 쓰기 등 요청 단계별로 시간 제한을 세밀하게 설정할 수 있는 기능으로, 응답이 없는 서버로 인한 무한 대기를 방지한다."
+    },
+    {
+      "term": "Transport",
+      "description": "실제 네트워크 통신을 담당하는 하위 계층으로, 재시도 로직이나 테스트용 모의 응답 등을 커스터마이징할 때 교체할 수 있다."
+    },
+    {
+      "term": "HTTP/2 지원",
+      "description": "단일 연결로 여러 요청을 병렬 처리할 수 있는 HTTP/2 프로토콜을 선택적으로 사용할 수 있다."
+    }
+  ],
+  "whenToUse": [
+    "비동기(async) 애플리케이션에서 외부 API를 호출해야 할 때",
+    "요청별 타임아웃, 재시도 등 세밀한 제어가 필요한 아웃바운드 통신을 구현할 때",
+    "requests에 익숙한 코드베이스를 비동기로 전환하고 싶을 때",
+    "테스트 시 실제 네트워크 없이 요청을 모킹해야 할 때"
+  ],
+  "example": {
+    "title": "동기/비동기 GET 요청 기본 예시",
+    "language": "python",
+    "code": "import httpx\nimport asyncio\n\n# 동기 방식\ndef fetch_sync():\n    response = httpx.get(\"https://example.com/api\", timeout=5.0)\n    response.raise_for_status()\n    return response.json()\n\n# 비동기 방식\nasync def fetch_async():\n    async with httpx.AsyncClient(timeout=5.0) as client:\n        response = await client.get(\"https://example.com/api\")\n        response.raise_for_status()\n        return response.json()\n\nasyncio.run(fetch_async())",
+    "description": "동일한 API 스타일로 동기(httpx.get)와 비동기(AsyncClient) 요청을 각각 보내는 기본 예시이다."
+  },
+  "pitfalls": [
+    "매 요청마다 Client를 새로 생성하면 커넥션 재사용 이점이 사라져 성능이 떨어진다.",
+    "requests와 API가 유사하지만 완전히 동일하지 않아 일부 옵션명과 동작이 다르다.",
+    "AsyncClient를 async with 없이 열어두면 연결이 제대로 정리되지 않을 수 있다."
+  ],
+  "generatedAt": "2026-08-30T07:20:30.404Z"
+}
