@@ -1,0 +1,43 @@
+{
+  "slug": "atlassian-mcp",
+  "name": "Atlassian MCP",
+  "category": "tool",
+  "tagline": "Claude Desktop이 Atlassian 제품군(Jira, Confluence)과 통신하도록 돕는 MCP 서버",
+  "definition": "Atlassian MCP는 Model Context Protocol(MCP)을 구현한 서버로, Claude가 Jira 이슈 조회·생성·수정, Confluence 페이지 읽기·쓰기 등을 자연어 대화만으로 수행할 수 있게 합니다. Atlassian Cloud API를 MCP 표준 인터페이스로 감싸서, 개발자가 별도 스크립트를 작성하지 않고도 Claude에게 티켓 관리·문서화 작업을 위임할 수 있습니다.",
+  "concepts": [
+    {
+      "term": "MCP (Model Context Protocol)",
+      "description": "AI 모델이 외부 데이터 소스나 도구를 표준화된 방식으로 호출할 수 있도록 설계된 프로토콜. 서버는 tools, resources, prompts를 제공하고 클라이언트(Claude Desktop 등)가 이를 실행합니다."
+    },
+    {
+      "term": "Tool",
+      "description": "MCP 서버가 Claude에게 노출하는 함수. Jira 이슈 생성, 코멘트 추가, 상태 전환 등 각각의 작업이 하나의 tool로 등록됩니다."
+    },
+    {
+      "term": "Atlassian Cloud API",
+      "description": "Jira, Confluence 등을 REST API로 제어할 수 있는 Atlassian의 공식 인터페이스. MCP 서버는 내부적으로 이 API를 호출합니다."
+    },
+    {
+      "term": "API Token",
+      "description": "Atlassian Cloud에 인증하기 위한 토큰. MCP 서버 설정에 사용자 이메일과 함께 등록해야 합니다."
+    }
+  ],
+  "whenToUse": [
+    "Claude에게 Jira 티켓 생성·조회·업데이트를 자연어로 지시하고 싶을 때",
+    "코드 리뷰 후 자동으로 Jira 이슈에 코멘트를 남기거나 상태를 전환해야 할 때",
+    "Confluence 문서를 Claude가 읽어서 요약하거나 새 페이지를 작성하게 하려 할 때",
+    "반복적인 Jira 워크플로를 스크립트 없이 대화형으로 자동화하고 싶을 때"
+  ],
+  "example": {
+    "title": "Claude Desktop 설정 예시",
+    "language": "json",
+    "code": "{\n  \"mcpServers\": {\n    \"atlassian\": {\n      \"command\": \"npx\",\n      \"args\": [\"-y\", \"@modelcontextprotocol/server-atlassian\"],\n      \"env\": {\n        \"ATLASSIAN_INSTANCE_URL\": \"https://your-domain.atlassian.net\",\n        \"ATLASSIAN_USER_EMAIL\": \"you@example.com\",\n        \"ATLASSIAN_API_TOKEN\": \"YOUR_API_TOKEN_HERE\"\n      }\n    }\n  }\n}",
+    "description": "Claude Desktop이 시작할 때 Atlassian MCP 서버를 자동으로 띄우고, Claude가 대화 중 Jira/Confluence 작업을 수행할 수 있게 합니다."
+  },
+  "pitfalls": [
+    "API 토큰은 Atlassian 계정 설정에서 별도로 발급받아야 하며, 비밀번호와는 다릅니다.",
+    "Jira Cloud 전용이므로 Server/Data Center 버전에서는 작동하지 않습니다.",
+    "Claude가 tool을 호출할 때마다 실제 API 요청이 발생하므로, rate limit에 주의해야 합니다."
+  ],
+  "generatedAt": "2026-09-05T00:02:11.157Z"
+}

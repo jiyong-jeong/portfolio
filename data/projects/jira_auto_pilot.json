@@ -1,111 +1,110 @@
 {
   "slug": "jira_auto_pilot",
   "repo": "jira_auto_pilot",
-  "title": "Jira 자동화 에이전트 — Claude 기반 이슈 개발·PR 루프",
-  "summary": "Jira 카드를 탐지해 Claude가 자동으로 plan(질문)→build(개발·PR·완료)를 수행하고, 웹 대시보드로 제어·모니터링하는 자동화 도구",
-  "description": "Jira 이슈를 자동 탐지해 Claude Code로 개발부터 PR 생성, 카드 완료 처리까지 반자동화하는 루프 도구입니다. plan 단계에서 Claude가 구현 전 질문을 코멘트로 남기고, 담당자 답변 후 build 단계에서 실제 코드 작성·커밋·푸시·PR 생성·카드 상태 전환을 수행합니다. 여러 프로젝트를 동시에 등록해 각 프로젝트의 repo·Jira·자격증명을 독립 관리하며, 로컬 웹 대시보드에서 루프 제어·카드 등록·답변·실시간 로그·에픽 연속 개발을 지원합니다. 탐지는 Jira REST를 우선 사용해 비용을 절감하고, 실패 재시도·중복 PR 방지·승인까지 리뷰 루프 등 운영 안정성 기능을 갖췄습니다.",
+  "title": "Jira 카드 자동 개발·PR 생성 루프 대시보드",
+  "summary": "Jira 카드를 자동 탐지해 Claude가 개발→PR→완료처리까지 수행하는 반자동 루프 자동화 도구",
+  "description": "특정 라벨이 붙은 Jira 카드를 주기적으로 탐지하여 Claude Code CLI로 plan(질문)→build(개발·PR·완료) 두 단계를 자동 수행합니다. 여러 프로젝트를 동시에 등록·운용할 수 있으며, 카드별로 독립된 git clone 디렉토리에서 병렬 처리됩니다. React 기반 로컬 대시보드에서 설정·토큰·루프 제어·카드 상태·실행 로그를 실시간 모니터링하고, 에픽의 하위 태스크를 순차 자동 개발하는 연속 모드를 지원합니다. Atlassian MCP와 GitHub CLI를 활용하며, Slack 알림·실패 재시도·중복 방지 등 운영 편의 기능을 갖추고 있습니다.",
   "category": "자동화",
-  "role": "전체 아키텍처 설계 및 구현. 셸 스크립트 기반 루프 오케스트레이션, Claude Code 헤드리스 실행 통합, React+Express 대시보드 개발, Jira REST/MCP 연동, 멱등성·재시도·병렬 처리 로직, 에픽 연속 개발 상태 머신 구현을 담당했습니다.",
+  "role": "전체 아키텍처 설계 및 구현. 셸 기반 루프 엔진, Claude Code 헤드리스 통합, 대시보드 백엔드·프론트엔드 개발, 멱등성·실패 처리·병렬 제어 로직 구현",
   "techStack": [
     {
       "name": "JavaScript",
       "category": "language",
-      "usage": "대시보드 백엔드(Express)·프론트엔드(React)·스트림 렌더러·에픽 루프 구현"
-    },
-    {
-      "name": "Shell",
-      "category": "language",
-      "usage": "루프 오케스트레이션·카드 탐지·git 작업·Claude 실행 스크립트"
+      "usage": "대시보드 백엔드(Express) 및 프론트엔드(React) 구현"
     },
     {
       "name": "Node.js",
       "category": "backend",
-      "usage": "대시보드 서버(Express)·렌더러·에픽 루프 런타임"
-    },
-    {
-      "name": "React",
-      "category": "frontend",
-      "usage": "대시보드 UI(접기/펼치기·실시간 로그·카드 상태·루프 제어)"
+      "usage": "대시보드 서버 및 에픽 연속 개발 루프 엔진"
     },
     {
       "name": "Express",
       "category": "backend",
-      "usage": "대시보드 백엔드 API(루프 제어·Jira REST·카드 조회·로그 tail)"
+      "usage": "대시보드 REST API 서버(루프 제어·카드 조회·로그 tail)"
     },
     {
-      "name": "Claude",
-      "category": "tool",
-      "usage": "헤드리스 모드로 plan(질문)·build(개발·PR) 실행, Atlassian MCP로 Jira 상호작용"
+      "name": "React",
+      "category": "frontend",
+      "usage": "대시보드 UI 컴포넌트(카드 상태·이력·로그·설정)"
     },
     {
-      "name": "GitHub",
+      "name": "Shell",
       "category": "tool",
-      "usage": "gh CLI로 PR 생성·상태 조회·병합 확인"
+      "usage": "루프 오케스트레이션·git 준비·병렬 실행 제어"
     },
     {
-      "name": "Jira",
+      "name": "Claude Code CLI",
       "category": "tool",
-      "usage": "카드 탐지(REST API)·상태 전환·코멘트·라벨 관리(MCP)"
+      "usage": "헤드리스 모드로 plan·build·리뷰 자동화 수행"
     },
     {
-      "name": "Slack",
+      "name": "Atlassian MCP",
       "category": "tool",
-      "usage": "Incoming Webhook으로 처리 완료·실패 알림 발송"
+      "usage": "Claude가 Jira 카드 조회·코멘트·라벨·상태 전환 수행"
+    },
+    {
+      "name": "GitHub CLI",
+      "category": "tool",
+      "usage": "브랜치 푸시·PR 생성·병합·리뷰 조회"
+    },
+    {
+      "name": "Jira REST API",
+      "category": "backend",
+      "usage": "대시보드에서 카드 탐지·등록·답변 처리(결정적 조회)"
     }
   ],
   "highlights": [
-    "Jira REST API 우선 탐지로 claude 호출 비용 절감, 실패 시 MCP 폴백으로 안정성 확보",
-    "카드별 독립 clone 디렉토리·락 기반 병렬 처리로 동시 실행 중 git 충돌 방지",
-    "멱등성 가드(중복 PR·브랜치 사전 점검)와 실패 재시도·백오프(claude-failed 라벨) 적용",
-    "에픽 연속 개발 모드: 하위 태스크를 생성순으로 plan→build→승인까지 리뷰 루프→병합 대기까지 자동화",
-    "대시보드에서 루프 제어·카드 등록·답변·엔진 실행 로그(3초 갱신)·이력·에픽 진행 모니터링 통합",
-    "plan의 제안 답변 자동 채택, PR 승인까지 리뷰 반복 옵션으로 사람 개입을 병합 시점 하나로 최소화"
+    "plan(질문)→build(개발·PR) 이중 게이트 설계로 사람 개입 지점을 명확히 분리",
+    "카드별 독립 clone 디렉토리와 락 기반 병렬 처리로 동시 실행 안정성 확보",
+    "에픽 본문(설계안)을 하위 태스크 프롬프트에 주입하는 연속 개발 모드 구현",
+    "Jira REST API 우선 탐지→Claude+MCP 폴백 전략으로 비용 절감과 정확도 병행",
+    "중복 PR 방지·실패 재시도·stale pidfile 복구 등 운영 안정성 강화"
   ],
   "challenges": [
     {
-      "problem": "build 중간 실패 후 재시도 시 중복 PR·브랜치 생성으로 카드가 혼란스러워짐",
-      "solution": "build 시작 전 git ls-remote와 gh pr list로 feature 브랜치·PR 존재 여부를 점검해 이미 있으면 SKIP 처리하는 멱등성 가드 추가"
+      "problem": "build 중간 실패 후 재시도 시 동일 이슈에 중복 브랜치·PR이 생성되는 문제",
+      "solution": "build 시작 시 git ls-remote와 gh pr list로 기존 리소스를 점검하고, 존재하면 SKIP 처리하는 멱등성 가드 추가"
     },
     {
-      "problem": "Jira text 검색(text ~ 'claude-work')이 토큰화 오탐으로 무관 카드를 탐지",
-      "solution": "TRIGGER_MODE를 label(기본)·text로 분리하고, label 모드에서는 labels = 'claude-work'로 정확한 탐지, text는 레거시 호환으로만 유지"
+      "problem": "담당자 답변 여부를 Claude 판단에만 의존하면 오탐·누락 가능성",
+      "solution": "탐지 JQL의 claude-answered 라벨 조건(탐지 게이트)과 build 프롬프트의 실제 코멘트 확인(실행 게이트) 이중 게이트로 구현"
     },
     {
-      "problem": "대시보드 백엔드 재시작 시 실제 루프 프로세스 상태를 잃어 start/stop이 꼬임",
-      "solution": "루프 시작 시 loop-*.pid 파일에 PID 기록, status/stop이 pidfile을 단일 진실로 삼아 재시작 후에도 상태 복구, stale pidfile 자동 정리 추가"
+      "problem": "대시보드 재시작 시 실행 중인 루프 프로세스 상태가 불일치",
+      "solution": "pid를 디스크 파일(loop-*.pid)에 기록해 백엔드 재시작 후에도 복구하고, stale pidfile 자동 정리 로직 추가"
     }
   ],
   "diagrams": [
     {
-      "title": "전체 아키텍처",
-      "description": "대시보드(React+Express) → 셸 루프(백그라운드 프로세스) → 카드별 에이전트(Claude Code+git) 흐름을 보여주는 구조도",
+      "title": "전체 아키텍처 및 데이터 흐름",
+      "description": "대시보드·셸 루프·Claude Code·Jira·GitHub 간 상호작용과 데이터 흐름을 보여줍니다.",
       "type": "architecture",
-      "mermaid": "flowchart TD\n    A[\"대시보드 UI<br/>(React)\"] --> B[\"백엔드 API<br/>(Express)\"]\n    B --> C[\"루프 프로세스<br/>(loop-plan/build.sh)\"]\n    C --> D[\"카드 탐지<br/>(detect-cards.sh)\"]\n    D --> E[\"Jira REST API\"]\n    D --> F[\"Claude + MCP<br/>(폴백)\"]\n    C --> G[\"카드별 에이전트<br/>(run-jira-agent.sh)\"]\n    G --> H[\"git clone/checkout<br/>env 복사\"]\n    G --> I[\"Claude Code<br/>(헤드리스)\"]\n    I --> J[\"Jira MCP<br/>(상태/코멘트/라벨)\"]\n    I --> K[\"gh CLI<br/>(PR 생성)\"]\n    B --> L[\"history.jsonl<br/>(처리 이력)\"]\n    B --> M[\"loop-*.log<br/>(실시간 로그)\"]\n    B --> N[\"credentials.json<br/>(토큰 저장)\"]"
+      "mermaid": "flowchart TD\n    A[\"대시보드 UI (React)\"] -->|REST API| B[\"백엔드 (Express)\"]\n    B -->|\"환경변수 주입 + spawn\"| C[\"셸 루프 (loop-plan/build)\"]\n    C -->|\"주기마다 탐지\"| D[\"detect-cards.sh\"]\n    D -->|\"REST API 우선\"| B\n    D -->|\"폴백\"| E[\"Claude + Atlassian MCP\"]\n    C -->|\"카드별 병렬 실행\"| F[\"run-jira-agent.sh\"]\n    F -->|\"git clone/checkout\"| G[\"repos/\"]\n    F -->|\"claude -p 호출\"| E\n    E -->|\"카드 조회·코멘트·라벨\"| H[\"Jira\"]\n    E -->|\"PR 생성·병합\"| I[\"GitHub\"]\n    B -->|\"카드 조회·등록·답변\"| H\n    B -->|\"로그 tail\"| J[\"loop-*.log\"]"
     },
     {
-      "title": "카드 상태 머신",
-      "description": "Jira 카드가 plan(질문)→답변 대기→build(개발·PR)→완료 단계를 거치는 상태 전이도",
+      "title": "카드 상태 머신 (plan → build → 완료)",
+      "description": "Jira 카드가 라벨과 상태를 통해 plan·build 단계를 거쳐 완료되는 흐름입니다.",
       "type": "state",
-      "mermaid": "stateDiagram-v2\n    [*] --> Plan대기: claude-work 라벨<br/>claude-planned 없음\n    Plan대기 --> Plan완료: loop-plan 실행<br/>질문 코멘트+라벨\n    Plan완료 --> 답변대기: claude-planned 있음<br/>claude-answered 없음\n    답변대기 --> Build대기: 담당자 답변<br/>+claude-answered 라벨\n    Build대기 --> 처리중: loop-build 실행<br/>개발+PR 생성\n    처리중 --> 완료: 상태를 DEV COMPLETED로<br/>탐지 제외\n    처리중 --> 실패: MAX_RETRIES 초과<br/>claude-failed 라벨\n    실패 --> [*]: 탐지 제외<br/>수동 확인 필요\n    완료 --> [*]"
+      "mermaid": "stateDiagram-v2\n    [*] --> 신규카드: claude-work 라벨\n    신규카드 --> plan중: loop-plan 탐지\n    plan중 --> plan완료: 질문 코멘트 + claude-planned\n    plan완료 --> 답변대기: 담당자 답변 필요\n    답변대기 --> build중: claude-answered + 실제 답변\n    답변대기 --> 답변대기: 답변 없으면 SKIP\n    build중 --> 완료: 개발·PR·상태 전환\n    build중 --> 실패: 최대 재시도 초과\n    완료 --> [*]\n    실패 --> [*]: claude-failed 라벨"
     },
     {
-      "title": "에픽 연속 개발 흐름",
-      "description": "에픽의 하위 태스크를 생성순으로 자동 처리하는 상태 머신. prepare→plan→adopt→build→approve→await-merge 단계를 반복",
+      "title": "에픽 연속 개발 순차 처리",
+      "description": "에픽의 하위 태스크를 생성순으로 prepare→plan→build→리뷰→병합 대기 단계로 순회합니다.",
       "type": "flow",
-      "mermaid": "flowchart LR\n    A[\"에픽 선택+시작\"] --> B[\"하위 태스크<br/>생성순 조회\"]\n    B --> C[\"prepare<br/>라벨 부여\"]\n    C --> D[\"plan<br/>질문 작성\"]\n    D --> E[\"adopt<br/>제안 답변 채택\"]\n    E --> F[\"build<br/>개발+PR\"]\n    F --> G[\"approve<br/>승인까지 리뷰 루프\"]\n    G --> H[\"await-merge<br/>병합 대기\"]\n    H --> I{\"사람이<br/>PR 병합?\"}\n    I -->|Yes| J{\"다음 태스크<br/>있음?\"}\n    J -->|Yes| C\n    J -->|No| K[\"에픽 완료\"]\n    I -->|No| H\n    D -.실패.-> L[\"중단+알림\"]\n    F -.실패.-> L\n    G -.실패.-> L\n    L --> M[\"이어서 진행\"]\n    M --> D"
+      "mermaid": "flowchart LR\n    A[\"에픽 선택 + repo\"] --> B[\"하위 태스크 N\"]\n    B --> C[\"prepare (라벨 부여)\"]\n    C --> D[\"plan (질문)\"]\n    D --> E[\"adopt (제안 답변 채택)\"]\n    E --> F[\"build (개발·PR)\"]\n    F --> G[\"승인까지 리뷰 루프\"]\n    G --> H[\"approve (승인 확인)\"]\n    H --> I[\"await-merge (병합 대기)\"]\n    I -->|\"사람이 병합\"| J{\"미완료 하위\"}\n    J -->|\"있음\"| B\n    J -->|\"없음\"| K[\"에픽 완료\"]"
     }
   ],
   "keywords": [
     "jira",
     "automation",
     "claude",
+    "mcp",
     "github",
     "pr",
-    "loop",
-    "agent",
-    "mcp",
+    "workflow",
     "dashboard",
-    "devops"
+    "devops",
+    "loop"
   ],
   "links": {
     "repo": "https://github.com/jiyong-jeong/jira_auto_pilot",
@@ -115,11 +114,11 @@
     "stars": 0,
     "forks": 0,
     "watchers": 0,
-    "sizeKb": 1675,
+    "sizeKb": 1758,
     "openIssues": 0,
     "languages": {
-      "JavaScript": 225433,
-      "HTML": 156370,
+      "JavaScript": 251024,
+      "HTML": 165384,
       "Shell": 92030
     },
     "topics": [],
@@ -128,9 +127,9 @@
   },
   "dates": {
     "createdAt": "2026-06-29T00:33:24Z",
-    "updatedAt": "2026-09-02T02:31:23Z",
-    "pushedAt": "2026-09-02T02:31:16Z",
-    "analyzedAt": "2026-09-03T02:55:08.049Z"
+    "updatedAt": "2026-09-04T03:09:00Z",
+    "pushedAt": "2026-09-04T03:08:37Z",
+    "analyzedAt": "2026-09-05T00:01:18.490Z"
   },
   "featured": true
 }
