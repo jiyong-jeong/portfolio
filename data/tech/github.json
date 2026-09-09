@@ -1,0 +1,47 @@
+{
+  "slug": "github",
+  "name": "GitHub",
+  "category": "tool",
+  "tagline": "코드 버전 관리와 협업을 위한 Git 기반 클라우드 플랫폼",
+  "definition": "GitHub은 Git 저장소를 호스팅하고 협업 기능을 제공하는 웹 기반 플랫폼입니다. 개발자들이 코드를 공유하고, 변경 이력을 추적하며, Pull Request를 통해 코드 리뷰와 병합을 수행할 수 있도록 설계되었습니다. 오픈소스 프로젝트의 중심지이자, 팀 단위 소프트웨어 개발의 표준 도구로 자리잡았습니다.",
+  "concepts": [
+    {
+      "term": "Repository",
+      "description": "프로젝트의 모든 파일과 변경 이력을 담는 저장소입니다. 공개(public) 또는 비공개(private)로 설정할 수 있습니다."
+    },
+    {
+      "term": "Pull Request",
+      "description": "브랜치의 변경 사항을 다른 브랜치로 병합하기 전에 리뷰와 논의를 거치기 위한 요청입니다. 코드 리뷰와 협업의 핵심 도구입니다."
+    },
+    {
+      "term": "Issue",
+      "description": "버그, 기능 요청, 작업 항목 등을 추적하고 논의하기 위한 티켓 시스템입니다. 레이블, 마일스톤, 담당자 지정 등으로 관리할 수 있습니다."
+    },
+    {
+      "term": "Actions",
+      "description": "저장소 내에서 CI/CD 파이프라인, 자동화 워크플로우를 정의하고 실행할 수 있는 기능입니다. 코드 푸시, PR 생성 등 이벤트를 트리거로 동작합니다."
+    },
+    {
+      "term": "Fork",
+      "description": "다른 사람의 저장소를 자신의 계정으로 복사하는 기능입니다. 오픈소스 기여 시 원본을 건드리지 않고 작업할 수 있게 합니다."
+    }
+  ],
+  "whenToUse": [
+    "팀에서 코드 변경 이력을 체계적으로 관리하고 협업해야 할 때",
+    "Pull Request 기반의 코드 리뷰 프로세스를 구축하고 싶을 때",
+    "오픈소스 프로젝트를 공개하거나 커뮤니티 기여를 받고 싶을 때",
+    "CI/CD 파이프라인과 이슈 트래킹을 코드 저장소와 통합하고 싶을 때"
+  ],
+  "example": {
+    "title": "저장소 생성부터 Pull Request까지 기본 흐름",
+    "language": "bash",
+    "code": "# 로컬에서 Git 저장소 초기화\ngit init my-project\ncd my-project\n\n# 파일 작성 후 첫 커밋\necho \"# My Project\" > README.md\ngit add README.md\ngit commit -m \"Initial commit\"\n\n# GitHub에 생성한 원격 저장소와 연결\ngit remote add origin https://github.com/username/my-project.git\ngit push -u origin main\n\n# 새 기능 개발을 위한 브랜치 생성 및 푸시\ngit checkout -b feature/new-feature\n# ... 코드 작성 및 커밋 ...\ngit push origin feature/new-feature\n\n# 웹에서 Pull Request 생성하여 리뷰 요청\n# Merge 후 로컬에서 최신 main 가져오기\ngit checkout main\ngit pull origin main",
+    "description": "로컬 Git 저장소를 GitHub에 연결하고, 브랜치를 통해 기능을 개발한 뒤 Pull Request로 병합하는 전형적인 워크플로우입니다."
+  },
+  "pitfalls": [
+    "public 저장소에 API 키, 비밀번호 등 민감 정보를 커밋하면 전체 이력에 남아 삭제가 어렵습니다",
+    "Pull Request 없이 main 브랜치에 직접 푸시하면 리뷰 과정을 거치지 않아 협업 이점을 잃습니다",
+    "Fork한 저장소는 원본(upstream)과 동기화되지 않으므로 주기적으로 최신 변경사항을 가져와야 합니다"
+  ],
+  "generatedAt": "2026-09-09T00:02:21.074Z"
+}
