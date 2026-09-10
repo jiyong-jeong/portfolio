@@ -1,0 +1,47 @@
+{
+  "slug": "slack-api",
+  "name": "Slack API",
+  "category": "tool",
+  "tagline": "Slack 워크스페이스와 통합하여 메시지·이벤트·인터랙션을 처리하는 HTTP API",
+  "definition": "Slack API는 Slack 워크스페이스에 봇을 만들거나 외부 시스템과 연동할 수 있도록 제공되는 RESTful API와 이벤트 기반 인터페이스입니다. 메시지 전송, 채널 관리, 사용자 정보 조회뿐 아니라 버튼 클릭이나 모달 입력 같은 사용자 인터랙션을 받아 자동화 워크플로우를 구축할 수 있습니다. CI/CD 알림, 모니터링 경고, 팀 내 승인 프로세스 등 비동기 협업이 필요한 곳에서 주로 사용됩니다.",
+  "concepts": [
+    {
+      "term": "Incoming Webhook",
+      "description": "외부 시스템에서 Slack 채널로 메시지를 보낼 수 있는 단방향 URL 엔드포인트입니다. 인증 토큰 없이 간단히 POST 요청만으로 알림을 전송할 수 있습니다."
+    },
+    {
+      "term": "Bot Token",
+      "description": "Slack App이 워크스페이스에 설치될 때 발급되는 인증 토큰으로, API 호출 시 Authorization 헤더에 포함하여 봇 권한으로 작업을 수행합니다."
+    },
+    {
+      "term": "Socket Mode",
+      "description": "WebSocket 연결을 통해 Slack 이벤트를 실시간으로 수신하는 방식으로, 공개 인바운드 URL 없이도 버튼 클릭이나 슬래시 커맨드를 처리할 수 있습니다."
+    },
+    {
+      "term": "Block Kit",
+      "description": "메시지 레이아웃을 구성하는 JSON 기반 UI 프레임워크로, 버튼·선택 메뉴·입력 필드 등 인터랙티브 요소를 조합해 리치한 메시지를 만듭니다."
+    },
+    {
+      "term": "Interactive Component",
+      "description": "버튼, 선택 메뉴, 모달 등 사용자가 클릭하거나 입력할 수 있는 UI 요소로, 클릭 시 지정된 엔드포인트로 payload가 전송됩니다."
+    }
+  ],
+  "whenToUse": [
+    "CI/CD 파이프라인이나 모니터링 시스템에서 팀 채널로 알림을 보낼 때",
+    "Slack 내에서 버튼 클릭만으로 배포·승인·재시작 같은 작업을 트리거하고 싶을 때",
+    "외부 도구(Jira, GitHub 등)의 이벤트를 Slack으로 연동하여 팀 협업을 중앙화할 때",
+    "슬래시 커맨드나 모달 폼을 통해 팀원이 직접 데이터를 입력·조회하는 내부 도구를 만들 때"
+  ],
+  "example": {
+    "title": "Incoming Webhook으로 메시지 전송",
+    "language": "bash",
+    "code": "curl -X POST https://hooks.slack.com/services/T00000000/B00000000/XXXXXXXXXXXXXXXXXXXX \\\n  -H 'Content-Type: application/json' \\\n  -d '{\n    \"text\": \"빌드가 완료되었습니다.\",\n    \"blocks\": [\n      {\n        \"type\": \"section\",\n        \"text\": {\n          \"type\": \"mrkdwn\",\n          \"text\": \"*빌드 #42* 성공 :white_check_mark:\"\n        }\n      },\n      {\n        \"type\": \"actions\",\n        \"elements\": [\n          {\n            \"type\": \"button\",\n            \"text\": {\"type\": \"plain_text\", \"text\": \"배포하기\"},\n            \"action_id\": \"deploy_button\"\n          }\n        ]\n      }\n    ]\n  }'",
+    "description": "Webhook URL로 JSON을 POST하여 채널에 텍스트와 버튼이 포함된 메시지를 전송합니다. 버튼 클릭 시 action_id가 포함된 payload가 앱 서버로 전달됩니다."
+  },
+  "pitfalls": [
+    "Incoming Webhook은 메시지 전송만 가능하고, 버튼 클릭 이벤트를 받으려면 별도로 Request URL이나 Socket Mode 설정이 필요합니다.",
+    "Bot Token 권한(scope)을 앱 설치 전에 미리 지정해야 하며, 추가 권한이 필요하면 재설치를 요구합니다.",
+    "Interactive Component의 응답은 3초 이내에 보내야 하므로, 긴 작업은 즉시 acknowledge 후 별도 메시지로 결과를 업데이트해야 합니다."
+  ],
+  "generatedAt": "2026-09-10T00:02:45.549Z"
+}
