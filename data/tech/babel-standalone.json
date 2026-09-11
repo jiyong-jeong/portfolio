@@ -1,0 +1,43 @@
+{
+  "slug": "babel-standalone",
+  "name": "Babel Standalone",
+  "category": "frontend",
+  "tagline": "빌드 과정 없이 브라우저에서 바로 JSX와 최신 JavaScript를 실행하는 컴파일러",
+  "definition": "Babel Standalone은 Babel 컴파일러를 브라우저 환경에서 직접 실행할 수 있도록 패키징한 라이브러리입니다. 일반적으로 빌드 도구를 통해 미리 컴파일해야 하는 JSX나 최신 JavaScript 문법을 런타임에 변환하여 바로 실행할 수 있게 합니다. 프로토타이핑, 교육용 데모, 또는 빌드 설정 없이 빠르게 실험하고 싶을 때 유용하지만, 프로덕션 환경에서는 성능 문제로 권장되지 않습니다.",
+  "concepts": [
+    {
+      "term": "Runtime Compilation",
+      "description": "브라우저가 페이지를 로드한 후 JavaScript 코드를 실시간으로 변환하는 방식입니다. 빌드 단계가 없어 즉시 결과를 확인할 수 있지만, 매번 변환 비용이 발생합니다."
+    },
+    {
+      "term": "JSX Transform",
+      "description": "React의 JSX 문법을 일반 JavaScript 함수 호출로 변환하는 과정입니다. Babel Standalone은 이 변환을 브라우저에서 직접 수행합니다."
+    },
+    {
+      "term": "script type=\"text/babel\"",
+      "description": "Babel Standalone이 처리할 스크립트 블록을 표시하는 HTML 속성입니다. 이 타입으로 지정된 스크립트는 브라우저가 무시하고, Babel이 컴파일하여 실행합니다."
+    },
+    {
+      "term": "Preset",
+      "description": "여러 Babel 플러그인을 묶어 놓은 설정 세트입니다. Standalone에서는 react, env 등의 프리셋을 지정하여 어떤 문법을 변환할지 결정합니다."
+    }
+  ],
+  "whenToUse": [
+    "빌드 설정 없이 빠르게 React 프로토타입을 만들 때",
+    "학습용 데모나 코드 플레이그라운드를 구현할 때",
+    "동적으로 생성된 코드를 브라우저에서 즉시 실행해야 할 때",
+    "간단한 실험이나 개념 검증이 필요한 경우"
+  ],
+  "example": {
+    "title": "브라우저에서 JSX 실행하기",
+    "language": "text",
+    "code": "<!DOCTYPE html>\n<html>\n<head>\n  <script src=\"https://unpkg.com/@babel/standalone/babel.min.js\"></script>\n  <script crossorigin src=\"https://unpkg.com/react@18/umd/react.development.js\"></script>\n  <script crossorigin src=\"https://unpkg.com/react-dom@18/umd/react-dom.development.js\"></script>\n</head>\n<body>\n  <div id=\"root\"></div>\n  \n  <script type=\"text/babel\">\n    function App() {\n      return <h1>Hello, Babel Standalone!</h1>;\n    }\n    \n    ReactDOM.render(<App />, document.getElementById('root'));\n  </script>\n</body>\n</html>",
+    "description": "Babel Standalone을 CDN으로 로드하고, type=\"text/babel\" 스크립트 안에서 JSX를 바로 사용하는 가장 기본적인 예시입니다."
+  },
+  "pitfalls": [
+    "컴파일이 런타임에 일어나므로 프로덕션에서는 성능 저하가 발생합니다",
+    "대용량 코드를 변환하면 브라우저가 느려지거나 멈출 수 있습니다",
+    "일반 script 태그가 아닌 text/babel 타입을 지정해야 작동합니다"
+  ],
+  "generatedAt": "2026-09-11T00:02:38.979Z"
+}

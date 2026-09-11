@@ -1,0 +1,47 @@
+{
+  "slug": "claude-ai",
+  "name": "Claude AI",
+  "category": "tool",
+  "tagline": "Anthropic이 개발한 대화형 AI 어시스턴트 및 LLM API 플랫폼",
+  "definition": "Claude는 Anthropic이 만든 대규모 언어 모델(LLM)로, 자연어 대화를 통해 코드 작성, 문서 분석, 추론, 창작 등 다양한 작업을 수행할 수 있습니다. Constitutional AI 기법을 기반으로 안전하고 유용한 응답을 생성하도록 훈련되었으며, API를 통해 프로그래밍 방식으로 통합할 수 있습니다. 긴 컨텍스트 윈도우와 도구 사용(tool use) 기능을 지원하여 복잡한 워크플로우 자동화에 적합합니다.",
+  "concepts": [
+    {
+      "term": "Prompt",
+      "description": "사용자가 Claude에게 보내는 입력 텍스트로, 질문, 지시사항, 맥락 정보 등을 포함합니다. 프롬프트 설계 방식에 따라 응답 품질이 크게 달라집니다."
+    },
+    {
+      "term": "Context Window",
+      "description": "Claude가 한 번에 처리할 수 있는 입력과 출력의 최대 토큰 길이입니다. 긴 문서나 대화 히스토리를 유지하며 작업할 수 있는 범위를 결정합니다."
+    },
+    {
+      "term": "Tool Use",
+      "description": "Claude가 외부 함수나 API를 호출할 수 있도록 도구를 정의하고, 필요시 적절한 도구를 선택해 파라미터와 함께 호출을 요청하는 기능입니다."
+    },
+    {
+      "term": "System Prompt",
+      "description": "대화 시작 전에 Claude의 역할, 행동 지침, 제약사항을 설정하는 특수한 프롬프트입니다. 일관된 페르소나나 출력 형식을 유지하는 데 사용됩니다."
+    },
+    {
+      "term": "Streaming",
+      "description": "Claude의 응답을 완료될 때까지 기다리지 않고, 생성되는 텍스트를 실시간으로 전송받는 방식입니다. 사용자 경험 향상에 유용합니다."
+    }
+  ],
+  "whenToUse": [
+    "반복적인 코드 작성, 문서 리뷰, 데이터 분석 등 개발 워크플로우를 자동화하고 싶을 때",
+    "긴 문서나 코드베이스를 이해하고 요약·검색·질의응답 기능을 구현해야 할 때",
+    "자연어 명령을 받아 여러 도구(API, DB, 외부 서비스)를 조합해 복합 작업을 수행하는 에이전트를 만들 때",
+    "안전성과 신뢰성이 중요한 업무용 AI 어시스턴트가 필요할 때"
+  ],
+  "example": {
+    "title": "API를 통한 기본 대화 요청",
+    "language": "python",
+    "code": "import anthropic\n\nclient = anthropic.Anthropic(api_key=\"your-api-key\")\n\nmessage = client.messages.create(\n    model=\"claude-3-5-sonnet-20241022\",\n    max_tokens=1024,\n    messages=[\n        {\"role\": \"user\", \"content\": \"Python으로 피보나치 함수를 작성해줘\"}\n    ]\n)\n\nprint(message.content[0].text)",
+    "description": "Claude API를 호출해 사용자 메시지를 전달하고, 생성된 텍스트 응답을 받아오는 가장 기본적인 패턴입니다."
+  },
+  "pitfalls": [
+    "프롬프트에 맥락이나 예시를 충분히 제공하지 않으면 모호하거나 일반적인 답변을 받을 수 있습니다",
+    "Tool Use 시 함수 시그니처와 설명을 명확히 정의하지 않으면 Claude가 잘못된 도구를 선택하거나 파라미터를 누락할 수 있습니다",
+    "컨텍스트 윈도우를 초과하는 입력을 보내면 오류가 발생하므로, 긴 문서는 청킹이나 요약 전략이 필요합니다"
+  ],
+  "generatedAt": "2026-09-11T00:02:43.614Z"
+}

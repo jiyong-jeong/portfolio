@@ -1,0 +1,47 @@
+{
+  "slug": "jira-rest-api",
+  "name": "Jira REST API",
+  "category": "backend",
+  "tagline": "Atlassian Jira의 이슈, 프로젝트, 워크플로우를 프로그래밍 방식으로 조작하는 HTTP API",
+  "definition": "Jira REST API는 Jira 서버 또는 클라우드 인스턴스에 HTTP 요청을 보내 이슈 생성·조회·수정, 코멘트 관리, 트랜지션 실행 등을 자동화할 수 있게 하는 인터페이스입니다. 웹 UI를 거치지 않고도 CI/CD 파이프라인, 챗봇, 대시보드 등 외부 시스템과 Jira를 연동할 수 있어 반복 작업을 줄이고 워크플로우를 통합할 수 있습니다. Basic Auth, OAuth, Personal Access Token 등 다양한 인증 방식을 지원하며, JSON 형식으로 요청과 응답을 주고받습니다.",
+  "concepts": [
+    {
+      "term": "Issue",
+      "description": "Jira에서 관리하는 작업 항목의 기본 단위. 스토리, 버그, 태스크 등 다양한 타입이 있으며, REST API로 생성·조회·수정·삭제할 수 있습니다."
+    },
+    {
+      "term": "JQL (Jira Query Language)",
+      "description": "이슈를 검색할 때 사용하는 SQL과 유사한 쿼리 언어. REST API의 /search 엔드포인트에서 복잡한 필터 조건을 표현할 수 있습니다."
+    },
+    {
+      "term": "Transition",
+      "description": "이슈의 상태를 변경하는 워크플로우 동작. 예를 들어 'To Do'에서 'In Progress'로 이동하려면 해당 transition ID를 찾아 POST 요청으로 실행해야 합니다."
+    },
+    {
+      "term": "Field",
+      "description": "이슈가 가진 속성(summary, description, assignee, labels 등). 커스텀 필드는 프로젝트마다 다르며, API 응답에서는 customfield_12345 같은 ID로 표현됩니다."
+    },
+    {
+      "term": "Pagination",
+      "description": "대량의 이슈나 코멘트를 조회할 때 결과를 나눠 받기 위한 메커니즘. startAt과 maxResults 파라미터로 오프셋과 페이지 크기를 제어합니다."
+    }
+  ],
+  "whenToUse": [
+    "CI/CD 파이프라인에서 배포 완료 시 Jira 이슈를 자동으로 'Done' 상태로 전환하고 싶을 때",
+    "슬랙 봇이나 사내 대시보드에서 Jira 이슈 목록을 실시간으로 조회·표시해야 할 때",
+    "반복적인 이슈 생성 작업(예: 주간 스프린트 세팅)을 스크립트로 자동화하고 싶을 때",
+    "Jira 데이터를 다른 시스템(ERP, 모니터링 도구)과 동기화해야 할 때"
+  ],
+  "example": {
+    "title": "특정 프로젝트의 미완료 이슈 목록 조회",
+    "language": "bash",
+    "code": "# Basic Auth 사용 (email:api_token을 base64 인코딩)\ncurl -X GET \\\n  'https://your-domain.atlassian.net/rest/api/3/search?jql=project=PROJ+AND+status!=Done' \\\n  -H 'Authorization: Basic <base64_credentials>' \\\n  -H 'Content-Type: application/json'\n\n# 응답 예시 (JSON)\n# {\n#   \"total\": 42,\n#   \"issues\": [\n#     {\n#       \"key\": \"PROJ-123\",\n#       \"fields\": {\n#         \"summary\": \"로그인 버그 수정\",\n#         \"status\": { \"name\": \"In Progress\" }\n#       }\n#     }\n#   ]\n# }",
+    "description": "JQL 쿼리로 프로젝트 키가 PROJ이고 상태가 Done이 아닌 이슈를 검색합니다. 응답에는 이슈 키, 제목, 상태 등이 JSON 배열로 담겨 옵니다."
+  },
+  "pitfalls": [
+    "커스텀 필드 이름은 API에서 customfield_xxxxx 형태 ID로만 접근 가능. 먼저 /field 엔드포인트로 매핑을 확인해야 함",
+    "Transition은 현재 상태에 따라 허용 목록이 다름. /transitions 엔드포인트로 사용 가능한 ID를 먼저 조회해야 함",
+    "Jira Cloud와 Server/Data Center는 API 버전과 일부 엔드포인트가 다르므로 배포 환경을 확인해야 함"
+  ],
+  "generatedAt": "2026-09-11T00:02:47.400Z"
+}
