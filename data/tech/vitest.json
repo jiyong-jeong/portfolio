@@ -1,0 +1,47 @@
+{
+  "slug": "vitest",
+  "name": "Vitest",
+  "category": "testing",
+  "tagline": "Vite 기반 프로젝트에서 빠르고 간단하게 단위·컴포넌트 테스트를 작성하는 테스트 프레임워크",
+  "definition": "Vitest는 Vite의 빌드 파이프라인과 설정을 그대로 공유하는 테스트 러너다. Jest와 유사한 API(describe, it, expect)를 제공해 기존 테스트 자산을 옮기기 쉬우면서도, Vite의 빠른 트랜스폼과 HMR 기반 워치 모드를 활용해 실행 속도를 크게 개선했다. TypeScript와 ESM을 별도 설정 없이 지원하고, Vite 설정 파일을 그대로 재사용할 수 있어 프런트엔드 프로젝트에서 별도의 테스트 전용 빌드 구성을 만들 필요가 없다는 문제를 해결한다.",
+  "concepts": [
+    {
+      "term": "Test Runner",
+      "description": "테스트 파일을 찾아 실행하고 결과를 집계하는 핵심 엔진으로, Vite의 모듈 변환 파이프라인 위에서 동작한다."
+    },
+    {
+      "term": "Watch Mode",
+      "description": "파일 변경을 감지해 영향받는 테스트만 즉시 재실행하는 모드로, 개발 중 빠른 피드백 루프를 제공한다."
+    },
+    {
+      "term": "Mocking",
+      "description": "함수·모듈·타이머 등을 가짜 구현으로 대체해 외부 의존성 없이 로직을 검증하는 기능이다."
+    },
+    {
+      "term": "Coverage",
+      "description": "테스트가 실행한 코드 범위를 측정해 리포트로 보여주는 기능으로, 검증되지 않은 코드 영역을 파악하는 데 쓰인다."
+    },
+    {
+      "term": "Test Environment",
+      "description": "테스트가 실행되는 런타임 컨텍스트로, Node 환경 또는 DOM을 흉내 내는 환경(jsdom 등)을 선택해 컴포넌트 테스트에 활용한다."
+    }
+  ],
+  "whenToUse": [
+    "Vite로 빌드하는 프로젝트라서 별도 트랜스파일 설정 없이 테스트 환경을 맞추고 싶을 때",
+    "훅, 유틸 함수 같은 순수 로직 단위 테스트를 빠르게 반복 실행하고 싶을 때",
+    "컴포넌트 렌더링과 상호작용을 검증하며 커버리지 지표를 함께 관리하고 싶을 때",
+    "Jest와 유사한 문법을 유지하면서 실행 속도를 개선하고 싶을 때"
+  ],
+  "example": {
+    "title": "간단한 유틸 함수 테스트",
+    "language": "typescript",
+    "code": "import { describe, it, expect } from 'vitest'\nimport { add } from './math'\n\ndescribe('add', () => {\n  it('두 수를 더한다', () => {\n    expect(add(1, 2)).toBe(3)\n  })\n\n  it('음수도 처리한다', () => {\n    expect(add(-1, 1)).toBe(0)\n  })\n})",
+    "description": "add 함수의 정상 동작과 경계 케이스를 검증하는 기본적인 단위 테스트다."
+  },
+  "pitfalls": [
+    "DOM을 다루는 컴포넌트 테스트인데 test environment를 node로 둔 채 실행해 오류가 나는 경우가 많다",
+    "Vite 설정과 테스트 설정이 분리되어 있으면 alias나 플러그인이 테스트에서 적용되지 않을 수 있다",
+    "모듈 mocking 시점과 import 순서를 착각해 mock이 적용되지 않는 문제가 흔하다"
+  ],
+  "generatedAt": "2026-09-22T01:58:46.364Z"
+}

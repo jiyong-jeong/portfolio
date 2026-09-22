@@ -1,0 +1,142 @@
+{
+  "slug": "kyb-root-frontend",
+  "repo": "kyb-root-frontend",
+  "title": "eKYB 고객사 관리 백오피스 프론트엔드",
+  "summary": "Figma 시안에서 역방향으로 디자인 시스템을 구축한 eKYB 관리자용 고객사 관리 SPA",
+  "description": "기업 실명확인(eKYB) 서비스의 운영진용 백오피스로, 고객사 등록·설정·심사 이력을 관리하는 화면을 제공한다. Figma에는 컴포넌트화되지 않은 페이지 시안만 존재하는 상황에서, 코드 쪽에서 먼저 토큰(globals.css)·UI 원형(shadcn)·도메인 컴포넌트·페이지 4계층을 추출하고 이를 문서화해 나중에 Figma와 정합성을 맞추는 역방향 디자인 시스템 전략을 채택했다. API 호출은 lib/api 레이어로, 화면 표시값↔백엔드 설정 스키마 변환은 lib/config 레이어로 분리해 컴포넌트는 렌더링에만 집중하도록 했다. 배포는 단일 Docker 이미지를 nginx가 정적 파일 서빙과 `/v2` 백엔드 리버스 프록시를 겸하도록 구성해, 재빌드 없이 dev/qa/prod 환경에 BACKEND_URL 환경변수만 바꿔 승격 배포할 수 있게 했다. Vitest 단위/컴포넌트 테스트와 Playwright E2E를 이원화하고, 컨테이너 배포본 자체를 대상으로 폰트 렌더링을 검증하는 테스트까지 갖췄다.",
+  "category": "프론트엔드",
+  "role": "프로젝트 구조 설계부터 디자인 시스템 추출 전략 수립, 페이지·도메인 컴포넌트 구현, Docker 배포 파이프라인 구성까지 전반을 담당.",
+  "techStack": [
+    {
+      "name": "TypeScript",
+      "category": "language",
+      "usage": "전체 소스코드의 타입 안정성 확보(strict 모드)"
+    },
+    {
+      "name": "React",
+      "category": "frontend",
+      "usage": "UI 렌더링 및 컴포넌트 구조의 기반"
+    },
+    {
+      "name": "Vite",
+      "category": "tool",
+      "usage": "개발 서버 및 프로덕션 번들링"
+    },
+    {
+      "name": "React Router",
+      "category": "frontend",
+      "usage": "SPA 라우팅 및 이탈 확인(useBlocker)을 위한 데이터 라우터 구성"
+    },
+    {
+      "name": "Tailwind CSS",
+      "category": "frontend",
+      "usage": "디자인 토큰 기반 유틸리티 스타일링"
+    },
+    {
+      "name": "shadcn",
+      "category": "frontend",
+      "usage": "Base UI 기반 범용 UI 원형 컴포넌트(button·dialog·table 등) 구성"
+    },
+    {
+      "name": "Vitest",
+      "category": "testing",
+      "usage": "lib·components 단위 및 컴포넌트 테스트"
+    },
+    {
+      "name": "Playwright",
+      "category": "testing",
+      "usage": "페이지별 happy path E2E 및 컨테이너 배포본 검증"
+    },
+    {
+      "name": "Docker",
+      "category": "devops",
+      "usage": "멀티스테이지 빌드로 정적 산출물과 nginx 런타임 이미지 구성"
+    },
+    {
+      "name": "Nginx",
+      "category": "infra",
+      "usage": "정적 파일 서빙, /v2 API 리버스 프록시, SPA 폴백 라우팅"
+    },
+    {
+      "name": "pnpm",
+      "category": "tool",
+      "usage": "패키지 매니저 및 워크스페이스 관리"
+    }
+  ],
+  "highlights": [
+    "Figma 시안만 있는 상태에서 코드가 먼저 토큰→UI→도메인→페이지 4계층을 추출하는 역방향 디자인 시스템 전략",
+    "이미지 재빌드 없이 BACKEND_URL 환경변수만으로 dev/qa/prod를 분기하는 단일 Docker 이미지 배포 구조",
+    "nginx entrypoint에서 런타임에 config.js를 생성해 브라우저가 API 베이스 URL을 동적으로 읽도록 구성",
+    "컨테이너로 실제 배포된 산출물을 대상으로 폰트 렌더링·서브셋 로딩을 검증하는 E2E 테스트 보유",
+    "Vitest(단위)와 Playwright(E2E)를 파일 컨벤션으로 명확히 분리해 러너 충돌 없이 이원 운용"
+  ],
+  "challenges": [
+    {
+      "problem": "Figma 시안에 컴포넌트/variants 정의가 없어 디자인 일관성을 코드에서 먼저 담보해야 했다.",
+      "solution": "토큰 추출 → 반복 패턴 식별 → 컴포넌트 작성 → (추후) Figma 정합성 맞추기의 4단계 워크플로를 정의하고, 같은 UI가 세 번째 등장하면 무조건 추출하는 규칙을 적용했다."
+    },
+    {
+      "problem": "API 베이스 URL을 빌드에 박으면 환경마다 재빌드가 필요해 dev에서 검증한 산출물을 그대로 prod로 승격할 수 없었다.",
+      "solution": "빌드 시점에는 URL을 비워두고, nginx가 런타임 BACKEND_URL로 /v2를 프록시하거나 config.js를 생성해 브라우저가 직접 백엔드를 호출하도록 분리했다."
+    },
+    {
+      "problem": "shadcn/Tailwind preflight에 암묵적으로 의존하는 폼 컨트롤 폰트 상속이 설정 변경 한 줄로 조용히 깨질 수 있었다.",
+      "solution": "lib/font-policy.test.ts로 소스 내 font-family 하드코딩 경로를 네 가지로 규정해 차단하고, 컨테이너 배포본을 대상으로 하는 Playwright font.spec.ts로 실제 렌더링을 고정했다."
+    }
+  ],
+  "diagrams": [
+    {
+      "title": "컴포넌트 계층 아키텍처",
+      "description": "디자인 토큰부터 페이지까지 값과 책임이 어떻게 4계층을 타고 흐르는지 보여준다.",
+      "type": "architecture",
+      "mermaid": "flowchart TD\n  A[\"Figma 시안\"] --> B[\"디자인 토큰 globals.css\"]\n  B --> C[\"UI 원형 components/ui\"]\n  C --> D[\"도메인 컴포넌트 components/domain\"]\n  D --> E[\"페이지 src/pages\"]\n  F[\"API 클라이언트 lib/api\"] --> E\n  G[\"설정 변환 lib/config\"] --> D\n  H[\"입력 검증 lib/validation\"] --> D"
+    },
+    {
+      "title": "Docker 배포 및 API 프록시 흐름",
+      "description": "단일 이미지가 nginx를 통해 정적 파일을 서빙하고 BACKEND_URL로 API를 프록시하는 런타임 구조를 보여준다.",
+      "type": "deployment",
+      "mermaid": "flowchart LR\n  U[\"브라우저\"] --> N[\"nginx 컨테이너\"]\n  N -->|\"정적 자산 서빙\"| S[\"dist 빌드 산출물\"]\n  N -->|\"/v2/* 리버스 프록시\"| BE[\"백엔드 API\"]\n  ENV[\"환경변수 BACKEND_URL\"] --> N\n  EP[\"docker-entrypoint config.js 생성\"] --> N"
+    }
+  ],
+  "keywords": [
+    "react",
+    "typescript",
+    "vite",
+    "tailwindcss",
+    "shadcn",
+    "playwright",
+    "vitest",
+    "docker",
+    "nginx",
+    "design-system"
+  ],
+  "links": {
+    "repo": "https://github.com/jiyong-jeong/kyb-root-frontend",
+    "homepage": null
+  },
+  "metrics": {
+    "stars": 0,
+    "forks": 0,
+    "watchers": 0,
+    "sizeKb": 0,
+    "openIssues": 0,
+    "languages": {
+      "TypeScript": 651023,
+      "Shell": 10354,
+      "CSS": 7028,
+      "JavaScript": 1947,
+      "Dockerfile": 1877,
+      "HTML": 657
+    },
+    "topics": [],
+    "primaryLanguage": "TypeScript",
+    "license": null
+  },
+  "dates": {
+    "createdAt": "2026-09-22T01:53:25Z",
+    "updatedAt": "2026-09-22T01:54:14Z",
+    "pushedAt": "2026-09-22T01:54:09Z",
+    "analyzedAt": "2026-09-22T01:56:23.041Z"
+  },
+  "featured": true
+}

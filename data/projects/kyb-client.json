@@ -1,127 +1,119 @@
 {
   "slug": "kyb-client",
   "repo": "kyb-client",
-  "title": "금융권 자금세탁방지(AML) KYB 인증 플랫폼 프론트엔드",
-  "summary": "법인 고객 신원확인(KYB)과 본인인증(eKYC)을 통합한 금융규제 준수 솔루션의 React 기반 웹 클라이언트",
-  "description": "자금세탁방지 규제(RegTech/AML)를 준수하기 위한 법인 고객 신원확인 시스템의 프론트엔드입니다. 가입자, 심사자, 관리자 3개 역할별 라우팅과 다단계 KYB 절차(법인정보 입력 → 실소유자 구조도 작성 → 임직원 등록 → eKYC 본인인증 → 증빙 제출)를 지원합니다. useb eKYC 연동을 공식 표준 흐름(iframe + postMessage)으로 마이그레이션하여 환경 간 정합성 문제를 해결했으며, TypeScript 기반 API 레이어와 React Query를 통해 타입 안전성을 확보했습니다.",
+  "title": "법인 신원확인(KYB) AML 컴플라이언스 웹",
+  "summary": "신청자·심사자·관리자 세 역할을 지원하는 자금세탁방지(AML) 법인 실명확인(KYB) 웹 플랫폼의 프론트엔드입니다.",
+  "description": "KYB(Know Your Business)는 자금세탁방지(AML) 규제 준수를 위해 법인·개인사업자의 신원을 확인하는 RegTech 제품이다. 신청자(Applicant)는 온보딩→약관동의→법인정보→상세정보→실소유자→임원→eKYC→완료로 이어지는 다단계 절차를 거쳐 접수하고, 심사자(Reviewer)는 대기/진행/완료 심사 큐에서 건을 처리하며, 관리자(Admin)는 심사자 계정과 스크리닝을 관리한다. namespace 기반 타입 세이프 API 레이어와 React Query, usebeauty 커스텀 UI 라이브러리 위에서 계좌 실명조회·법인등기 조회·eKYC 연동 등 외부 검증 API와 얽힌 복잡한 폼 플로우를 다룬다. CRA에서 Vite로 빌드 도구를 마이그레이션했고, Playwright E2E 테스트와 nginx 기반 Docker 런타임 환경변수 주입으로 배포 파이프라인을 구성했다.",
   "category": "프론트엔드",
-  "role": "법인 KYB 절차 UI 구현, eKYC iframe 연동 표준화, Docker 기반 런타임 환경설정 주입 아키텍처 설계 및 배포 파이프라인 구축",
+  "role": "프론트엔드 아키텍처(라우팅·API 레이어·상태관리)를 설계하고, CRA→Vite 마이그레이션, 패키지 매니저 전환, Docker 배포 파이프라인 및 E2E 테스트 환경 구축을 주도했다. 계좌 실명확인, 게스트 접수, eKYC 연동 표준화 등 도메인 핵심 기능의 설계와 구현을 담당했다.",
   "techStack": [
     {
       "name": "TypeScript",
       "category": "language",
-      "usage": "전체 소스코드 타입 안전성 확보 및 API 인터페이스 정의"
+      "usage": "전체 코드베이스의 타입 안정성과 API 요청/응답 타입 정의에 사용"
     },
     {
       "name": "React",
       "category": "frontend",
-      "usage": "UI 컴포넌트 라이브러리 및 라우팅 기반 SPA 구현"
+      "usage": "신청자/심사자/관리자 세 역할의 SPA UI 구축"
     },
     {
-      "name": "Vite",
-      "category": "tool",
-      "usage": "개발 서버 및 프로덕션 빌드 도구"
-    },
-    {
-      "name": "React Query",
+      "name": "React Router",
       "category": "frontend",
-      "usage": "서버 상태 캐싱 및 GET/POST/PUT 요청 추상화"
+      "usage": "역할별(applicant/reviewer/admin) 라우팅과 인증 가드(HOC) 구성"
     },
     {
       "name": "Redux Toolkit",
       "category": "frontend",
-      "usage": "글로벌 상태 관리(에러, 심사자 목록, 공지사항)"
+      "usage": "에러·마이페이지·심사자 목록 등 전역 상태 관리"
+    },
+    {
+      "name": "TanStack Query",
+      "category": "frontend",
+      "usage": "GET/POST/PUT 커스텀 훅으로 서버 상태 캐싱 및 동기화"
     },
     {
       "name": "React Hook Form",
       "category": "frontend",
-      "usage": "폼 상태 관리 및 유효성 검증"
-    },
-    {
-      "name": "SCSS",
-      "category": "frontend",
-      "usage": "컴포넌트 스타일링 및 유틸리티 믹스인"
+      "usage": "다단계 신청 폼의 입력 검증과 상태 관리"
     },
     {
       "name": "styled-components",
       "category": "frontend",
-      "usage": "usebeauty 커스텀 컴포넌트 라이브러리 스타일링"
+      "usage": "usebeauty 커스텀 UI 컴포넌트 라이브러리 스타일링"
     },
     {
-      "name": "Docker",
-      "category": "infra",
-      "usage": "환경별 런타임 config.js 주입 및 nginx 기반 멀티스테이지 빌드"
+      "name": "SCSS",
+      "category": "frontend",
+      "usage": "전역 스타일 토큰·믹스인 및 컴포넌트별 오버라이드"
+    },
+    {
+      "name": "Vite",
+      "category": "tool",
+      "usage": "CRA에서 전환한 빌드 도구, 개발 서버 및 프로덕션 번들링"
+    },
+    {
+      "name": "Vitest",
+      "category": "testing",
+      "usage": "훅·유틸 함수 단위 테스트 및 커버리지 측정"
     },
     {
       "name": "Playwright",
       "category": "testing",
-      "usage": "E2E 테스트 자동화(로그인, 회원가입 시나리오)"
+      "usage": "로그인/회원가입/게스트 플로우 E2E 회귀 테스트"
     },
     {
-      "name": "react-i18next",
-      "category": "frontend",
-      "usage": "한국어/영어 다국어 지원"
-    },
-    {
-      "name": "Axios",
-      "category": "frontend",
-      "usage": "HTTP 클라이언트 및 인터셉터 기반 인증 처리"
+      "name": "Docker",
+      "category": "devops",
+      "usage": "nginx 기반 정적 서빙과 envsubst 런타임 환경변수 주입 배포"
     }
   ],
   "highlights": [
-    "TypeScript namespace 기반 API 타입 시스템 구축 — GET/POST/PUT 요청별 Request/Response 인터페이스 선언으로 타입 안전성 확보",
-    "useb eKYC 비공식 커스텀 통합(WebSocket + room_key)을 공식 표준 흐름(iframe postMessage)으로 마이그레이션하여 환경 전환 시 발생하던 결과 라우팅 실패 해소",
-    "Docker 엔트리포인트에서 envsubst로 런타임 환경변수를 /config.js로 주입, 동일 이미지로 dev/stg/prd 배포 지원",
-    "3개 역할(가입자/심사자/관리자)별 라우팅 및 인증 가드 구현 — localStorage 토큰 기반 역할별 API 인증",
-    "react-d3-tree로 법인 실소유자 계층 구조(OwnerHierarchy) 시각화 및 CRUD 인터페이스 제공"
+    "namespace 기반 타입 세이프 API 레이어로 GET/POST/PUT 요청·응답 타입을 엄격하게 관리",
+    "환경 비종속 빌드 후 nginx+envsubst로 컨테이너 시작 시점에 환경변수를 주입하는 Docker 구조",
+    "계좌 실명조회 성공 판정을 은행코드·계좌번호·예금주 확인정보 일치 여부로 엄격히 검증해 재조회 낭비 방지",
+    "Playwright E2E와 Vitest 단위 테스트를 병행해 로그인·회원가입·게스트 접수 플로우 회귀 방지",
+    "비로그인(게스트) 접수의 단계 가드·이어하기·개인정보 마스킹 복원 로직 설계"
   ],
   "challenges": [
     {
-      "problem": "eKYC 연동에서 환경별 customer 자격증명 불일치로 fkr1 전환 시 모달이 닫히지 않는 사고 발생",
-      "solution": "비공식 WebSocket push 방식을 폐기하고 useb 공식 iframe + postMessage 흐름으로 전환, cross-device QR도 useb iframe이 자체 제공하도록 변경"
+      "problem": "eKYC 연동이 공식 가이드에 없는 커스텀 WebSocket 방식으로 구현되어 환경별(fkr1/fkr2) 결과 라우팅 실패가 발생",
+      "solution": "iframe+postMessage 기반 공식 표준 흐름으로 전환하는 백엔드 요청서를 작성하고 단계적 마이그레이션 계획을 수립"
     },
     {
-      "problem": "Vite 빌드 산출물에 환경변수가 하드코딩되어 환경마다 별도 이미지 빌드 필요",
-      "solution": "public/config.js를 런타임 템플릿화하고 Docker 엔트리포인트에서 envsubst로 주입, nginx Cache-Control: no-store로 브라우저 캐싱 방지"
+      "problem": "계좌 실명확인 후 폼 값이 바뀌어도 '다음' 게이트가 열린 채 남아 다른 계좌 정보로 접수될 위험",
+      "solution": "확인 당시의 은행코드·계좌번호·예금주 확인정보를 별도 키로 저장해 현재 입력값과 대조하는 판정 로직 도입"
     },
     {
-      "problem": "API 응답 envelope이 { data: { kyc_token_param } }와 { kyc_token_param } 두 가지로 혼재",
-      "solution": "BE와 협의하여 { data: { ... } } 단일 구조로 표준화하고 FE 분기 로직 제거"
+      "problem": "사업자등록번호를 변경한 뒤에도 이전 번호로 조회한 회사 정보가 남아 다른 사업자 정보가 접수되는 결함",
+      "solution": "조회 시점 번호를 기억해 변경 감지 시 필드를 초기화하고, 같은 번호로 되돌아오면 재조회 없이 스냅샷을 복원"
     }
   ],
   "diagrams": [
     {
-      "title": "KYB 시스템 전체 아키텍처",
-      "description": "가입자/심사자/관리자 3개 역할별 라우팅, API 레이어, eKYC 연동, 상태 관리 구조를 보여주는 다이어그램",
+      "title": "전체 아키텍처",
+      "description": "세 역할(신청자/심사자/관리자)의 화면이 공통 API 레이어를 통해 외부 검증 서비스와 연동되는 구조를 보여준다.",
       "type": "architecture",
-      "mermaid": "flowchart TD\n  User[\"사용자 브라우저\"]\n  FE[\"KYB Client (React + Vite)\"]\n  API[\"KYB API 서버\"]\n  EKYC[\"useb eKYC iframe\"]\n  \n  User --> FE\n  \n  subgraph Frontend[\"프론트엔드 레이어\"]\n    Router[\"역할별 라우팅<br/>/applicant, /reviewer, /admin\"]\n    RQ[\"React Query<br/>(API 캐싱)\"]\n    Redux[\"Redux Toolkit<br/>(글로벌 상태)\"]\n    Context[\"React Context<br/>(절차 상태)\"]\n  end\n  \n  FE --> Router\n  Router --> RQ\n  RQ --> Redux\n  RQ --> Context\n  \n  subgraph APILayer[\"API 타입 레이어\"]\n    Types[\"interface/GET.ts<br/>POST.ts, PUT.ts\"]\n    Query[\"userQuery/<br/>(GET 래퍼)\"]\n    Mutation[\"useMutation/<br/>(POST/PUT 래퍼)\"]\n  end\n  \n  RQ --> Types\n  Types --> Query\n  Types --> Mutation\n  Query --> API\n  Mutation --> API\n  \n  subgraph KYCFlow[\"eKYC 본인인증\"]\n    Modal[\"KycIframeModal\"]\n    PM[\"postMessage<br/>(success/failed/complete/close)\"]\n  end\n  \n  FE --> Modal\n  Modal --> EKYC\n  EKYC --> PM\n  PM --> Modal\n  \n  API --> FE"
+      "mermaid": "flowchart TD\n  Applicant[\"신청자 화면\"] --> Router[\"역할별 라우팅/가드\"]\n  Reviewer[\"심사자 화면\"] --> Router\n  Admin[\"관리자 화면\"] --> Router\n  Router --> API[\"타입세이프 API 레이어\"]\n  API --> RQ[\"React Query 캐시\"]\n  API --> KYBAPI[\"KYB API 서버\"]\n  API --> Useb[\"useb eKYC\"]\n  API --> Nice[\"사업자/법인등기 조회\"]\n  API --> Bank[\"계좌 실명조회\"]\n  RQ --> UI[\"usebeauty UI 컴포넌트\"]"
     },
     {
-      "title": "eKYC 표준 흐름 시퀀스",
-      "description": "useb eKYC 공식 표준 흐름으로 전환한 후의 본인인증 프로세스 — iframe postMessage 기반 2단계 메시지 수신",
-      "type": "sequence",
-      "mermaid": "sequenceDiagram\n  participant U as 사용자\n  participant FE as KYB Client\n  participant BE as KYB API\n  participant EKYC as useb eKYC\n  \n  U->>FE: 모바일로 진행 클릭\n  FE->>BE: POST /v2/applicants/kyc-qr-url\n  BE->>EKYC: customer 인증\n  EKYC-->>BE: 토큰 발급\n  BE-->>FE: kyc_token_param (base64)\n  FE->>FE: KycIframeModal 표시\n  FE->>EKYC: iframe.contentWindow.postMessage(token)\n  EKYC-->>EKYC: cross-device QR 표시\n  U->>EKYC: 모바일 QR 스캔 + 신분증 촬영\n  EKYC-->>FE: postMessage(success, review_result)\n  FE->>FE: 결과 저장 (pendingRef)\n  EKYC-->>FE: postMessage(complete)\n  FE->>BE: POST /attachments/v2 (신분증 이미지)\n  BE-->>FE: attachment ID\n  FE->>FE: kyc_completed = true\n  FE-->>U: 다음 단계 활성화"
-    },
-    {
-      "title": "Docker 런타임 환경설정 주입 흐름",
-      "description": "동일 이미지로 dev/stg/prd 배포를 지원하기 위한 런타임 config.js 주입 메커니즘",
-      "type": "deployment",
-      "mermaid": "flowchart LR\n  Build[\"docker build<br/>(환경 비종속)\"]\n  Image[\"alcheradev/kyb-client:TAG\"]\n  Run[\"docker run<br/>-e KYB_API_URL=...\"]\n  Entry[\"entrypoint.sh\"]\n  Envsubst[\"envsubst<br/>(템플릿 → config.js)\"]\n  Nginx[\"nginx 시작<br/>(Cache-Control: no-store)\"]\n  Browser[\"브라우저\"]\n  \n  Build --> Image\n  Image --> Run\n  Run --> Entry\n  Entry --> Envsubst\n  Envsubst --> Nginx\n  Nginx --> Browser\n  \n  subgraph Runtime[\"런타임 주입\"]\n    Envsubst\n    Nginx\n  end"
+      "title": "신청자 접수 절차",
+      "description": "신청자가 온보딩부터 접수 완료까지 거치는 다단계 절차 흐름이다.",
+      "type": "flow",
+      "mermaid": "flowchart LR\n  Onboard[\"온보딩\"] --> Agree[\"약관동의\"]\n  Agree --> Corp[\"법인정보\"]\n  Corp --> Detail[\"상세정보\"]\n  Detail --> Owner[\"실소유자\"]\n  Owner --> Directors[\"임원정보\"]\n  Directors --> Kyc[\"eKYC\"]\n  Kyc --> Iframe[\"본인인증 iframe\"]\n  Iframe --> Complete[\"접수완료\"]"
     }
   ],
   "keywords": [
-    "react",
-    "typescript",
-    "vite",
-    "react-query",
-    "redux-toolkit",
-    "ekyc",
     "kyb",
     "aml",
     "regtech",
-    "docker",
-    "nginx",
-    "playwright"
+    "react",
+    "typescript",
+    "vite",
+    "ekyc",
+    "react-query",
+    "playwright",
+    "docker"
   ],
   "links": {
     "repo": "https://github.com/jiyong-jeong/kyb-client",
@@ -134,13 +126,13 @@
     "sizeKb": 15943,
     "openIssues": 0,
     "languages": {
-      "TypeScript": 2398108,
-      "SCSS": 474048,
+      "TypeScript": 3659778,
+      "SCSS": 584212,
       "JavaScript": 22798,
       "Python": 21861,
       "HTML": 10993,
       "CSS": 5836,
-      "Shell": 3000,
+      "Shell": 5575,
       "Dockerfile": 2996
     },
     "topics": [],
@@ -149,9 +141,9 @@
   },
   "dates": {
     "createdAt": "2026-07-27T01:44:35Z",
-    "updatedAt": "2026-07-27T01:44:48Z",
-    "pushedAt": "2026-07-27T01:44:42Z",
-    "analyzedAt": "2026-07-28T06:50:36.738Z"
+    "updatedAt": "2026-09-22T01:51:44Z",
+    "pushedAt": "2026-09-22T01:51:37Z",
+    "analyzedAt": "2026-09-22T01:57:27.600Z"
   },
   "featured": true
 }

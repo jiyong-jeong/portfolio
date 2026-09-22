@@ -1,0 +1,46 @@
+{
+  "slug": "pnpm",
+  "name": "pnpm",
+  "category": "tool",
+  "tagline": "디스크 공간을 절약하며 빠르고 안정적으로 의존성을 관리하는 Node.js 패키지 매니저",
+  "definition": "pnpm은 Node.js 프로젝트의 의존성을 설치하고 관리하는 패키지 매니저다. npm이나 yarn과 달리 모든 패키지를 전역 저장소에 버전별로 한 번만 저장하고 각 프로젝트에는 하드 링크로 연결하는 방식을 사용해 디스크 공간을 절약하고 설치 속도를 높인다. 실제 의존성 트리를 그대로 반영한 중첩 구조를 사용해, package.json에 선언하지 않은 패키지를 임의로 불러오는 phantom dependency 문제를 방지한다. 여러 패키지를 하나의 저장소에서 관리하는 워크스페이스 기능도 기본으로 제공해 모노레포 구성에도 널리 쓰인다.",
+  "concepts": [
+    {
+      "term": "content-addressable store",
+      "description": "모든 패키지를 전역 저장소에 버전별로 한 번만 저장하고, 각 프로젝트는 이를 하드 링크로 참조해 중복 저장을 없애는 방식이다."
+    },
+    {
+      "term": "non-flat node_modules",
+      "description": "node_modules를 npm처럼 평탄화하지 않고 실제 의존성 트리 구조 그대로 중첩해서 구성한다."
+    },
+    {
+      "term": "phantom dependency",
+      "description": "package.json에 선언하지 않았는데도 다른 패키지의 의존성 덕분에 우연히 사용 가능해지는 패키지로, pnpm의 엄격한 구조가 이를 막는다."
+    },
+    {
+      "term": "workspace",
+      "description": "pnpm-workspace.yaml로 여러 패키지를 하나의 저장소에서 함께 관리하는 모노레포 기능이다."
+    },
+    {
+      "term": "lockfile",
+      "description": "pnpm-lock.yaml에 설치된 의존성 버전을 고정해 팀원과 CI 간에 동일한 설치 결과를 보장한다."
+    }
+  ],
+  "whenToUse": [
+    "모노레포에서 여러 패키지 간 의존성을 효율적으로 관리하고 싶을 때",
+    "디스크 공간과 설치 속도를 npm/yarn보다 개선하고 싶을 때",
+    "phantom dependency를 막아 의존성 관계를 엄격하게 유지하고 싶을 때"
+  ],
+  "example": {
+    "title": "기본 사용법",
+    "language": "bash",
+    "code": "# 의존성 설치\npnpm install\n\n# 패키지 추가\npnpm add react\n\n# 워크스페이스 전체 패키지에 스크립트 실행\npnpm -r run build\n\n# 특정 워크스페이스 패키지에만 의존성 추가\npnpm add lodash --filter my-app",
+    "description": "pnpm의 기본 설치, 패키지 추가, 워크스페이스 대상 명령 실행 방법을 보여준다."
+  },
+  "pitfalls": [
+    "node_modules 구조가 달라 호이스팅을 가정하는 일부 도구와 호환 문제가 생길 수 있다",
+    "npm/yarn의 lockfile과 형식이 달라 팀 전체가 동일한 패키지 매니저를 써야 한다",
+    "엄격한 의존성 구조 때문에 phantom dependency에 의존하던 기존 코드가 깨질 수 있다"
+  ],
+  "generatedAt": "2026-09-22T01:58:54.603Z"
+}
