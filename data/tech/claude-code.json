@@ -1,0 +1,47 @@
+{
+  "slug": "claude-code",
+  "name": "Claude Code",
+  "category": "tool",
+  "tagline": "Anthropic의 Claude AI를 IDE처럼 사용할 수 있게 해주는 AI 코딩 에이전트 도구",
+  "definition": "Claude Code는 Claude AI 모델이 파일 시스템에 접근하고, 코드를 읽고 쓰며, 터미널 명령을 실행할 수 있도록 확장한 개발 도구입니다. 개발자가 자연어로 요구사항을 전달하면 Claude가 직접 파일을 분석하고 수정하며, 테스트를 실행하고 결과를 확인하는 일련의 개발 작업을 자율적으로 수행합니다. 단순한 코드 생성을 넘어, 계획 수립부터 구현, 검증까지 전체 개발 사이클을 AI가 주도할 수 있게 설계되었습니다.",
+  "concepts": [
+    {
+      "term": "Tool Use",
+      "description": "Claude가 파일 읽기/쓰기, 터미널 명령 실행, 검색 등의 도구를 호출할 수 있는 기능. 사용자 요청에 따라 필요한 도구를 선택하고 순차적으로 실행합니다."
+    },
+    {
+      "term": "Headless Mode",
+      "description": "사용자 개입 없이 Claude가 계획을 세우고 실행까지 자동으로 진행하는 모드. 승인 단계를 건너뛰고 연속적인 작업을 수행할 때 사용합니다."
+    },
+    {
+      "term": "Plan/Build/Review Loop",
+      "description": "작업을 계획하고, 코드를 작성하며, 결과를 검토하는 반복 사이클. Claude가 이 루프를 자율적으로 돌며 목표에 도달할 때까지 개선합니다."
+    },
+    {
+      "term": "MCP (Model Context Protocol)",
+      "description": "외부 시스템(데이터베이스, API, Jira 등)과 Claude를 연결하는 표준 프로토콜. MCP 서버를 통해 Claude가 다양한 도구와 데이터 소스에 접근할 수 있습니다."
+    },
+    {
+      "term": "Context Window",
+      "description": "Claude가 한 번에 처리할 수 있는 텍스트 양의 한계. 대규모 코드베이스 작업 시 관련 파일만 선택적으로 불러와 컨텍스트를 효율적으로 관리해야 합니다."
+    }
+  ],
+  "whenToUse": [
+    "반복적인 CRUD 코드나 보일러플레이트 작성을 자동화하고 싶을 때",
+    "기존 코드베이스를 분석하고 특정 패턴에 맞춰 수정이 필요할 때",
+    "Jira, Linear 등 외부 시스템과 연동해 이슈 기반으로 자동 개발을 진행할 때",
+    "테스트 실행, 린트 수정 등 반복적인 검증 작업을 AI에게 위임하고 싶을 때"
+  ],
+  "example": {
+    "title": "헤드리스 모드로 Jira 이슈 자동 처리",
+    "language": "bash",
+    "code": "# Claude Code를 headless 모드로 실행\n# Jira MCP 서버와 연결하여 티켓을 읽고 처리\nclaude-code --headless \\\n  --mcp-server atlassian \\\n  --prompt \"PROJ-123 티켓을 읽고 요구사항대로 구현한 뒤 테스트까지 실행해줘\"\n\n# Claude가 수행하는 작업:\n# 1. Jira API로 PROJ-123 내용 읽기\n# 2. 관련 파일 검색 및 분석\n# 3. 코드 수정 및 작성\n# 4. 테스트 실행 및 결과 확인\n# 5. Jira 티켓에 완료 코멘트 작성",
+    "description": "자연어 프롬프트 하나로 Claude가 외부 시스템 연동, 코드 작성, 검증까지 자동 수행하는 예시입니다."
+  },
+  "pitfalls": [
+    "컨텍스트 윈도우를 초과하면 작업이 중단되므로, 대규모 프로젝트는 작업 범위를 명확히 제한해야 합니다",
+    "headless 모드는 승인 없이 파일을 수정하므로, 중요한 코드베이스에선 신중히 사용해야 합니다",
+    "MCP 서버 설정이 잘못되면 외부 시스템 연동이 실패하므로, 연결 테스트를 먼저 수행하세요"
+  ],
+  "generatedAt": "2026-09-22T00:02:11.905Z"
+}
