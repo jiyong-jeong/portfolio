@@ -1,0 +1,47 @@
+{
+  "slug": "golangci-lint",
+  "name": "golangci-lint",
+  "category": "testing",
+  "tagline": "Go 코드 품질을 자동으로 검사하는 통합 린터 도구",
+  "definition": "golangci-lint는 수십 개의 Go 린터를 하나의 명령으로 실행할 수 있도록 통합한 도구입니다. gofmt, go vet, staticcheck 등 다양한 린터를 개별적으로 설치하고 실행하는 번거로움을 없애고, 빠른 속도와 일관된 설정으로 코드 품질을 검증합니다. CI/CD 파이프라인에서 코드 스타일, 버그 패턴, 성능 문제를 자동으로 잡아내는 데 널리 사용됩니다.",
+  "concepts": [
+    {
+      "term": "linter",
+      "description": "소스 코드를 정적으로 분석해 스타일 위반, 잠재적 버그, 비효율적인 패턴 등을 찾아내는 도구입니다. golangci-lint는 여러 린터를 통합 실행합니다."
+    },
+    {
+      "term": "enabled linters",
+      "description": "golangci-lint에 포함된 수십 개의 린터 중 실제로 활성화할 린터 목록입니다. 기본값으로 일부가 켜져 있으며, 프로젝트에 맞게 추가하거나 비활성화할 수 있습니다."
+    },
+    {
+      "term": ".golangci.yml",
+      "description": "프로젝트 루트에 두는 설정 파일로, 어떤 린터를 쓸지, 어떤 규칙을 무시할지, 타임아웃 등을 정의합니다."
+    },
+    {
+      "term": "issue",
+      "description": "린터가 발견한 문제 하나를 가리킵니다. 파일 경로, 줄 번호, 위반한 규칙 이름, 메시지가 함께 출력됩니다."
+    },
+    {
+      "term": "run",
+      "description": "golangci-lint run 명령은 설정된 린터를 모두 실행하고 발견된 issue를 출력합니다. CI에서 이 명령이 실패하면 머지를 막을 수 있습니다."
+    }
+  ],
+  "whenToUse": [
+    "여러 Go 린터를 일일이 설치·실행하지 않고 한 번에 검사하고 싶을 때",
+    "CI/CD에서 코드 품질 게이트를 자동화하여 리뷰 전에 기본 문제를 걸러내고 싶을 때",
+    "팀 전체가 동일한 린트 규칙을 공유하고 일관된 코드 스타일을 유지하고 싶을 때",
+    "정적 분석으로 잠재적 버그, 성능 문제, 보안 취약점을 조기에 발견하고 싶을 때"
+  ],
+  "example": {
+    "title": "기본 실행과 설정 파일 예시",
+    "language": "yaml",
+    "code": "# .golangci.yml\nrun:\n  timeout: 5m\n  tests: false  # 테스트 파일 제외\n\nlinters:\n  enable:\n    - gofmt\n    - govet\n    - staticcheck\n    - errcheck\n    - gosimple\n    - ineffassign\n\nissues:\n  exclude-rules:\n    - path: _test\\.go\n      linters:\n        - errcheck  # 테스트 파일에서는 에러 체크 완화\n\n# 실행:\n# golangci-lint run ./...",
+    "description": "프로젝트 루트에 .golangci.yml을 두고 활성화할 린터와 제외 규칙을 정의한 뒤, golangci-lint run 명령으로 전체 패키지를 검사합니다."
+  },
+  "pitfalls": [
+    "너무 많은 린터를 한 번에 켜면 false positive가 많아 처음엔 혼란스러울 수 있음",
+    "기본 설정 없이 실행하면 일부 린터만 활성화되어 원하는 검사가 빠질 수 있음",
+    "legacy 코드베이스에 갑자기 도입하면 수백 개의 issue가 쏟아져 점진적 도입이 필요함"
+  ],
+  "generatedAt": "2026-09-23T00:00:45.184Z"
+}
