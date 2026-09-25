@@ -1,0 +1,47 @@
+{
+  "slug": "gemini-api",
+  "name": "Gemini API",
+  "category": "backend",
+  "tagline": "Google이 제공하는 멀티모달 생성 AI 모델을 호출할 수 있는 클라우드 API",
+  "definition": "Gemini API는 Google의 Gemini 모델 계열을 사용해 텍스트 생성, 이미지 이해, 음성 처리 등을 수행할 수 있는 REST API입니다. 텍스트 프롬프트뿐 아니라 이미지, 오디오, 비디오를 함께 입력으로 받아 멀티모달 추론이 가능하며, OpenAI API와 유사한 방식으로 통합할 수 있습니다. 별도 인프라 구축 없이 API 키만으로 최신 생성 AI 기능을 애플리케이션에 추가할 수 있도록 설계되었습니다.",
+  "concepts": [
+    {
+      "term": "Multimodal Input",
+      "description": "하나의 요청에 텍스트, 이미지, 오디오, 비디오 등 여러 형태의 데이터를 함께 전달해 모델이 종합적으로 이해하고 응답을 생성하도록 하는 기능입니다."
+    },
+    {
+      "term": "Content Generation",
+      "description": "프롬프트를 기반으로 텍스트, 코드, 구조화된 데이터 등을 자동으로 생성하는 작업으로, Gemini API의 핵심 용도입니다."
+    },
+    {
+      "term": "Safety Settings",
+      "description": "유해하거나 부적절한 콘텐츠 생성을 차단하기 위해 요청마다 설정할 수 있는 안전 임계값으로, 카테고리별로 차단 수준을 조정할 수 있습니다."
+    },
+    {
+      "term": "Streaming Response",
+      "description": "모델이 전체 응답을 완성하기 전에 생성된 부분부터 순차적으로 클라이언트에 전송해, 긴 응답을 실시간으로 표시할 수 있게 하는 방식입니다."
+    },
+    {
+      "term": "Function Calling",
+      "description": "모델이 응답을 생성하는 과정에서 외부 함수나 API를 호출해야 한다고 판단하면, 호출할 함수 이름과 인자를 JSON 형태로 반환해주는 기능입니다."
+    }
+  ],
+  "whenToUse": [
+    "텍스트뿐 아니라 이미지나 음성을 함께 이해해야 하는 AI 기능이 필요할 때",
+    "Google Cloud 생태계를 이미 사용 중이거나 Vertex AI와 통합하려는 경우",
+    "별도 모델 학습 없이 최신 생성 AI를 빠르게 프로토타입하고 싶을 때",
+    "OpenAI 외 대안 LLM 제공자를 비교·평가하거나 다중 공급자 전략을 취할 때"
+  ],
+  "example": {
+    "title": "텍스트와 이미지를 함께 입력받아 설명 생성",
+    "language": "python",
+    "code": "import google.generativeai as genai\nfrom PIL import Image\n\n# API 키 설정\ngenai.configure(api_key=\"YOUR_API_KEY\")\n\n# 모델 선택\nmodel = genai.GenerativeModel('gemini-1.5-flash')\n\n# 이미지 로드\nimage = Image.open('photo.jpg')\n\n# 멀티모달 프롬프트\nresponse = model.generate_content([\n    \"이 사진에서 어떤 물체가 보이는지 설명해주세요.\",\n    image\n])\n\nprint(response.text)",
+    "description": "텍스트 프롬프트와 이미지를 함께 전달해 모델이 이미지를 분석하고 설명을 생성하도록 요청하는 기본 예시입니다."
+  },
+  "pitfalls": [
+    "무료 할당량을 초과하면 요청이 차단되므로, 프로덕션 환경에서는 청구 계정 연결이 필수입니다",
+    "Safety Settings 기본값이 엄격해 의도한 응답도 차단될 수 있으므로, 필요시 임계값 조정이 필요합니다",
+    "Function Calling 결과는 함수 실행 명령일 뿐 실제 실행은 클라이언트가 직접 처리해야 합니다"
+  ],
+  "generatedAt": "2026-09-25T00:02:29.473Z"
+}

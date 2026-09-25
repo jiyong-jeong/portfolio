@@ -1,0 +1,47 @@
+{
+  "slug": "react-native",
+  "name": "React Native",
+  "category": "frontend",
+  "tagline": "JavaScript로 iOS·Android 네이티브 앱을 동시에 만드는 크로스플랫폼 프레임워크",
+  "definition": "React Native는 Facebook(Meta)이 만든 모바일 앱 개발 프레임워크입니다. React의 컴포넌트 기반 UI 패러다임을 그대로 사용하면서, JavaScript 코드가 각 플랫폼의 네이티브 UI 요소로 변환되어 실제 네이티브 앱으로 동작합니다. 하나의 코드베이스로 iOS와 Android 앱을 동시에 개발할 수 있어, 웹 개발 경험을 모바일로 확장하고 싶거나 빠른 크로스플랫폼 출시가 필요한 팀에게 적합합니다.",
+  "concepts": [
+    {
+      "term": "Bridge",
+      "description": "JavaScript 코드와 네이티브 모듈 사이에서 비동기 메시지를 주고받는 통신 계층입니다. UI 업데이트나 네이티브 API 호출이 이 Bridge를 거쳐 실행됩니다."
+    },
+    {
+      "term": "Native Components",
+      "description": "React Native가 제공하는 View, Text, Image 같은 컴포넌트는 HTML 요소가 아니라 각 플랫폼의 실제 네이티브 UI 위젯으로 렌더링됩니다."
+    },
+    {
+      "term": "Metro Bundler",
+      "description": "React Native 전용 JavaScript 번들러로, 코드를 번들링하고 Fast Refresh를 지원하여 개발 중 즉시 변경사항을 확인할 수 있게 합니다."
+    },
+    {
+      "term": "Native Modules",
+      "description": "JavaScript만으로 접근할 수 없는 플랫폼 기능(카메라, GPS 등)을 Swift/Kotlin으로 작성해 JavaScript에서 호출할 수 있게 하는 확장 방식입니다."
+    },
+    {
+      "term": "Platform-specific Code",
+      "description": "iOS와 Android에서 다르게 동작해야 할 부분을 .ios.js, .android.js 파일 분리나 Platform 모듈로 처리하는 방식입니다."
+    }
+  ],
+  "whenToUse": [
+    "웹 개발팀이 React 경험을 활용해 모바일 앱을 빠르게 출시하고 싶을 때",
+    "iOS와 Android를 동시에 개발·유지보수하며 코드 중복을 줄이고 싶을 때",
+    "네이티브 성능이 중요하지만 WebView 기반 하이브리드 앱보다 나은 UX가 필요할 때",
+    "Hot Reload로 빠른 UI 프로토타이핑과 반복 개발이 중요한 프로젝트"
+  ],
+  "example": {
+    "title": "기본 React Native 컴포넌트",
+    "language": "javascript",
+    "code": "import React from 'react';\nimport { View, Text, StyleSheet, Button } from 'react-native';\n\nexport default function App() {\n  const [count, setCount] = React.useState(0);\n\n  return (\n    <View style={styles.container}>\n      <Text style={styles.title}>Hello React Native</Text>\n      <Text>Count: {count}</Text>\n      <Button title=\"Increment\" onPress={() => setCount(count + 1)} />\n    </View>\n  );\n}\n\nconst styles = StyleSheet.create({\n  container: { flex: 1, justifyContent: 'center', alignItems: 'center' },\n  title: { fontSize: 24, fontWeight: 'bold', marginBottom: 16 }\n});",
+    "description": "React와 동일한 방식으로 상태를 관리하고, StyleSheet로 스타일을 정의하며, View/Text 같은 네이티브 컴포넌트를 조합해 UI를 구성합니다."
+  },
+  "pitfalls": [
+    "CSS가 아닌 StyleSheet이며 flexbox 기본값이 웹과 다름 (flexDirection: 'column')",
+    "Bridge를 거치는 통신 오버헤드로 인해 복잡한 애니메이션이나 대량 리스트에서 성능 주의 필요",
+    "네이티브 모듈 업데이트 시 iOS/Android 각각 네이티브 빌드 설정을 직접 관리해야 하는 경우가 많음"
+  ],
+  "generatedAt": "2026-09-25T00:02:00.036Z"
+}

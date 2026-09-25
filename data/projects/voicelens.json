@@ -1,0 +1,139 @@
+{
+  "slug": "voicelens",
+  "repo": "voicelens",
+  "title": "VoiceLens — 음성 명령으로 사진을 편집하는 모바일 앱",
+  "summary": "사진을 찍고 말로 보정 명령을 내리면 LLM이 편집 계획을 생성하고, 디바이스에서 비파괴 렌더링으로 적용하는 Expo 앱",
+  "description": "VoiceLens는 음성 인터페이스와 생성형 AI를 결합한 사진 편집 앱입니다. 사용자가 \"하늘은 더 푸르게, 인물은 밝게\"처럼 말하면 Gemini API가 음성을 텍스트로 변환하고 편집 계획(노출·색온도·채도 등의 수치)을 JSON으로 생성합니다. 앱은 이 계획을 Skia 컬러 매트릭스로 변환해 디바이스에서 비파괴로 렌더링하므로 서버 왕복 없이 빠르고 원본을 훼손하지 않습니다. 파라메트릭 보정으로 불가능한 객체 제거·배경 교체 같은 요청은 생성형 이미지 모델로 처리하며, 전 과정에서 undo 스택을 유지합니다.",
+  "category": "프론트엔드",
+  "role": "Expo + React Native 기반 모바일 앱과 Hono API 서버 전체를 설계·구현했으며, LLM 공급자 추상화·비파괴 렌더링 파이프라인·음성 명령 워크플로를 개발했습니다.",
+  "techStack": [
+    {
+      "name": "TypeScript",
+      "category": "language",
+      "usage": "앱과 서버 전체 코드베이스"
+    },
+    {
+      "name": "Expo",
+      "category": "framework",
+      "usage": "React Native 앱 개발 플랫폼 (SDK 57, RN 0.86)"
+    },
+    {
+      "name": "React Native",
+      "category": "frontend",
+      "usage": "iOS/Android 크로스플랫폼 UI"
+    },
+    {
+      "name": "React Native Skia",
+      "category": "frontend",
+      "usage": "컬러 매트릭스 기반 비파괴 이미지 렌더링"
+    },
+    {
+      "name": "Hono",
+      "category": "backend",
+      "usage": "경량 API 서버 프레임워크"
+    },
+    {
+      "name": "Gemini API",
+      "category": "backend",
+      "usage": "음성 받아쓰기·편집 계획 생성·영역 감지·이미지 편집 모델"
+    },
+    {
+      "name": "Zod",
+      "category": "backend",
+      "usage": "편집 계획 스키마 정의 및 구조화 출력 검증"
+    },
+    {
+      "name": "Expo Camera",
+      "category": "tool",
+      "usage": "카메라 촬영 및 플래시 제어"
+    },
+    {
+      "name": "Expo Audio",
+      "category": "tool",
+      "usage": "음성 녹음 및 미터링"
+    },
+    {
+      "name": "Node.js",
+      "category": "backend",
+      "usage": "서버 런타임 (v22)"
+    }
+  ],
+  "highlights": [
+    "LLM이 픽셀을 직접 편집하지 않고 파라메트릭 보정 수치만 결정해 디바이스에서 Skia 컬러 매트릭스로 렌더링 — 빠르고 비용 효율적이며 비파괴",
+    "음성 받아쓰기(gemini-3.5-transcribe) + 편집 계획 생성(gemini-3.8-flash JSON 스키마 강제) + 생성형 편집(gemini-3.1-flash-image) 파이프라인 구현",
+    "Gemini 네이티브 바운딩 박스 포맷(0–1000 정규화)을 앱 전체 좌표계로 채택해 AI 감지·음성 지정·손 드래그 영역을 단일 타입으로 처리",
+    "EditState 스냅샷 배열 기반 undo 스택 — 전역/영역별 보정을 누적하고 저장 시점에만 픽셀 확정",
+    "LLMProvider 인터페이스로 공급자(Gemini)를 추상화해 향후 Claude·OpenAI 등 교체 가능하게 설계"
+  ],
+  "challenges": [
+    {
+      "problem": "Gemini API 키를 클라이언트 번들에 노출하지 않으면서도 모바일에서 LLM 기능을 사용해야 함",
+      "solution": "Hono 서버를 LLM 프록시로 두고 앱은 공유 APP_TOKEN으로만 서버를 호출하도록 분리 (운영 시 사용자 인증 + 레이트 리밋 필요)"
+    },
+    {
+      "problem": "음성 받아쓰기(~3초) + 편집 계획 생성(~5초)의 직렬 지연",
+      "solution": "현재는 별도 엔드포인트로 구현했으나 향후 Gemini 멀티모달 단일 호출 또는 Live API 스트리밍으로 개선 예정 (ISSUES.md T-5)"
+    },
+    {
+      "problem": "영역 보정이 바운딩 박스 기반이라 불규칙한 형태(인물·하늘)에 사각형으로 번짐",
+      "solution": "Gemini 세그멘테이션 마스크 또는 온디바이스 세그멘테이션 → Skia 마스크 합성으로 개선 계획 (ISSUES.md T-1)"
+    }
+  ],
+  "diagrams": [
+    {
+      "title": "전체 아키텍처 및 데이터 흐름",
+      "description": "사용자가 사진을 찍고 음성 명령을 내리면 서버가 Gemini API로 받아쓰기와 편집 계획을 생성하고, 앱이 계획을 Skia로 렌더링하는 흐름",
+      "type": "architecture",
+      "mermaid": "flowchart TD\n  U[\"사용자\"]\n  CAM[\"CameraView / ImagePicker\"]\n  MIC[\"useVoiceRecorder\"]\n  PREP[\"toWorkingImage (1536px JPEG base64)\"]\n  SES[\"SessionProvider (undo 스택)\"]\n  CMD[\"useCommand (intent 실행)\"]\n  SKIA[\"PhotoCanvas (Skia ColorMatrix)\"]\n  SAVE[\"스냅샷 → Asset.create\"]\n  API[\"Hono API 서버\"]\n  PROV[\"LLMProvider (Gemini)\"]\n  TRANS[\"gemini-3.5-transcribe\"]\n  PLAN[\"gemini-3.8-flash (JSON 스키마)\"]\n  EDIT[\"gemini-3.1-flash-image\"]\n\n  U --> CAM\n  U --> MIC\n  CAM --> PREP\n  PREP --> SES\n  MIC --> CMD\n  CMD -->|\"audio + image + region\"| API\n  API --> PROV\n  PROV --> TRANS\n  PROV --> PLAN\n  PROV --> EDIT\n  TRANS -->|\"받아쓰기 텍스트\"| API\n  PLAN -->|\"EditPlan JSON\"| API\n  API -->|\"text, plan\"| CMD\n  CMD -->|\"intent=adjust\"| SES\n  SES --> SKIA\n  SKIA --> SAVE\n  CMD -->|\"intent=generative\"| API\n  EDIT -->|\"새 이미지\"| CMD\n  CMD -->|\"base 교체\"| SES"
+    },
+    {
+      "title": "음성 명령 처리 시퀀스",
+      "description": "사용자가 마이크를 탭해 음성을 녹음하면 서버가 받아쓰기와 편집 계획을 순차적으로 생성하고, 앱이 계획의 intent에 따라 파라메트릭 보정 또는 생성형 편집을 수행하는 과정",
+      "type": "sequence",
+      "mermaid": "sequenceDiagram\n  participant U as 사용자\n  participant A as 앱 (useCommand)\n  participant S as 서버\n  participant G as Gemini API\n\n  U->>A: 마이크 탭 → 말하기 → 탭\n  A->>S: POST /api/voice-command\n  S->>G: transcribe(audio)\n  G-->>S: \"하늘은 더 푸르게, 인물은 밝게\"\n  S->>G: planCommand(text, image)\n  G-->>S: EditPlan JSON\n  S-->>A: {text, plan}\n  alt intent = adjust\n    A->>A: session.applyPlan → Skia 렌더\n  else intent = generative\n    A->>S: POST /api/edit\n    S->>G: 이미지 편집 모델\n    G-->>A: 새 이미지\n    A->>A: session.replaceBase\n  end"
+    },
+    {
+      "title": "비파괴 렌더링 파이프라인",
+      "description": "PhotoCanvas가 원본 이미지에 전역 보정과 영역별 보정을 컬러 매트릭스로 순차 적용하고, 저장 시점에만 스냅샷을 인코딩하는 파이프라인",
+      "type": "flow",
+      "mermaid": "flowchart LR\n  BASE[\"base (base64)\"] --> IMG[\"Skia.Image\"]\n  GLOBAL[\"global Adjustments\"] --> MAT1[\"toMatrix\"]\n  REGIONS[\"regions Adjustments\"] --> MAT2[\"toMatrix (global + region)\"]\n  IMG --> DRAW1[\"전체 이미지 그리기 (MAT1)\"]\n  DRAW1 --> CLIP[\"각 영역마다 clip + MAT2\"]\n  CLIP --> VIG[\"vignette 오버레이\"]\n  VIG --> SNAP[\"makeImageSnapshot\"]\n  SNAP --> ENC[\"encodeToBase64\"]\n  ENC --> ASSET[\"Asset.create (앨범 저장)\"]"
+    }
+  ],
+  "keywords": [
+    "expo",
+    "react-native",
+    "gemini-api",
+    "voice-command",
+    "llm",
+    "skia",
+    "photo-editing",
+    "non-destructive",
+    "typescript",
+    "hono",
+    "mobile"
+  ],
+  "links": {
+    "repo": "https://github.com/jiyong-jeong/voicelens",
+    "homepage": null
+  },
+  "metrics": {
+    "stars": 0,
+    "forks": 0,
+    "watchers": 0,
+    "sizeKb": 1888,
+    "openIssues": 0,
+    "languages": {
+      "TypeScript": 61527
+    },
+    "topics": [],
+    "primaryLanguage": "TypeScript",
+    "license": null
+  },
+  "dates": {
+    "createdAt": "2026-09-24T03:30:54Z",
+    "updatedAt": "2026-09-24T03:43:39Z",
+    "pushedAt": "2026-09-24T03:43:13Z",
+    "analyzedAt": "2026-09-25T00:01:25.087Z"
+  },
+  "featured": true
+}

@@ -1,0 +1,47 @@
+{
+  "slug": "hono",
+  "name": "Hono",
+  "category": "backend",
+  "tagline": "Node.js, Deno, Cloudflare Workers 등 다양한 런타임에서 동작하는 초경량 웹 프레임워크",
+  "definition": "Hono는 엣지 환경과 서버리스 플랫폼을 위해 설계된 웹 프레임워크입니다. Express와 유사한 API를 제공하면서도 의존성이 없고 크기가 작아 Cloudflare Workers, Deno, Bun 같은 최신 JavaScript 런타임에서 빠르게 실행됩니다. TypeScript로 작성되어 타입 안정성을 기본 제공하며, 미들웨어 기반 아키텍처로 확장 가능합니다.",
+  "concepts": [
+    {
+      "term": "Edge-first",
+      "description": "CDN 엣지 환경에서 실행되는 것을 우선으로 설계되어, 콜드 스타트가 빠르고 메모리 사용량이 적습니다."
+    },
+    {
+      "term": "Middleware",
+      "description": "요청-응답 사이클에 끼어들어 인증, 로깅, CORS 등의 기능을 체이닝 방식으로 추가할 수 있는 함수입니다."
+    },
+    {
+      "term": "Context",
+      "description": "각 요청마다 생성되는 객체로, 요청 정보를 읽고 응답을 반환하는 메서드들을 담고 있습니다."
+    },
+    {
+      "term": "Routing",
+      "description": "HTTP 메서드와 경로 패턴을 기준으로 핸들러를 연결하며, 경로 파라미터와 와일드카드를 지원합니다."
+    },
+    {
+      "term": "Adapter",
+      "description": "Hono 앱을 특정 런타임이나 플랫폼에 배포하기 위한 변환 레이어로, 런타임별 차이를 흡수합니다."
+    }
+  ],
+  "whenToUse": [
+    "Cloudflare Workers, Vercel Edge 같은 엣지 환경에서 API를 만들 때",
+    "서버리스 함수의 콜드 스타트 시간과 번들 크기를 최소화하고 싶을 때",
+    "여러 런타임을 지원하는 범용 웹 API를 작성할 때",
+    "TypeScript 타입 추론을 활용해 안전한 라우팅을 구현하고 싶을 때"
+  ],
+  "example": {
+    "title": "기본 라우팅과 미들웨어",
+    "language": "typescript",
+    "code": "import { Hono } from 'hono'\nimport { logger } from 'hono/logger'\n\nconst app = new Hono()\n\n// 미들웨어 적용\napp.use('*', logger())\n\n// GET 라우트\napp.get('/', (c) => {\n  return c.text('Hello Hono!')\n})\n\n// 경로 파라미터\napp.get('/posts/:id', (c) => {\n  const id = c.req.param('id')\n  return c.json({ postId: id })\n})\n\n// POST 라우트\napp.post('/posts', async (c) => {\n  const body = await c.req.json()\n  return c.json({ created: body }, 201)\n})\n\nexport default app",
+    "description": "앱 인스턴스를 생성하고, 미들웨어를 등록한 뒤 HTTP 메서드별 라우트를 정의하는 기본 구조입니다."
+  },
+  "pitfalls": [
+    "Node.js 전용 라이브러리는 엣지 런타임에서 동작하지 않으므로 호환성을 확인해야 함",
+    "Context의 메서드는 체이닝이 아니라 return으로 응답을 직접 반환해야 함",
+    "미들웨어에서 next()를 호출하지 않으면 다음 핸들러가 실행되지 않음"
+  ],
+  "generatedAt": "2026-09-25T00:01:58.629Z"
+}

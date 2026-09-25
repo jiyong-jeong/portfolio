@@ -1,0 +1,47 @@
+{
+  "slug": "expo-camera",
+  "name": "Expo Camera",
+  "category": "tool",
+  "tagline": "Expo 앱에서 디바이스 카메라를 제어하고 사진·동영상을 촬영할 수 있게 해주는 React Native 라이브러리",
+  "definition": "Expo Camera는 Expo 프레임워크 위에서 네이티브 카메라 기능을 사용할 수 있도록 만든 모듈입니다. iOS와 Android의 카메라 API를 통합된 인터페이스로 추상화하여, React 컴포넌트 형태로 카메라 프리뷰를 렌더링하고 촬영·플래시·전후면 전환 등을 제어할 수 있습니다. 네이티브 코드를 직접 작성하지 않고도 크로스 플랫폼 카메라 앱을 빠르게 개발할 수 있도록 설계되었습니다.",
+  "concepts": [
+    {
+      "term": "Camera Component",
+      "description": "화면에 카메라 프리뷰를 표시하는 React 컴포넌트입니다. 이 컴포넌트를 렌더링하면 실시간 카메라 화면이 보이며, ref를 통해 촬영 등의 메서드를 호출할 수 있습니다."
+    },
+    {
+      "term": "Camera Permission",
+      "description": "카메라에 접근하려면 사용자로부터 명시적으로 권한을 받아야 합니다. Expo Camera는 권한 요청 및 상태 확인 API를 제공합니다."
+    },
+    {
+      "term": "Camera Type",
+      "description": "전면 카메라와 후면 카메라를 구분하는 속성입니다. type prop을 변경하여 카메라를 전환할 수 있습니다."
+    },
+    {
+      "term": "Flash Mode",
+      "description": "촬영 시 플래시 동작을 제어하는 설정으로, 자동·켜짐·꺼짐·토치 모드 등을 지원합니다."
+    },
+    {
+      "term": "takePictureAsync",
+      "description": "카메라 컴포넌트의 메서드로, 호출 시 현재 프리뷰 화면을 캡처하여 이미지 파일로 저장하고 URI를 반환합니다."
+    }
+  ],
+  "whenToUse": [
+    "Expo 기반 모바일 앱에서 사진 촬영 기능이 필요할 때",
+    "QR 코드 스캐너, 문서 스캔, 프로필 사진 등록 등 카메라 입력이 필요한 기능 구현 시",
+    "네이티브 모듈 설정 없이 빠르게 크로스 플랫폼 카메라 기능을 추가하고 싶을 때",
+    "Expo Managed Workflow 환경에서 카메라를 통합해야 할 때"
+  ],
+  "example": {
+    "title": "기본 카메라 촬영 예시",
+    "language": "typescript",
+    "code": "import { Camera, CameraType } from 'expo-camera';\nimport { useState, useRef } from 'react';\nimport { Button, View } from 'react-native';\n\nexport default function App() {\n  const [permission, requestPermission] = Camera.useCameraPermissions();\n  const cameraRef = useRef<Camera>(null);\n\n  const takePicture = async () => {\n    if (cameraRef.current) {\n      const photo = await cameraRef.current.takePictureAsync();\n      console.log('Photo URI:', photo.uri);\n    }\n  };\n\n  if (!permission?.granted) {\n    return <Button title=\"권한 요청\" onPress={requestPermission} />;\n  }\n\n  return (\n    <View style={{ flex: 1 }}>\n      <Camera ref={cameraRef} style={{ flex: 1 }} type={CameraType.back} />\n      <Button title=\"촬영\" onPress={takePicture} />\n    </View>\n  );\n}",
+    "description": "카메라 권한을 요청하고, 후면 카메라 프리뷰를 표시한 뒤 버튼을 눌러 사진을 촬영하는 기본 예시입니다."
+  },
+  "pitfalls": [
+    "권한을 먼저 확인하지 않고 Camera 컴포넌트를 렌더링하면 앱이 크래시될 수 있음",
+    "카메라 ref가 null일 수 있으므로 메서드 호출 전 반드시 존재 여부를 확인해야 함",
+    "Expo Go 클라이언트에서는 일부 고급 카메라 설정이 제한될 수 있음"
+  ],
+  "generatedAt": "2026-09-25T00:02:32.226Z"
+}

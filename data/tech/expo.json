@@ -1,0 +1,47 @@
+{
+  "slug": "expo",
+  "name": "Expo",
+  "category": "framework",
+  "tagline": "React Native 앱을 빠르게 개발하고 배포할 수 있게 돕는 오픈소스 플랫폼",
+  "definition": "Expo는 React Native 기반 모바일 앱 개발을 단순화하는 도구 모음과 서비스입니다. 네이티브 코드 설정 없이 JavaScript/TypeScript만으로 iOS와 Android 앱을 동시에 개발할 수 있으며, 빌드·배포·업데이트 과정을 자동화합니다. 복잡한 네이티브 환경 설정과 의존성 관리를 추상화하여, 개발자가 앱 로직에 집중할 수 있게 설계되었습니다.",
+  "concepts": [
+    {
+      "term": "Expo SDK",
+      "description": "카메라, 위치, 알림 등 네이티브 기능에 접근할 수 있는 사전 빌드된 라이브러리 모음. JavaScript API로 통일된 인터페이스를 제공합니다."
+    },
+    {
+      "term": "Expo Go",
+      "description": "개발 중인 앱을 실제 기기에서 바로 테스트할 수 있는 클라이언트 앱. 빌드 없이 QR 코드 스캔만으로 앱을 실행할 수 있습니다."
+    },
+    {
+      "term": "EAS (Expo Application Services)",
+      "description": "클라우드 기반 빌드, 제출, 업데이트 서비스. 로컬에 Xcode나 Android Studio 없이도 네이티브 바이너리를 생성할 수 있습니다."
+    },
+    {
+      "term": "Managed Workflow",
+      "description": "Expo가 네이티브 코드와 빌드 설정을 모두 관리하는 방식. 순수 JavaScript만으로 개발하며, 네이티브 환경을 직접 다루지 않습니다."
+    },
+    {
+      "term": "Bare Workflow",
+      "description": "네이티브 프로젝트 폴더(android, ios)가 노출되어, Expo SDK와 순수 React Native를 함께 사용할 수 있는 방식. 커스텀 네이티브 모듈 추가가 가능합니다."
+    }
+  ],
+  "whenToUse": [
+    "iOS와 Android를 동시에 개발하되, 네이티브 환경 설정에 시간을 쓰고 싶지 않을 때",
+    "MVP나 프로토타입을 빠르게 검증하고, 실제 기기에서 즉시 테스트하고 싶을 때",
+    "Over-The-Air 업데이트로 스토어 심사 없이 앱 콘텐츠를 업데이트해야 할 때",
+    "소규모 팀이나 개인 개발자가 빌드 인프라 없이 앱을 배포해야 할 때"
+  ],
+  "example": {
+    "title": "Expo 프로젝트 초기화 및 실행",
+    "language": "bash",
+    "code": "# 새 Expo 프로젝트 생성\nnpx create-expo-app my-app\ncd my-app\n\n# 개발 서버 실행\nnpx expo start\n\n# Expo Go 앱에서 QR 코드를 스캔하면\n# 실제 기기에서 바로 앱이 실행됨\n\n# 프로덕션 빌드 (EAS 사용)\nnpx eas build --platform ios\nnpx eas build --platform android",
+    "description": "단 몇 줄의 명령으로 프로젝트를 생성하고, 개발 서버를 띄워 실제 기기에서 테스트하며, 클라우드에서 네이티브 바이너리를 빌드할 수 있습니다."
+  },
+  "pitfalls": [
+    "Managed Workflow에서는 Expo SDK에 없는 네이티브 모듈을 바로 추가할 수 없음 (Bare Workflow로 전환 필요)",
+    "Expo Go는 개발용 클라이언트이므로, 스토어 배포 시에는 별도로 네이티브 빌드를 생성해야 함",
+    "EAS 빌드는 무료 할당량 이후 유료이며, 빌드 시간이 로컬보다 오래 걸릴 수 있음"
+  ],
+  "generatedAt": "2026-09-25T00:02:00.744Z"
+}

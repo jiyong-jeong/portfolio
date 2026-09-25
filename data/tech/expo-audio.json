@@ -1,0 +1,42 @@
+{
+  "slug": "expo-audio",
+  "name": "Expo Audio",
+  "category": "tool",
+  "tagline": "Expo 앱에서 오디오 녹음과 재생을 처리하는 React Native 라이브러리",
+  "definition": "Expo Audio는 Expo 프레임워크 기반 React Native 앱에서 오디오 녹음, 재생, 음량 제어 등을 통합 관리하는 라이브러리입니다. 네이티브 플랫폼별로 다른 오디오 API를 추상화하여 iOS와 Android 모두에서 일관된 인터페이스로 오디오 기능을 구현할 수 있게 합니다. 음성 메모, 오디오 플레이어, 음성 인식 전처리 등 모바일 앱에서 소리를 다루는 거의 모든 시나리오를 지원합니다.",
+  "concepts": [
+    {
+      "term": "Recording",
+      "description": "마이크 입력을 받아 오디오 파일로 저장하는 기능입니다. 녹음 품질, 포맷, 샘플레이트 등을 설정할 수 있으며, 녹음 중 실시간 메터링 정보도 얻을 수 있습니다."
+    },
+    {
+      "term": "Sound",
+      "description": "오디오 파일이나 URI를 로드하여 재생하는 객체입니다. 재생 위치, 볼륨, 반복 여부 등을 제어하고 재생 상태 이벤트를 수신할 수 있습니다."
+    },
+    {
+      "term": "Audio Mode",
+      "description": "앱 전체의 오디오 동작 방식을 정의하는 설정입니다. 다른 앱의 오디오와 믹싱 여부, 스피커 출력 여부, 무음 모드 동작 등을 결정합니다."
+    },
+    {
+      "term": "Metering",
+      "description": "녹음 중 실시간으로 음량 레벨을 측정하는 기능입니다. 음성이 입력되고 있는지 시각적으로 표시하거나, 무음 구간을 감지하는 데 사용됩니다."
+    }
+  ],
+  "whenToUse": [
+    "Expo 기반 앱에서 음성 녹음이나 오디오 재생이 필요할 때",
+    "iOS와 Android 모두에서 동일한 코드로 오디오 기능을 구현하고 싶을 때",
+    "음성 메모, 팟캐스트 플레이어, 음성 인식 전처리 등 오디오 중심 기능을 만들 때"
+  ],
+  "example": {
+    "title": "기본 음성 녹음 시작과 종료",
+    "language": "javascript",
+    "code": "import { Audio } from 'expo-av';\n\n// 권한 요청 및 녹음 시작\nconst startRecording = async () => {\n  await Audio.requestPermissionsAsync();\n  await Audio.setAudioModeAsync({\n    allowsRecordingIOS: true,\n    playsInSilentModeIOS: true,\n  });\n  \n  const { recording } = await Audio.Recording.createAsync(\n    Audio.RecordingOptionsPresets.HIGH_QUALITY\n  );\n  return recording;\n};\n\n// 녹음 종료 및 파일 URI 얻기\nconst stopRecording = async (recording) => {\n  await recording.stopAndUnloadAsync();\n  const uri = recording.getURI();\n  return uri;\n};",
+    "description": "마이크 권한을 요청하고 오디오 모드를 설정한 뒤, 고품질로 녹음을 시작하고 종료하여 파일 경로를 얻는 기본 흐름입니다."
+  },
+  "pitfalls": [
+    "Audio Mode를 먼저 설정하지 않으면 녹음이 실패하거나 다른 앱 오디오가 중단될 수 있음",
+    "녹음 객체를 unload하지 않으면 메모리 누수가 발생하고 다음 녹음이 실패할 수 있음",
+    "iOS에서 백그라운드 녹음을 하려면 app.json에 별도 권한 설정이 필요함"
+  ],
+  "generatedAt": "2026-09-25T00:02:29.792Z"
+}
