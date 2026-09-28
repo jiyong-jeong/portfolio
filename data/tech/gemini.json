@@ -1,0 +1,47 @@
+{
+  "slug": "gemini",
+  "name": "Gemini",
+  "category": "backend",
+  "tagline": "Google이 개발한 멀티모달 AI 모델로, 텍스트·이미지·오디오·영상을 이해하고 생성하는 플랫폼",
+  "definition": "Gemini는 Google DeepMind가 개발한 대규모 언어 모델(LLM) 시리즈로, 텍스트뿐 아니라 이미지, 오디오, 비디오를 함께 입력받아 처리할 수 있는 멀티모달 AI입니다. 단순 대화 생성을 넘어 음성 인식, 이미지 분석, 영역 감지, 생성형 편집 등 다양한 작업을 하나의 모델 안에서 수행할 수 있도록 설계되었습니다. Google Cloud의 Vertex AI 또는 Gemini API를 통해 접근할 수 있으며, 성능과 속도에 따라 여러 변형 모델(Flash, Pro 등)을 제공합니다.",
+  "concepts": [
+    {
+      "term": "Multimodal",
+      "description": "텍스트, 이미지, 오디오, 영상 등 여러 종류의 입력을 동시에 받아들이고 이해할 수 있는 능력. Gemini는 하나의 프롬프트 안에서 이미지와 텍스트를 함께 전달받아 답변을 생성할 수 있습니다."
+    },
+    {
+      "term": "Model Variant",
+      "description": "동일한 아키텍처를 기반으로 성능, 속도, 비용을 조정한 여러 버전의 모델. Flash는 빠른 응답에 최적화되어 있고, Pro는 복잡한 추론 작업에 적합하며, Ultra는 가장 높은 성능을 제공합니다."
+    },
+    {
+      "term": "Function Calling",
+      "description": "모델이 외부 API나 도구를 호출할 수 있도록 함수 시그니처를 정의하고, 응답에서 구조화된 호출 명령을 반환받는 기능. 채팅봇이 날씨 API를 호출하거나 데이터베이스를 조회하는 등의 작업에 활용됩니다."
+    },
+    {
+      "term": "Grounding",
+      "description": "모델이 실시간 웹 검색 결과나 외부 문서를 참조해 답변의 정확성과 최신성을 높이는 기법. 환각(hallucination)을 줄이고 신뢰할 수 있는 출처 기반 응답을 생성합니다."
+    },
+    {
+      "term": "Safety Settings",
+      "description": "유해한 콘텐츠(폭력, 성적 내용, 혐오 발언 등)를 필터링하는 임계값을 설정하는 옵션. 각 카테고리별로 차단 수위를 조정해 애플리케이션의 안전성을 제어합니다."
+    }
+  ],
+  "whenToUse": [
+    "이미지를 분석하거나 음성을 텍스트로 변환하는 등 여러 형식의 데이터를 하나의 모델로 처리해야 할 때",
+    "Google Cloud 생태계와 통합이 쉬운 AI 서비스가 필요할 때",
+    "빠른 응답 속도가 중요한 실시간 대화형 애플리케이션을 만들 때",
+    "함수 호출을 통해 외부 시스템과 연동하는 AI 에이전트를 구축할 때"
+  ],
+  "example": {
+    "title": "텍스트와 이미지를 함께 분석하는 기본 요청",
+    "language": "python",
+    "code": "import google.generativeai as genai\nfrom PIL import Image\n\n# API 키 설정\ngenai.configure(api_key=\"YOUR_API_KEY\")\n\n# 모델 선택\nmodel = genai.GenerativeModel('gemini-1.5-flash')\n\n# 이미지 로드\nimage = Image.open('photo.jpg')\n\n# 멀티모달 프롬프트 전송\nresponse = model.generate_content([\n    \"이 사진에서 사람이 몇 명 있나요?\",\n    image\n])\n\nprint(response.text)",
+    "description": "텍스트 질문과 이미지를 함께 전달해 모델이 이미지 내용을 분석하고 자연어로 답변을 생성하는 예시입니다."
+  },
+  "pitfalls": [
+    "무료 할당량을 초과하면 API 호출이 실패하므로, 프로덕션 환경에서는 반드시 요금제와 속도 제한을 확인해야 합니다",
+    "Safety Settings를 너무 낮게 설정하면 유해 콘텐츠가 반환될 수 있고, 너무 높게 설정하면 정상 요청도 차단될 수 있습니다",
+    "스트리밍 응답을 사용할 때 네트워크 오류 처리를 누락하면 불완전한 응답이 노출될 수 있습니다"
+  ],
+  "generatedAt": "2026-09-28T00:02:44.745Z"
+}

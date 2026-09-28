@@ -1,0 +1,47 @@
+{
+  "slug": "expo-media-library",
+  "name": "Expo Media Library",
+  "category": "frontend",
+  "tagline": "Expo 앱에서 기기의 사진과 동영상 라이브러리에 접근하고 관리하는 라이브러리",
+  "definition": "Expo Media Library는 React Native 기반 Expo 앱에서 사용자 기기의 미디어 라이브러리(사진, 동영상)를 읽고 쓰고 관리할 수 있게 해주는 모듈입니다. 네이티브 플랫폼(iOS Photos, Android MediaStore)의 복잡한 권한 및 API를 추상화하여 크로스 플랫폼 인터페이스를 제공합니다. 앱에서 생성한 콘텐츠를 기기 앨범에 저장하거나, 사용자가 보유한 미디어를 불러와 처리해야 하는 모바일 앱 개발에 필수적입니다.",
+  "concepts": [
+    {
+      "term": "Asset",
+      "description": "라이브러리에 저장된 개별 미디어 파일(사진 또는 동영상)을 나타내는 객체입니다. URI, 파일명, 생성 시간, 미디어 타입 등의 메타데이터를 포함합니다."
+    },
+    {
+      "term": "Album",
+      "description": "여러 Asset을 그룹화한 컬렉션으로, iOS의 앨범이나 Android의 폴더에 대응됩니다. 앱이 생성한 커스텀 앨범을 만들어 미디어를 분류할 수 있습니다."
+    },
+    {
+      "term": "Permission",
+      "description": "미디어 라이브러리 접근 전에 반드시 사용자로부터 얻어야 하는 권한입니다. 읽기 전용 권한과 쓰기(저장/삭제) 권한을 구분하여 요청합니다."
+    },
+    {
+      "term": "createAssetAsync",
+      "description": "로컬 파일 URI를 받아 기기의 미디어 라이브러리에 새 Asset으로 저장하는 메서드입니다. 앱에서 생성하거나 편집한 이미지, 동영상을 앨범에 저장할 때 사용합니다."
+    },
+    {
+      "term": "getAssetsAsync",
+      "description": "미디어 라이브러리에서 Asset 목록을 페이지네이션 방식으로 가져오는 메서드입니다. 미디어 타입, 정렬 순서, 앨범 등의 필터 옵션을 지정할 수 있습니다."
+    }
+  ],
+  "whenToUse": [
+    "앱에서 생성한 이미지나 동영상을 사용자 기기 앨범에 저장해야 할 때",
+    "갤러리에서 사진이나 동영상을 불러와 편집, 업로드, 분석 등의 처리를 해야 할 때",
+    "커스텀 앨범을 만들어 앱 관련 미디어를 별도로 관리하고 싶을 때",
+    "크로스 플랫폼 Expo 앱에서 네이티브 미디어 API를 간편하게 사용하고 싶을 때"
+  ],
+  "example": {
+    "title": "편집한 이미지를 앨범에 저장하기",
+    "language": "javascript",
+    "code": "import * as MediaLibrary from 'expo-media-library';\n\n// 1. 권한 요청\nconst { status } = await MediaLibrary.requestPermissionsAsync();\nif (status !== 'granted') {\n  alert('권한이 필요합니다');\n  return;\n}\n\n// 2. 로컬 파일을 미디어 라이브러리에 저장\nconst asset = await MediaLibrary.createAssetAsync(localImageUri);\n\n// 3. 커스텀 앨범 생성 또는 찾기\nconst album = await MediaLibrary.getAlbumAsync('MyAppPhotos');\nif (album == null) {\n  await MediaLibrary.createAlbumAsync('MyAppPhotos', asset, false);\n} else {\n  await MediaLibrary.addAssetsToAlbumAsync([asset], album, false);\n}",
+    "description": "권한을 요청한 뒤, 로컬 URI의 이미지를 미디어 라이브러리에 저장하고 특정 앨범에 추가하는 기본 흐름입니다."
+  },
+  "pitfalls": [
+    "권한 요청 없이 라이브러리 메서드를 호출하면 런타임 에러가 발생합니다",
+    "iOS와 Android의 앨범 개념이 다르므로 플랫폼별로 동작이 미묘하게 다를 수 있습니다",
+    "대량의 Asset을 한 번에 불러오면 메모리 문제가 생길 수 있으므로 페이지네이션을 사용해야 합니다"
+  ],
+  "generatedAt": "2026-09-28T00:02:42.715Z"
+}
