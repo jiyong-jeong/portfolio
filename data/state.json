@@ -2,11 +2,10 @@
   "version": 1,
   "repos": {
     "jira_auto_pilot": {
-      "pushedAt": "2026-09-21T07:53:47Z",
-      "analyzedAt": "2026-09-22T00:01:39.243Z",
-      "status": "failed",
-      "failures": 10,
-      "error": "claude 종료 코드 1\n"
+      "pushedAt": "2026-10-07T05:25:50Z",
+      "analyzedAt": "2026-10-18T00:01:32.154Z",
+      "status": "ok",
+      "failures": 0
     },
     "racing-platform-backend-api-argocd-deploy-docs": {
       "pushedAt": "2026-05-13T21:07:56Z",
