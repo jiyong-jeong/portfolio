@@ -1,0 +1,47 @@
+{
+  "slug": "atlassian-mcp",
+  "name": "Atlassian MCP",
+  "category": "tool",
+  "tagline": "Claude Desktop이 Jira·Confluence 등 Atlassian 제품을 직접 제어할 수 있게 해주는 MCP 서버",
+  "definition": "Atlassian MCP는 Model Context Protocol을 구현한 서버로, Claude가 Jira 이슈 조회·생성·수정, Confluence 페이지 읽기·쓰기 등을 자연어 대화 중에 수행할 수 있도록 연결합니다. 개발자가 CLI나 브라우저를 오가지 않고 Claude와 대화만으로 이슈 트래킹, 문서 작성, 프로젝트 관리 작업을 처리할 수 있습니다. Atlassian REST API를 MCP 도구(tool)로 감싸 Claude에게 노출하는 방식으로 동작합니다.",
+  "concepts": [
+    {
+      "term": "MCP Server",
+      "description": "Claude가 외부 시스템과 상호작용할 수 있도록 도구(tool)와 리소스(resource)를 제공하는 프로세스입니다. Atlassian MCP는 Jira·Confluence API를 MCP 프로토콜로 변환해 노출합니다."
+    },
+    {
+      "term": "Tool",
+      "description": "Claude가 호출할 수 있는 함수입니다. Atlassian MCP는 이슈 생성(create_issue), 이슈 전환(transition_issue), 코멘트 추가(add_comment) 등의 도구를 제공합니다."
+    },
+    {
+      "term": "Resource",
+      "description": "Claude가 읽을 수 있는 데이터 소스입니다. 특정 Jira 이슈나 Confluence 페이지를 리소스로 등록하면 Claude가 내용을 컨텍스트에 포함할 수 있습니다."
+    },
+    {
+      "term": "API Token",
+      "description": "Atlassian 계정에서 발급받는 인증 토큰으로, MCP 서버가 사용자를 대신해 Jira·Confluence API를 호출할 때 사용됩니다."
+    },
+    {
+      "term": "JQL (Jira Query Language)",
+      "description": "Jira 이슈를 검색하기 위한 쿼리 언어입니다. Atlassian MCP의 search_issues 도구는 JQL을 받아 조건에 맞는 이슈 목록을 반환합니다."
+    }
+  ],
+  "whenToUse": [
+    "Jira 이슈를 Claude와 대화하며 조회·생성·수정하고 싶을 때",
+    "Claude에게 프로젝트 컨텍스트를 주고 자동으로 이슈를 정리하거나 상태를 전환시키고 싶을 때",
+    "Confluence 문서를 읽어 요약하거나, 새 페이지를 자연어 지시만으로 작성하고 싶을 때",
+    "티켓 기반 워크플로우를 LLM 에이전트가 자동 처리하는 파이프라인을 구축할 때"
+  ],
+  "example": {
+    "title": "Claude Desktop MCP 설정",
+    "language": "json",
+    "code": "{\n  \"mcpServers\": {\n    \"atlassian\": {\n      \"command\": \"npx\",\n      \"args\": [\n        \"-y\",\n        \"@modelcontextprotocol/server-atlassian\"\n      ],\n      \"env\": {\n        \"ATLASSIAN_INSTANCE_URL\": \"https://your-domain.atlassian.net\",\n        \"ATLASSIAN_USER_EMAIL\": \"your-email@example.com\",\n        \"ATLASSIAN_API_TOKEN\": \"your-api-token-here\"\n      }\n    }\n  }\n}",
+    "description": "Claude Desktop의 설정 파일에 Atlassian MCP 서버를 등록하면, Claude가 대화 중 Jira·Confluence 도구를 자동으로 사용할 수 있습니다."
+  },
+  "pitfalls": [
+    "API 토큰은 비밀번호가 아니라 Atlassian 계정 설정에서 별도로 생성해야 합니다",
+    "JQL 문법을 모르면 이슈 검색이 어려울 수 있으니, 기본 JQL 예시를 미리 준비하세요",
+    "Claude가 도구를 호출할 때마다 실제 API 요청이 발생하므로, 대량 작업 시 rate limit에 주의하세요"
+  ],
+  "generatedAt": "2026-10-26T00:01:59.703Z"
+}
