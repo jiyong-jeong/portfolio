@@ -1,36 +1,46 @@
 {
   "slug": "kyb-api",
   "repo": "kyb-api",
-  "title": "멀티테넌트 KYB 기업심사 REST API",
-  "summary": "Go/Echo 기반 멀티테넌트 KYB 기업심사 REST API — 7단계 신청 등록부터 3단계 심사, 외부 스크리닝 연동까지 처리",
-  "description": "Go 1.26과 Echo v4로 구현한 KYB(Know Your Business) 기업 실사 심사 REST API 서버다. 신청자(Applicant), 파트너(Partner), 공개(Public), 심사자(Reviewer), 관리자(Root) 5개 도메인으로 모듈을 분리하고, 각 도메인이 자체 controller/service/repository/dto 계층을 갖는 구조로 설계했다. 신청자는 7단계 온보딩 플로우를 거쳐 정보를 등록하고, 등록 완료 시 WLF 제재리스트 스크리닝이 비동기로 실행되며 심사 상태가 자동 전이된다. 심사는 First/Second/Third 3단계로 진행되며 전결 처리로 하위 단계를 생략할 수 있고, 상태머신으로 전이 규칙을 일원화해 관리한다. PostgreSQL을 주 저장소로 쓰고 NICE·DART·Upstage·WLF 등 다수의 외부 기업정보/OCR/스크리닝 서비스와 연동하며, 모든 데이터는 customerId 기반 멀티테넌시로 격리된다.",
+  "title": "기업심사(KYB) 자동화 REST API 서버",
+  "summary": "신청자·심사자·파트너가 함께 쓰는 기업심사(KYB) 업무를 Go와 Echo로 구현한 도메인 분리형 REST API 백엔드",
+  "description": "기업 고객의 실체와 실소유자를 확인하는 KYB(Know Your Business) 심사 업무를 처리하는 REST API 서버입니다. 신청자, 심사자, 파트너, 고객사 관리자, 비로그인 공개 흐름을 도메인별 모듈로 나누어 제공합니다. 사업자·법인등기 조회, 제재리스트 스크리닝, 부정 언론 분류, 서류와 신분증 OCR 같은 외부 서비스 연동을 어댑터 계층으로 분리했습니다. 주 저장소는 PostgreSQL이며, Docker 이미지로 빌드해 QA와 운영 환경에 배포하고 로그는 사이드카 방식으로 수집합니다.",
   "category": "백엔드",
-  "role": "백엔드 아키텍처 설계부터 도메인별 API 구현, NICE/DART/WLF/AWS 등 외부 연동, 배포·로깅 인프라 구성까지 전 영역을 담당했다.",
+  "role": "Go 기반 API 서버의 도메인 모듈, 외부 연동 어댑터, 배포 파이프라인 전반을 개발한 것으로 보입니다. 구체적인 담당 범위는 수집된 정보로 확인되지 않습니다.",
   "techStack": [
     {
       "name": "Go",
       "category": "language",
-      "usage": "전체 API 서버 구현 언어"
+      "usage": "API 서버 전체 구현 언어이며 저장소 코드의 대부분을 차지"
     },
     {
       "name": "Echo",
       "category": "framework",
-      "usage": "HTTP 라우팅 및 미들웨어 체인 구성"
+      "usage": "HTTP 라우팅과 미들웨어 체인 구성"
     },
     {
       "name": "PostgreSQL",
       "category": "database",
-      "usage": "주 데이터 저장소, 멀티테넌시 데이터 격리"
+      "usage": "심사 데이터를 저장하는 주 데이터베이스"
     },
     {
       "name": "MySQL",
       "category": "database",
-      "usage": "보조 DB, SQLC 코드 생성 대상"
+      "usage": "보조 DB로 사용하며 SQLC로 코드 생성"
+    },
+    {
+      "name": "Swagger",
+      "category": "tool",
+      "usage": "컨트롤러 주석 기반 API 문서 생성과 UI 제공"
+    },
+    {
+      "name": "JWT",
+      "category": "backend",
+      "usage": "RS256 서명 기반 사용자 인증"
     },
     {
       "name": "AWS S3",
       "category": "infra",
-      "usage": "첨부파일 AES-CBC 암호화 업로드 저장소"
+      "usage": "첨부 파일을 암호화하여 저장하는 객체 저장소"
     },
     {
       "name": "AWS SES",
@@ -38,108 +48,111 @@
       "usage": "HTML 템플릿 기반 이메일 발송"
     },
     {
+      "name": "Gemini",
+      "category": "data",
+      "usage": "신분증과 사업자 서류 OCR, 동일인 판단, 부정 언론 분류"
+    },
+    {
       "name": "Docker",
       "category": "devops",
-      "usage": "빌드·배포 이미지, LibreOffice 포함 런타임 구성"
+      "usage": "멀티 스테이지 빌드와 컨테이너 배포"
     },
     {
-      "name": "Swagger",
-      "category": "tool",
-      "usage": "OpenAPI 스펙 자동 생성 및 API 문서화"
-    },
-    {
-      "name": "JWT",
-      "category": "backend",
-      "usage": "RS256 기반 인증 토큰 발급/검증"
+      "name": "GitHub Actions",
+      "category": "devops",
+      "usage": "QA와 운영 배포 및 Docker 이미지 게시 워크플로우"
     },
     {
       "name": "Fluent Bit",
-      "category": "devops",
-      "usage": "로그 수집 사이드카, Loki로 전송"
+      "category": "infra",
+      "usage": "사이드카로 컨테이너 로그를 수집해 Loki로 전송"
     },
     {
-      "name": "SQLC",
-      "category": "tool",
-      "usage": "MySQL 스키마 기반 타입 안전 코드 생성"
-    },
-    {
-      "name": "golangci-lint",
+      "name": "Testcontainers",
       "category": "testing",
-      "usage": "정적 분석 및 린트 검증"
+      "usage": "PostgreSQL 기반 통합 테스트 실행"
     }
   ],
   "highlights": [
-    "모든 저장소 메서드가 customerId를 받아 고객사별 데이터를 완전히 격리하는 멀티테넌시 구조",
-    "7단계 신청 등록 완료 시 WLF 제재리스트 스크리닝이 비동기로 실행되고 상태가 자동 전이됨",
-    "First/Second/Third 3단계 심사와 전결 생략을 지원하는 별도 상태머신 계층 설계",
-    "파트너 API는 X-Partner-Key 인증, IP allowlist, 호출 감사 로그로 별도 보안 체계 구성",
-    "NICE, DART, Upstage OCR, WLF 등 다수의 외부 기업정보 서비스를 어댑터 계층으로 통합"
+    "신청자·심사자·파트너·공개 영역을 apps 하위 도메인 모듈로 분리",
+    "수동 DI와 도메인별 Register 함수로 라우트와 의존성을 명시적으로 구성",
+    "WLF, 사업자 조회, 법인등기, GLEIF 등 외부 API를 어댑터 계층으로 격리",
+    "Gemini 기반 신분증과 서류 OCR 및 입력값 대조 판정 파이프라인",
+    "Fluent Bit 사이드카와 json-file 드라이버로 로그 유실을 방어"
   ],
   "challenges": [
     {
-      "problem": "주주명부 .doc 파일을 OCR용 PDF로 변환할 때 한글 폰트가 없어 텍스트가 깨져 OCR이 실패함",
-      "solution": "Dockerfile에 LibreOffice와 나눔폰트를 포함시켜 한글이 정상 렌더링되는 PDF 변환 환경을 구성"
+      "problem": "주주명부 .doc 파일을 PDF로 변환해 OCR할 때 한글 글꼴이 없으면 한글이 깨져 OCR이 실패함",
+      "solution": "런타임 이미지에 LibreOffice Writer와 나눔 글꼴을 설치해 변환 단계에서 한글이 정상 출력되도록 함"
     },
     {
-      "problem": "원격 로그 수집기(Loki) 장애 시 컨테이너 로그가 유실될 위험",
-      "solution": "json-file 드라이버와 Fluent Bit 사이드카, named volume 버퍼를 조합해 장애 시에도 로컬에 버퍼링 후 재전송"
+      "problem": "로그 수집기가 중단되거나 Loki에 장애가 생겨도 애플리케이션 로그를 잃지 않아야 함",
+      "solution": "json-file 드라이버로 디스크를 버퍼로 삼고, Fluent Bit 사이드카가 체크포인트와 영속 버퍼를 유지하며 재시도하도록 구성"
+    },
+    {
+      "problem": "금융위 고시 명단 CSV처럼 규제 데이터를 한 사람이 바꾸면 오류가 검증 없이 반영될 수 있음",
+      "solution": "PR 템플릿에 작성자와 승인자를 분리하고 원본 대조 체크리스트를 두었으며, 형식 검사 테스트를 함께 둠"
     }
   ],
   "diagrams": [
     {
-      "title": "도메인 모듈 아키텍처",
-      "description": "5개 도메인 모듈과 공용 lib, 외부 연동 계층이 어떻게 연결되는지 보여준다.",
+      "title": "전체 시스템 구조",
+      "description": "클라이언트 요청이 도메인 모듈과 공용 라이브러리를 거쳐 데이터 저장소와 외부 서비스로 이어지는 구조입니다.",
       "type": "architecture",
-      "mermaid": "flowchart TD\n  Client[\"클라이언트 (Applicant/Partner/Reviewer/Root)\"]\n  Router[\"Echo Router\"]\n  Applicant[\"apps/applicant\"]\n  Partner[\"apps/partner\"]\n  Public[\"apps/public\"]\n  Reviewer[\"apps/reviewer\"]\n  Root[\"apps/root\"]\n  Lib[\"lib (config/auth/db/apperror)\"]\n  External[\"external (NICE/DART/WLF/AWS/Upstage)\"]\n  DB[\"PostgreSQL\"]\n  Client --> Router\n  Router --> Applicant\n  Router --> Partner\n  Router --> Public\n  Router --> Reviewer\n  Router --> Root\n  Applicant --> Lib\n  Partner --> Lib\n  Reviewer --> Lib\n  Root --> Lib\n  Lib --> DB\n  Applicant --> External\n  Reviewer --> External\n  Root --> External"
+      "mermaid": "flowchart TD\n  C[\"클라이언트\"] --> R[\"Echo 라우터와 미들웨어\"]\n  R --> A[\"applicant 도메인\"]\n  R --> P[\"partner 도메인\"]\n  R --> V[\"reviewer 도메인\"]\n  R --> U[\"public 도메인\"]\n  A --> L[\"lib 공용 패키지\"]\n  P --> L\n  V --> L\n  U --> L\n  L --> D[\"PostgreSQL\"]\n  L --> E[\"external 어댑터\"]\n  E --> X[\"제재 스크리닝 및 기업 조회 API\"]\n  E --> G[\"Gemini OCR 및 판단\"]\n  E --> S[\"AWS S3 와 SES\"]"
     },
     {
-      "title": "신청자 7단계 등록 플로우",
-      "description": "신청자가 심사에 필요한 정보를 등록하는 7단계 과정과 등록 이후 자동 스크리닝 흐름을 보여준다.",
+      "title": "배포 및 로그 수집 구성",
+      "description": "Docker 이미지로 배포된 API 컨테이너의 로그를 Fluent Bit 사이드카가 수집해 Loki로 보내는 흐름입니다.",
+      "type": "deployment",
+      "mermaid": "flowchart LR\n  GH[\"GitHub Actions\"] --> IMG[\"Docker 이미지\"]\n  IMG --> API[\"kyb-api 컨테이너\"]\n  API --> LOG[\"json-file 로그\"]\n  LOG --> FB[\"Fluent Bit 사이드카\"]\n  FB --> LK[\"Loki\"]"
+    },
+    {
+      "title": "도메인 계층 흐름",
+      "description": "각 도메인 모듈 내부에서 요청이 컨트롤러부터 저장소까지 전달되는 계층 구조입니다.",
       "type": "flow",
-      "mermaid": "flowchart LR\n  A[\"사전안내(토큰생성)\"] --> B[\"약관동의\"]\n  B --> C[\"기본정보\"]\n  C --> D[\"상세정보(정관/고유번호증)\"]\n  D --> E[\"실제소유자(주주명부)\"]\n  E --> F[\"이사진(사진)\"]\n  F --> G[\"KYC/최종등록\"]\n  G --> H[\"WLF 스크리닝(비동기)\"]\n  H --> I[\"상태 1→2→3→4 자동 전이\"]"
+      "mermaid": "flowchart LR\n  H[\"controller\"] --> DT[\"dto 검증\"]\n  DT --> SV[\"service\"]\n  SV --> RP[\"repository\"]\n  RP --> DB[\"PostgreSQL\"]\n  SV --> EX[\"external 어댑터\"]"
     }
   ],
   "keywords": [
+    "kyb",
     "go",
     "echo",
-    "postgresql",
-    "kyb",
-    "kyc",
-    "multitenant",
     "rest-api",
-    "jwt",
+    "postgresql",
+    "ocr",
     "screening",
-    "aws"
+    "fluent-bit",
+    "swagger",
+    "docker"
   ],
   "links": {
-    "repo": "https://github.com/jiyong-jeong/kyb-api",
+    "repo": null,
     "homepage": null
   },
   "metrics": {
     "stars": 0,
     "forks": 0,
     "watchers": 0,
-    "sizeKb": 2776,
+    "sizeKb": 50597,
     "openIssues": 0,
     "languages": {
-      "Go": 3234577,
-      "Python": 152303,
-      "HCL": 113544,
-      "Shell": 90450,
-      "PLpgSQL": 53961,
-      "HTML": 24877,
-      "Makefile": 9267,
-      "Dockerfile": 749
+      "Go": 9547593,
+      "SQL": 314458,
+      "HTML": 301530,
+      "HCL": 215767,
+      "Python": 152309,
+      "Shell": 91492
     },
     "topics": [],
     "primaryLanguage": "Go",
     "license": null
   },
   "dates": {
-    "createdAt": "2026-07-27T01:43:47Z",
-    "updatedAt": "2026-09-22T02:11:08Z",
-    "pushedAt": "2026-09-22T02:11:01Z",
-    "analyzedAt": "2026-09-22T02:12:55.261Z"
+    "createdAt": "2026-03-06T19:34:00+09:00",
+    "updatedAt": "2026-10-27T14:44:57+09:00",
+    "pushedAt": "2026-10-27T14:44:57+09:00",
+    "analyzedAt": "2026-10-27T05:49:41.057Z"
   },
   "featured": true
 }

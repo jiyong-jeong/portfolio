@@ -1,0 +1,47 @@
+{
+  "slug": "sheetjs",
+  "name": "SheetJS",
+  "category": "frontend",
+  "tagline": "엑셀·CSV 등 스프레드시트 파일을 JavaScript로 읽고 쓰는 라이브러리",
+  "definition": "SheetJS는 XLSX, XLS, CSV 같은 다양한 스프레드시트 형식을 JavaScript 환경에서 파싱하고 생성하는 라이브러리입니다. 브라우저와 Node.js에서 모두 동작하며 별도의 Excel 설치나 서버 측 변환 없이 파일을 다룰 수 있습니다. 서로 다른 파일 포맷을 하나의 공통 데이터 구조로 다루게 해 주어, 엑셀 업로드·다운로드 기능을 직접 구현하는 부담을 줄여 줍니다.",
+  "concepts": [
+    {
+      "term": "Workbook",
+      "description": "엑셀 파일 하나에 해당하는 최상위 객체입니다. 여러 시트의 이름 목록(SheetNames)과 시트 데이터(Sheets)를 함께 담고 있습니다."
+    },
+    {
+      "term": "Worksheet",
+      "description": "Workbook 안의 개별 시트입니다. 'A1' 같은 셀 주소를 키로, 셀 객체를 값으로 갖는 객체로 표현됩니다."
+    },
+    {
+      "term": "Cell Object",
+      "description": "셀 하나의 값(v), 타입(t), 서식이 적용된 텍스트(w) 등을 담은 객체입니다. 날짜·숫자·문자열 구분도 이 타입 정보로 이뤄집니다."
+    },
+    {
+      "term": "read / write",
+      "description": "파일 데이터(ArrayBuffer, 바이너리 문자열 등)를 Workbook으로 변환하는 것이 read, 반대로 Workbook을 파일 형식으로 직렬화하는 것이 write입니다."
+    },
+    {
+      "term": "Utils (sheet_to_json 등)",
+      "description": "Worksheet와 JSON 배열, 2차원 배열, CSV 사이를 변환하는 헬퍼 모음입니다. 대부분의 업무 코드는 이 변환 함수를 중심으로 작성됩니다."
+    }
+  ],
+  "whenToUse": [
+    "브라우저에서 사용자가 올린 엑셀 파일을 바로 파싱해야 할 때",
+    "서버 없이 클라이언트에서 표 데이터를 엑셀로 내려받게 할 때",
+    "XLSX, XLS, CSV 등 여러 형식을 하나의 코드로 처리해야 할 때",
+    "대량 데이터 일괄 반입 전에 화면에서 미리보기·검증을 하고 싶을 때"
+  ],
+  "example": {
+    "title": "업로드한 엑셀 파일을 JSON 배열로 변환",
+    "language": "javascript",
+    "code": "import * as XLSX from 'xlsx';\n\nasync function parseExcel(file) {\n  // File 객체를 ArrayBuffer로 읽어 Workbook으로 파싱\n  const buffer = await file.arrayBuffer();\n  const workbook = XLSX.read(buffer, { type: 'array' });\n\n  // 첫 번째 시트를 선택\n  const sheetName = workbook.SheetNames[0];\n  const sheet = workbook.Sheets[sheetName];\n\n  // 첫 행을 헤더로 삼아 객체 배열로 변환\n  const rows = XLSX.utils.sheet_to_json(sheet, { defval: '' });\n  return rows;\n}",
+    "description": "input[type=file]로 받은 파일을 ArrayBuffer로 읽어 Workbook으로 만든 뒤, 첫 시트를 헤더 기준 JSON 객체 배열로 바꿉니다. 이후 검증이나 API 전송에 그대로 쓸 수 있습니다."
+  },
+  "pitfalls": [
+    "엑셀 날짜는 기본적으로 일련번호 숫자로 읽혀 cellDates 옵션 등 별도 처리가 필요합니다",
+    "시트 전체를 메모리에 올리므로 매우 큰 파일은 브라우저에서 느려지거나 멈출 수 있습니다",
+    "sheet_to_json은 빈 셀을 건너뛰므로 defval 없이는 컬럼 누락이 생길 수 있습니다"
+  ],
+  "generatedAt": "2026-10-27T05:51:08.491Z"
+}

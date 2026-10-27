@@ -1,0 +1,51 @@
+{
+  "slug": "shadcn-ui",
+  "name": "shadcn/ui",
+  "category": "frontend",
+  "tagline": "복사해서 내 프로젝트에 직접 소유하는 접근성 기반 React UI 컴포넌트 모음",
+  "definition": "shadcn/ui는 npm 패키지로 설치하는 일반적인 컴포넌트 라이브러리가 아니라, 잘 만들어진 컴포넌트의 소스 코드를 CLI로 내 프로젝트에 복사해 주는 방식의 UI 코드 배포 도구입니다. 접근성이 확보된 헤드리스 프리미티브 위에 Tailwind CSS로 스타일을 입혀 두었기 때문에, 라이브러리의 스타일 제약이나 오버라이드 문제 없이 코드를 직접 수정해 디자인 시스템의 기반으로 삼을 수 있습니다.",
+  "concepts": [
+    {
+      "term": "Copy & Own",
+      "description": "컴포넌트를 의존성으로 설치하지 않고 소스 파일로 프로젝트에 가져옵니다. 이후 코드의 수정과 유지보수는 사용하는 팀이 책임집니다."
+    },
+    {
+      "term": "CLI",
+      "description": "init으로 프로젝트 설정을 만들고 add 명령으로 원하는 컴포넌트 파일만 지정된 경로에 추가하는 명령줄 도구입니다."
+    },
+    {
+      "term": "Primitive",
+      "description": "키보드 조작, 포커스 관리, ARIA 속성 같은 동작과 접근성을 담당하는 스타일 없는 컴포넌트 계층입니다. Radix UI나 Base UI 같은 헤드리스 라이브러리가 이 역할을 합니다."
+    },
+    {
+      "term": "cva (class-variance-authority)",
+      "description": "variant, size 같은 속성 조합에 따라 Tailwind 클래스를 선택하는 함수입니다. 버튼 같은 컴포넌트의 변형을 선언적으로 정의할 때 사용합니다."
+    },
+    {
+      "term": "cn 유틸리티",
+      "description": "clsx와 tailwind-merge를 합친 헬퍼 함수입니다. 조건부 클래스를 합치고 충돌하는 Tailwind 클래스는 나중 값이 이기도록 정리합니다."
+    },
+    {
+      "term": "Design Token",
+      "description": "색상, 반경 등의 값을 CSS 변수로 정의해 두고 컴포넌트가 이를 참조하게 하는 방식입니다. 변수만 바꿔도 테마 전체를 조정할 수 있습니다."
+    }
+  ],
+  "whenToUse": [
+    "디자인 시스템을 직접 소유하고 자유롭게 수정하고 싶을 때",
+    "Tailwind CSS 기반 프로젝트에서 접근성 있는 UI를 빠르게 구성할 때",
+    "외부 라이브러리 스타일 오버라이드 싸움을 피하고 싶을 때",
+    "variant 구조가 명확한 사내 공통 컴포넌트를 만들 때"
+  ],
+  "example": {
+    "title": "cva로 variant를 정의한 Button",
+    "language": "typescript",
+    "code": "// 컴포넌트 추가: npx shadcn@latest add button\nimport * as React from \"react\"\nimport { cva, type VariantProps } from \"class-variance-authority\"\nimport { cn } from \"@/lib/utils\"\n\nconst buttonVariants = cva(\n  \"inline-flex items-center justify-center rounded-md text-sm font-medium\",\n  {\n    variants: {\n      variant: {\n        default: \"bg-primary text-primary-foreground\",\n        outline: \"border border-input bg-background\",\n      },\n      size: { default: \"h-9 px-4\", sm: \"h-8 px-3\" },\n    },\n    defaultVariants: { variant: \"default\", size: \"default\" },\n  }\n)\n\ninterface ButtonProps\n  extends React.ComponentProps<\"button\">,\n    VariantProps<typeof buttonVariants> {}\n\nexport function Button({ className, variant, size, ...props }: ButtonProps) {\n  return <button className={cn(buttonVariants({ variant, size }), className)} {...props} />\n}",
+    "description": "CLI로 추가되는 컴포넌트의 기본 구조입니다. cva가 variant와 size 조합에 맞는 클래스를 고르고, cn이 외부에서 전달한 className을 병합합니다."
+  },
+  "pitfalls": [
+    "npm 패키지가 아니므로 업스트림 개선 사항이 자동으로 반영되지 않습니다",
+    "복사된 코드를 마구 수정하면 일관성이 깨지므로 variant 규칙을 정해야 합니다",
+    "프리미티브 라이브러리마다 API가 달라 문서 예제를 그대로 옮기면 동작이 다를 수 있습니다"
+  ],
+  "generatedAt": "2026-10-27T05:51:35.213Z"
+}

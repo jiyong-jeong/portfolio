@@ -1,0 +1,51 @@
+{
+  "slug": "junit",
+  "name": "JUnit",
+  "category": "testing",
+  "tagline": "자바 코드의 단위 테스트를 작성하고 실행하는 테스트 프레임워크",
+  "definition": "JUnit은 자바 애플리케이션의 동작을 코드로 검증하기 위한 테스트 프레임워크입니다. 어노테이션으로 테스트 메서드를 표시하고 단언문(assertion)으로 기대 결과를 확인하며, 실행기가 이를 찾아 수행하고 성공·실패를 보고합니다. 수동 확인에 의존하지 않고 변경할 때마다 같은 검증을 반복 실행할 수 있게 하려고 만들어졌습니다. 빌드 도구와 IDE, CI 환경에서 폭넓게 지원됩니다.",
+  "concepts": [
+    {
+      "term": "Test",
+      "description": "@Test 어노테이션이 붙은 메서드로, 검증의 최소 단위입니다. 예외 없이 끝나면 성공, 단언 실패나 예외가 발생하면 실패로 처리됩니다."
+    },
+    {
+      "term": "Assertion",
+      "description": "실제 결과가 기대와 같은지 확인하는 검증 메서드입니다. assertEquals, assertTrue, assertThrows 등이 있습니다."
+    },
+    {
+      "term": "Lifecycle",
+      "description": "테스트 전후에 실행되는 준비·정리 단계를 정의하는 훅입니다. @BeforeEach, @AfterEach, @BeforeAll, @AfterAll 어노테이션으로 지정합니다."
+    },
+    {
+      "term": "Parameterized Test",
+      "description": "하나의 테스트 로직을 여러 입력값으로 반복 실행하는 방식입니다. 중복 코드를 줄이면서 다양한 경우를 검증할 수 있습니다."
+    },
+    {
+      "term": "Extension",
+      "description": "테스트 실행 과정에 끼어들어 기능을 확장하는 메커니즘입니다. 스프링 테스트 지원이나 목(mock) 라이브러리 연동 등이 이 방식을 사용합니다."
+    },
+    {
+      "term": "Test Engine",
+      "description": "테스트를 발견하고 실행하는 플랫폼 상의 구성요소입니다. 다른 테스트 프레임워크도 엔진을 제공해 같은 실행 환경에서 돌릴 수 있습니다."
+    }
+  ],
+  "whenToUse": [
+    "자바 로직을 빠르게 반복 검증하는 단위 테스트가 필요할 때",
+    "빌드 도구와 CI에서 회귀 테스트를 자동으로 실행하고 싶을 때",
+    "여러 데이터베이스 환경에서 같은 검증을 반복해 확인할 때",
+    "스프링 등 주변 생태계와 통합된 테스트 환경이 필요할 때"
+  ],
+  "example": {
+    "title": "기본 단위 테스트",
+    "language": "java",
+    "code": "import static org.junit.jupiter.api.Assertions.*;\n\nimport org.junit.jupiter.api.BeforeEach;\nimport org.junit.jupiter.api.Test;\n\nclass CalculatorTest {\n\n    private Calculator calculator;\n\n    @BeforeEach\n    void setUp() {\n        calculator = new Calculator();\n    }\n\n    @Test\n    void addsTwoNumbers() {\n        assertEquals(5, calculator.add(2, 3));\n    }\n\n    @Test\n    void rejectsDivisionByZero() {\n        assertThrows(ArithmeticException.class, () -> calculator.divide(1, 0));\n    }\n}",
+    "description": "각 테스트 전에 Calculator 객체를 새로 만들고, 덧셈 결과와 0으로 나눌 때의 예외 발생을 검증합니다. Calculator는 add와 divide(int 나눗셈)를 가진 사용자 정의 클래스라고 가정합니다."
+  },
+  "pitfalls": [
+    "테스트 간 상태를 공유하면 실행 순서에 따라 결과가 달라질 수 있습니다",
+    "JUnit 4와 5는 패키지와 어노테이션이 달라 섞어 쓰면 테스트가 실행되지 않습니다",
+    "단언문의 기대값과 실제값 순서를 바꾸면 실패 메시지가 혼동됩니다"
+  ],
+  "generatedAt": "2026-10-27T05:51:08.197Z"
+}

@@ -1,0 +1,139 @@
+{
+  "slug": "kyb-devops",
+  "repo": "kyb-devops",
+  "title": "eKYB 서비스 CI/CD·운영 인프라 관리",
+  "summary": "eKYB 제품군의 QA·prod 배포 자동화, DB 프로비저닝, 로그 관측성, E2E 검증을 한곳에서 관리하는 DevOps 레포",
+  "description": "eKYB 제품군(백엔드 API, 클라이언트 SPA, 루트 관리자 SPA)을 QA와 prod 두 환경에서 운영하기 위한 배포·인프라·문서 저장소입니다. GitHub Actions의 self-hosted 러너가 사설망 안의 호스트에서 직접 배포를 수행하며, 앱별 dry-run 워크플로우로 배포 리허설도 할 수 있습니다. Docker Compose로 API, 클라이언트, PostgreSQL, Fluent Bit 사이드카를 한 프로젝트로 묶고, Python 스크립트로 DB·테넌트·관리자 계정 시드를 프로비저닝합니다. 로그는 Fluent Bit에서 Loki와 Grafana로 이어지며, 일회용 컨테이너 스택에서 UI E2E를 야간 실행하는 구조도 포함합니다. 현황 진단부터 Phase 0~4 로드맵까지 설계 문서로 정리해 두었습니다.",
+  "category": "인프라",
+  "role": "배포 워크플로우, 프로비저닝 스크립트, 관측성 구성, E2E 스택과 DevOps 설계 문서를 작성하고 관리했습니다. 수집된 정보만으로는 개별 기여 범위를 구분할 수 없습니다.",
+  "techStack": [
+    {
+      "name": "GitHub Actions",
+      "category": "devops",
+      "usage": "QA·prod 배포, dry-run 리허설, 야간 E2E 워크플로우 실행"
+    },
+    {
+      "name": "Docker Compose",
+      "category": "infra",
+      "usage": "API, 클라이언트, PostgreSQL, Fluent Bit을 단일 호스트 프로젝트로 구성"
+    },
+    {
+      "name": "PostgreSQL",
+      "category": "database",
+      "usage": "root DB와 테넌트별 물리 DB를 컨테이너 named volume으로 운용"
+    },
+    {
+      "name": "Fluent Bit",
+      "category": "infra",
+      "usage": "사이드카로 API 로그를 수집해 Loki로 전송하고 로컬 영속 버퍼 유지"
+    },
+    {
+      "name": "Loki",
+      "category": "infra",
+      "usage": "로그 저장소, 14일 보존"
+    },
+    {
+      "name": "Grafana",
+      "category": "infra",
+      "usage": "Loki 데이터소스 기반 로그 조회"
+    },
+    {
+      "name": "Python",
+      "category": "language",
+      "usage": "DB·테넌트 프로비저닝, 마이그레이션, 운영 통계 조회, 벤더 스텁"
+    },
+    {
+      "name": "Shell",
+      "category": "language",
+      "usage": "배포 업데이트, 마이그레이션, 러너 설정, 관측성 프로비저닝 스크립트"
+    },
+    {
+      "name": "Atlas",
+      "category": "database",
+      "usage": "멀티테넌트 DB 스키마 마이그레이션"
+    },
+    {
+      "name": "Playwright",
+      "category": "testing",
+      "usage": "일회용 스택 대상 UI E2E 테스트 실행"
+    },
+    {
+      "name": "SOPS",
+      "category": "devops",
+      "usage": "시크릿 암호화 커밋 방식을 문서로 설계"
+    }
+  ],
+  "highlights": [
+    "Fluent Bit 사이드카로 K8s DaemonSet 패턴을 Compose에 이식",
+    "json-file 디스크 버퍼와 5GB persistent buffer로 로그 유실 방어",
+    "self-hosted 러너로 VPN·SSH 없이 사설망 prod 자동 배포",
+    "latest 태그 거부와 fail-fast, healthcheck를 갖춘 배포 스크립트",
+    "일회용 컨테이너 스택에서 UI E2E를 야간 실행하고 종료 시 정리"
+  ],
+  "challenges": [
+    {
+      "problem": "prod 호스트가 사설망 뒤에 있어 GitHub-hosted 러너가 접근하지 못했고, 배포가 사실상 수동 SSH로 이뤄졌습니다.",
+      "solution": "prod 앱 호스트에 self-hosted 러너를 설치했습니다. 러너가 아웃바운드로만 GitHub에 연결하므로 태그 기반 배포 워크플로우와 dry-run을 로컬에서 실행할 수 있게 했습니다."
+    },
+    {
+      "problem": "Fluent Bit이 컨테이너 ID로 로그 경로를 찾기 때문에, 컨테이너가 재생성되면 수집 대상이 바뀝니다.",
+      "solution": "entrypoint가 Docker 소켓으로 컨테이너 이름을 질의해 현재 전체 ID를 해석하도록 했습니다. 체크포인트와 버퍼는 named volume에 영속시켰습니다."
+    },
+    {
+      "problem": "QA와 prod, 앱별 배포 방식이 달라 환경 간 불일치와 인지 부하가 컸습니다.",
+      "solution": "클라이언트 QA 방식(rsync와 update 스크립트)을 prod 러너와 환경만 바꿔 앱별 prod, dry-run 워크플로우로 추가했습니다. 통일 deploy 워크플로우는 후속 과제로 남아 있습니다."
+    }
+  ],
+  "diagrams": [
+    {
+      "title": "배포 및 로그 수집 구조",
+      "description": "self-hosted 러너가 앱 호스트에 배포하고, 앱 호스트의 로그가 관측성 호스트로 전달되는 흐름입니다.",
+      "type": "architecture",
+      "mermaid": "flowchart LR\n  GH[\"GitHub Actions\"] --> RUN[\"self-hosted 러너\"]\n  subgraph HOST[\"앱 호스트 (Docker Compose)\"]\n    API[\"kyb-api\"]\n    CLI[\"kyb-client\"]\n    PG[\"PostgreSQL\"]\n    FB[\"Fluent Bit 사이드카\"]\n  end\n  RUN --> HOST\n  API --> PG\n  API -.-> FB\n  FB --> LOKI[\"Loki\"]\n  LOKI --> GF[\"Grafana\"]"
+    },
+    {
+      "title": "CI와 CD 역할 분리 흐름",
+      "description": "소스 레포는 검증과 이미지 빌드를, 이 레포는 배포와 야간 E2E를 담당하는 흐름입니다.",
+      "type": "flow",
+      "mermaid": "flowchart TD\n  SRC[\"소스 레포 PR / push\"] --> CI[\"린트 · 테스트 · 빌드 체크\"]\n  CI --> PUB[\"태그 push 시 이미지 빌드\"]\n  PUB --> REG[\"이미지 레지스트리\"]\n  REG --> DRY[\"dry-run 리허설\"]\n  DRY --> DEP[\"QA / prod 배포\"]\n  DEP --> HC[\"healthcheck\"]\n  NIGHT[\"야간 E2E 스택\"] -.-> DEP"
+    }
+  ],
+  "keywords": [
+    "devops",
+    "github-actions",
+    "docker-compose",
+    "self-hosted-runner",
+    "postgresql",
+    "fluent-bit",
+    "loki",
+    "observability",
+    "e2e",
+    "multi-tenant"
+  ],
+  "links": {
+    "repo": null,
+    "homepage": null
+  },
+  "metrics": {
+    "stars": 0,
+    "forks": 0,
+    "watchers": 0,
+    "sizeKb": 558,
+    "openIssues": 0,
+    "languages": {
+      "Python": 104099,
+      "HTML": 84543,
+      "Shell": 67639
+    },
+    "topics": [],
+    "primaryLanguage": "Python",
+    "license": null
+  },
+  "dates": {
+    "createdAt": "2026-04-28T16:43:53+09:00",
+    "updatedAt": "2026-10-27T14:30:26+09:00",
+    "pushedAt": "2026-10-27T14:30:26+09:00",
+    "analyzedAt": "2026-10-27T05:50:55.652Z"
+  },
+  "featured": true
+}

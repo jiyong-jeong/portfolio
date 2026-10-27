@@ -1,0 +1,51 @@
+{
+  "slug": "loki",
+  "name": "Loki",
+  "category": "infra",
+  "tagline": "로그를 라벨 기준으로 인덱싱해 저렴하게 저장·조회하는 로그 집계 시스템",
+  "definition": "Loki는 Grafana Labs에서 만든 수평 확장형 로그 집계 시스템입니다. 로그 본문 전체를 색인하는 대신 라벨(메타데이터)만 인덱싱하고 본문은 압축된 청크로 저장해, 저장 비용과 운영 부담을 줄이도록 설계되었습니다. Prometheus와 유사한 라벨 모델을 사용하므로 메트릭과 로그를 같은 방식으로 탐색할 수 있고, Grafana와 자연스럽게 연동됩니다.",
+  "concepts": [
+    {
+      "term": "Label",
+      "description": "로그 스트림을 구분하는 키-값 쌍입니다(예: app, namespace, env). Loki는 이 라벨만 인덱싱하므로 라벨 설계가 조회 성능과 비용을 좌우합니다."
+    },
+    {
+      "term": "Stream",
+      "description": "동일한 라벨 조합을 가진 로그 라인의 연속입니다. 라벨 값이 하나라도 다르면 별개의 스트림이 됩니다."
+    },
+    {
+      "term": "Promtail / Agent",
+      "description": "각 노드나 컨테이너에서 로그를 수집해 라벨을 붙인 뒤 Loki로 전송하는 에이전트입니다. Promtail, Grafana Alloy 등이 이 역할을 합니다."
+    },
+    {
+      "term": "LogQL",
+      "description": "Loki의 쿼리 언어입니다. 라벨 셀렉터로 스트림을 고르고, 문자열 필터나 파서, 집계 함수로 로그를 걸러 내거나 메트릭처럼 계산합니다."
+    },
+    {
+      "term": "Chunk / Index",
+      "description": "로그 본문은 압축된 Chunk로, 라벨 정보는 작은 Index로 저장됩니다. 두 데이터는 로컬 디스크나 오브젝트 스토리지에 둘 수 있습니다."
+    },
+    {
+      "term": "Retention",
+      "description": "로그를 보관하는 기간 설정입니다. 보존 기간이 지난 데이터는 Compactor 등에 의해 삭제되어 저장 용량을 관리합니다."
+    }
+  ],
+  "whenToUse": [
+    "Grafana를 이미 쓰고 있어 로그와 메트릭을 한 화면에서 보고 싶을 때",
+    "전문 검색 엔진보다 낮은 비용과 단순한 운영이 필요할 때",
+    "쿠버네티스 파드 로그를 라벨 기반으로 모아 조회하고 싶을 때",
+    "오브젝트 스토리지에 로그를 저렴하게 장기 보관하고 싶을 때"
+  ],
+  "example": {
+    "title": "LogQL로 에러 로그 조회하기",
+    "language": "text",
+    "code": "# 라벨로 스트림 선택 후 문자열 필터\n{app=\"api\", env=\"prod\"} |= \"error\"\n\n# JSON 로그를 파싱해 필드 조건으로 필터\n{app=\"api\"} | json | level=\"error\"\n\n# 5분 단위 에러 로그 발생률(메트릭 쿼리)\nrate({app=\"api\"} |= \"error\" [5m])\n\n# 앱별 에러 건수 합계\nsum by (app) (count_over_time({env=\"prod\"} |= \"error\" [1h]))",
+    "description": "중괄호 안의 라벨 셀렉터로 스트림을 고른 뒤 필터와 파서를 파이프로 이어 붙입니다. rate, count_over_time 같은 함수를 쓰면 로그를 메트릭처럼 집계할 수도 있습니다."
+  },
+  "pitfalls": [
+    "사용자 ID나 요청 ID처럼 값이 무한한 항목을 라벨로 쓰면 스트림이 폭증해 성능이 떨어집니다",
+    "Loki는 본문을 색인하지 않으므로 라벨 없이 넓은 범위를 검색하면 느립니다",
+    "보존 기간은 기본으로 적용되지 않을 수 있어 Compactor 등 retention 설정을 따로 켜야 합니다"
+  ],
+  "generatedAt": "2026-10-27T05:51:32.360Z"
+}

@@ -1,0 +1,51 @@
+{
+  "slug": "nsis",
+  "name": "NSIS",
+  "category": "devops",
+  "tagline": "스크립트로 Windows 설치 프로그램(.exe)을 만드는 오픈소스 도구",
+  "definition": "NSIS(Nullsoft Scriptable Install System)는 Windows용 설치 프로그램을 스크립트로 정의하고 컴파일해 단일 실행 파일로 만드는 도구입니다. 파일 복사, 레지스트리 등록, 바로가기 생성, 제거 프로그램 구성 같은 반복 작업을 선언적으로 기술할 수 있습니다. 결과물이 작고 의존성이 적어, 별도 런타임 없이 배포할 수 있는 설치 파일이 필요할 때 사용합니다.",
+  "concepts": [
+    {
+      "term": "Script (.nsi)",
+      "description": "설치 프로그램의 동작과 구성을 기술하는 텍스트 파일입니다. makensis 컴파일러가 이 파일을 읽어 설치 exe를 생성합니다."
+    },
+    {
+      "term": "makensis",
+      "description": "NSIS 스크립트를 컴파일해 설치 프로그램 실행 파일을 만드는 명령줄 컴파일러입니다. CI 같은 자동화 환경에서도 호출할 수 있습니다."
+    },
+    {
+      "term": "Section",
+      "description": "설치 시 실제로 수행할 작업(파일 배치, 레지스트리 기록 등)을 묶은 단위입니다. 사용자가 선택할 수 있는 설치 구성 요소로도 쓰입니다."
+    },
+    {
+      "term": "Page",
+      "description": "설치 마법사의 화면 단계를 나타냅니다. 라이선스, 설치 경로 선택, 진행 상황, 완료 화면 등을 순서대로 지정합니다."
+    },
+    {
+      "term": "Function",
+      "description": "재사용 가능한 코드 블록입니다. .onInit 같은 이름의 콜백 함수는 설치 시작 시점 등 특정 이벤트에서 자동 호출됩니다."
+    },
+    {
+      "term": "Plugin / Include",
+      "description": "DLL 플러그인과 헤더(.nsh) 파일로 기능을 확장합니다. Modern UI 같은 매크로 모음이나 서비스 등록 기능을 추가할 때 사용합니다."
+    }
+  ],
+  "whenToUse": [
+    "Windows용 단일 exe 설치 파일을 직접 만들어야 할 때",
+    "설치 중 서비스 등록·레지스트리·방화벽 설정 등을 스크립트로 제어할 때",
+    "빌드 파이프라인에서 설치 파일을 자동 생성하고 싶을 때",
+    "런타임 의존성이 적고 가벼운 인스톨러가 필요할 때"
+  ],
+  "example": {
+    "title": "최소 설치 프로그램 스크립트",
+    "language": "text",
+    "code": "Name \"MyApp\"\nOutFile \"MyAppSetup.exe\"\nInstallDir \"$PROGRAMFILES64\\MyApp\"\nRequestExecutionLevel admin\n\nPage directory\nPage instfiles\nUninstPage uninstConfirm\nUninstPage instfiles\n\nSection \"Install\"\n  SetOutPath \"$INSTDIR\"\n  File \"myapp.exe\"\n  WriteUninstaller \"$INSTDIR\\Uninstall.exe\"\nSectionEnd\n\nSection \"Uninstall\"\n  Delete \"$INSTDIR\\myapp.exe\"\n  Delete \"$INSTDIR\\Uninstall.exe\"\n  RMDir \"$INSTDIR\"\nSectionEnd",
+    "description": "설치 경로 선택과 설치 진행 화면을 보여주고, myapp.exe를 복사한 뒤 제거 프로그램을 생성합니다. makensis로 컴파일하면 MyAppSetup.exe가 만들어집니다."
+  },
+  "pitfalls": [
+    "64비트 설치 경로는 $PROGRAMFILES64와 64비트 모드 설정을 명시해야 합니다",
+    "Uninstall 섹션에서 파일 삭제 목록을 빠뜨리면 제거 후 잔여 파일이 남습니다",
+    "관리자 권한 요청을 지정하지 않으면 Program Files 쓰기가 실패할 수 있습니다"
+  ],
+  "generatedAt": "2026-10-27T05:51:22.012Z"
+}

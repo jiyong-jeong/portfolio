@@ -1,0 +1,51 @@
+{
+  "slug": "powershell",
+  "name": "PowerShell",
+  "category": "devops",
+  "tagline": "객체 기반 파이프라인으로 시스템을 자동화하고 관리하는 셸이자 스크립트 언어",
+  "definition": "PowerShell은 명령줄 셸과 스크립트 언어를 결합한 자동화 도구입니다. 텍스트 대신 .NET 객체를 파이프라인으로 주고받기 때문에 출력 문자열을 파싱하지 않고도 속성을 바로 필터링하고 가공할 수 있습니다. Windows 서버 설치·설정·운영 작업을 반복 가능한 스크립트로 만들기 위해 설계되었고, 지금은 여러 운영체제에서 쓸 수 있습니다.",
+  "concepts": [
+    {
+      "term": "Cmdlet",
+      "description": "동사-명사 형식(Get-Process, Copy-Item 등)으로 이름 붙은 기본 명령 단위입니다. 이름 규칙이 일정해 명령을 추측하고 검색하기 쉽습니다."
+    },
+    {
+      "term": "Pipeline",
+      "description": "| 연산자로 한 명령의 출력 객체를 다음 명령의 입력으로 넘기는 구조입니다. 문자열이 아니라 객체가 흐르므로 속성 접근이 직접적입니다."
+    },
+    {
+      "term": "Object",
+      "description": "명령의 결과는 속성과 메서드를 가진 .NET 객체입니다. Select-Object, Where-Object 등으로 필요한 속성만 골라 다룹니다."
+    },
+    {
+      "term": "Provider",
+      "description": "파일 시스템, 레지스트리, 환경 변수 같은 데이터 저장소를 드라이브처럼 탐색하게 해 주는 추상화입니다. 같은 명령으로 서로 다른 저장소를 다룰 수 있습니다."
+    },
+    {
+      "term": "Module",
+      "description": "관련 cmdlet과 함수를 묶어 배포·재사용하는 단위입니다. Import-Module로 불러와 기능을 확장합니다."
+    },
+    {
+      "term": "Execution Policy",
+      "description": "스크립트 실행 허용 범위를 정하는 Windows의 안전장치입니다. 실수로 신뢰되지 않은 스크립트를 실행하는 것을 막는 용도이며, 완전한 보안 경계는 아닙니다."
+    }
+  ],
+  "whenToUse": [
+    "Windows 서버의 설치·설정 작업을 스크립트로 자동화할 때",
+    "파일·서비스·레지스트리 등을 일관된 문법으로 관리해야 할 때",
+    "백업, 복원, 롤백 같은 운영 절차를 반복 가능하게 만들 때",
+    "결과를 객체로 가공해 보고서나 점검 결과를 만들고 싶을 때"
+  ],
+  "example": {
+    "title": "디스크 사용량 점검 후 백업 폴더 정리",
+    "language": "text",
+    "code": "param(\n    [string]$BackupDir = 'C:\\Backup',\n    [int]$KeepDays = 7\n)\n\n$ErrorActionPreference = 'Stop'\n\n# 보관 기간이 지난 .zip 백업만 선택해 삭제\nGet-ChildItem -Path $BackupDir -Filter *.zip |\n    Where-Object { $_.LastWriteTime -lt (Get-Date).AddDays(-$KeepDays) } |\n    Remove-Item -Verbose\n\n# 남은 백업 크기를 MB 단위로 출력\nGet-ChildItem -Path $BackupDir -Filter *.zip |\n    Measure-Object -Property Length -Sum |\n    ForEach-Object { '{0:N1} MB' -f ($_.Sum / 1MB) }",
+    "description": "지정한 폴더에서 보관 기간이 지난 zip 백업을 찾아 삭제하고, 남은 백업의 총 크기를 출력합니다. 파이프라인으로 객체의 속성(LastWriteTime, Length)을 직접 다루는 방식을 보여줍니다."
+  },
+  "pitfalls": [
+    "오류가 나도 스크립트가 계속 진행될 수 있어 $ErrorActionPreference = 'Stop' 설정이 필요합니다",
+    "출력은 문자열이 아닌 객체라서 Format-Table 이후에는 추가 가공이 어렵습니다",
+    "Windows PowerShell과 PowerShell 7은 별개 실행 파일이라 동작 차이가 생길 수 있습니다"
+  ],
+  "generatedAt": "2026-10-27T05:51:21.376Z"
+}

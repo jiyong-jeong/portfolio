@@ -1,0 +1,153 @@
+{
+  "slug": "aml-lite",
+  "repo": "aml-lite",
+  "title": "설치형 AML 업무·전자결재 통합 서버",
+  "summary": "고객사 PC에 설치해 경보 심사, 의심거래보고(STR) 초안·검증, 규정·결재를 한 서버에서 처리하는 Java 기반 AML 솔루션",
+  "description": "AML Lite는 가상자산 커스터디 등 금융 고객사가 자체 PC에서 고객 위험평가, 명단 대사(WLF), 의심거래 탐지, 경보 심사와 승인, 보고서 생성까지 수행하도록 만든 설치형 AML 업무 프로그램입니다. JDK 내장 HttpServer와 H2 DB(또는 MySQL·MariaDB)로 구성된 단일 jar 서버에 정적 HTML/JS 화면이 붙고, 외부 API 없이 수신 PC가 만든 e-KYC 결과파일과 명단 파일을 반입하는 구조입니다. 같은 서버·로그인·DB 위에서 규정·교육·결재·평가를 다루는 AML Office 모듈이 동작하며, 처리 이력은 해시 체인으로 위변조를 탐지합니다. Windows 설치 파일(NSIS)과 백업·복원·업데이트·롤백 도구를 함께 제공합니다. 현재는 합성 자료로 검토하는 단계이며 실제 API 연동과 제출용 보고 규격 매핑은 남아 있습니다.",
+  "category": "백엔드",
+  "role": "서버, DB 스키마, 심사·결재 워크플로, 백업·복원과 Windows 설치 배포 체계를 포함한 제품 전반을 설계하고 구현했습니다.",
+  "techStack": [
+    {
+      "name": "Java",
+      "category": "language",
+      "usage": "JDK HttpServer 기반 서버, 탐지 규칙 엔진, 배치·복원 도구 구현"
+    },
+    {
+      "name": "Maven",
+      "category": "tool",
+      "usage": "컴파일, 전체 검사, shade 플러그인으로 실행 가능한 단일 jar 생성"
+    },
+    {
+      "name": "H2 Database",
+      "category": "database",
+      "usage": "설치형 기본 내장 DB(MySQL 호환 모드)"
+    },
+    {
+      "name": "MySQL",
+      "category": "database",
+      "usage": "서버형 구성에서 외부 DB로 사용"
+    },
+    {
+      "name": "MariaDB",
+      "category": "database",
+      "usage": "MariaDB Connector/J로 MySQL·MariaDB 공통 접속"
+    },
+    {
+      "name": "Flyway",
+      "category": "database",
+      "usage": "V*.sql 마이그레이션으로 테이블 구조 버전 관리"
+    },
+    {
+      "name": "JUnit",
+      "category": "testing",
+      "usage": "H2·MariaDB·MySQL 8에서 전체 검사 수백 건 실행"
+    },
+    {
+      "name": "JavaScript",
+      "category": "frontend",
+      "usage": "빌드 도구 없는 정적 화면과 서버 연동 브리지"
+    },
+    {
+      "name": "SheetJS",
+      "category": "frontend",
+      "usage": "엑셀 파일 반입"
+    },
+    {
+      "name": "jsPDF",
+      "category": "frontend",
+      "usage": "AML Office PDF 생성"
+    },
+    {
+      "name": "NSIS",
+      "category": "devops",
+      "usage": "Windows 설치 파일 제작"
+    },
+    {
+      "name": "PowerShell",
+      "category": "devops",
+      "usage": "설치·롤백·백업 복원·배포본 점검 스크립트"
+    },
+    {
+      "name": "Docker",
+      "category": "infra",
+      "usage": "개발서버용 멀티스테이지 이미지 빌드와 실행"
+    }
+  ],
+  "highlights": [
+    "단일 jar와 내장 H2로 고객사 PC 한 대에서 완결되는 설치형 구조",
+    "해시 체인 처리 이력으로 DB 직접 수정 시 위변조 탐지",
+    "결재를 서버 명령으로 처리하고 상신 원본·해시를 고정",
+    "manifest 기반 백업 세트와 실패 시 자동 원복되는 복원·롤백",
+    "H2·MariaDB·MySQL 8 세 DB에서 동일한 전체 검사 통과"
+  ],
+  "challenges": [
+    {
+      "problem": "인터넷이 차단된 AML PC에서 외부 e-KYC 결과와 명단 파일의 진위를 확인해야 했습니다.",
+      "solution": "PC는 외부 API를 직접 호출하지 않고 수신 PC가 만든 결과파일만 반입하도록 분리했습니다. 중복 messageId 처리와 해시 검증을 두고, 공개키 서명 검증은 향후 과제로 정리했습니다."
+    },
+    {
+      "problem": "JSON 파일 하나에 통째로 저장하던 방식은 자료가 커지고 동시 작업이 생기면 한계가 있었습니다.",
+      "solution": "H2 DB와 Flyway로 전환해 바뀐 행만 한 트랜잭션으로 저장하고 처리 이력을 함께 남기며, 전체 저장 충돌은 3자 병합과 revision 확인으로 처리했습니다."
+    },
+    {
+      "problem": "업데이트나 복원 중 실패하면 운영 자료가 손상될 위험이 있었습니다.",
+      "solution": "설치 시 DB 백업을 먼저 수행하고 실패하면 중단하도록 했으며, 이전 프로그램·DB를 보관해 단계별 되돌리기를 제공했습니다. 복원은 잠금 상태로 진행하고 실패 시 자동 원복합니다."
+    }
+  ],
+  "diagrams": [
+    {
+      "title": "전체 구조",
+      "description": "고객사 PC 내부의 화면, 서버, DB 구성과 외부망 수신 PC에서 파일이 반입되는 경로를 보여줍니다.",
+      "type": "architecture",
+      "mermaid": "flowchart LR\n  RX[\"외부망 수신 PC\"] -->|\"결과파일, 명단 파일\"| UI[\"브라우저 화면 HTML/JS\"]\n  subgraph PC[\"고객사 AML PC\"]\n    UI -->|\"REST API\"| SV[\"Java 내장 웹서버\"]\n    SV --> RE[\"탐지 규칙 엔진\"]\n    SV --> RW[\"심사 승인 워크플로\"]\n    SV --> OF[\"AML Office 모듈\"]\n    SV --> DB[\"H2 또는 MySQL MariaDB\"]\n    SV --> BK[\"백업 세트\"]\n  end"
+    },
+    {
+      "title": "경보 심사부터 보고서까지",
+      "description": "담당자의 판단과 승인자의 결정을 거쳐 보고서가 만들어지는 업무 흐름입니다.",
+      "type": "flow",
+      "mermaid": "flowchart TD\n  A[\"배치 실행 WLF RA STR\"] --> B[\"경보 생성\"]\n  B --> C[\"담당자 심사\"]\n  C -->|\"보고\"| D[\"의견 초안 작성\"]\n  C -->|\"보고 제외\"| G[\"사유 기록\"]\n  D --> E[\"승인자 승인 또는 반려\"]\n  E -->|\"승인\"| F[\"STR XML XSD 검사 및 보고서\"]\n  E -->|\"반려\"| C\n  F --> H[\"처리 이력 해시 체인 기록\"]\n  G --> H"
+    }
+  ],
+  "keywords": [
+    "aml",
+    "compliance",
+    "java",
+    "h2",
+    "flyway",
+    "mariadb",
+    "nsis",
+    "audit-log",
+    "e-kyc",
+    "str"
+  ],
+  "links": {
+    "repo": null,
+    "homepage": null
+  },
+  "metrics": {
+    "stars": 0,
+    "forks": 0,
+    "watchers": 0,
+    "sizeKb": 5948,
+    "openIssues": 0,
+    "languages": {
+      "HTML": 2938117,
+      "JavaScript": 1401187,
+      "Java": 569720,
+      "PowerShell": 30995,
+      "CSS": 10649,
+      "SQL": 8849,
+      "Shell": 3619
+    },
+    "topics": [],
+    "primaryLanguage": "HTML",
+    "license": null
+  },
+  "dates": {
+    "createdAt": "2026-10-23T17:36:46+09:00",
+    "updatedAt": "2026-10-23T17:57:21+09:00",
+    "pushedAt": "2026-10-23T17:57:21+09:00",
+    "analyzedAt": "2026-10-27T05:50:37.044Z"
+  },
+  "featured": true
+}

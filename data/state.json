@@ -518,14 +518,14 @@
       "failures": 0
     },
     "kyb-client": {
-      "pushedAt": "2026-09-22T01:51:37Z",
-      "analyzedAt": "2026-09-22T01:57:27.600Z",
+      "pushedAt": "2026-10-27T13:06:34+09:00",
+      "analyzedAt": "2026-10-27T05:49:59.836Z",
       "status": "ok",
       "failures": 0
     },
     "kyb-api": {
-      "pushedAt": "2026-09-22T02:11:01Z",
-      "analyzedAt": "2026-09-22T02:12:55.261Z",
+      "pushedAt": "2026-10-27T14:44:57+09:00",
+      "analyzedAt": "2026-10-27T05:49:41.057Z",
       "status": "ok",
       "failures": 0
     },
@@ -590,14 +590,26 @@
       "failures": 0
     },
     "kyb-root-frontend": {
-      "pushedAt": "2026-09-22T01:54:09Z",
-      "analyzedAt": "2026-09-22T01:56:23.041Z",
+      "pushedAt": "2026-10-23T10:50:04+09:00",
+      "analyzedAt": "2026-10-27T05:50:17.603Z",
       "status": "ok",
       "failures": 0
     },
     "voicelens": {
       "pushedAt": "2026-09-27T12:24:41Z",
       "analyzedAt": "2026-09-28T00:02:06.088Z",
+      "status": "ok",
+      "failures": 0
+    },
+    "aml-lite": {
+      "pushedAt": "2026-10-23T17:57:21+09:00",
+      "analyzedAt": "2026-10-27T05:50:37.044Z",
+      "status": "ok",
+      "failures": 0
+    },
+    "kyb-devops": {
+      "pushedAt": "2026-10-27T14:30:26+09:00",
+      "analyzedAt": "2026-10-27T05:50:55.652Z",
       "status": "ok",
       "failures": 0
     }

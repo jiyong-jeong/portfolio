@@ -1,106 +1,112 @@
 {
   "slug": "kyb-client",
   "repo": "kyb-client",
-  "title": "법인 신원확인(KYB) AML 컴플라이언스 웹",
-  "summary": "신청자·심사자·관리자 세 역할을 지원하는 자금세탁방지(AML) 법인 실명확인(KYB) 웹 플랫폼의 프론트엔드입니다.",
-  "description": "KYB(Know Your Business)는 자금세탁방지(AML) 규제 준수를 위해 법인·개인사업자의 신원을 확인하는 RegTech 제품이다. 신청자(Applicant)는 온보딩→약관동의→법인정보→상세정보→실소유자→임원→eKYC→완료로 이어지는 다단계 절차를 거쳐 접수하고, 심사자(Reviewer)는 대기/진행/완료 심사 큐에서 건을 처리하며, 관리자(Admin)는 심사자 계정과 스크리닝을 관리한다. namespace 기반 타입 세이프 API 레이어와 React Query, usebeauty 커스텀 UI 라이브러리 위에서 계좌 실명조회·법인등기 조회·eKYC 연동 등 외부 검증 API와 얽힌 복잡한 폼 플로우를 다룬다. CRA에서 Vite로 빌드 도구를 마이그레이션했고, Playwright E2E 테스트와 nginx 기반 Docker 런타임 환경변수 주입으로 배포 파이프라인을 구성했다.",
+  "title": "법인 확인·자금세탁방지 KYB 신청·심사 웹 클라이언트",
+  "summary": "법인 실명확인(KYB) 신청자와 심사자가 쓰는 자금세탁방지 솔루션의 React 프론트엔드",
+  "description": "법인·개인사업자의 신원을 확인하는 KYB(Know Your Business) 자금세탁방지 솔루션의 웹 클라이언트입니다. 신청자는 단계별 화면에서 법인 정보, 실소유자, 대표자 정보와 서류를 제출하고, 심사자는 심사 대기열과 상세 화면에서 판정합니다. 반려된 항목만 고쳐 다시 제출하는 재제출 흐름과 비로그인 진입 흐름도 지원합니다. 고객사별 설정에 따라 화면 언어가 정해지며, Docker 이미지로 배포하고 컨테이너 환경변수를 런타임에 주입합니다.",
   "category": "프론트엔드",
-  "role": "프론트엔드 아키텍처(라우팅·API 레이어·상태관리)를 설계하고, CRA→Vite 마이그레이션, 패키지 매니저 전환, Docker 배포 파이프라인 및 E2E 테스트 환경 구축을 주도했다. 계좌 실명확인, 게스트 접수, eKYC 연동 표준화 등 도메인 핵심 기능의 설계와 구현을 담당했다.",
+  "role": "React 기반 신청자·심사자 화면과 API 계층, Vite 마이그레이션, Docker 배포 구성, E2E 테스트 구축 등 프론트엔드 전반을 개발했습니다. 문서화와 AI 에이전트 작업 규칙 정비도 함께 진행했습니다.",
   "techStack": [
     {
       "name": "TypeScript",
       "category": "language",
-      "usage": "전체 코드베이스의 타입 안정성과 API 요청/응답 타입 정의에 사용"
+      "usage": "클라이언트 전체 코드와 API 요청·응답 타입 정의"
     },
     {
       "name": "React",
       "category": "frontend",
-      "usage": "신청자/심사자/관리자 세 역할의 SPA UI 구축"
-    },
-    {
-      "name": "React Router",
-      "category": "frontend",
-      "usage": "역할별(applicant/reviewer/admin) 라우팅과 인증 가드(HOC) 구성"
-    },
-    {
-      "name": "Redux Toolkit",
-      "category": "frontend",
-      "usage": "에러·마이페이지·심사자 목록 등 전역 상태 관리"
-    },
-    {
-      "name": "TanStack Query",
-      "category": "frontend",
-      "usage": "GET/POST/PUT 커스텀 훅으로 서버 상태 캐싱 및 동기화"
-    },
-    {
-      "name": "React Hook Form",
-      "category": "frontend",
-      "usage": "다단계 신청 폼의 입력 검증과 상태 관리"
-    },
-    {
-      "name": "styled-components",
-      "category": "frontend",
-      "usage": "usebeauty 커스텀 UI 컴포넌트 라이브러리 스타일링"
-    },
-    {
-      "name": "SCSS",
-      "category": "frontend",
-      "usage": "전역 스타일 토큰·믹스인 및 컴포넌트별 오버라이드"
+      "usage": "신청자, 심사자, 관리자 화면 구현"
     },
     {
       "name": "Vite",
       "category": "tool",
-      "usage": "CRA에서 전환한 빌드 도구, 개발 서버 및 프로덕션 번들링"
+      "usage": "CRA 계열에서 마이그레이션한 개발 서버 및 정적 빌드"
     },
     {
-      "name": "Vitest",
-      "category": "testing",
-      "usage": "훅·유틸 함수 단위 테스트 및 커버리지 측정"
+      "name": "React Query",
+      "category": "frontend",
+      "usage": "서버 상태 캐싱과 GET, POST 요청 래퍼 훅"
+    },
+    {
+      "name": "Redux Toolkit",
+      "category": "frontend",
+      "usage": "에러, 마이페이지, 심사 목록 등 전역 상태 관리"
+    },
+    {
+      "name": "React Hook Form",
+      "category": "frontend",
+      "usage": "단계별 신청 폼 입력과 검증"
+    },
+    {
+      "name": "react-i18next",
+      "category": "frontend",
+      "usage": "고객사 설정 기반 한국어·영어 화면 다국어 처리"
+    },
+    {
+      "name": "SCSS",
+      "category": "frontend",
+      "usage": "전역 스타일, CSS 변수 토큰, 컴포넌트 스타일"
     },
     {
       "name": "Playwright",
       "category": "testing",
-      "usage": "로그인/회원가입/게스트 플로우 E2E 회귀 테스트"
+      "usage": "로그인, 회원가입, 재제출 등 E2E 시나리오 검증"
+    },
+    {
+      "name": "Vitest",
+      "category": "testing",
+      "usage": "컴포넌트와 API 계층 단위 테스트"
     },
     {
       "name": "Docker",
       "category": "devops",
-      "usage": "nginx 기반 정적 서빙과 envsubst 런타임 환경변수 주입 배포"
+      "usage": "멀티 스테이지 빌드와 nginx 기반 런타임 이미지"
+    },
+    {
+      "name": "nginx",
+      "category": "infra",
+      "usage": "SPA 서빙, 보안 헤더 적용, 설정 파일 캐시 제어"
     }
   ],
   "highlights": [
-    "namespace 기반 타입 세이프 API 레이어로 GET/POST/PUT 요청·응답 타입을 엄격하게 관리",
-    "환경 비종속 빌드 후 nginx+envsubst로 컨테이너 시작 시점에 환경변수를 주입하는 Docker 구조",
-    "계좌 실명조회 성공 판정을 은행코드·계좌번호·예금주 확인정보 일치 여부로 엄격히 검증해 재조회 낭비 방지",
-    "Playwright E2E와 Vitest 단위 테스트를 병행해 로그인·회원가입·게스트 접수 플로우 회귀 방지",
-    "비로그인(게스트) 접수의 단계 가드·이어하기·개인정보 마스킹 복원 로직 설계"
+    "빌드 시점에 환경값이 필요 없는 환경 비종속 Docker 이미지 구성",
+    "entrypoint에서 envsubst로 런타임 설정(config.js)을 주입하는 방식",
+    "신청자, 심사자, 관리자 세 역할로 나눈 라우팅과 권한 가드 구조",
+    "네임스페이스 기반 GET, POST, PUT 타입 선언으로 API 요청·응답 타입 안전성 확보",
+    "반려 항목만 수정하는 재제출 모드와 서버 응답 기반 필드 잠금"
   ],
   "challenges": [
     {
-      "problem": "eKYC 연동이 공식 가이드에 없는 커스텀 WebSocket 방식으로 구현되어 환경별(fkr1/fkr2) 결과 라우팅 실패가 발생",
-      "solution": "iframe+postMessage 기반 공식 표준 흐름으로 전환하는 백엔드 요청서를 작성하고 단계적 마이그레이션 계획을 수립"
+      "problem": "다른 브라우저로 접속하면 로컬 저장본이 없어 재제출 화면이 빈 칸으로 열려 재제출이 막혔음",
+      "solution": "서버가 내려주는 제출 값을 화면 저장본 형태로 변환해 sessionStorage에 채우고, 로컬 저장소는 읽거나 쓰지 않도록 변경"
     },
     {
-      "problem": "계좌 실명확인 후 폼 값이 바뀌어도 '다음' 게이트가 열린 채 남아 다른 계좌 정보로 접수될 위험",
-      "solution": "확인 당시의 은행코드·계좌번호·예금주 확인정보를 별도 키로 저장해 현재 입력값과 대조하는 판정 로직 도입"
+      "problem": "공용 PC에서 로그인 토큰과 신청 단계 값이 브라우저에 남고 로그아웃이 없었음",
+      "solution": "저장소를 먼저 비우고 서버 세션 종료를 요청한 뒤 새로고침 이동하는 로그아웃 순서를 정하고, 닫힌 세션 응답은 인터셉터에서 같은 방식으로 처리"
     },
     {
-      "problem": "사업자등록번호를 변경한 뒤에도 이전 번호로 조회한 회사 정보가 남아 다른 사업자 정보가 접수되는 결함",
-      "solution": "조회 시점 번호를 기억해 변경 감지 시 필드를 초기화하고, 같은 번호로 되돌아오면 재조회 없이 스냅샷을 복원"
+      "problem": "이메일 앞뒤 공백 때문에 형식 검증이 실패해 요청이 나가지 않았음",
+      "solution": "검증과 전송 시점에만 공백을 제거하고, 입력칸 값과 소문자 정규화는 서버 규칙에 맡김"
     }
   ],
   "diagrams": [
     {
-      "title": "전체 아키텍처",
-      "description": "세 역할(신청자/심사자/관리자)의 화면이 공통 API 레이어를 통해 외부 검증 서비스와 연동되는 구조를 보여준다.",
+      "title": "클라이언트 전체 구조",
+      "description": "세 역할의 화면이 API 계층과 상태 관리를 거쳐 백엔드와 통신하는 구조입니다.",
       "type": "architecture",
-      "mermaid": "flowchart TD\n  Applicant[\"신청자 화면\"] --> Router[\"역할별 라우팅/가드\"]\n  Reviewer[\"심사자 화면\"] --> Router\n  Admin[\"관리자 화면\"] --> Router\n  Router --> API[\"타입세이프 API 레이어\"]\n  API --> RQ[\"React Query 캐시\"]\n  API --> KYBAPI[\"KYB API 서버\"]\n  API --> Useb[\"useb eKYC\"]\n  API --> Nice[\"사업자/법인등기 조회\"]\n  API --> Bank[\"계좌 실명조회\"]\n  RQ --> UI[\"usebeauty UI 컴포넌트\"]"
+      "mermaid": "flowchart TD\n  A[\"신청자 화면\"] --> R[\"라우터와 권한 가드\"]\n  B[\"심사자 화면\"] --> R\n  C[\"관리자 화면\"] --> R\n  R --> S[\"상태 관리: Redux, Context\"]\n  R --> Q[\"React Query 훅\"]\n  Q --> I[\"Axios 클라이언트와 인터셉터\"]\n  I --> API[\"KYB 백엔드 API\"]\n  T[\"고객사 설정\"] --> L[\"i18n 언어 결정\"]\n  L --> A"
     },
     {
-      "title": "신청자 접수 절차",
-      "description": "신청자가 온보딩부터 접수 완료까지 거치는 다단계 절차 흐름이다.",
-      "type": "flow",
-      "mermaid": "flowchart LR\n  Onboard[\"온보딩\"] --> Agree[\"약관동의\"]\n  Agree --> Corp[\"법인정보\"]\n  Corp --> Detail[\"상세정보\"]\n  Detail --> Owner[\"실소유자\"]\n  Owner --> Directors[\"임원정보\"]\n  Directors --> Kyc[\"eKYC\"]\n  Kyc --> Iframe[\"본인인증 iframe\"]\n  Iframe --> Complete[\"접수완료\"]"
+      "title": "컨테이너 배포 흐름",
+      "description": "환경 비종속 정적 빌드를 만들고 컨테이너 시작 시 설정을 주입하는 과정입니다.",
+      "type": "deployment",
+      "mermaid": "flowchart LR\n  SRC[\"소스 코드\"] --> BLD[\"Vite 정적 빌드\"]\n  BLD --> IMG[\"nginx 런타임 이미지\"]\n  ENV[\"컨테이너 환경변수\"] --> ENT[\"entrypoint envsubst\"]\n  IMG --> ENT\n  ENT --> CFG[\"config.js 생성\"]\n  CFG --> SRV[\"nginx 서빙\"]"
+    },
+    {
+      "title": "반려 항목 재제출 흐름",
+      "description": "반려 안내를 조회해 항목별로 수정하고 재제출하는 순서입니다.",
+      "type": "sequence",
+      "mermaid": "sequenceDiagram\n  participant U as 신청자\n  participant W as 웹 클라이언트\n  participant S as 백엔드 API\n  U->>W: 상태 화면 진입\n  W->>S: 반려 안내 조회\n  S-->>W: 반려 항목과 현재 값\n  U->>W: 서류 교체 또는 정보 수정\n  W->>S: 항목별 저장\n  U->>W: 재제출하기\n  W->>S: 재제출 요청\n  S-->>W: 심사 중 상태"
     }
   ],
   "keywords": [
@@ -110,40 +116,40 @@
     "react",
     "typescript",
     "vite",
-    "ekyc",
     "react-query",
+    "i18n",
     "playwright",
-    "docker"
+    "docker",
+    "nginx"
   ],
   "links": {
-    "repo": "https://github.com/jiyong-jeong/kyb-client",
+    "repo": null,
     "homepage": null
   },
   "metrics": {
     "stars": 0,
     "forks": 0,
     "watchers": 0,
-    "sizeKb": 15943,
+    "sizeKb": 17870,
     "openIssues": 0,
     "languages": {
-      "TypeScript": 3659778,
-      "SCSS": 584212,
-      "JavaScript": 22798,
+      "TypeScript": 5778689,
+      "SCSS": 692070,
+      "JavaScript": 22823,
       "Python": 21861,
       "HTML": 10993,
       "CSS": 5836,
-      "Shell": 5575,
-      "Dockerfile": 2996
+      "Shell": 5571
     },
     "topics": [],
     "primaryLanguage": "TypeScript",
     "license": null
   },
   "dates": {
-    "createdAt": "2026-07-27T01:44:35Z",
-    "updatedAt": "2026-09-22T01:51:44Z",
-    "pushedAt": "2026-09-22T01:51:37Z",
-    "analyzedAt": "2026-09-22T01:57:27.600Z"
+    "createdAt": "2026-03-05T20:06:53+09:00",
+    "updatedAt": "2026-10-27T13:06:34+09:00",
+    "pushedAt": "2026-10-27T13:06:34+09:00",
+    "analyzedAt": "2026-10-27T05:49:59.836Z"
   },
   "featured": true
 }
