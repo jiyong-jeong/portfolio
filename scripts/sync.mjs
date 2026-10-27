@@ -273,12 +273,15 @@ async function main() {
   });
 
   const localRepos = [];
+  // 이 머신에 경로가 없는 로컬 프로젝트. 다른 머신에서 만든 문서를 지우지 않도록 보존한다.
+  const unavailableLocal = new Set();
   for (const project of config.localProjects) {
     try {
       const repo = resolveLocalRepo(project);
       if (!args.only || repo.name === args.only) localRepos.push(repo);
     } catch (err) {
-      log(`⚠️  로컬 프로젝트 ${project.name ?? project.path}: ${err.message}`);
+      if (project.name) unavailableLocal.add(project.name);
+      log(`⚠️  로컬 프로젝트 ${project.name ?? project.path}: ${err.message} — 기존 문서를 유지합니다`);
     }
   }
   const localNames = new Set(localRepos.map((r) => r.name));
@@ -385,7 +388,7 @@ async function main() {
     const valid = new Set(targets.map((r) => r.name));
     for (const file of readdirSync(PROJECTS_DIR).filter((f) => f.endsWith(".json"))) {
       const name = file.replace(/\.json$/, "");
-      if (!valid.has(name)) {
+      if (!valid.has(name) && !unavailableLocal.has(name)) {
         rmSync(join(PROJECTS_DIR, file));
         delete state.repos[name];
         result.removed.push(name);

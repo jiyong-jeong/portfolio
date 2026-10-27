@@ -101,7 +101,7 @@ fi
 
 CHANGED=$(git status --porcelain data | wc -l | tr -d ' ')
 ADDED=$(git status --porcelain data/projects | grep -c '^??' || true)
-log "데이터 변경 감지: 파일 $CHANGED개 (신규 $ADDED개)"
+log "데이터 변경 감지: 파일 ${CHANGED}개 (신규 ${ADDED}개)"
 
 git add data
 git -c user.name="portfolio-sync" \
