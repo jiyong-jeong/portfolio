@@ -8,6 +8,11 @@
  *  - 프로젝트 JSON 파일이 없는 경우  → 재분석
  *  - --force 를 주면 전부 재분석
  *
+ * 로컬 프로젝트(portfolio.config.json 의 localProjects)
+ *  - GitHub 에 올리지 않은 레포를 로컬 커밋에서 읽어 요약만 싣는다. 소스는 어디에도 올라가지 않는다.
+ *  - 같은 이름의 GitHub 레포가 있으면 로컬 쪽을 우선한다.
+ *  - 프롬프트에 넣기 전 민감정보를 가리고, 결과에 금지어가 남으면 실패로 처리해 게시하지 않는다.
+ *
  * 사용법
  *   node scripts/sync.mjs [--force] [--only <repo>] [--limit <n>] [--dry-run]
  */
@@ -25,6 +30,8 @@ import {
 } from "./lib/config.mjs";
 import { getLastHumanCommitDate, listRepos, resolveToken } from "./lib/github.mjs";
 import { collectRepoContext } from "./lib/context.mjs";
+import { collectLocalContext, resolveLocalRepo } from "./lib/local-context.mjs";
+import { createRedactor, findDenied, loadLocalRules } from "./lib/redact.mjs";
 import { analyzeRepo } from "./lib/analyze.mjs";
 import { generateTechDoc } from "./lib/tech-doc.mjs";
 
@@ -265,7 +272,26 @@ async function main() {
     return true;
   });
 
-  log(`▶ 전체 ${allRepos.length}개 중 대상 ${targets.length}개\n`);
+  const localRepos = [];
+  for (const project of config.localProjects) {
+    try {
+      const repo = resolveLocalRepo(project);
+      if (!args.only || repo.name === args.only) localRepos.push(repo);
+    } catch (err) {
+      log(`⚠️  로컬 프로젝트 ${project.name ?? project.path}: ${err.message}`);
+    }
+  }
+  const localNames = new Set(localRepos.map((r) => r.name));
+  const remoteTargets = targets.filter((r) => !localNames.has(r.name));
+  targets.splice(0, targets.length, ...remoteTargets, ...localRepos);
+
+  const localRules = loadLocalRules();
+  const redact = createRedactor(localRules);
+  if (localRepos.length && !localRules.deny.length) {
+    log("⚠️  portfolio.redact.local.json 이 없어 범용 마스킹 규칙만 적용합니다.");
+  }
+
+  log(`▶ 전체 ${allRepos.length}개 중 대상 ${targets.length}개 (로컬 ${localRepos.length}개)\n`);
 
   // 포트폴리오 레포 자신은 스케줄러가 데이터를 push 할 때마다 pushed_at 이 바뀐다.
   // 봇 커밋을 제외한 마지막 커밋 시각을 기준으로 삼아 자기 참조 루프를 끊는다.
@@ -306,11 +332,17 @@ async function main() {
 
     let ctx = null;
     try {
-      ctx = await collectRepoContext(config.owner, repo, config.analysis);
+      ctx = repo.local
+        ? collectLocalContext(repo, config.analysis, redact)
+        : await collectRepoContext(config.owner, repo, config.analysis);
       log(`  · 컨텍스트 수집 완료 (파일 ${ctx.files.length}개, README ${ctx.readme.length}자)`);
 
       const analysis = await analyzeRepo(ctx, config.analysis, log);
       const project = buildProject(repo, ctx, analysis);
+      if (repo.local) {
+        const leaked = findDenied(project, localRules.deny);
+        if (leaked.length) throw new Error(`분석 결과에 금지어가 남아 게시하지 않습니다 (${leaked.length}건)`);
+      }
       writeJson(join(PROJECTS_DIR, `${repo.name}.json`), project);
 
       state.repos[repo.name] = {

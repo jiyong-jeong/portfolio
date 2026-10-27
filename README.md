@@ -91,6 +91,7 @@ npm run sync:force                   # 전체 재분석
 npm run sync:dry                     # 무엇이 분석될지만 확인
 node scripts/sync.mjs --only <repo>  # 특정 레포만
 npm run validate                     # 저장된 다이어그램 문법 검사
+npm test                             # 스크립트 단위 테스트 (마스킹·로컬 수집)
 ```
 
 GitHub 인증은 `gh auth token` → `GITHUB_TOKEN` 환경변수 순으로 찾습니다.
@@ -252,7 +253,32 @@ ingress:
 | `analysis.model` | 분석에 쓸 모델 (`sonnet`, `opus` 등) |
 | `analysis.maxAttempts` | 스키마 검증 실패 시 재시도 횟수 |
 | `analysis.excludePaths` | 파일 트리 수집에서 제외할 경로 접두사 (생성물·의존성) |
+| `localProjects` | GitHub 에 올리지 않고 요약만 싣는 로컬 레포 목록 (`name`, `path`, `ref`) |
 | `profile` | 사이트에 표시할 이름·소개·연락처 |
+
+## 로컬 프로젝트 (소스 비공개, 요약만 게시)
+
+회사 업무 레포처럼 소스를 공개할 수 없는 프로젝트는 `localProjects` 에 등록합니다.
+sync 가 이 맥의 로컬 git 에서 `ref` 커밋을 읽어 분석하고, **요약 JSON 만** `data/projects/` 에
+남깁니다. 소스는 어디에도 올라가지 않고 카드의 레포 링크는 비어 있습니다.
+
+- 작업 트리가 아니라 `ref`(예: `origin/develop`) 커밋을 읽으므로 미커밋 변경이나 다른 작업에 영향이 없습니다.
+  fetch 는 하지 않으니 최신 반영은 해당 레포에서 fetch 된 시점 기준입니다.
+- 같은 이름의 GitHub 레포가 있으면 로컬 쪽이 우선합니다.
+- 프롬프트에 넣기 전에 키·비밀번호·이메일·전화번호·사설 IP·사업자번호를 가리고(`scripts/lib/redact.mjs`),
+  분석 결과에 금지어가 남으면 해당 레포를 실패로 처리해 게시하지 않습니다.
+- 고객사명·사내 도메인 같은 고유명사 규칙은 **커밋하지 않는** `portfolio.redact.local.json` 에 둡니다.
+  공개 레포의 코드에 적으면 그 자체가 노출이기 때문입니다.
+
+```json
+{
+  "replace": { "고객사명": "고객사", "customer.co.kr": "example.com" },
+  "deny": ["결과에 남으면 안 되는 단어"]
+}
+```
+
+`replace` 의 키는 자동으로 `deny` 에도 포함됩니다. 이 파일이 없으면 범용 규칙만 적용되므로
+회사 레포를 등록하기 전에 반드시 만들어 두세요.
 
 ## 이 레포도 분석 대상입니다
 

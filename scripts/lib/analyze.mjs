@@ -50,6 +50,13 @@ const SYSTEM_PROMPT = `당신은 개발자 포트폴리오를 작성하는 기�
 한국어로 정리한 구조화된 JSON 을 만듭니다.
 반드시 JSON 객체 하나만 출력하며, 그 앞뒤에 설명·인사말·코드펜스를 붙이지 않습니다.`;
 
+// 소스가 공개되지 않은 로컬 레포(회사 업무 등)는 요약만 사이트에 실린다.
+const PRIVATE_SOURCE_RULE = `8. 이 레포는 소스가 비공개이고 요약만 공개 사이트에 게시됩니다.
+   고객사·파트너사·거래처의 실명, 사내 도메인·호스트명·IP, 사람 이름과 이메일,
+   내부 이슈 키(예: ABC-123)는 쓰지 말고 "고객사", "외부 신용정보 API" 같은 일반 명칭으로 바꾸세요.
+   [REDACTED], example.com 같은 마스킹 흔적도 결과에 옮기지 마세요.
+`;
+
 function buildPrompt(ctx) {
   const filesBlock = ctx.files.length
     ? ctx.files
@@ -123,7 +130,7 @@ ${filesBlock}
    - CSS 스타일 지정(style, classDef, linkStyle)은 넣지 마세요. 사이트 테마가 적용됩니다.
 6. featured 는 규모가 크거나 대표성이 있는 프로젝트일 때만 true 로 하세요.
 7. 모든 서술은 한국어로, 과장 없이 담백한 기술 문서 톤으로 작성하세요.
-
+${ctx.meta.url ? "" : PRIVATE_SOURCE_RULE}
 JSON 객체 하나만 출력하세요.`;
 }
 

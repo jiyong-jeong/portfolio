@@ -18,7 +18,8 @@
     "hosting:install": "bash scripts/install-hosting.sh",
     "hosting:uninstall": "bash scripts/uninstall-hosting.sh",
     "hosting:serve": "bash scripts/run-serve.sh",
-    "hosting:tunnel": "bash scripts/run-tunnel.sh"
+    "hosting:tunnel": "bash scripts/run-tunnel.sh",
+    "test": "node --test 'scripts/**/*.test.mjs'"
   },
   "dependencies": {
     "mermaid": "^11.16.0",

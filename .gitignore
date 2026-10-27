@@ -42,3 +42,6 @@ next-env.d.ts
 
 # 스케줄러 로그 (data/ 는 자동 생성물이지만 사이트 빌드에 필요하므로 커밋한다)
 /.logs/
+
+# 로컬 레포 요약용 마스킹 규칙 (고객사명 등 — 절대 커밋하지 않는다)
+/portfolio.redact.local.json

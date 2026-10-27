@@ -26,6 +26,33 @@
       "data/tech/"
     ]
   },
+  "localProjects": [
+    {
+      "name": "kyb-api",
+      "path": "~/Work/kyb2/kyb-api",
+      "ref": "origin/develop"
+    },
+    {
+      "name": "kyb-client",
+      "path": "~/Work/kyb2/kyb-client",
+      "ref": "origin/develop"
+    },
+    {
+      "name": "kyb-root-frontend",
+      "path": "~/Work/kyb2/kyb-root-frontend",
+      "ref": "origin/develop"
+    },
+    {
+      "name": "aml-lite",
+      "path": "~/Work/aml-lite",
+      "ref": "origin/main"
+    },
+    {
+      "name": "kyb-devops",
+      "path": "~/Work/kyb-devops",
+      "ref": "origin/main"
+    }
+  ],
   "profile": {
     "name": "정지용",
     "role": "Backend / Infra Engineer",

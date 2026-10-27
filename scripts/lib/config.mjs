@@ -39,6 +39,7 @@ export function loadConfig() {
     includeForks: raw.includeForks ?? false,
     includeArchived: raw.includeArchived ?? true,
     syncBotName: raw.syncBotName ?? "portfolio-sync",
+    localProjects: raw.localProjects ?? [],
     analysis: { ...DEFAULT_ANALYSIS, ...(raw.analysis ?? {}) },
   };
 }

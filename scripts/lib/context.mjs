@@ -34,7 +34,7 @@ const MANIFEST_NAMES = [
 
 const DOC_EXCLUDE = /^(readme|license|licence|code_of_conduct|contributing|changelog)/i;
 
-function pickManifests(paths, limit = 8) {
+export function pickManifests(paths, limit = 8) {
   const picked = [];
   for (const name of MANIFEST_NAMES) {
     if (picked.length >= limit) break;
@@ -49,7 +49,7 @@ function pickManifests(paths, limit = 8) {
   return picked;
 }
 
-function pickDocs(paths, limit) {
+export function pickDocs(paths, limit) {
   return paths
     .filter((p) => /\.mdx?$/i.test(p))
     .filter((p) => !p.includes("node_modules/"))
@@ -58,7 +58,7 @@ function pickDocs(paths, limit) {
     .slice(0, limit);
 }
 
-function truncate(text, max, label = "생략") {
+export function truncate(text, max, label = "생략") {
   if (!text) return "";
   if (text.length <= max) return text;
   return `${text.slice(0, max)}\n\n...(${label}: 전체 ${text.length}자 중 앞 ${max}자만 표시)`;
