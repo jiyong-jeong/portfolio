@@ -1,0 +1,47 @@
+{
+  "slug": "claude-ai",
+  "name": "Claude AI",
+  "category": "tool",
+  "tagline": "Anthropic이 개발한 대화형 AI 어시스턴트로, 긴 컨텍스트 이해와 안전한 응답 생성에 강점을 가진 대규모 언어 모델",
+  "definition": "Claude는 Anthropic이 Constitutional AI 원칙에 따라 개발한 대규모 언어 모델(LLM)입니다. 수십만 토큰에 달하는 긴 문서를 한 번에 처리할 수 있으며, 코드 생성, 문서 분석, 대화형 질의응답 등 다양한 자연어 처리 작업을 수행합니다. API를 통해 프로그래밍 방식으로 접근할 수 있어, 자동화된 문서 생성, 코드 리뷰, 데이터 추출 같은 워크플로우에 통합할 수 있습니다.",
+  "concepts": [
+    {
+      "term": "Context Window",
+      "description": "모델이 한 번에 처리할 수 있는 입력(프롬프트)과 출력(응답)의 총 토큰 길이입니다. Claude는 다른 LLM 대비 매우 큰 컨텍스트 윈도우를 제공해 긴 코드베이스나 문서를 통째로 분석할 수 있습니다."
+    },
+    {
+      "term": "System Prompt",
+      "description": "대화가 시작되기 전에 모델에게 역할, 제약, 출력 형식 등을 지시하는 초기 명령입니다. 사용자 메시지와 분리되어 모델의 전반적인 행동을 제어합니다."
+    },
+    {
+      "term": "Messages API",
+      "description": "Claude와 대화형으로 상호작용하기 위한 REST API입니다. 사용자와 어시스턴트 메시지를 배열 형태로 주고받으며, 스트리밍 응답도 지원합니다."
+    },
+    {
+      "term": "Tool Use (Function Calling)",
+      "description": "모델이 외부 함수나 API를 호출해야 할 때, 필요한 함수 이름과 인자를 JSON 형태로 반환하는 기능입니다. 실제 실행은 클라이언트 측에서 수행하고 결과를 다시 모델에 전달합니다."
+    },
+    {
+      "term": "Constitutional AI",
+      "description": "모델이 안전하고 유용한 응답을 생성하도록 원칙(constitution) 기반으로 학습시키는 Anthropic의 훈련 방법론입니다. 유해한 출력을 줄이고 투명성을 높이는 데 중점을 둡니다."
+    }
+  ],
+  "whenToUse": [
+    "수만 줄의 코드베이스나 긴 문서를 한 번에 분석하고 요약해야 할 때",
+    "복잡한 구조화된 출력(JSON, 마크다운)을 안정적으로 생성해야 하는 자동화 워크플로우",
+    "안전성과 편향 최소화가 중요한 고객 대면 서비스에서 LLM을 사용할 때",
+    "다단계 추론이나 코드 생성 작업에서 높은 정확도가 필요할 때"
+  ],
+  "example": {
+    "title": "Messages API를 이용한 기본 대화 요청",
+    "language": "bash",
+    "code": "curl https://api.anthropic.com/v1/messages \\\n  -H \"x-api-key: $ANTHROPIC_API_KEY\" \\\n  -H \"anthropic-version: 2023-06-01\" \\\n  -H \"content-type: application/json\" \\\n  -d '{\n    \"model\": \"claude-3-5-sonnet-20241022\",\n    \"max_tokens\": 1024,\n    \"messages\": [\n      {\n        \"role\": \"user\",\n        \"content\": \"Python으로 피보나치 수열을 생성하는 함수를 작성해줘\"\n      }\n    ]\n  }'",
+    "description": "사용자 메시지를 전송하고 Claude로부터 응답을 받는 가장 기본적인 API 호출 예시입니다. 모델 이름, 최대 토큰 수, 메시지 배열을 포함합니다."
+  },
+  "pitfalls": [
+    "컨텍스트 윈도우가 크다고 해서 항상 전체를 채우면 응답 시간과 비용이 급증할 수 있습니다",
+    "System Prompt와 User Message의 역할을 혼동하면 의도한 대로 동작하지 않을 수 있습니다",
+    "Tool Use 응답을 받았을 때 실제 함수 실행은 클라이언트가 직접 해야 하며, 모델이 자동으로 실행하지 않습니다"
+  ],
+  "generatedAt": "2026-10-28T00:01:40.740Z"
+}

@@ -2,126 +2,126 @@
   "slug": "portfolio",
   "repo": "portfolio",
   "title": "GitHub 레포지토리 자동 분석 포트폴리오",
-  "summary": "GitHub 계정의 모든 레포를 자동 분석해 기술스택·아키텍처·설명을 정리하는 개인 포트폴리오",
-  "description": "GitHub API로 레포지토리 목록을 가져와 Claude AI로 분석하고, 기술스택·프로젝트 설명·Mermaid 다이어그램을 자동 생성합니다. 매일 한 번 스케줄러가 신규/변경된 레포만 선별해 갱신하며, Next.js 정적 사이트로 배포됩니다. 로컬 호스팅(Cloudflare Tunnel)과 GitHub Pages 미러를 함께 운영해 가용성을 확보했습니다. 회사 업무 레포처럼 소스를 공개할 수 없는 프로젝트는 로컬 git에서 읽어 요약만 게시하는 기능도 제공합니다.",
+  "summary": "GitHub 계정의 레포지토리를 Claude AI로 자동 분석해 기술스택·아키텍처 다이어그램을 정리하는 개인 포트폴리오 사이트",
+  "description": "GitHub API로 레포지토리 목록을 가져와 README, 파일 트리, 매니페스트를 수집한 뒤 Claude CLI로 프로젝트별 기술스택, 설명, Mermaid 다이어그램을 자동 생성합니다. 매일 스케줄러가 변경된 레포지토리만 선별해 갱신하며, Next.js로 정적 export한 사이트를 로컬 맥에서 Cloudflare Tunnel로 호스팅합니다. GitHub Pages 미러와 병행 운영해 가용성을 확보했습니다.",
   "category": "자동화",
-  "role": "전체 시스템 설계 및 구현. GitHub API 클라이언트, Claude 분석 파이프라인, 스케줄러, 로컬 호스팅 인프라, Next.js 정적 사이트 개발을 모두 담당했습니다.",
+  "role": "전체 설계 및 구현. GitHub API 연동, Claude 분석 파이프라인, 증분 갱신 로직, launchd 스케줄러·호스팅 에이전트 구성, Next.js 정적 사이트 개발을 담당했습니다.",
   "techStack": [
     {
       "name": "TypeScript",
       "category": "language",
-      "usage": "분석 스크립트와 Next.js 컴포넌트 전체를 TypeScript로 작성"
+      "usage": "프론트엔드 컴포넌트와 데이터 타입 정의"
+    },
+    {
+      "name": "JavaScript",
+      "category": "language",
+      "usage": "분석 스크립트 및 GitHub API 클라이언트 구현"
     },
     {
       "name": "Next.js",
       "category": "framework",
-      "usage": "App Router 기반 정적 사이트 생성 (static export)"
+      "usage": "App Router 기반 정적 export, 동적 라우팅(/projects/[slug], /tech/[slug])"
     },
     {
       "name": "React",
       "category": "frontend",
-      "usage": "프로젝트 카드, 다이어그램 렌더러, 테마 토글 등 UI 컴포넌트 구성"
+      "usage": "UI 컴포넌트 렌더링 및 클라이언트 사이드 다이어그램 표시"
     },
     {
       "name": "Tailwind CSS",
       "category": "frontend",
-      "usage": "v4 기반 스타일링 및 다크 모드 지원"
+      "usage": "디자인 시스템 및 반응형 레이아웃 구성"
     },
     {
       "name": "Mermaid",
       "category": "tool",
-      "usage": "아키텍처 다이어그램 클라이언트 사이드 렌더링 및 문법 검증"
+      "usage": "아키텍처 다이어그램 문법 검증 및 클라이언트 렌더링"
     },
     {
-      "name": "Claude API",
-      "category": "backend",
-      "usage": "레포지토리 README·파일트리 분석 및 JSON 요약 생성 (headless claude CLI)"
+      "name": "Claude AI",
+      "category": "tool",
+      "usage": "레포지토리 컨텍스트를 읽어 프로젝트 문서 및 다이어그램 자동 생성"
     },
     {
       "name": "GitHub API",
-      "category": "backend",
-      "usage": "레포 목록·메타데이터·트리 수집, gh 토큰 기반 인증"
+      "category": "tool",
+      "usage": "레포지토리 메타데이터·언어 통계·파일 트리 수집"
     },
     {
       "name": "Cloudflare Tunnel",
       "category": "infra",
-      "usage": "로컬 맥에서 서빙하는 사이트를 공인 도메인에 공개"
+      "usage": "로컬 맥에서 서빙하는 사이트를 HTTPS 공개 도메인으로 연결"
     },
     {
       "name": "GitHub Actions",
       "category": "devops",
-      "usage": "push 시 GitHub Pages 미러 자동 배포"
+      "usage": "GitHub Pages 미러 자동 배포"
     },
     {
       "name": "launchd",
       "category": "devops",
-      "usage": "macOS 스케줄러·호스팅 에이전트 등록 (매일 동기화, 상시 서빙)"
+      "usage": "macOS 스케줄러·호스팅 에이전트 등록 및 상시 실행"
     },
     {
-      "name": "Node.js",
-      "category": "backend",
-      "usage": "분석 파이프라인, 테스트, 스크립트 실행 환경"
-    },
-    {
-      "name": "serve",
+      "name": "Shell",
       "category": "tool",
-      "usage": "정적 빌드 결과(out/)를 로컬 포트 3100에서 서빙"
+      "usage": "스케줄러·호스팅 엔트리 스크립트 및 에이전트 설치 자동화"
     }
   ],
   "highlights": [
-    "state.json 기반 증분 분석으로 매일 스케줄러가 돌아도 변경된 레포만 재분석",
-    "로컬 git 레포 분석 기능으로 회사 프로젝트는 소스 비공개·요약만 게시",
-    "Cloudflare Tunnel + GitHub Pages 이중 배포로 가용성 확보",
-    "Mermaid 문법 파서 검증으로 렌더링 실패 다이어그램 사전 차단",
-    "launchd 에이전트로 맥 로그인 시 자동 호스팅·스케줄러 시작"
+    "state.json에 레포별 마지막 반영 시각을 기록해, 변경된 레포만 증분 분석하는 효율적 갱신 전략 구현",
+    "로컬 프로젝트 마스킹 기능으로 회사 레포를 소스 비공개·요약만 게시하는 워크플로 지원",
+    "자기 참조 루프 방지: 이 레포 자신도 분석 대상에 포함하되, 봇 커밋은 변경으로 보지 않는 로직 적용",
+    "Cloudflare Tunnel과 GitHub Pages 이중 배포로 가용성 확보. 맥이 꺼져도 미러는 유지됨",
+    "launchd KeepAlive 에이전트로 서빙·터널 프로세스 상시 유지 및 자동 재시작 구성"
   ],
   "challenges": [
     {
-      "problem": "Claude 분석 결과가 JSON 스키마를 위반하거나 Mermaid 문법 오류를 낼 수 있음",
-      "solution": "JSON 스키마 검증과 Mermaid 파서 검사를 저장 전에 수행하고, 실패 시 재시도. 그래도 실패하면 메타데이터만으로 최소 카드 생성 후 state.json에 실패 기록"
+      "problem": "Claude 분석 결과가 스키마를 벗어나거나 Mermaid 문법 오류가 발생해 사이트 렌더링 실패",
+      "solution": "JSON 스키마 검증과 Mermaid 파서 검사를 분석 직후 수행하고, 실패 시 재시도·state.json 실패 기록으로 다음 실행에서 재분석하도록 구성"
     },
     {
-      "problem": "포트폴리오 레포 자신도 분석 대상이라 스케줄러가 데이터 push할 때마다 pushed_at 갱신되어 자기 참조 루프 발생",
-      "solution": "이 레포에 한해 pushed_at 대신 syncBotName이 아닌 마지막 커밋 시각을 기준으로 삼아, 봇 커밋은 변경으로 보지 않음"
+      "problem": "GitHub Pages는 프로젝트 사이트라 basePath가 /portfolio인데, 커스텀 도메인은 루트여야 해 빌드 충돌",
+      "solution": "호스팅·스케줄러 스크립트에서 NEXT_PUBLIC_BASE_PATH를 비우고 빌드, GitHub Actions는 환경변수 설정해 각 배포 경로에 맞게 분리"
     },
     {
-      "problem": "회사 업무 레포는 소스를 공개할 수 없지만 포트폴리오에 실어야 함",
-      "solution": "localProjects 설정으로 로컬 git의 특정 ref 커밋만 읽어 분석. 키·비밀번호·고객사명을 마스킹하고, 금지어가 결과에 남으면 게시 차단"
+      "problem": "스케줄러가 데이터를 push할 때마다 이 레포의 pushed_at이 갱신돼 자기 참조 루프 발생",
+      "solution": "이 레포에 한해 pushed_at 대신 syncBotName이 아닌 마지막 커밋 시각을 기준으로 변경 판정, 봇 커밋은 무시"
     }
   ],
   "diagrams": [
     {
       "title": "전체 아키텍처 및 배포 흐름",
-      "description": "GitHub API에서 레포 목록을 받아 Claude로 분석하고, 정적 사이트를 빌드해 로컬 호스팅과 GitHub Pages로 배포하는 전체 흐름을 보여줍니다.",
+      "description": "GitHub API에서 레포 수집, Claude 분석, 정적 빌드, 이중 배포(로컬 호스팅 + GitHub Pages 미러)까지 전체 파이프라인을 보여줍니다.",
       "type": "architecture",
-      "mermaid": "flowchart TD\n    A[\"GitHub API\"] --> B[\"레포 목록 + pushed_at\"]\n    B --> C[\"state.json 비교\"]\n    C --> D[\"신규/변경 레포 선별\"]\n    D --> E[\"README·트리·매니페스트 수집\"]\n    E --> F[\"claude CLI (headless)\"]\n    F --> G[\"data/projects/<repo>.json\"]\n    G --> H[\"out/ 재빌드\"]\n    G --> I[\"git commit & push\"]\n    H --> J[\"serve :3100\"]\n    I --> K[\"GitHub Actions\"]\n    J --> L[\"Cloudflare Tunnel\"]\n    K --> M[\"GitHub Pages\"]\n    L --> N[\"matthew-portfolio.xyz\"]\n    M --> O[\"jiyong-jeong.github.io/portfolio\"]"
+      "mermaid": "flowchart TD\n    A[\"GitHub API\"] --> B[\"레포 목록 + pushed_at\"]\n    B --> C[\"state.json 비교\"]\n    C --> D[\"신규/변경 레포 선별\"]\n    D --> E[\"README · 파일트리 · 매니페스트 수집\"]\n    E --> F[\"Claude CLI 분석\"]\n    F --> G[\"data/projects/<repo>.json\"]\n    G --> H[\"스키마 검증 + Mermaid 문법 검사\"]\n    H --> I[\"Next.js 정적 빌드\"]\n    I --> J[\"out/\"]\n    J --> K[\"로컬 서빙 :3100\"]\n    J --> L[\"git commit & push\"]\n    K --> M[\"Cloudflare Tunnel\"]\n    M --> N[\"matthew-portfolio.xyz\"]\n    L --> O[\"GitHub Actions\"]\n    O --> P[\"GitHub Pages\"]\n    P --> Q[\"jiyong-jeong.github.io/portfolio\"]"
     },
     {
-      "title": "동기화 스케줄러 흐름",
-      "description": "launchd 에이전트가 매일 실행하는 동기화 파이프라인의 단계별 흐름입니다.",
-      "type": "flow",
-      "mermaid": "flowchart LR\n    A[\"launchd (매일 09:00)\"] --> B[\"git pull\"]\n    B --> C[\"scripts/sync.mjs\"]\n    C --> D[\"신규/변경 레포 분석\"]\n    D --> E{\"호스팅 에이전트<br/>설치 여부\"}\n    E -->|Y| F[\"npm run build\"]\n    E -->|N| G[\"빌드 스킵\"]\n    F --> H[\"git add data/ out/\"]\n    G --> H\n    H --> I[\"git commit\"]\n    I --> J[\"git push\"]\n    J --> K[\"GitHub Actions 트리거\"]\n    K --> L[\"Pages 미러 배포\"]"
+      "title": "증분 갱신 로직",
+      "description": "state.json을 활용해 변경된 레포만 재분석하는 효율적 갱신 전략의 흐름을 나타냅니다.",
+      "type": "dataflow",
+      "mermaid": "flowchart LR\n    A[\"스케줄러 실행\"] --> B[\"GitHub API 레포 목록 조회\"]\n    B --> C[\"state.json 로드\"]\n    C --> D{\"pushed_at 비교\"}\n    D -->|\"최신\"| E[\"해당 레포 분석\"]\n    D -->|\"동일\"| F[\"스킵\"]\n    E --> G[\"분석 결과 저장\"]\n    G --> H[\"state.json 갱신\"]\n    H --> I[\"재빌드\"]\n    F --> I\n    I --> J[\"커밋 & 푸시\"]"
     },
     {
       "title": "로컬 호스팅 구조",
-      "description": "Cloudflare Tunnel로 로컬 맥의 정적 사이트를 커스텀 도메인에 공개하는 네트워크 구조입니다.",
+      "description": "launchd 에이전트로 유지되는 서빙·터널 프로세스와 Cloudflare 엣지 연결을 보여줍니다.",
       "type": "deployment",
-      "mermaid": "flowchart TD\n    A[\"브라우저\"] --> B[\"Cloudflare 엣지<br/>(HTTPS 종료, 서울)\"]\n    B --> C[\"QUIC outbound 터널\"]\n    C --> D[\"cloudflared<br/>(내 맥)\"]\n    D --> E[\"http://localhost:3100\"]\n    E --> F[\"serve out/\"]\n    G[\"launchd 에이전트<br/>portfolio-serve\"] -.-> F\n    H[\"launchd 에이전트<br/>portfolio-tunnel\"] -.-> D"
+      "mermaid": "flowchart TD\n    A[\"브라우저\"] --> B[\"Cloudflare 엣지\"]\n    B --> C[\"QUIC outbound 터널\"]\n    C --> D[\"cloudflared (내 맥)\"]\n    D --> E[\"localhost:3100\"]\n    E --> F[\"serve out/\"]\n    G[\"launchd 에이전트 (serve)\"] --> F\n    H[\"launchd 에이전트 (tunnel)\"] --> D"
     }
   ],
   "keywords": [
     "portfolio",
-    "automation",
     "github-api",
     "claude-ai",
     "nextjs",
-    "static-site",
-    "cloudflare-tunnel",
+    "static-export",
     "mermaid",
-    "typescript",
+    "cloudflare-tunnel",
     "launchd",
-    "scheduler",
-    "local-hosting"
+    "automation",
+    "incremental-update",
+    "typescript",
+    "react"
   ],
   "links": {
     "repo": "https://github.com/jiyong-jeong/portfolio",
@@ -131,12 +131,12 @@
     "stars": 0,
     "forks": 0,
     "watchers": 0,
-    "sizeKb": 949,
+    "sizeKb": 957,
     "openIssues": 0,
     "languages": {
       "TypeScript": 72134,
-      "JavaScript": 66148,
-      "Shell": 16399,
+      "JavaScript": 66442,
+      "Shell": 16403,
       "CSS": 2844
     },
     "topics": [],
@@ -145,9 +145,9 @@
   },
   "dates": {
     "createdAt": "2026-07-26T05:09:55Z",
-    "updatedAt": "2026-10-27T06:16:13Z",
-    "pushedAt": "2026-10-27T05:53:04Z",
-    "analyzedAt": "2026-10-27T11:09:04.056Z"
+    "updatedAt": "2026-10-27T11:09:43Z",
+    "pushedAt": "2026-10-27T11:07:59Z",
+    "analyzedAt": "2026-10-28T00:01:10.469Z"
   },
   "featured": true
 }
