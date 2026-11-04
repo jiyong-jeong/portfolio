@@ -1,0 +1,47 @@
+{
+  "slug": "claude",
+  "name": "Claude",
+  "category": "tool",
+  "tagline": "Anthropic이 개발한 대화형 AI 어시스턴트로, 복잡한 추론과 긴 문맥 처리에 강점을 가진 대규모 언어 모델",
+  "definition": "Claude는 Anthropic이 Constitutional AI 원칙에 따라 훈련한 대규모 언어 모델입니다. 자연어 이해, 코드 생성, 문서 분석, 복잡한 추론 작업을 수행할 수 있으며, 긴 문맥(수십만 토큰)을 처리할 수 있어 대규모 코드베이스나 긴 문서를 다루는 데 유리합니다. API를 통해 애플리케이션에 통합하거나, 웹 인터페이스를 통해 직접 대화할 수 있습니다.",
+  "concepts": [
+    {
+      "term": "API",
+      "description": "HTTP 요청으로 Claude와 대화하거나 작업을 요청할 수 있는 인터페이스입니다. Messages API를 통해 프롬프트를 보내고 응답을 받습니다."
+    },
+    {
+      "term": "Context Window",
+      "description": "Claude가 한 번에 처리할 수 있는 입력과 출력의 최대 길이입니다. 긴 코드베이스나 여러 문서를 한 번에 분석할 수 있게 해줍니다."
+    },
+    {
+      "term": "System Prompt",
+      "description": "Claude의 역할, 행동 방식, 출력 형식을 지정하는 초기 지시사항입니다. 대화 전체에 걸쳐 일관된 동작을 유도합니다."
+    },
+    {
+      "term": "Tool Use",
+      "description": "Claude가 외부 함수나 API를 호출하도록 하는 기능입니다. 함수 스키마를 정의하면 Claude가 필요할 때 해당 도구를 사용하는 요청을 반환합니다."
+    },
+    {
+      "term": "Streaming",
+      "description": "응답을 한 번에 받는 대신 생성되는 대로 점진적으로 받는 방식입니다. 긴 응답에서 사용자 경험을 개선합니다."
+    }
+  ],
+  "whenToUse": [
+    "대규모 코드베이스를 분석하거나 여러 파일을 동시에 이해해야 할 때",
+    "복잡한 추론이나 다단계 문제 해결이 필요한 작업을 자동화할 때",
+    "코드 생성, 리뷰, 리팩토링을 AI 에이전트에게 위임하고 싶을 때",
+    "긴 문서나 기술 명세를 요약하고 핵심을 추출해야 할 때"
+  ],
+  "example": {
+    "title": "Messages API 기본 호출",
+    "language": "bash",
+    "code": "curl https://api.anthropic.com/v1/messages \\\n  -H \"x-api-key: $ANTHROPIC_API_KEY\" \\\n  -H \"anthropic-version: 2023-06-01\" \\\n  -H \"content-type: application/json\" \\\n  -d '{\n    \"model\": \"claude-3-5-sonnet-20241022\",\n    \"max_tokens\": 1024,\n    \"messages\": [\n      {\n        \"role\": \"user\",\n        \"content\": \"이 JSON을 TypeScript 인터페이스로 변환해줘: {\\\"name\\\": \\\"Alice\\\", \\\"age\\\": 30}\"\n      }\n    ]\n  }'",
+    "description": "Claude API에 메시지를 보내고 응답을 받는 가장 기본적인 형태입니다. model, max_tokens, messages 배열을 지정합니다."
+  },
+  "pitfalls": [
+    "토큰 한도를 초과하면 응답이 잘립니다. max_tokens를 충분히 설정하거나 stop_reason을 확인하세요",
+    "System prompt와 user message를 혼동하지 마세요. 역할 지정은 system에, 실제 요청은 user에 넣습니다",
+    "Tool use 응답을 받으면 실제 함수를 실행한 뒤 결과를 다시 Claude에게 전달해야 합니다"
+  ],
+  "generatedAt": "2026-11-04T00:02:04.300Z"
+}

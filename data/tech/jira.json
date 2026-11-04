@@ -1,0 +1,51 @@
+{
+  "slug": "jira",
+  "name": "Jira",
+  "category": "tool",
+  "tagline": "애자일 팀의 이슈 추적, 스프린트 관리, 협업을 지원하는 프로젝트 관리 플랫폼",
+  "definition": "Jira는 Atlassian이 만든 이슈 트래킹 및 프로젝트 관리 도구입니다. 소프트웨어 개발 팀이 백로그를 관리하고, 스프린트를 계획하며, 작업 진행 상황을 추적하고, 릴리스를 조율하는 데 사용됩니다. 스크럼, 칸반 등 애자일 방법론을 기본 지원하며, 워크플로우를 커스터마이징해 팀의 프로세스에 맞출 수 있습니다.",
+  "concepts": [
+    {
+      "term": "Issue",
+      "description": "Jira에서 추적하는 작업 단위로, Task, Story, Bug, Epic 등 여러 타입이 있습니다. 각 이슈는 고유 키(예: PROJ-123)를 가지며 담당자, 상태, 우선순위 등의 필드를 포함합니다."
+    },
+    {
+      "term": "Workflow",
+      "description": "이슈가 생성부터 완료까지 거치는 상태 전환 흐름입니다. To Do → In Progress → Done 같은 단계와 전환 조건을 정의하여 팀의 승인 프로세스나 QA 단계를 반영할 수 있습니다."
+    },
+    {
+      "term": "Board",
+      "description": "이슈를 시각화하는 화면으로, Scrum Board와 Kanban Board가 대표적입니다. 스프린트 단위로 작업을 묶거나 WIP 제한을 설정해 작업 흐름을 관리합니다."
+    },
+    {
+      "term": "Sprint",
+      "description": "스크럼 방법론에서 정해진 기간(보통 1~4주) 동안 완료할 이슈들을 묶은 단위입니다. 스프린트를 시작하고 종료하면서 번다운 차트로 진행률을 추적합니다."
+    },
+    {
+      "term": "JQL (Jira Query Language)",
+      "description": "Jira 이슈를 검색하고 필터링하기 위한 SQL 스타일의 쿼리 언어입니다. assignee, status, created 같은 필드를 조건으로 걸어 복잡한 필터를 만들 수 있습니다."
+    },
+    {
+      "term": "REST API",
+      "description": "Jira의 모든 기능을 프로그래밍 방식으로 접근할 수 있는 HTTP API입니다. 이슈 생성, 상태 전환, 코멘트 추가, 라벨 관리 등 자동화와 외부 시스템 연동에 사용됩니다."
+    }
+  ],
+  "whenToUse": [
+    "애자일/스크럼 프로세스로 개발하며 스프린트와 백로그를 체계적으로 관리하고 싶을 때",
+    "여러 팀이 협업하며 이슈 상태, 담당자, 우선순위를 투명하게 추적해야 할 때",
+    "CI/CD, Slack, GitHub 등 개발 도구와 연동해 자동화 워크플로우를 구축하고 싶을 때",
+    "커스텀 필드와 워크플로우를 만들어 조직 고유의 승인·배포 프로세스를 시스템화하려 할 때"
+  ],
+  "example": {
+    "title": "JQL로 미완료 이슈 조회 및 REST API로 상태 전환",
+    "language": "bash",
+    "code": "# JQL로 특정 프로젝트의 진행 중인 이슈 검색\nproject = MYPROJ AND status = \"In Progress\" AND assignee = currentUser()\n\n# REST API로 이슈 상태를 Done으로 전환 (curl 예시)\ncurl -X POST https://your-domain.atlassian.net/rest/api/3/issue/MYPROJ-123/transitions \\\n  -H \"Content-Type: application/json\" \\\n  -u email@example.com:api_token \\\n  -d '{\n    \"transition\": {\n      \"id\": \"31\"\n    }\n  }'\n\n# 이슈에 코멘트 추가\ncurl -X POST https://your-domain.atlassian.net/rest/api/3/issue/MYPROJ-123/comment \\\n  -H \"Content-Type: application/json\" \\\n  -u email@example.com:api_token \\\n  -d '{\"body\": {\"type\": \"doc\", \"version\": 1, \"content\": [{\"type\": \"paragraph\", \"content\": [{\"type\": \"text\", \"text\": \"작업 완료\"}]}]}}'",
+    "description": "JQL로 조건에 맞는 이슈를 필터링하고, REST API를 통해 이슈 상태를 프로그래밍 방식으로 전환하거나 코멘트를 추가하는 기본 흐름입니다."
+  },
+  "pitfalls": [
+    "Transition ID는 워크플로우마다 다르므로 /transitions 엔드포인트로 먼저 조회해야 합니다",
+    "Cloud와 Server/Data Center API 경로가 다르니 배포 환경을 확인하세요",
+    "JQL에서 빈 값 검색 시 IS EMPTY와 = null은 다르게 동작합니다"
+  ],
+  "generatedAt": "2026-11-04T00:02:12.130Z"
+}

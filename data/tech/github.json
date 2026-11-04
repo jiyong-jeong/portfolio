@@ -1,0 +1,51 @@
+{
+  "slug": "github",
+  "name": "GitHub",
+  "category": "devops",
+  "tagline": "Git 저장소를 호스팅하고 협업 워크플로를 제공하는 웹 기반 플랫폼",
+  "definition": "GitHub는 Git 버전 관리 시스템을 기반으로 소스 코드를 호스팅하고, 팀 협업을 위한 Pull Request, Issue, Code Review 등의 기능을 제공하는 플랫폼입니다. 개발자들이 코드 변경 사항을 제안하고, 검토하고, 병합하는 과정을 웹 인터페이스와 API로 관리할 수 있게 해줍니다. 오픈소스 프로젝트의 사실상 표준 플랫폼이며, 팀 단위 개발에서 코드 품질 관리와 자동화 워크플로 구축의 중심 역할을 합니다.",
+  "concepts": [
+    {
+      "term": "Repository",
+      "description": "프로젝트의 모든 파일과 Git 히스토리를 담는 저장소 단위입니다. public과 private 가시성을 설정할 수 있습니다."
+    },
+    {
+      "term": "Pull Request (PR)",
+      "description": "브랜치의 변경 사항을 다른 브랜치에 병합하기 전에 코드 리뷰와 논의를 진행하는 협업 단위입니다."
+    },
+    {
+      "term": "Branch",
+      "description": "독립적인 개발 라인을 만들어 기능 개발이나 버그 수정을 메인 코드와 분리해서 작업할 수 있게 합니다."
+    },
+    {
+      "term": "Actions",
+      "description": "GitHub 내장 CI/CD 자동화 도구로, 코드 푸시나 PR 생성 같은 이벤트에 반응해 테스트·빌드·배포를 실행합니다."
+    },
+    {
+      "term": "Issue",
+      "description": "버그, 기능 요청, 작업 항목을 추적하는 티켓 시스템입니다. PR과 연결해 작업 맥락을 관리할 수 있습니다."
+    },
+    {
+      "term": "GitHub API",
+      "description": "저장소, PR, 이슈, 브랜치 등 GitHub의 거의 모든 기능을 프로그래밍 방식으로 조작할 수 있는 REST/GraphQL API입니다."
+    }
+  ],
+  "whenToUse": [
+    "팀 단위로 코드 리뷰와 변경 이력 관리가 필요할 때",
+    "오픈소스 프로젝트를 공개하거나 외부 기여를 받고 싶을 때",
+    "PR 생성, 머지, CI 실행 등을 스크립트나 봇으로 자동화하려 할 때",
+    "이슈 트래커와 코드 저장소를 한곳에서 통합 관리하고 싶을 때"
+  ],
+  "example": {
+    "title": "GitHub CLI로 PR 생성 및 병합",
+    "language": "bash",
+    "code": "# 새 브랜치 생성 후 변경사항 푸시\ngit checkout -b feature/new-function\ngit add .\ngit commit -m \"Add new function\"\ngit push origin feature/new-function\n\n# GitHub CLI로 PR 생성\ngh pr create --title \"Add new function\" --body \"Implements X feature\"\n\n# PR 번호 123을 메인 브랜치에 병합\ngh pr merge 123 --merge --delete-branch\n\n# GitHub API로 PR 상태 조회\ncurl -H \"Authorization: token YOUR_TOKEN\" \\\n  https://api.github.com/repos/owner/repo/pulls/123",
+    "description": "브랜치를 만들고 푸시한 뒤, GitHub CLI와 API를 통해 PR을 생성·병합하는 기본 흐름을 보여줍니다."
+  },
+  "pitfalls": [
+    "API rate limit을 고려하지 않고 반복 호출하면 요청이 차단될 수 있습니다",
+    "Personal Access Token의 권한 범위(scope)를 과도하게 주면 보안 위험이 커집니다",
+    "Force push는 공유 브랜치에서 히스토리를 덮어써 협업자의 작업을 망칠 수 있습니다"
+  ],
+  "generatedAt": "2026-11-04T00:02:08.777Z"
+}
