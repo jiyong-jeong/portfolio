@@ -1,0 +1,47 @@
+{
+  "slug": "bash",
+  "name": "Bash",
+  "category": "language",
+  "tagline": "Unix/Linux 시스템의 기본 셸이자 스크립트 언어",
+  "definition": "Bash(Bourne Again Shell)는 Unix/Linux 환경에서 명령을 실행하고 자동화 스크립트를 작성할 수 있는 셸 프로그램입니다. 1989년 GNU 프로젝트의 일환으로 만들어졌으며, 대부분의 리눅스 배포판과 macOS에서 기본 셸로 채택되어 있습니다. 파일 조작, 프로세스 제어, 텍스트 처리 등 시스템 수준의 작업을 스크립트로 자동화하는 데 널리 사용됩니다.",
+  "concepts": [
+    {
+      "term": "Shell",
+      "description": "사용자가 입력한 명령을 운영체제 커널에 전달하고 결과를 반환하는 인터페이스입니다. Bash는 대화형 셸로도, 스크립트 실행기로도 동작합니다."
+    },
+    {
+      "term": "Environment Variable",
+      "description": "셸 세션 내에서 사용되는 변수로, 경로, 설정값, 프로세스 정보 등을 저장합니다. $PATH, $HOME 같은 시스템 변수와 사용자 정의 변수로 나뉩니다."
+    },
+    {
+      "term": "Exit Code",
+      "description": "명령이 종료될 때 반환하는 숫자로, 0은 성공, 1 이상은 실패를 의미합니다. 조건문과 결합해 오류 처리 흐름을 만들 수 있습니다."
+    },
+    {
+      "term": "Pipe",
+      "description": "한 명령의 출력을 다음 명령의 입력으로 연결하는 기호(|)입니다. 여러 명령을 체인처럼 엮어 복잡한 텍스트 처리를 한 줄로 표현할 수 있습니다."
+    },
+    {
+      "term": "Redirection",
+      "description": "표준 입출력과 오류를 파일이나 다른 스트림으로 돌리는 기능입니다. >, >>, <, 2> 등의 기호로 출력을 파일에 저장하거나 입력을 파일에서 읽을 수 있습니다."
+    }
+  ],
+  "whenToUse": [
+    "CI/CD 파이프라인에서 빌드, 테스트, 배포 단계를 자동화할 때",
+    "여러 명령을 순서대로 실행하거나 조건에 따라 분기해야 할 때",
+    "cron 등 스케줄러로 주기적인 백업, 로그 정리, 모니터링 작업을 돌릴 때",
+    "Git 훅, Docker 엔트리포인트 등 시스템 수준 오케스트레이션이 필요할 때"
+  ],
+  "example": {
+    "title": "파일 목록 필터링 후 백업",
+    "language": "bash",
+    "code": "#!/bin/bash\n\n# .log 파일 중 7일 이상 된 것만 찾아 압축\nfind /var/log -name \"*.log\" -mtime +7 > old_logs.txt\n\nif [ -s old_logs.txt ]; then\n  tar -czf backup_$(date +%F).tar.gz -T old_logs.txt\n  echo \"백업 완료: $(wc -l < old_logs.txt)개 파일\"\nelse\n  echo \"백업 대상 없음\"\nfi\n\nrm old_logs.txt",
+    "description": "find로 파일을 검색하고, 결과가 있으면 날짜별로 tar 압축 파일을 만듭니다. 종료 코드와 조건문으로 오류를 처리하는 전형적인 셸 스크립트 패턴입니다."
+  },
+  "pitfalls": [
+    "변수에 공백이 들어가면 의도와 다르게 분리되므로, 변수 참조 시 큰따옴표로 감싸야 함(\"$var\")",
+    "[ ] 조건식 안에서 띄어쓰기를 빼먹으면 문법 오류가 나므로, [ \"$a\" = \"$b\" ] 형태로 공백을 유지해야 함",
+    "스크립트 첫 줄에 #!/bin/bash를 빼먹으면 다른 셸로 실행되어 문법이 다를 수 있음"
+  ],
+  "generatedAt": "2026-11-06T00:02:08.010Z"
+}

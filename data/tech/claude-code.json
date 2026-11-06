@@ -1,0 +1,47 @@
+{
+  "slug": "claude-code",
+  "name": "Claude Code",
+  "category": "tool",
+  "tagline": "Anthropic Claude를 터미널과 IDE에서 에이전트로 실행할 수 있게 해주는 공식 SDK",
+  "definition": "Claude Code는 Anthropic이 제공하는 에이전트 프레임워크로, Claude API를 기반으로 자율적으로 작업을 수행하는 프로그램을 만들 수 있게 해줍니다. 사용자가 요청한 작업을 Claude가 스스로 분석하고, 필요한 도구를 선택해 실행하며, 결과를 확인한 뒤 다음 단계를 이어가는 루프를 구성할 수 있습니다. 단순히 질문-응답을 반복하는 챗봇이 아니라, 파일을 읽고 쓰며 명령을 실행하고 외부 API를 호출하는 등 실제 개발 워크플로를 자동화하는 데 적합합니다.",
+  "concepts": [
+    {
+      "term": "Agent",
+      "description": "주어진 목표를 달성하기 위해 스스로 계획을 세우고, 도구를 선택해 실행하며, 결과를 보고 다음 행동을 결정하는 Claude 인스턴스를 의미합니다."
+    },
+    {
+      "term": "Tool",
+      "description": "에이전트가 호출할 수 있는 함수 단위의 기능입니다. 파일 읽기, bash 실행, API 호출 등 외부 작업을 수행하고 결과를 Claude에게 전달합니다."
+    },
+    {
+      "term": "Headless Mode",
+      "description": "사용자 입력 없이 에이전트가 처음부터 끝까지 자동으로 작업을 수행하는 모드입니다. CI/CD나 배치 작업에서 사람 개입 없이 실행할 때 사용합니다."
+    },
+    {
+      "term": "Sampling Loop",
+      "description": "Claude가 응답을 생성하고, 도구 호출 요청이 있으면 실행한 뒤 결과를 다시 Claude에게 전달하는 과정을 반복하는 구조입니다. 작업이 완료될 때까지 이 루프가 계속됩니다."
+    },
+    {
+      "term": "Skill",
+      "description": "재사용 가능한 작업 단위로, 특정 목적을 위한 프롬프트와 도구 집합을 패키징한 것입니다. 사용자가 정의한 커스텀 워크플로를 에이전트에 추가할 수 있습니다."
+    }
+  ],
+  "whenToUse": [
+    "Jira 티켓을 읽고 코드를 작성한 뒤 PR까지 자동으로 생성하는 개발 자동화가 필요할 때",
+    "로컬 파일과 API를 함께 다루며 여러 단계를 거쳐야 하는 복잡한 작업을 자동화할 때",
+    "사람이 지켜보지 않아도 되는 배치 작업이나 정기 리포트 생성을 Claude에게 맡기고 싶을 때",
+    "Claude를 단순 챗봇이 아니라 실제 도구를 다루는 개발 보조 에이전트로 활용하고 싶을 때"
+  ],
+  "example": {
+    "title": "헤드리스 모드로 Jira 카드 처리 후 PR 생성",
+    "language": "bash",
+    "code": "# 에이전트에게 작업을 지시하고 완료까지 자동 실행\nclaude-agent \\\n  --headless \\\n  --prompt \"Jira에서 PROJ-123 카드를 읽고, 요구사항에 맞춰 코드를 작성한 뒤 PR을 생성해줘\" \\\n  --tool jira_read \\\n  --tool file_write \\\n  --tool bash \\\n  --tool github_create_pr\n\n# 에이전트는 아래 순서로 스스로 진행\n# 1. jira_read 도구로 카드 내용 조회\n# 2. 요구사항 분석 후 코드 작성 계획 수립\n# 3. file_write로 파일 생성/수정\n# 4. bash로 테스트 실행 및 커밋\n# 5. github_create_pr로 PR 생성 완료",
+    "description": "사용자가 초기 지시만 내리면, Claude가 Jira 읽기부터 코드 작성, 테스트, PR 생성까지 중간 개입 없이 처리합니다. 각 단계마다 필요한 도구를 스스로 선택해 호출하며, 오류가 발생하면 재시도하거나 대안을 찾습니다."
+  },
+  "pitfalls": [
+    "Tool 정의가 모호하면 Claude가 잘못된 도구를 선택하거나 무한 루프에 빠질 수 있음",
+    "Headless 모드는 중간 확인이 불가하므로, 처음엔 interactive 모드로 동작을 검증한 뒤 자동화해야 함",
+    "API 호출 비용이 루프 횟수에 비례하므로, 복잡한 작업은 예상보다 토큰을 많이 소모할 수 있음"
+  ],
+  "generatedAt": "2026-11-06T00:02:13.579Z"
+}
