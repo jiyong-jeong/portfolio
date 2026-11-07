@@ -1,0 +1,47 @@
+{
+  "slug": "github",
+  "name": "GitHub",
+  "category": "tool",
+  "tagline": "버전 관리 기반 코드 협업과 배포를 통합한 소프트웨어 개발 플랫폼",
+  "definition": "GitHub는 Git 저장소 호스팅을 중심으로 코드 리뷰, 이슈 추적, CI/CD, 배포 자동화를 제공하는 협업 플랫폼입니다. 여러 개발자가 동시에 작업하면서 변경 이력을 추적하고, Pull Request를 통해 코드 품질을 관리하며, GitHub Actions로 빌드·테스트·배포 파이프라인을 구성할 수 있습니다. 오픈소스 프로젝트 생태계의 중심이자, 팀 단위 개발 워크플로의 사실상 표준으로 자리 잡았습니다.",
+  "concepts": [
+    {
+      "term": "Repository",
+      "description": "Git으로 관리되는 프로젝트 단위. 코드, 이력, 이슈, PR, Wiki, Actions 등 모든 자산이 여기에 속합니다."
+    },
+    {
+      "term": "Pull Request (PR)",
+      "description": "브랜치의 변경사항을 다른 브랜치에 병합하기 전, 코드 리뷰와 토론을 거치는 협업 단위. CI 상태, 승인 여부를 확인한 뒤 머지합니다."
+    },
+    {
+      "term": "GitHub Actions",
+      "description": "저장소 내 이벤트(push, PR 생성 등)를 트리거로 빌드, 테스트, 배포 등을 자동 실행하는 CI/CD 워크플로 엔진. YAML로 정의합니다."
+    },
+    {
+      "term": "Issue",
+      "description": "버그, 기능 요청, 할 일 등을 추적하는 티켓. 라벨, 담당자, 마일스톤을 지정하고 PR과 연결해 작업 흐름을 관리합니다."
+    },
+    {
+      "term": "gh CLI",
+      "description": "GitHub를 터미널에서 조작하는 공식 명령줄 도구. PR 생성, 머지, 이슈 조회, CI 상태 확인을 스크립트로 자동화할 때 씁니다."
+    }
+  ],
+  "whenToUse": [
+    "팀 단위로 코드 리뷰와 병합 승인 프로세스를 운영할 때",
+    "오픈소스 프로젝트를 공개하고 외부 기여를 받을 때",
+    "저장소 이벤트 기반으로 빌드, 테스트, 배포를 자동화할 때",
+    "이슈 트래커와 버전 관리를 한 곳에서 통합 관리하고 싶을 때"
+  ],
+  "example": {
+    "title": "gh CLI로 PR 생성 후 자동 병합",
+    "language": "bash",
+    "code": "# 새 브랜치에서 작업 후 커밋\ngit checkout -b feature/add-login\ngit add .\ngit commit -m \"feat: 로그인 기능 추가\"\ngit push origin feature/add-login\n\n# PR 생성 (base는 main)\ngh pr create --base main --title \"로그인 기능 추가\" --body \"JWT 인증 구현\"\n\n# CI 완료 후 자동 병합\ngh pr merge --auto --squash",
+    "description": "브랜치를 푸시하고, gh CLI로 PR을 열고, CI가 성공하면 자동으로 squash 머지하는 흐름을 보여줍니다."
+  },
+  "pitfalls": [
+    "PR을 머지하지 않고 브랜치만 삭제하면 변경사항이 사라짐",
+    "protected branch 규칙(리뷰 필수, CI 통과 등)을 모르고 직접 푸시하면 거부됨",
+    "Actions 워크플로에서 GITHUB_TOKEN 권한이 부족하면 PR 생성·라벨 추가 등이 실패함"
+  ],
+  "generatedAt": "2026-11-07T00:02:06.639Z"
+}

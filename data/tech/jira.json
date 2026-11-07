@@ -1,0 +1,47 @@
+{
+  "slug": "jira",
+  "name": "Jira",
+  "category": "tool",
+  "tagline": "소프트웨어 팀의 이슈 추적과 프로젝트 관리를 위한 협업 플랫폼",
+  "definition": "Jira는 Atlassian이 만든 이슈 트래킹 및 프로젝트 관리 도구입니다. 원래 버그 추적용으로 시작했지만, 현재는 애자일 스프린트, 칸반 보드, 릴리스 계획, 요구사항 관리 등 소프트웨어 개발 전반의 작업 흐름을 지원합니다. 개발팀뿐 아니라 기획, 디자인, 운영 등 여러 직군이 함께 작업 상태를 추적하고 우선순위를 조율하는 데 널리 쓰입니다.",
+  "concepts": [
+    {
+      "term": "Issue",
+      "description": "작업 단위를 나타내는 카드. Task, Story, Bug, Epic 등 여러 타입이 있으며, 각 이슈는 고유 키(예: PROJ-123)를 가집니다."
+    },
+    {
+      "term": "Workflow",
+      "description": "이슈가 거치는 상태 전환 흐름. To Do → In Progress → Done 같은 단계를 정의하고, 상태 변경 시 자동 액션이나 검증 규칙을 걸 수 있습니다."
+    },
+    {
+      "term": "Board",
+      "description": "이슈를 시각화하는 보드. Scrum 보드는 스프린트 단위로, Kanban 보드는 WIP 제한과 흐름 중심으로 작업을 관리합니다."
+    },
+    {
+      "term": "JQL",
+      "description": "Jira Query Language. 이슈를 검색하고 필터링하는 SQL 비슷한 쿼리 언어로, assignee, status, sprint 등 필드 조건을 조합해 사용합니다."
+    },
+    {
+      "term": "REST API",
+      "description": "Jira의 모든 기능을 외부에서 제어할 수 있는 HTTP API. 이슈 생성, 조회, 상태 변경, 댓글 추가 등을 자동화할 때 사용합니다."
+    }
+  ],
+  "whenToUse": [
+    "개발 작업을 티켓 단위로 추적하고, 진행 상황을 팀 전체가 공유해야 할 때",
+    "스프린트 계획, 백로그 관리 등 애자일 프로세스를 체계적으로 운영하려 할 때",
+    "CI/CD, GitHub, Slack 등 다른 도구와 연동해 개발 흐름을 자동화하고 싶을 때",
+    "커스텀 필드, 워크플로우, 권한 설정 등 조직 프로세스에 맞춘 세밀한 커스터마이징이 필요할 때"
+  ],
+  "example": {
+    "title": "JQL로 이슈 검색 및 REST API로 이슈 생성",
+    "language": "bash",
+    "code": "# JQL 예시: 나에게 할당된, 진행 중인 이슈 찾기\n# project = MYPROJ AND assignee = currentUser() AND status = \"In Progress\"\n\n# REST API로 새 이슈 생성\ncurl -X POST https://your-domain.atlassian.net/rest/api/3/issue \\\n  -H \"Content-Type: application/json\" \\\n  -H \"Authorization: Basic <token>\" \\\n  -d '{\n    \"fields\": {\n      \"project\": { \"key\": \"MYPROJ\" },\n      \"summary\": \"로그인 API 버그 수정\",\n      \"description\": \"토큰 만료 시 500 에러 발생\",\n      \"issuetype\": { \"name\": \"Bug\" },\n      \"assignee\": { \"id\": \"123abc\" }\n    }\n  }'",
+    "description": "JQL로 조건에 맞는 이슈를 찾고, REST API로 새 이슈를 프로그래매틱하게 생성하는 예시입니다."
+  },
+  "pitfalls": [
+    "워크플로우와 필드를 과도하게 커스터마이징하면 나중에 유지보수와 마이그레이션이 어려워집니다.",
+    "JQL 쿼리에서 사용자 정의 필드는 이름이 아니라 내부 ID로 참조해야 할 때가 많습니다.",
+    "API 호출 시 프로젝트별 이슈 타입, 필수 필드 스키마가 다르므로 사전에 메타데이터를 조회해야 합니다."
+  ],
+  "generatedAt": "2026-11-07T00:02:09.154Z"
+}
